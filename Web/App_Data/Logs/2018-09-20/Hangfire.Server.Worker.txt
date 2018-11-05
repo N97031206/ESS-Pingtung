@@ -1,0 +1,1000 @@
+2018-09-20 13:23:48.1376 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #a86eaefd' started. 
+
+2018-09-20 13:23:48.1376 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9f21b474' started. 
+
+2018-09-20 13:23:48.1686 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5f9c37a3' started. 
+
+2018-09-20 13:23:48.1826 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #161f71a8' started. 
+
+2018-09-20 13:23:48.1826 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e6c5c795' started. 
+
+2018-09-20 13:23:48.1976 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ac5749e8' started. 
+
+2018-09-20 13:23:48.2216 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3d50ec6b' started. 
+
+2018-09-20 13:23:48.2216 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e707b9be' started. 
+
+2018-09-20 13:23:48.2386 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #d941c7f8' started. 
+
+2018-09-20 13:23:48.2536 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #2b49ec6d' started. 
+
+2018-09-20 13:23:48.2646 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #30ff8e07' started. 
+
+2018-09-20 13:23:48.2646 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #7ab4de83' started. 
+
+2018-09-20 13:23:48.2776 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #28db90f7' started. 
+
+2018-09-20 13:23:48.3026 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #f47c6cb4' started. 
+
+2018-09-20 13:23:48.3396 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9ce0a74d' started. 
+
+2018-09-20 13:23:48.3636 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #83ed30db' started. 
+
+2018-09-20 13:23:48.3886 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #cfbd7528' started. 
+
+2018-09-20 13:23:48.4016 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ae593288' started. 
+
+2018-09-20 13:23:48.4016 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #8f6a89fa' started. 
+
+2018-09-20 13:23:48.3886 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c0fad88c' started. 
+
+2018-09-20 13:27:52.4935 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #35a6d7c4' started. 
+
+2018-09-20 13:27:52.5075 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #bc08d242' started. 
+
+2018-09-20 13:27:52.4935 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #f9ca2a1a' started. 
+
+2018-09-20 13:27:52.5235 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #8e5f4d0d' started. 
+
+2018-09-20 13:27:52.5235 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #47ce91df' started. 
+
+2018-09-20 13:27:52.5235 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e59d18eb' started. 
+
+2018-09-20 13:27:52.5595 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5e8c9dd2' started. 
+
+2018-09-20 13:27:52.5825 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #7166493f' started. 
+
+2018-09-20 13:27:52.5235 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e930e5bd' started. 
+
+2018-09-20 13:27:52.6075 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #bf1cc713' started. 
+
+2018-09-20 13:27:52.6415 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #fe073d92' started. 
+
+2018-09-20 13:27:52.6505 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #be1ceeaa' started. 
+
+2018-09-20 13:27:52.6175 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e53bdab9' started. 
+
+2018-09-20 13:27:52.6736 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #d7ea7d1b' started. 
+
+2018-09-20 13:27:52.6906 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #bd8854fb' started. 
+
+2018-09-20 13:27:52.7196 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #dd4a1606' started. 
+
+2018-09-20 13:27:52.7326 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b686dada' started. 
+
+2018-09-20 13:27:52.7536 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #0205cac3' started. 
+
+2018-09-20 13:27:52.7776 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #56021a56' started. 
+
+2018-09-20 13:27:52.8016 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #730fca7b' started. 
+
+2018-09-20 13:32:56.8529 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4e19ae5c' started. 
+
+2018-09-20 13:32:56.8529 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #d1517ec1' started. 
+
+2018-09-20 13:32:56.8850 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #89f9d5aa' started. 
+
+2018-09-20 13:32:56.8529 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b5c2bb78' started. 
+
+2018-09-20 13:32:56.8850 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c7e53324' started. 
+
+2018-09-20 13:32:56.9480 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ad52e7f0' started. 
+
+2018-09-20 13:32:56.9590 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #8881cb0c' started. 
+
+2018-09-20 13:32:56.9590 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #bcc37b84' started. 
+
+2018-09-20 13:32:56.9220 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #20f2eb71' started. 
+
+2018-09-20 13:32:56.8970 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #8b493615' started. 
+
+2018-09-20 13:32:56.8850 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #297766be' started. 
+
+2018-09-20 13:32:57.0110 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4c47014b' started. 
+
+2018-09-20 13:32:57.0260 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #8a39d29e' started. 
+
+2018-09-20 13:32:57.0470 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3ab7fa0d' started. 
+
+2018-09-20 13:32:57.0660 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4b531a66' started. 
+
+2018-09-20 13:32:57.0860 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #a14b6fd4' started. 
+
+2018-09-20 13:32:57.0860 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #fae9aa61' started. 
+
+2018-09-20 13:32:57.1000 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ec46e0c4' started. 
+
+2018-09-20 13:32:57.1000 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9fef1aaf' started. 
+
+2018-09-20 13:32:57.1290 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #d0e273d1' started. 
+
+2018-09-20 13:35:24.9104 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #890ce288' started. 
+
+2018-09-20 13:35:24.9104 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #acc8ae39' started. 
+
+2018-09-20 13:35:24.9284 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ece13b21' started. 
+
+2018-09-20 13:35:24.9104 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #622b1a7e' started. 
+
+2018-09-20 13:35:24.9464 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c8dae527' started. 
+
+2018-09-20 13:35:24.9464 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9386fba6' started. 
+
+2018-09-20 13:35:24.9464 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #919418cd' started. 
+
+2018-09-20 13:35:24.9754 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #771e10ca' started. 
+
+2018-09-20 13:35:24.9884 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #08d38b92' started. 
+
+2018-09-20 13:35:24.9884 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4a7ddf81' started. 
+
+2018-09-20 13:35:25.0034 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b40d4854' started. 
+
+2018-09-20 13:35:24.9884 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ef8af112' started. 
+
+2018-09-20 13:35:25.0034 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ad2b8bae' started. 
+
+2018-09-20 13:35:25.0394 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #cd548ed5' started. 
+
+2018-09-20 13:35:25.0394 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ac4bdd75' started. 
+
+2018-09-20 13:35:25.0764 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #825def6c' started. 
+
+2018-09-20 13:35:25.0524 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #6dceac6a' started. 
+
+2018-09-20 13:35:25.1094 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #6fe5ac0a' started. 
+
+2018-09-20 13:35:25.1164 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #1678346a' started. 
+
+2018-09-20 13:35:25.1094 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #0a107861' started. 
+
+2018-09-20 13:41:44.6991 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #90c3cbc4' started. 
+
+2018-09-20 13:41:44.6751 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9b6222f0' started. 
+
+2018-09-20 13:41:44.7291 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #0256a60c' started. 
+
+2018-09-20 13:41:44.7291 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #bd077b84' started. 
+
+2018-09-20 13:41:44.7431 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #2f1b3127' started. 
+
+2018-09-20 13:41:44.7431 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #71187930' started. 
+
+2018-09-20 13:41:44.7431 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5b2e97fe' started. 
+
+2018-09-20 13:41:44.7911 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #2993c7f6' started. 
+
+2018-09-20 13:41:44.7701 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #8a1545d1' started. 
+
+2018-09-20 13:41:44.8071 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #94b7ca3e' started. 
+
+2018-09-20 13:41:44.8391 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #d4e9a798' started. 
+
+2018-09-20 13:41:44.8391 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3eda6a54' started. 
+
+2018-09-20 13:41:44.8712 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #6d48b606' started. 
+
+2018-09-20 13:41:44.8391 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #d3aa0146' started. 
+
+2018-09-20 13:41:44.8822 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #22a4954f' started. 
+
+2018-09-20 13:41:44.9132 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5362beda' started. 
+
+2018-09-20 13:41:44.9362 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #22464aab' started. 
+
+2018-09-20 13:41:44.9482 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #2c66ff3b' started. 
+
+2018-09-20 13:41:44.9482 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #d5c1e66b' started. 
+
+2018-09-20 13:41:44.9632 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #32cdf2ae' started. 
+
+2018-09-20 13:43:28.6281 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5d5561bb' started. 
+
+2018-09-20 13:43:28.6501 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #798a6b4b' started. 
+
+2018-09-20 13:43:28.7001 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c0167760' started. 
+
+2018-09-20 13:43:28.6741 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ca93a20d' started. 
+
+2018-09-20 13:43:28.7241 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e5505304' started. 
+
+2018-09-20 13:43:28.7721 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ff37a6be' started. 
+
+2018-09-20 13:43:28.7721 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ef11f910' started. 
+
+2018-09-20 13:43:28.7831 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #f65753d3' started. 
+
+2018-09-20 13:43:28.7831 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #fd5a5c66' started. 
+
+2018-09-20 13:43:28.7831 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #7c3a3ef0' started. 
+
+2018-09-20 13:43:28.7981 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #78a2b77a' started. 
+
+2018-09-20 13:43:28.8321 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5d6c707f' started. 
+
+2018-09-20 13:43:28.7981 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #a27e3a16' started. 
+
+2018-09-20 13:43:28.8321 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #53308bf4' started. 
+
+2018-09-20 13:43:28.8781 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #069ad16d' started. 
+
+2018-09-20 13:43:28.8521 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #28809a8d' started. 
+
+2018-09-20 13:43:28.8781 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #90e61ee4' started. 
+
+2018-09-20 13:43:28.8901 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #229952b7' started. 
+
+2018-09-20 13:43:28.9061 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #16f573ca' started. 
+
+2018-09-20 13:43:28.8901 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #2d616336' started. 
+
+2018-09-20 14:35:16.9849 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #fe330d5e' started. 
+
+2018-09-20 14:35:17.0059 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #69eea6ea' started. 
+
+2018-09-20 14:35:17.0059 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9ef0e745' started. 
+
+2018-09-20 14:35:17.0059 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #0c7ce3bc' started. 
+
+2018-09-20 14:35:17.0469 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ceecb6f7' started. 
+
+2018-09-20 14:35:17.0349 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b951e60b' started. 
+
+2018-09-20 14:35:17.0779 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #8a525bd9' started. 
+
+2018-09-20 14:35:17.0959 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #bf95d630' started. 
+
+2018-09-20 14:35:17.1179 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b07c4bf0' started. 
+
+2018-09-20 14:35:17.1299 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #53462243' started. 
+
+2018-09-20 14:35:17.1299 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9ea60f06' started. 
+
+2018-09-20 14:35:17.1299 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #679eb051' started. 
+
+2018-09-20 14:35:17.1669 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #96b466bb' started. 
+
+2018-09-20 14:35:17.1949 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c31affb3' started. 
+
+2018-09-20 14:35:17.2189 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #6b066564' started. 
+
+2018-09-20 14:35:17.2459 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3e856193' started. 
+
+2018-09-20 14:35:17.2459 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3bef4002' started. 
+
+2018-09-20 14:35:17.2959 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #152eac1a' started. 
+
+2018-09-20 14:35:17.3059 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b40b877e' started. 
+
+2018-09-20 14:35:17.3059 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ce01a7f3' started. 
+
+2018-09-20 14:36:41.6707 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #a7062dc1' started. 
+
+2018-09-20 14:36:41.6707 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #f8dd3c2a' started. 
+
+2018-09-20 14:36:41.6707 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ba5f2ace' started. 
+
+2018-09-20 14:36:41.6817 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #24b2c987' started. 
+
+2018-09-20 14:36:41.7147 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #0d59cbd1' started. 
+
+2018-09-20 14:36:41.6817 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e6cd7c97' started. 
+
+2018-09-20 14:36:41.7497 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #7faa516d' started. 
+
+2018-09-20 14:36:41.7147 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e4108acf' started. 
+
+2018-09-20 14:36:41.7497 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #620d6465' started. 
+
+2018-09-20 14:36:41.7637 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9b01f719' started. 
+
+2018-09-20 14:36:41.8297 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #83020839' started. 
+
+2018-09-20 14:36:41.8407 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b88bf2f5' started. 
+
+2018-09-20 14:36:41.8657 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #528af29a' started. 
+
+2018-09-20 14:36:41.8297 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #7443f516' started. 
+
+2018-09-20 14:36:41.8407 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #8ff048e9' started. 
+
+2018-09-20 14:36:41.8857 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b3cf44a7' started. 
+
+2018-09-20 14:36:41.8857 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #f666f65a' started. 
+
+2018-09-20 14:36:41.9017 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b8946538' started. 
+
+2018-09-20 14:36:41.9017 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #31959ea8' started. 
+
+2018-09-20 14:36:41.9017 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #542a9ee4' started. 
+
+2018-09-20 14:39:00.1426 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #cee73fdc' started. 
+
+2018-09-20 14:39:00.1426 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #7353034d' started. 
+
+2018-09-20 14:39:00.1596 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #da120df8' started. 
+
+2018-09-20 14:39:00.1666 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #0adc88b6' started. 
+
+2018-09-20 14:39:00.1666 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b6228fa1' started. 
+
+2018-09-20 14:39:00.1936 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #a0db5fc2' started. 
+
+2018-09-20 14:39:00.2176 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #660fd5d9' started. 
+
+2018-09-20 14:39:00.2426 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #69f21cdd' started. 
+
+2018-09-20 14:39:00.2426 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #8530f516' started. 
+
+2018-09-20 14:39:00.2426 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #15e14886' started. 
+
+2018-09-20 14:39:00.2696 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #feede4b4' started. 
+
+2018-09-20 14:39:00.2966 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #343f5346' started. 
+
+2018-09-20 14:39:00.3056 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #71f967be' started. 
+
+2018-09-20 14:39:00.3056 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #fc2d2e5f' started. 
+
+2018-09-20 14:39:00.3206 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e0c0fa87' started. 
+
+2018-09-20 14:39:00.3206 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c2e0d912' started. 
+
+2018-09-20 14:39:00.3366 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4d7b1921' started. 
+
+2018-09-20 14:39:00.3366 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3fd2d8d2' started. 
+
+2018-09-20 14:39:00.3366 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #0d5ee76b' started. 
+
+2018-09-20 14:39:00.3536 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #cc6053d9' started. 
+
+2018-09-20 14:40:15.1709 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #37088e0e' started. 
+
+2018-09-20 14:40:15.1709 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c58243f6' started. 
+
+2018-09-20 14:40:15.1879 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #7dac48ee' started. 
+
+2018-09-20 14:40:15.1879 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #f489c823' started. 
+
+2018-09-20 14:40:15.2119 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #adb22fff' started. 
+
+2018-09-20 14:40:15.2419 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e06652e1' started. 
+
+2018-09-20 14:40:15.2659 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3c2985e4' started. 
+
+2018-09-20 14:40:15.2889 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c54dcc49' started. 
+
+2018-09-20 14:40:15.3129 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #36e62ef0' started. 
+
+2018-09-20 14:40:15.3369 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b442ec84' started. 
+
+2018-09-20 14:40:15.3619 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #46fae4e5' started. 
+
+2018-09-20 14:40:15.3869 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #2dd3f668' started. 
+
+2018-09-20 14:40:15.4099 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #d25f3253' started. 
+
+2018-09-20 14:40:15.4249 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #605f88b9' started. 
+
+2018-09-20 14:40:15.4359 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #dfa4c90f' started. 
+
+2018-09-20 14:40:15.4359 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b41e3fba' started. 
+
+2018-09-20 14:40:15.4529 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ac23b974' started. 
+
+2018-09-20 14:40:15.4529 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c50c7dcb' started. 
+
+2018-09-20 14:40:15.4759 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #fb8c3dd2' started. 
+
+2018-09-20 14:40:15.5019 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3169888b' started. 
+
+2018-09-20 14:41:07.1389 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #797c6337' started. 
+
+2018-09-20 14:41:07.1639 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #7771f1c2' started. 
+
+2018-09-20 14:41:07.1669 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ee423134' started. 
+
+2018-09-20 14:41:07.1669 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #0050e11c' started. 
+
+2018-09-20 14:41:07.1849 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #899299c4' started. 
+
+2018-09-20 14:41:07.1849 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3bde035c' started. 
+
+2018-09-20 14:41:07.1969 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ead54e95' started. 
+
+2018-09-20 14:41:07.1969 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9bd2115b' started. 
+
+2018-09-20 14:41:07.1969 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #68a18dcc' started. 
+
+2018-09-20 14:41:07.2289 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4a96b079' started. 
+
+2018-09-20 14:41:07.2289 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3af1b270' started. 
+
+2018-09-20 14:41:07.2649 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #8667f992' started. 
+
+2018-09-20 14:41:07.2889 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #df0a2876' started. 
+
+2018-09-20 14:41:07.2979 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #2fec8143' started. 
+
+2018-09-20 14:41:07.3049 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #35db63f9' started. 
+
+2018-09-20 14:41:07.3309 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e8970a21' started. 
+
+2018-09-20 14:41:07.3309 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #1b4b56e0' started. 
+
+2018-09-20 14:41:07.3389 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b1bc4966' started. 
+
+2018-09-20 14:41:07.3619 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #f97e2e53' started. 
+
+2018-09-20 14:41:07.3749 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4fb335bd' started. 
+
+2018-09-20 14:51:53.3909 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #cb1f1989' started. 
+
+2018-09-20 14:51:53.4199 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #cf16dad2' started. 
+
+2018-09-20 14:51:53.4399 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #14148174' started. 
+
+2018-09-20 14:51:53.4399 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #f12006fa' started. 
+
+2018-09-20 14:51:53.4199 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #64471c5e' started. 
+
+2018-09-20 14:51:53.4899 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b90736e5' started. 
+
+2018-09-20 14:51:53.5139 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #fbcdf345' started. 
+
+2018-09-20 14:51:53.4669 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #a6a4a8b5' started. 
+
+2018-09-20 14:51:53.5479 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5a106405' started. 
+
+2018-09-20 14:51:53.5479 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #8d1860b4' started. 
+
+2018-09-20 14:51:53.5369 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #779f35b9' started. 
+
+2018-09-20 14:51:53.6179 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #1efdc5d7' started. 
+
+2018-09-20 14:51:53.6339 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e003e261' started. 
+
+2018-09-20 14:51:53.7759 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3acf6631' started. 
+
+2018-09-20 14:51:53.7989 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #376a00fd' started. 
+
+2018-09-20 14:51:53.7989 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #7db981df' started. 
+
+2018-09-20 14:51:53.8169 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #8699c1a6' started. 
+
+2018-09-20 14:51:53.8239 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e5f1252d' started. 
+
+2018-09-20 14:51:53.8479 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #bfe6ed1c' started. 
+
+2018-09-20 14:51:53.8519 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #54f4bc6b' started. 
+
+2018-09-20 14:52:37.9354 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ce731819' started. 
+
+2018-09-20 14:52:37.9534 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b9ff54d3' started. 
+
+2018-09-20 14:52:37.9534 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #49bea0a7' started. 
+
+2018-09-20 14:52:37.9534 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e886d754' started. 
+
+2018-09-20 14:52:37.9764 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b312c1c4' started. 
+
+2018-09-20 14:52:37.9854 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #074d5d17' started. 
+
+2018-09-20 14:52:37.9854 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #6260e5bd' started. 
+
+2018-09-20 14:52:38.0164 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #08dd98cf' started. 
+
+2018-09-20 14:52:38.0164 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #32865808' started. 
+
+2018-09-20 14:52:38.0164 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #f1e2db85' started. 
+
+2018-09-20 14:52:38.0724 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c6bad322' started. 
+
+2018-09-20 14:52:38.0884 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #27b73947' started. 
+
+2018-09-20 14:52:38.0984 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5a41517e' started. 
+
+2018-09-20 14:52:38.0984 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3fb22c46' started. 
+
+2018-09-20 14:52:38.1094 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #886ae7b1' started. 
+
+2018-09-20 14:52:38.1094 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #465221ae' started. 
+
+2018-09-20 14:52:38.1094 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #6124d982' started. 
+
+2018-09-20 14:52:38.1254 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #8d42de6b' started. 
+
+2018-09-20 14:52:38.1254 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b6f4dfb4' started. 
+
+2018-09-20 14:52:38.1414 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #87683923' started. 
+
+2018-09-20 15:02:50.8345 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #a1722de5' started. 
+
+2018-09-20 15:02:50.8345 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c0e00c10' started. 
+
+2018-09-20 15:02:50.8725 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #dc4a634a' started. 
+
+2018-09-20 15:02:50.8965 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #f60ebb0f' started. 
+
+2018-09-20 15:02:50.8965 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5cbcf69d' started. 
+
+2018-09-20 15:02:50.9155 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #313ca4ae' started. 
+
+2018-09-20 15:02:50.8965 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5d400bb1' started. 
+
+2018-09-20 15:02:50.9155 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #11706c22' started. 
+
+2018-09-20 15:02:50.9465 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #f28c932f' started. 
+
+2018-09-20 15:02:50.9705 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #550c23c0' started. 
+
+2018-09-20 15:02:50.9945 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e65099c6' started. 
+
+2018-09-20 15:02:50.9945 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #92be11da' started. 
+
+2018-09-20 15:02:51.0085 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #f976ab6e' started. 
+
+2018-09-20 15:02:51.0385 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4010c7c2' started. 
+
+2018-09-20 15:02:51.0625 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #516440e4' started. 
+
+2018-09-20 15:02:51.0865 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #d41553a3' started. 
+
+2018-09-20 15:02:51.1105 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #7f5bdbd5' started. 
+
+2018-09-20 15:02:51.1155 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #2ea04d4b' started. 
+
+2018-09-20 15:02:51.1155 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4804e394' started. 
+
+2018-09-20 15:02:51.1545 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c2dea4f2' started. 
+
+2018-09-20 15:06:25.8448 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #604468e7' started. 
+
+2018-09-20 15:06:25.8558 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ff91eb19' started. 
+
+2018-09-20 15:06:25.8848 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #60443466' started. 
+
+2018-09-20 15:06:25.8848 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #46a5dcb9' started. 
+
+2018-09-20 15:06:25.9628 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #6d4c7d56' started. 
+
+2018-09-20 15:06:25.9758 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3b46e89c' started. 
+
+2018-09-20 15:06:25.9758 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #d9331889' started. 
+
+2018-09-20 15:06:25.9988 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #49fe3976' started. 
+
+2018-09-20 15:06:26.0148 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3fd88334' started. 
+
+2018-09-20 15:06:26.0218 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #918d68aa' started. 
+
+2018-09-20 15:06:26.0558 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #470a5ce5' started. 
+
+2018-09-20 15:06:26.0818 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e97aa543' started. 
+
+2018-09-20 15:06:26.1128 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #00dcec68' started. 
+
+2018-09-20 15:06:26.1378 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #914b5793' started. 
+
+2018-09-20 15:06:26.1738 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9303233a' started. 
+
+2018-09-20 15:06:26.1778 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #19f29821' started. 
+
+2018-09-20 15:06:26.1958 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4cad44b0' started. 
+
+2018-09-20 15:06:26.1958 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #057dbd48' started. 
+
+2018-09-20 15:06:26.2278 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #d3477c67' started. 
+
+2018-09-20 15:06:26.2278 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #bd316664' started. 
+
+2018-09-20 15:07:21.9850 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #fa1f653e' started. 
+
+2018-09-20 15:07:21.9950 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #013bf3ea' started. 
+
+2018-09-20 15:07:21.9950 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #989906ff' started. 
+
+2018-09-20 15:07:21.9950 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #25760532' started. 
+
+2018-09-20 15:07:22.0140 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #0045e874' started. 
+
+2018-09-20 15:07:22.0140 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c41635b0' started. 
+
+2018-09-20 15:07:22.0430 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #1af7025e' started. 
+
+2018-09-20 15:07:22.0660 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #00328f2f' started. 
+
+2018-09-20 15:07:22.0890 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #7fb3f458' started. 
+
+2018-09-20 15:07:22.1350 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #0dd646b6' started. 
+
+2018-09-20 15:07:22.1600 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #10f132f6' started. 
+
+2018-09-20 15:07:22.1850 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5a1d4cb4' started. 
+
+2018-09-20 15:07:22.2090 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #8856d266' started. 
+
+2018-09-20 15:07:22.2330 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #a93abbba' started. 
+
+2018-09-20 15:07:22.2330 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #725aa597' started. 
+
+2018-09-20 15:07:22.2330 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #af626014' started. 
+
+2018-09-20 15:07:22.2660 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #f803f323' started. 
+
+2018-09-20 15:07:22.3150 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #1b8f51dc' started. 
+
+2018-09-20 15:07:22.3330 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #da028ddf' started. 
+
+2018-09-20 15:07:22.3630 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #7db01a4a' started. 
+
+2018-09-20 15:10:09.7706 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #a0627f60' started. 
+
+2018-09-20 15:10:09.7776 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #0576a41a' started. 
+
+2018-09-20 15:10:09.7776 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4eb93dc5' started. 
+
+2018-09-20 15:10:09.7976 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #75490d72' started. 
+
+2018-09-20 15:10:09.8056 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c963ad1a' started. 
+
+2018-09-20 15:10:09.8056 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #34bca880' started. 
+
+2018-09-20 15:10:09.8316 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #6fd5c342' started. 
+
+2018-09-20 15:10:09.8556 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ad3c85e4' started. 
+
+2018-09-20 15:10:09.8786 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #14fcf465' started. 
+
+2018-09-20 15:10:09.9256 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #0f554a6d' started. 
+
+2018-09-20 15:10:09.9846 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c374b9fb' started. 
+
+2018-09-20 15:10:10.0476 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #1676210e' started. 
+
+2018-09-20 15:10:10.0636 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #79a30742' started. 
+
+2018-09-20 15:10:10.0636 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5d42dec0' started. 
+
+2018-09-20 15:10:10.0916 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ec9d68d2' started. 
+
+2018-09-20 15:10:10.1036 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #159b598d' started. 
+
+2018-09-20 15:10:10.1236 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #40ba250b' started. 
+
+2018-09-20 15:10:10.1236 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #54358d81' started. 
+
+2018-09-20 15:10:10.1236 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9823d9a1' started. 
+
+2018-09-20 15:10:10.1536 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #553e3376' started. 
+
+2018-09-20 15:11:46.2481 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e0b00dd8' started. 
+
+2018-09-20 15:11:46.2481 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #17801df0' started. 
+
+2018-09-20 15:11:46.2631 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #920a9491' started. 
+
+2018-09-20 15:11:46.2481 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #6debd8d9' started. 
+
+2018-09-20 15:11:46.2631 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5d52825b' started. 
+
+2018-09-20 15:11:46.2631 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #1436a27e' started. 
+
+2018-09-20 15:11:46.2631 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #43efb936' started. 
+
+2018-09-20 15:11:46.2771 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #d2aad928' started. 
+
+2018-09-20 15:11:46.2771 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #14b3b0f0' started. 
+
+2018-09-20 15:11:46.2771 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #37de67fc' started. 
+
+2018-09-20 15:11:46.2771 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3bcf9b2c' started. 
+
+2018-09-20 15:11:46.2921 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #a79c45e5' started. 
+
+2018-09-20 15:11:46.2771 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ccc23645' started. 
+
+2018-09-20 15:11:46.2921 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4a25e07d' started. 
+
+2018-09-20 15:11:46.2921 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #63a44fa6' started. 
+
+2018-09-20 15:11:46.3081 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c8d558cf' started. 
+
+2018-09-20 15:11:46.3081 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c23722f2' started. 
+
+2018-09-20 15:11:46.3081 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #cab5b062' started. 
+
+2018-09-20 15:11:46.3081 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #136934f7' started. 
+
+2018-09-20 15:11:46.3081 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4151122a' started. 
+
+2018-09-20 15:13:35.7584 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #85c8d036' started. 
+
+2018-09-20 15:13:35.7764 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #cd85a650' started. 
+
+2018-09-20 15:13:35.7894 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4ae5d8bc' started. 
+
+2018-09-20 15:13:35.8134 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b3179a47' started. 
+
+2018-09-20 15:13:35.8204 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #092d45dc' started. 
+
+2018-09-20 15:13:35.8514 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9c4ba17e' started. 
+
+2018-09-20 15:13:35.8514 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #f368b44c' started. 
+
+2018-09-20 15:13:35.8734 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #02fa93f4' started. 
+
+2018-09-20 15:13:35.8734 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #838dedd1' started. 
+
+2018-09-20 15:13:35.9004 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9dae4cc3' started. 
+
+2018-09-20 15:13:35.9344 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #bebbc219' started. 
+
+2018-09-20 15:13:35.9344 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4d1898ab' started. 
+
+2018-09-20 15:13:35.9504 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #d3fb74a2' started. 
+
+2018-09-20 15:13:35.9504 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #847b6173' started. 
+
+2018-09-20 15:13:35.9664 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #36047394' started. 
+
+2018-09-20 15:13:35.9664 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #7ed3fcbb' started. 
+
+2018-09-20 15:13:35.9944 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5ff322be' started. 
+
+2018-09-20 15:13:36.0184 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #186bdf41' started. 
+
+2018-09-20 15:13:36.0284 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #47a5b05c' started. 
+
+2018-09-20 15:13:36.0284 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5b2f181f' started. 
+
+2018-09-20 15:14:33.3757 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e1ef4251' started. 
+
+2018-09-20 15:14:33.3757 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e96f0364' started. 
+
+2018-09-20 15:14:33.3757 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #fa050de0' started. 
+
+2018-09-20 15:14:33.4157 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3d49c4c0' started. 
+
+2018-09-20 15:14:33.4007 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #2ad49f05' started. 
+
+2018-09-20 15:14:33.4367 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #73274451' started. 
+
+2018-09-20 15:14:33.4157 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9a2e4d55' started. 
+
+2018-09-20 15:14:33.4517 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b2d01048' started. 
+
+2018-09-20 15:14:33.4667 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #7649e38b' started. 
+
+2018-09-20 15:14:33.4667 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9cfd4648' started. 
+
+2018-09-20 15:14:33.4957 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3f4a162f' started. 
+
+2018-09-20 15:14:33.5257 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c88a2fe6' started. 
+
+2018-09-20 15:14:33.5827 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e90e38a9' started. 
+
+2018-09-20 15:14:33.5827 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #1186b6ff' started. 
+
+2018-09-20 15:14:33.6327 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5ea12592' started. 
+
+2018-09-20 15:14:33.6427 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #d887a69e' started. 
+
+2018-09-20 15:14:33.6627 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4e460400' started. 
+
+2018-09-20 15:14:33.6957 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #2b3a21a1' started. 
+
+2018-09-20 15:14:33.7187 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #22d55ebf' started. 
+
+2018-09-20 15:14:33.7387 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #aeb9c442' started. 
+
+2018-09-20 15:16:01.2597 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #01d10921' started. 
+
+2018-09-20 15:16:01.2827 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #0a4e4593' started. 
+
+2018-09-20 15:16:01.2827 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #8cdb0315' started. 
+
+2018-09-20 15:16:01.3377 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #7988acdd' started. 
+
+2018-09-20 15:16:01.3377 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #02706326' started. 
+
+2018-09-20 15:16:01.3167 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #1ebd1183' started. 
+
+2018-09-20 15:16:01.3377 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5b2577d5' started. 
+
+2018-09-20 15:16:01.3977 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e4f080d3' started. 
+
+2018-09-20 15:16:01.3767 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #d1a62fc8' started. 
+
+2018-09-20 15:16:01.4207 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c39688c5' started. 
+
+2018-09-20 15:16:01.4427 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #60115182' started. 
+
+2018-09-20 15:16:01.4767 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #548abac5' started. 
+
+2018-09-20 15:16:01.4557 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #d3ec9d6e' started. 
+
+2018-09-20 15:16:01.4847 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #a5349033' started. 
+
+2018-09-20 15:16:01.5087 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #7e472860' started. 
+
+2018-09-20 15:16:01.5177 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #355bee91' started. 
+
+2018-09-20 15:16:01.5517 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #135ca8c3' started. 
+
+2018-09-20 15:16:01.5267 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #84814aa0' started. 
+
+2018-09-20 15:16:01.5177 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #68d34a3e' started. 
+
+2018-09-20 15:16:01.5857 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #fb1d7405' started. 
+
+2018-09-20 15:17:13.2438 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #56848458' started. 
+
+2018-09-20 15:17:13.2298 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #fa02094e' started. 
+
+2018-09-20 15:17:13.2438 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e7c1422e' started. 
+
+2018-09-20 15:17:13.2818 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #823d2b8e' started. 
+
+2018-09-20 15:17:13.3838 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #36bb3fcd' started. 
+
+2018-09-20 15:17:13.3838 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #b325b2fa' started. 
+
+2018-09-20 15:17:13.4148 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #79f42a97' started. 
+
+2018-09-20 15:17:13.4378 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #74066ecb' started. 
+
+2018-09-20 15:17:13.4868 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #82c01011' started. 
+
+2018-09-20 15:17:13.4888 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #8052f142' started. 
+
+2018-09-20 15:17:13.5148 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #2fa31c21' started. 
+
+2018-09-20 15:17:13.5338 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #bf51c94b' started. 
+
+2018-09-20 15:17:13.5398 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #0a393842' started. 
+
+2018-09-20 15:17:13.5638 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e0eb53d5' started. 
+
+2018-09-20 15:17:13.5908 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #eddce188' started. 
+
+2018-09-20 15:17:13.6118 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #e80948db' started. 
+
+2018-09-20 15:17:13.6498 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #885492a7' started. 
+
+2018-09-20 15:17:13.6498 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c1eff3cb' started. 
+
+2018-09-20 15:17:13.6708 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ec07c152' started. 
+
+2018-09-20 15:17:13.6708 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5b359ca1' started. 
+
+2018-09-20 15:24:00.1181 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #d2668c5d' started. 
+
+2018-09-20 15:24:00.1291 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #438686f9' started. 
+
+2018-09-20 15:24:00.1531 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4a65a137' started. 
+
+2018-09-20 15:24:00.1671 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #aad4d03c' started. 
+
+2018-09-20 15:24:00.1881 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #23743677' started. 
+
+2018-09-20 15:24:00.2131 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #2a65cbfb' started. 
+
+2018-09-20 15:24:00.2371 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4c0b0c23' started. 
+
+2018-09-20 15:24:00.2611 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #27d71549' started. 
+
+2018-09-20 15:24:00.3021 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #298fcd3e' started. 
+
+2018-09-20 15:24:00.3021 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c2df2cb8' started. 
+
+2018-09-20 15:24:00.3191 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c5425725' started. 
+
+2018-09-20 15:24:00.3271 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #eff5e50e' started. 
+
+2018-09-20 15:24:00.3271 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #04fcfba6' started. 
+
+2018-09-20 15:24:00.3591 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #675996ab' started. 
+
+2018-09-20 15:24:00.3831 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #0ff267f6' started. 
+
+2018-09-20 15:24:00.4071 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #266db7c0' started. 
+
+2018-09-20 15:24:00.4071 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #10ac86bc' started. 
+
+2018-09-20 15:24:00.4231 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3613cf81' started. 
+
+2018-09-20 15:24:00.4451 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #039a39bc' started. 
+
+2018-09-20 15:24:00.4681 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #48b10223' started. 
+
+2018-09-20 15:30:24.1190 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #2ffa033d' started. 
+
+2018-09-20 15:30:24.1190 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #81411d21' started. 
+
+2018-09-20 15:30:24.1470 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #fe2993e2' started. 
+
+2018-09-20 15:30:24.1740 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4acdf47d' started. 
+
+2018-09-20 15:30:24.1930 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #366cfb4b' started. 
+
+2018-09-20 15:30:24.2100 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #2f6b7871' started. 
+
+2018-09-20 15:30:24.2100 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #6f1a9fc5' started. 
+
+2018-09-20 15:30:24.2350 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4306f4e8' started. 
+
+2018-09-20 15:30:24.2820 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #60dfe0d9' started. 
+
+2018-09-20 15:30:24.2610 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #6bd9cefc' started. 
+
+2018-09-20 15:30:24.2350 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #1fa126e4' started. 
+
+2018-09-20 15:30:24.2920 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #668bfd3c' started. 
+
+2018-09-20 15:30:24.2920 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #17c93c59' started. 
+
+2018-09-20 15:30:24.3360 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #51d48adf' started. 
+
+2018-09-20 15:30:24.3360 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9da357c5' started. 
+
+2018-09-20 15:30:24.3730 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #4be96ad7' started. 
+
+2018-09-20 15:30:24.3970 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #6361d539' started. 
+
+2018-09-20 15:30:24.4200 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #3f23c499' started. 
+
+2018-09-20 15:30:24.4440 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #2984f1bb' started. 
+
+2018-09-20 15:30:24.4440 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #76d3b6da' started. 
+
+2018-09-20 15:45:42.5756 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #58dbac90' started. 
+
+2018-09-20 15:45:42.6166 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #641afb62' started. 
+
+2018-09-20 15:45:42.6246 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #18553043' started. 
+
+2018-09-20 15:45:42.6476 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #c581a6e7' started. 
+
+2018-09-20 15:45:42.6586 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #5ae65d7a' started. 
+
+2018-09-20 15:45:42.6586 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #345c9fdd' started. 
+
+2018-09-20 15:45:42.6676 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #34352ab6' started. 
+
+2018-09-20 15:45:42.6676 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #601822d6' started. 
+
+2018-09-20 15:45:42.7036 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #75dcfcce' started. 
+
+2018-09-20 15:45:42.7316 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #ecca88f3' started. 
+
+2018-09-20 15:45:42.6676 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9e53b6bf' started. 
+
+2018-09-20 15:45:42.7536 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #cbd452a6' started. 
+
+2018-09-20 15:45:42.7646 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #aec26f89' started. 
+
+2018-09-20 15:45:42.7646 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9eade730' started. 
+
+2018-09-20 15:45:42.7256 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #9699b74a' started. 
+
+2018-09-20 15:45:42.7796 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #dabee4a8' started. 
+
+2018-09-20 15:45:42.8096 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #bac1b0ce' started. 
+
+2018-09-20 15:45:42.8026 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #1b74de69' started. 
+
+2018-09-20 15:45:42.8586 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #37c73f04' started. 
+
+2018-09-20 15:45:42.8406 | DEBUG | Hangfire.Server.Worker | Background process 'Worker #91846764' started. 
+

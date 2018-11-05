@@ -1,0 +1,18 @@
+2018-09-21 12:09:59.6341 | DEBUG | Hangfire.Server.ServerWatchdog | Background process 'ServerWatchdog' started. 
+
+2018-09-21 12:10:39.7004 | DEBUG | Hangfire.Server.ServerWatchdog | Background process 'ServerWatchdog' started. 
+
+2018-09-21 12:18:18.2082 | DEBUG | Hangfire.Server.ServerWatchdog | Background process 'ServerWatchdog' started. 
+
+2018-09-21 12:28:02.4208 | DEBUG | Hangfire.Server.ServerWatchdog | Background process 'ServerWatchdog' started. 
+
+2018-09-21 12:32:52.7714 | DEBUG | Hangfire.Server.ServerWatchdog | Background process 'ServerWatchdog' started. 
+
+2018-09-21 12:43:06.2732 | DEBUG | Hangfire.Server.ServerWatchdog | Background process 'ServerWatchdog' started. 
+
+2018-09-21 12:55:10.4591 | DEBUG | Hangfire.Server.ServerWatchdog | Background process 'ServerWatchdog' started. 
+
+2018-09-21 12:57:41.2414 | DEBUG | Hangfire.Server.ServerWatchdog | Background process 'ServerWatchdog' started. 
+
+2018-09-21 12:58:05.0951 | DEBUG | Hangfire.Server.ServerWatchdog | Background process 'ServerWatchdog' started. 
+

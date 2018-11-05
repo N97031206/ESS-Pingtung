@@ -1,0 +1,51 @@
+﻿@model Service.ESS.Model.Account
+@{
+    ViewBag.Title = "Disable";
+    Layout = "~/Views/Shared/_LayoutDetail.cshtml";
+}
+<div class="container">
+    <br />
+    <div class="card col-2">
+        <h class="card-header">使用者顯示</h>
+        <div class="card-body text-left">
+            @using (Html.BeginForm("Disable", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Id)
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Disabled, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-2">
+                            @Html.CheckBoxFor(model => model.Disabled, Model.Disabled)
+                            @Html.ValidationMessageFor(model => model.Disabled, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-6">
+                            <input type="submit" value="Save" class="btn btn-default btn-lg" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

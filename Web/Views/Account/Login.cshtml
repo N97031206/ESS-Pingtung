@@ -1,0 +1,113 @@
+﻿@model Service.ESS.Model.Account
+
+@{
+    ViewBag.Title = "登入";
+    ViewBag.alert= null;
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6 mx-auto">
+                        <!-- form card login -->
+                        @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="card rounded-0">
+                                <div class="card-header">
+                                    <h3 class="mb-0">使用者登入</h3>
+                                    <h1 class="text-danger">@ViewBag.Warning</h1>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        @Html.LabelFor(x => x.UserName)
+                                        <br />
+                                        @Html.TextBoxFor(x => x.UserName, new { Class = "col-md-12" })
+                                        @Html.ValidationMessageFor(x => x.UserName)
+                                    </div>
+                                    <p class='text-danger'>@ViewBag.name</p>
+                                    <div class="form-group">
+
+                                        @Html.LabelFor(x => x.Password)
+                                        <br />
+                                        @Html.PasswordFor(x => x.Password, new { Class = "col-md-12" })
+                                        @Html.ValidationMessageFor(x => x.Password)
+                                    </div>
+                                    <p class='text-danger'>@ViewBag.password</p>
+                                    <div class="row">
+                                        <div class="col text-left">
+                                            <button type="button" class="btn btn-link " data-toggle="modal" data-target="#exampleModal">
+                                                忘記密碼
+                                            </button>
+                                        </div>
+                                        <div class="col text-right">
+                                            <label class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="form-check-input"
+                                                       name="SaveInfo"
+                                                       value="記住我"
+                                                       checked>
+                                                記住我
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-lg float-right " id="btnLogin" hr>登入</button>
+                                </div>
+                            </div>
+                        }
+                        <!-- /form card login -->
+                        <h6 class="text-secondary">訪客帳密請輸入Guest</h6>
+                    </div>
+                </div>
+                <!--/row-->
+            </div>
+            <!--/col-->
+        </div>
+        <!--/row-->
+    </div>
+    <!--/container-->
+</body>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            @using (Html.BeginForm("Forget", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-6" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-6" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @type = "email" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Mail</button>
+                </div>
+                @ViewBag.alert
+            }
+
+        </div>
+    </div>
+</div>

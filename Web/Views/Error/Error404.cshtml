@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "404";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+
+<h1 style="text-align:center;">您存取的網址不存在，請檢查網址的正確性</h1>
+
+<br />
+
+<div style="text-align:center;">
+    <a href='@Url.Action("Login", "Account")' title="首頁">
+        <h1 class="display-2">回登入頁</h1>
+    </a>
+</div>

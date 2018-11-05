@@ -1,0 +1,171 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using Service.ESS.Provider;
+@using Service.ESS.Model;
+@model IPagedList<Service.ESS.Model.ESSObject>
+
+@{
+    GeneratorService generatorService = new GeneratorService();
+    DateTime startDay = ViewBag.startDay;
+    DateTime endDay = ViewBag.endDay;
+    string sDay = startDay.ToString();
+    string eDay = endDay.ToString();
+    string startTime = startDay.ToString("HH:mm:ss");
+    string endTime = endDay.ToString("HH:mm:ss");
+    var tabType = "Generator";
+    string connStr = tabType + "+" + sDay + "+" + eDay;
+}
+
+<script type="text/javascript">
+    function closeGenModel() {
+        $('#GeneratorModal').hide();
+        $('.modal-backdrop').hide();
+    }
+</script>
+
+<div class="row" align="center">
+    <div class="col text-left">
+        <p class="h6">開始時間:@startDay </p>
+        <p class="h6">結束時間:@endDay</p>
+        <p class="h6">共 @ViewBag.Count 筆資料</p>
+    </div>
+    @*<div class="col h5">@ViewBag.Generator</div>*@
+    <div class="col ">
+        <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#GeneratorModal" style="float:right"> Excel</button>
+        <!--Modal -->
+        <div class="modal fade" id="GeneratorModal" tabindex="-1" role="dialog" aria-labelledby="GeneratorModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">@tabType</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @using (Html.BeginForm("XLSX", "Tab", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="modal-body">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadio1" id="inlineRadio1" value="option1">
+                                    <label class="form-check-label" for="inlineRadio1">當日(00:00起算)</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadio2" id="inlineRadio2" value="option2">
+                                    <label class="form-check-label" for="inlineRadio2">當月(1日起算)</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadio3" id="inlineRadio3" value="option3" checked>
+                                    <label class="form-check-label" for="inlineRadio4">區間</label>
+                                </div>
+                                <br>
+                                開始時間:@startDay
+                                <br>
+                                結束時間:@endDay
+                                <input type="hidden" name="startDay" value=@startDay>
+                                <input type="hidden" name="endDay" value=@endDay>
+                                <input type="hidden" name="startTime" value=@startTime>
+                                <input type="hidden" name="endTime" value=@endTime>
+                                <input type="hidden" name="tabType" value=@tabType>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary btn-sm" id="btnHGP" onclick="closeGenModel()">匯出EXCEL</button>
+                                <button type="button" class="btn btn-secondary  btn-sm" data-dismiss="modal">關閉</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Modal -->
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col" style="width:15%">資料時間 (UTC)</th>
+                    <th scope="col" style="width:6%">發電機油位 (%)</th>
+                    <th scope="col" style="width:6%">L1-N相電壓 (V)</th>
+                    <th scope="col" style="width:6%">L2-N相電壓 (V)</th>
+                    <th scope="col" style="width:6%">L3-N相電壓 (V)</th>
+                    <th scope="col" style="width:6%">L1相電流 (A)</th>
+                    <th scope="col" style="width:6%">L2相電流 (A)</th>
+                    <th scope="col" style="width:6%">L3相電流 (A)</th>
+                    <th scope="col" style="width:6%">總實功率 (kW)</th>
+                    <th scope="col" style="width:6%">平均功率因數</th>
+                    <th scope="col" style="width:6%">正的千瓦時(kWh)</th>
+                    <th scope="col" style="width:6%">負的千瓦時(kWh)</th>
+                    <th scope="col" style="width:6%">
+                        <div class="row">
+                            <div class="col">發電機</div>
+                            <div class="w-100"></div>
+                            <div class="col">狀態</div>
+                        </div>
+                    </th>
+                    <th scope="col" style="width:6%">可用總電量(kWh)</th>
+                    <th scope="col" style="width:6%">可用電時數(H)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var gens in Model)
+                {
+                    if (!string.IsNullOrEmpty(gens.GeneratorIDs))
+                    {
+                        string status = null;
+                        string T1 = null, T2 = null, T3 = null, T4 = null, T5 = null, T6 = null, T7 = null, T8 = null, T9 = null, T10 = null, T11 = null, T12 = null, T13 = null, T14 = null, T15 = null;
+                        string[] IDs = gens.GeneratorIDs.Trim().Split('+');
+                        foreach (var lo in IDs)
+                        {
+                            if (!string.IsNullOrEmpty(lo))
+                            {
+                                Guid ID = Guid.Parse(lo);
+                                Generator generator = generatorService.ReadByID(ID);
+                                if (generator.ControlStatus == "true") { status = "啟動"; } else { status = "關閉"; };
+                                T1 = generator.UpdateTime.ToString();
+                                T2 = string.Format("{0:#,0.0}", generator.FuleLevel);
+                                T3 = string.Format("{0:#,0.0}", generator.L1Nvoltage);
+                                T4 = string.Format("{0:#,0.0}", generator.L2Nvoltage);
+                                T5 = string.Format("{0:#,0.0}", generator.L3Nvoltage);
+                                T6 = string.Format("{0:#,0.0}", generator.L1current);
+                                T7 = string.Format("{0:#,0.0}", generator.L2current);
+                                T8 = string.Format("{0:#,0.0}", generator.L3current);
+                                T9 = string.Format("{0:#,0.0}", generator.totalwatts / 1000.0);
+                                T10 = string.Format("{0:#,0.00}", generator.averagepowerfactor);
+                                T11 = string.Format("{0:#,0.0}", generator.positiveKWhours);
+                                T12 = string.Format("{0:#,0.0}", generator.negativeKWhours);
+                                T13 = status;
+                                T14 = string.Format("{0:#,0.0}", generator.AvailabilityEnergy);
+                                T15 = string.Format("{0:#,0.0}", generator.AvailabilityHour);
+                                <tr>
+                                    <th scope="row">@T1</th>
+                                    <td>@T2</td>
+                                    <td>@T3</td>
+                                    <td>@T4</td>
+                                    <td>@T5</td>
+                                    <td>@T6</td>
+                                    <td>@T7</td>
+                                    <td>@T8</td>
+                                    <td>@T9</td>
+                                    <td>@T10</td>
+                                    <td>@T11</td>
+                                    <td>@T12</td>
+                                    <td>@T13</td>
+                                    <td>@T14</td>
+                                    <td>@T15</td>
+                                </tr>
+                            }
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+        @if (!string.IsNullOrEmpty(Model.FirstOrDefault().GeneratorIDs))
+        {
+            <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historyGenerator", new { connStr, Page }))</div>
+        }
+    </div>
+</div>

@@ -1,0 +1,50 @@
+2018-09-20 13:23:48.4166 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 13:27:52.8416 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 13:32:57.1370 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 13:35:25.1294 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 13:41:44.9632 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 13:43:28.9301 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 14:35:17.3319 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 14:36:41.9197 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 14:39:00.4147 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 14:40:15.5019 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 14:41:07.3899 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 14:51:53.8789 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 14:52:38.1414 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 15:02:51.1965 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 15:06:26.2428 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 15:07:22.3840 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 15:10:10.1536 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 15:11:46.3301 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 15:13:36.0574 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 15:14:33.7657 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 15:16:01.6027 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 15:17:13.6838 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 15:24:00.4941 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 15:30:24.4811 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+
+2018-09-20 15:45:42.8586 | DEBUG | Hangfire.Server.DelayedJobScheduler | Background process 'DelayedJobScheduler' started. 
+

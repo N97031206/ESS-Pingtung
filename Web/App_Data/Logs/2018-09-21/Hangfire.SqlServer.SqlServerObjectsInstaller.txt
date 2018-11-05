@@ -1,0 +1,36 @@
+2018-09-21 12:09:59.3181 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Start installing Hangfire SQL objects... 
+
+2018-09-21 12:09:59.4511 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Hangfire SQL objects installed. 
+
+2018-09-21 12:10:39.4354 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Start installing Hangfire SQL objects... 
+
+2018-09-21 12:10:39.5174 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Hangfire SQL objects installed. 
+
+2018-09-21 12:18:17.9301 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Start installing Hangfire SQL objects... 
+
+2018-09-21 12:18:18.0341 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Hangfire SQL objects installed. 
+
+2018-09-21 12:28:02.1728 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Start installing Hangfire SQL objects... 
+
+2018-09-21 12:28:02.2308 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Hangfire SQL objects installed. 
+
+2018-09-21 12:32:52.5234 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Start installing Hangfire SQL objects... 
+
+2018-09-21 12:32:52.5834 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Hangfire SQL objects installed. 
+
+2018-09-21 12:43:06.0432 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Start installing Hangfire SQL objects... 
+
+2018-09-21 12:43:06.1002 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Hangfire SQL objects installed. 
+
+2018-09-21 12:55:10.1191 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Start installing Hangfire SQL objects... 
+
+2018-09-21 12:55:10.2571 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Hangfire SQL objects installed. 
+
+2018-09-21 12:57:40.9684 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Start installing Hangfire SQL objects... 
+
+2018-09-21 12:57:41.0564 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Hangfire SQL objects installed. 
+
+2018-09-21 12:58:04.8321 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Start installing Hangfire SQL objects... 
+
+2018-09-21 12:58:04.9131 | INFO | Hangfire.SqlServer.SqlServerObjectsInstaller | Hangfire SQL objects installed. 
+

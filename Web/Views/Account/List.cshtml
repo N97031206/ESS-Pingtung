@@ -1,0 +1,169 @@
+﻿@using Support.Authorize;
+@using PagedList;
+@using PagedList.Mvc;
+@using Service.ESS.Provider;
+@model IPagedList<Service.ESS.Model.Account>
+@{
+    ViewBag.Title = "使用者列表";
+    Layout = "~/Views/Shared/_LayoutDetail.cshtml";
+    RoleService roleService = new RoleService();
+    OrginService orginService = new OrginService();
+    bool admin = User.Identity.Name.Split(',')[2].ToString().Trim().Equals(RoleType.系統管理員.ToString().Trim());
+}
+
+<div class="row">
+    @if (admin)
+    {
+        <div class="col text-left">
+            <button type="button" class="btn btn-outline-primary btn-lg " onclick="location.href='@Url.Action("Create", "Account")'">新增使用者</button>
+        </div>
+    }
+    <div class="col text-right">
+        <button type="button" class="btn btn-outline-warning btn-lg " onclick="location.href='@Url.Action("Maintain", "Tab")'">回到維護頁</button>
+    </div>
+</div>
+    <br />
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped">
+                <thead>
+                    <tr class="text-left">
+                        <th scope="col" style="width:10%">
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().Role)
+                        </th>
+                        <th scope="col" style="width:10%">
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().Orgin)
+                        </th>
+                        <th scope="col" style="width:10%">
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().UserName)
+                        </th>
+                        <th scope="col" style="width:10%">
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().Password)
+                        </th>
+                        <th scope="col" style="width:10%">
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().Tel)
+                        </th>
+                        <th scope="col" style="width:15%">
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().Email)
+                        </th>
+                        <th scope="col" style="width:20%">
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().CreateDate)
+                        </th>
+                        <th scope="col" class="text-center">
+                            <h4>功能選項</h4>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item.IsLocked == false)
+                        {
+                            <tr class="text-left">
+                                <th scope="row">
+                                    @Html.DisplayFor(modelItem => item.Role.Type)
+                                </th>
+                                <td>
+                                    @orginService.ReadID(item.Orgin.Id).OrginName.ToString().Trim()
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Password)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Tel)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreateDate)
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("Edit", "Account", new { id = item.Id } )' ">編輯</button>
+                                        @*<button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("Details", "Account" , new { id = item.Id })'">明細</button>*@
+                                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#@item.Id">明細</button>
+                                        @if (item.Disabled)
+                                        {<button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("Disable", "Account" , new { id = item.Id })'">啟用</button>}
+                                        else
+                                        {<button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("Disable", "Account" , new { id = item.Id })'">停用</button>}
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <div>@Html.PagedListPager(Model, Page => Url.Action("List", new { Page }))</div>
+        </div>
+    </div>
+    <div>
+        <!-- Modal-->
+        @foreach (var item in Model)
+        {
+            if (item.IsLocked == false)
+            {
+                <div class="modal fade" id="@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">使用者明細</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">@Html.DisplayNameFor(model => model.FirstOrDefault().Id)</div>
+                                        <div class="col"> @Html.DisplayFor(modelItem => item.Id)</div>
+                                        <div class="w-100"></div>
+                                        <div class="col"> @Html.DisplayNameFor(model => model.FirstOrDefault().Role)</div>
+                                        <div class="col"> @orginService.ReadID(item.Orgin.Id).OrginName.ToString().Trim()</div>
+                                        <div class="w-100"></div>
+                                        <div class="col"> @Html.DisplayNameFor(model => model.FirstOrDefault().UserName)</div>
+                                        <div class="col">@Html.DisplayFor(modelItem => item.UserName)</div>
+                                        <div class="w-100"></div>
+                                        <div class="col">@Html.DisplayNameFor(model => model.FirstOrDefault().Password)</div>
+                                        <div class="col">@Html.DisplayFor(modelItem => item.Password)</div>
+                                        <div class="w-100"></div>
+                                        <div class="col"> @Html.DisplayNameFor(model => model.FirstOrDefault().Email)</div>
+                                        <div class="col"> @Html.DisplayFor(modelItem => item.Email)</div>
+                                        <div class="w-100"></div>
+                                        <div class="col"> @Html.DisplayNameFor(model => model.FirstOrDefault().CreateDate)</div>
+                                        <div class="col">@Html.DisplayFor(modelItem => item.CreateDate)</div>
+                                        <div class="w-100"></div>
+                                        <div class="col">@Html.DisplayNameFor(model => model.FirstOrDefault().UpdateDate)</div>
+                                        <div class="col">@Html.DisplayFor(modelItem => item.UpdateDate)</div>
+                                        <div class="w-100"></div>
+                                        <div class="col"> @Html.DisplayNameFor(model => model.FirstOrDefault().Disabled)</div>
+                                        <div class="col"> @Html.DisplayFor(modelItem => item.Disabled)</div>
+                                        <div class="w-100"></div>
+                                        <div class="col">@Html.DisplayNameFor(model => model.FirstOrDefault().IsApproved)</div>
+                                        <div class="col">@Html.DisplayFor(modelItem => item.IsApproved)</div>
+                                        <div class="w-100"></div>
+                                        <div class="col">@Html.DisplayNameFor(model => model.FirstOrDefault().IsLocked)</div>
+                                        <div class="col">@Html.DisplayFor(modelItem => item.IsLocked)</div>
+                                        <div class="w-100"></div>
+                                        <div class="col">@Html.DisplayNameFor(model => model.FirstOrDefault().LastLogoutDate)</div>
+                                        <div class="col">@Html.DisplayFor(modelItem => item.LastLoginDate)</div>
+                                        <div class="w-100"></div>
+                                        <div class="col">@Html.DisplayNameFor(model => model.FirstOrDefault().LastLogoutDate)</div>
+                                        <div class="col">@Html.DisplayFor(modelItem => item.LastLoginDate)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+

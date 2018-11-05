@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FE3192CB-E3C1-4589-BD70-034B9C414FF0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Service</RootNamespace>
+    <AssemblyName>Service</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=7.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.7.0.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.5.10\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ESS\Mapper\AccountMapper.cs" />
+    <Compile Include="ESS\Mapper\LoadPowersMapper.cs" />
+    <Compile Include="ESS\Mapper\GridPowerMapper.cs" />
+    <Compile Include="ESS\Mapper\InverterMapper.cs" />
+    <Compile Include="ESS\Mapper\GeneratorMapper.cs" />
+    <Compile Include="ESS\Mapper\BatteryMapper.cs" />
+    <Compile Include="ESS\Mapper\AlartMapper.cs" />
+    <Compile Include="ESS\Mapper\AlartTypeMapper.cs" />
+    <Compile Include="ESS\Mapper\BulletinMapper.cs" />
+    <Compile Include="ESS\Mapper\ESSObjectMapper.cs" />
+    <Compile Include="ESS\Mapper\MessageMapper.cs" />
+    <Compile Include="ESS\Mapper\OrginMapper.cs" />
+    <Compile Include="ESS\Mapper\RoleMapper.cs" />
+    <Compile Include="ESS\Mapper\StationMapper.cs" />
+    <Compile Include="ESS\Model\Account.cs" />
+    <Compile Include="ESS\Model\Alart.cs" />
+    <Compile Include="ESS\Model\AlartType.cs" />
+    <Compile Include="ESS\Model\Battery.cs" />
+    <Compile Include="ESS\Model\Bulletin.cs" />
+    <Compile Include="ESS\Model\Generator.cs" />
+    <Compile Include="ESS\Model\ESSObject.cs" />
+    <Compile Include="ESS\Model\Inverter.cs" />
+    <Compile Include="ESS\Model\GridPower.cs" />
+    <Compile Include="ESS\Model\LoadPower.cs" />
+    <Compile Include="ESS\Model\Message.cs" />
+    <Compile Include="ESS\Model\Orgin.cs" />
+    <Compile Include="ESS\Model\Role.cs" />
+    <Compile Include="ESS\Model\Station.cs" />
+    <Compile Include="ESS\Provider\AccountService.cs" />
+    <Compile Include="ESS\Provider\AlartService.cs" />
+    <Compile Include="ESS\Provider\AlartTypeService.cs" />
+    <Compile Include="ESS\Provider\BulletinService.cs" />
+    <Compile Include="ESS\Provider\BatteryService.cs" />
+    <Compile Include="ESS\Provider\LoadPowerService.cs" />
+    <Compile Include="ESS\Provider\GeneratorService.cs" />
+    <Compile Include="ESS\Provider\GridPowerService.cs" />
+    <Compile Include="ESS\Provider\InverterService.cs" />
+    <Compile Include="ESS\Provider\ESSObjectService.cs" />
+    <Compile Include="ESS\Provider\HistoryService.cs" />
+    <Compile Include="ESS\Provider\MessageService.cs" />
+    <Compile Include="ESS\Provider\OrginService.cs" />
+    <Compile Include="ESS\Provider\RoleService.cs" />
+    <Compile Include="ESS\Provider\StationService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Repository\Repository.csproj">
+      <Project>{776eaf04-61cb-4693-8f5e-a8e3673e2ee1}</Project>
+      <Name>Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Support\Support.csproj">
+      <Project>{66a59c4b-a50c-49a2-982e-fc0ee9f371e6}</Project>
+      <Name>Support</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

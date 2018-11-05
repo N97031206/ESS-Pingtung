@@ -1,0 +1,36 @@
+2018-09-28 17:04:47.5735 | FATAL | Web.Controllers.TabController | System.Runtime.InteropServices.COMException (0x800A03EC): Microsoft Excel 無法存取檔案 'd:\BD779100'。可能原因如下:
+
+‧ 檔案的名稱或路徑不存在。
+‧ 其他程式正在使用檔案。
+‧ 您嘗試儲存的活頁簿名稱與目前開啟的活頁簿名稱相同。
+   於 Microsoft.Office.Interop.Excel._Worksheet.SaveAs(String Filename, Object FileFormat, Object Password, Object WriteResPassword, Object ReadOnlyRecommended, Object CreateBackup, Object AddToMru, Object TextCodepage, Object TextVisualLayout, Object Local)
+   於 Web.Controllers.TabController.ExportExcel(FormCollection From) 於 C:\Users\GigaEnergy\Desktop\ESS-Pingtung\Web\Controllers\TabController.cs: 行 460 
+
+2018-09-28 17:19:43.3577 | FATAL | Web.Controllers.TabController | System.Runtime.InteropServices.COMException (0x800A03EC): 選取的檔案類型無法使用此副檔名。請變更 [檔案名稱] 文字方塊中的副檔名，或藉由變更 [檔案類型] 來選取不同的檔案類型。
+   於 Microsoft.Office.Interop.Excel._Worksheet.SaveAs(String Filename, Object FileFormat, Object Password, Object WriteResPassword, Object ReadOnlyRecommended, Object CreateBackup, Object AddToMru, Object TextCodepage, Object TextVisualLayout, Object Local)
+   於 Web.Controllers.TabController.ExportExcel(FormCollection From) 於 C:\Users\GigaEnergy\Desktop\ESS-Pingtung\Web\Controllers\TabController.cs: 行 460 
+
+2018-09-28 17:51:15.4079 | FATAL | Web.Controllers.TabController | System.Runtime.InteropServices.COMException (0x800A03EC): Microsoft Excel 無法存取檔案 'd:\excel\DED1C100'。可能原因如下:
+
+‧ 檔案的名稱或路徑不存在。
+‧ 其他程式正在使用檔案。
+‧ 您嘗試儲存的活頁簿名稱與目前開啟的活頁簿名稱相同。
+   於 Microsoft.Office.Interop.Excel._Worksheet.SaveAs(String Filename, Object FileFormat, Object Password, Object WriteResPassword, Object ReadOnlyRecommended, Object CreateBackup, Object AddToMru, Object TextCodepage, Object TextVisualLayout, Object Local)
+   於 Web.Controllers.TabController.ExportExcel(FormCollection From) 於 C:\Users\GigaEnergy\Desktop\ESS-Pingtung\Web\Controllers\TabController.cs: 行 462 
+
+2018-09-28 17:56:11.4869 | FATAL | Web.Controllers.TabController | System.Runtime.InteropServices.COMException (0x800A03EC): Microsoft Excel 無法存取檔案 'd:\excel\A976C100'。可能原因如下:
+
+‧ 檔案的名稱或路徑不存在。
+‧ 其他程式正在使用檔案。
+‧ 您嘗試儲存的活頁簿名稱與目前開啟的活頁簿名稱相同。
+   於 Microsoft.Office.Interop.Excel._Worksheet.SaveAs(String Filename, Object FileFormat, Object Password, Object WriteResPassword, Object ReadOnlyRecommended, Object CreateBackup, Object AddToMru, Object TextCodepage, Object TextVisualLayout, Object Local)
+   於 Web.Controllers.TabController.ExportExcel(FormCollection From) 於 C:\Users\GigaEnergy\Desktop\ESS-Pingtung\Web\Controllers\TabController.cs: 行 462 
+
+2018-09-28 18:00:43.2304 | FATAL | Web.Controllers.TabController | System.Runtime.InteropServices.COMException (0x800A03EC): Microsoft Excel 無法存取檔案 'd:\747AC100'。可能原因如下:
+
+‧ 檔案的名稱或路徑不存在。
+‧ 其他程式正在使用檔案。
+‧ 您嘗試儲存的活頁簿名稱與目前開啟的活頁簿名稱相同。
+   於 Microsoft.Office.Interop.Excel._Worksheet.SaveAs(String Filename, Object FileFormat, Object Password, Object WriteResPassword, Object ReadOnlyRecommended, Object CreateBackup, Object AddToMru, Object TextCodepage, Object TextVisualLayout, Object Local)
+   於 Web.Controllers.TabController.ExportExcel(FormCollection From) 於 C:\Users\GigaEnergy\Desktop\ESS-Pingtung\Web\Controllers\TabController.cs: 行 462 
+

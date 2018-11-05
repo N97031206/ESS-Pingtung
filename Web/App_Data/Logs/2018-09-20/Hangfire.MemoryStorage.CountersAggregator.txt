@@ -1,0 +1,50 @@
+2018-09-20 13:23:48.1086 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 13:27:52.4895 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 13:32:56.8459 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 13:35:24.9034 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 13:41:44.6511 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 13:43:28.6011 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 14:35:16.9589 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 14:36:41.6457 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 14:39:00.1206 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 14:40:15.1559 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 14:41:07.1199 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 14:51:53.3729 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 14:52:37.9464 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 15:02:50.8345 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 15:06:25.7998 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 15:07:21.9850 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 15:10:09.7706 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 15:11:46.2481 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 15:13:35.7584 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 15:14:33.3346 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 15:16:01.2537 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 15:17:13.2048 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 15:24:00.1181 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 15:30:24.1190 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+
+2018-09-20 15:45:42.5756 | DEBUG | Hangfire.MemoryStorage.CountersAggregator | Background process 'Counter Table Aggregator' started. 
+

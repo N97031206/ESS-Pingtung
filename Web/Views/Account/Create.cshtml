@@ -1,0 +1,87 @@
+﻿@model Service.ESS.Model.Account
+
+@{
+    ViewBag.Title = "新增使用者";
+    Layout = "~/Views/Shared/_LayoutDetail.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col text-left">
+            <button type="button" class="btn btn-outline-primary btn-lg " onclick="location.href='@Url.Action("List", "Account")'">回到使用者列表</button>
+        </div>
+    </div>
+    <h2>新增使用者</h2>
+    @using (Html.BeginForm("Create", "Account", FormMethod.Post))
+    {
+        <form>
+            <div class="bg-transparent text-left">
+                <h4>使用者資料</h4>
+                @Html.AntiForgeryToken()
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                    </div>
+                    <h4 class="text-danger">@ViewBag.chkUsername</h4>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "password", placeholder = "Password" } })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Tel, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.EditorFor(model => model.Tel, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Tel, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @type = "email" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Role.Type, "權限", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.DropDownList("RoleId", (IEnumerable<SelectListItem>)ViewBag.Role, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Role.Type, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Orgin, "單位部門", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.DropDownList("OrginId", (IEnumerable<SelectListItem>)ViewBag.Orgin, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.OrginId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("無所屬單位",new { @class = "control-label col-md-2" })
+                        <div class="col-md-4">
+                            @Html.Editor("CreaterOrgin", new { htmlAttributes = new { @class = "form-control",id= "CreaterOrgin" } })            
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-4">
+                        <button type="submit" class="btn btn-primary btn-lg float-right" id="btnCreate">確認新增</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    }
+</div>
+
+
+
+
+
+

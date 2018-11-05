@@ -1,0 +1,10 @@
+2018-10-03 11:58:27.3635 | FATAL | Web.Controllers.DataInputController | test Fail 
+
+2018-10-03 11:58:27.3955 | FATAL | Web.Controllers.DataInputController | System.NullReferenceException: 並未將物件參考設定為物件的執行個體。
+   於 Web.Controllers.DataInputController.test(FormCollection strPost) 於 C:\Users\GigaEnergy\Desktop\ESS-Pingtung\Web\Controllers\DataInputController.cs: 行 137 
+
+2018-10-03 12:09:31.9685 | FATAL | Web.Controllers.DataInputController | test Fail 
+
+2018-10-03 12:09:31.9685 | FATAL | Web.Controllers.DataInputController | System.NullReferenceException: 並未將物件參考設定為物件的執行個體。
+   於 Web.Controllers.DataInputController.test(FormCollection strPost) 於 C:\Users\GigaEnergy\Desktop\ESS-Pingtung\Web\Controllers\DataInputController.cs: 行 136 
+

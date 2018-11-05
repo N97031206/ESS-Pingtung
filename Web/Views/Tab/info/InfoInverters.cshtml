@@ -1,0 +1,172 @@
+﻿@using Service.ESS.Provider;
+@using Service.ESS.Model;
+@{
+    InverterService InverterService = new InverterService();
+    Inverter inverter = InverterService.ReadNow();
+    string mod = inverter.DeviceMode.Trim();
+    if (mod == "P") { mod = "Power On Mode"; }
+    else if (mod == "S") { mod = "Standby Mode"; }
+    else if (mod == "L") { mod = "Line Mode"; }
+    else if (mod == "B") { mod = "Battery Mode"; }
+    else if (mod == "F") { mod = "Fault Mode"; }
+    else if (mod == "H") { mod = "Power Saving Mode"; }
+    else { mod = "Unknown Mode"; }
+}
+<div class="row">
+    <!--lift-->
+    <div class="col-2 h6">
+        <div class="row " id="pc0">
+            <div class="col font-weight-bold small">資料時間(UTC)</div>
+            <div class="col font-italic">@inverter.UpdateTime</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">工作模式</div>
+            <div class="col font-italic">@mod</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">市電電壓  (V)</div>
+            <div class="col font-italic">@string.Format("{0:#,0.0}", inverter.GridVoltage)</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">市電頻率  (Hz)</div>
+            <div class="col font-italic">@string.Format("{0:#,0.0}", inverter.GridFrequency)</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">輸出電壓  (V)</div>
+            <div class="col font-italic">@string.Format("{0:#,0.00}", inverter.AC_OutputVoltage)</div>
+            <div class="w-100"></div>
+            <div class="col  font-weight-bold small">輸出頻率  (Hz)</div>
+            <div class="col font-italic">@string.Format("{0:#,0.0}", inverter.AC_OutputFrequency)</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">總輸出實功率(kW)</div>
+            <div class="col font-italic">@string.Format("{0:#,0.0}", inverter.ParallelInformation_TotalOutputActivePower / 1000.0)</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電池電壓  (V)</div>
+            <div class="col font-italic">@string.Format("{0:#,0.0}", inverter.BatteryVoltage)</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電池容量  (%)</div>
+            <div class="col font-italic">@string.Format("{0:#,0.0}", inverter.BatteryCapacity)</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">太陽能電壓  (V)</div>
+            <div class="col font-italic">@string.Format("{0:#,0.0}", inverter.PV_InputVoltage)</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">總充電電流  (A)</div>
+            <div class="col font-italic">@string.Format("{0:#,0.0}", inverter.ParallelInformation_TotalChargingCurrent)</div>
+        </div>
+    </div>
+    <!--middle-->
+    <div class="col-8">
+        <div id="InverterChart" style="height:500px">
+            <script type="text/javascript">
+                var dom = document.getElementById("InverterChart");
+                var InverterChart = echarts.init(dom);
+                //時間兩位
+                function paddingLeft(str, lenght) {
+                    if (str.length >= lenght)
+                        return str;
+                    else
+                        return paddingLeft("0" + str, lenght);
+                }
+                //X軸座標
+                var xData = [];
+                var h =@TempData["Inverterhh"] ;
+                var m =@TempData["Invertermm"] ;
+                for (var i = 0; i < 24; i++) {
+                    for (var j = 0; j < 60; j = j + 15) {
+                        var hh = i;
+                        var mm = j;
+                        if (h == 0) {
+                            if (m > 0) {
+                                mm = j + m;
+                                if (mm >= 60) {
+                                    mm = mm - 60;
+                                    hh = hh + 1;
+                                }
+                            }
+                        }
+                        if (h > 0) {
+                            hh = i + h;
+                            if (m > 0) {
+                                mm = j + m;
+                                if (mm >= 60) {
+                                    mm = mm - 60;
+                                    hh = hh + 1;
+                                }
+                            }
+                            if (hh >= 24) {
+                                hh = hh - 24;
+                            }
+                        }
+                        xData.push("'" + paddingLeft(hh.toString(), 2) + "時" + paddingLeft(mm.toString(), 2) + "分'");
+                    }
+                }
+                //Y軸座標
+                 var InverterData = [];
+                InverterData.push(@TempData["InverterData"]);
+                option = null;
+                option = {
+                    title: {
+                        text: '每日用電瓦數',
+                        textStyle: {
+                            fontWeight: 'normal',
+                            color: 'white'
+                        },
+                        x: "center"
+                    },
+                    tooltip: {
+                        show: true
+                    },
+                    xAxis: [
+                        {
+                            name: '時間軸',
+                            type: 'category',
+                            data: xData,
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'white',
+                                    width: 10
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        },
+                    ],
+                    yAxis: [
+                        {
+                            name: '用電單位',
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'white',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value} kW'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            "name": "每日用電瓦數",
+                            "type": "bar",
+                            "data": InverterData,
+                        }
+                    ]
+                };
+                if (option && typeof option === "object") {
+                    InverterChart.setOption(option, true);
+                }
+            </script>
+        </div>
+    </div>
+    <!--right-->
+    <div class="col-2 h3">
+        <div class=" bg-light">可用總電量</div>
+        <div class="font-italic">@ViewBag.Demand  kWh</div>
+        <div class="bg-light">可用電時數</div>
+        <div class="font-italic">@ViewBag.RemainTime 小時</div>
+    </div>
+</div>
+
+
+
+
+

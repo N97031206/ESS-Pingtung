@@ -1,0 +1,155 @@
+﻿@using Service.ESS.Provider;
+@using Service.ESS.Model;
+@{
+    BatteryService BatteryService = new BatteryService();
+    Battery battery = BatteryService.ReadNow();
+    int cd = Convert.ToInt32(battery.charge_direction);
+    string direction = (cd == 0)? "離線" : (cd == 1)?"充電":"放電";
+}
+<div class="row">
+    <!--lift-->
+    <div class="col-2 h6">
+        <div class="row " id="pc0">
+            <div class="col font-weight-bold small">資料時間(UTC)</div>
+            <div class="col font-italic">@battery.updateTime</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電池電壓(V)</div>
+            <div class="col font-italic">@string.Format("{0:0.0}", battery.voltage)</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">充電電流(A)</div>
+            <div class="col font-italic">@string.Format("{0:#,0.0}", battery.charging_current)</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">放電電流(A)</div>
+            <div class="col font-italic">@string.Format("{0:#,0.0}", battery.discharging_current)</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電池容量(%)</div>
+            <div class="col font-italic">@string.Format("{0:#,0.00}", battery.SOC)</div>
+            <div class="w-100"></div>
+            <div class="col  font-weight-bold small">充電次數(次)</div>
+            <div class="col font-italic">@string.Format("{0:#,0.0}", battery.Cycle)</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">充電方向</div>
+            <div class="col font-italic">@direction</div>
+        </div>
+    </div>
+    <!--middle-->
+    <div class="col-8">
+        <div id="BatteryChart" style="height:500px">
+            <script type="text/javascript">
+                var dom = document.getElementById("BatteryChart");
+                var BatteryChart = echarts.init(dom);
+                //時間兩位
+                function paddingLeft(str, lenght) {
+                    if (str.length >= lenght)
+                        return str;
+                    else
+                        return paddingLeft("0" + str, lenght);
+                }
+                //X軸座標
+                var xData = [];
+                var h=@TempData["Batteryhh"];
+                var m =@TempData["Batterymm"];
+                for (var i = 0; i < 24; i++) {
+                    for (var j = 0; j < 60; j = j + 15) {
+                        var hh = i;
+                        var mm = j;
+                        if (h == 0) {
+                            if (m > 0) {
+                                mm = j + m;
+                                if (mm >= 60) {
+                                    mm = mm - 60;
+                                    hh = hh + 1;
+                                }
+                            }
+                        }
+                        if (h > 0) {
+                            hh = i + h;
+                            if (m > 0) {
+                                mm = j + m;
+                                if (mm >= 60) {
+                                    mm = mm - 60;
+                                    hh = hh + 1;
+                                }
+                            }
+                            if (hh >= 24) {
+                                hh = hh - 24;
+                            }
+                        }
+                        xData.push("'" + paddingLeft(hh.toString(), 2) + "時" + paddingLeft(mm.toString(), 2) + "分'");
+                    }
+                }
+                //Y軸座標
+                var BatteryData = [];
+                BatteryData.push(@TempData["BatteryData"]);
+                option = null;
+                option = {
+                    title: {
+                        text: '每日用電瓦數',
+                        textStyle: {
+                            fontWeight: 'normal',
+                            color: 'white'
+                        },
+                        x: "center"
+                    },
+                    tooltip: {
+                        show: true
+                    },
+                    xAxis: [
+                        {
+                            name: '時間軸',
+                            type: 'category',
+                            data: xData,
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'white',
+                                    width: 10
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        },
+                    ],
+                    yAxis: [
+                        {
+                            name: '用電單位',
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'white',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value} kW'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            "name": "每日用電瓦數",
+                            "type": "bar",
+                            "data": BatteryData,
+                        }
+                    ]
+                };
+                if (option && typeof option === "object") {
+                    BatteryChart.setOption(option, true);
+                }
+            </script>
+        </div>
+    </div>
+    <!--right-->
+    <div class="col-2 h3">
+        <div class=" bg-light">可用總電量</div>
+        <div class="font-italic">@ViewBag.Demand  kWh</div>
+        <div class="bg-light">可用電時數</div>
+        <div class="font-italic">@ViewBag.RemainTime 小時</div>
+    </div>
+</div>
+
+
+
+
+
+

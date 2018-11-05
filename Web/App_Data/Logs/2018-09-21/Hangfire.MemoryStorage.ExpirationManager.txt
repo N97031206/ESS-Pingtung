@@ -1,0 +1,18 @@
+2018-09-21 12:09:59.6561 | DEBUG | Hangfire.MemoryStorage.ExpirationManager | Background process 'Composite C1 Records Expiration Manager' started. 
+
+2018-09-21 12:10:39.7254 | DEBUG | Hangfire.MemoryStorage.ExpirationManager | Background process 'Composite C1 Records Expiration Manager' started. 
+
+2018-09-21 12:18:18.2082 | DEBUG | Hangfire.MemoryStorage.ExpirationManager | Background process 'Composite C1 Records Expiration Manager' started. 
+
+2018-09-21 12:28:02.4358 | DEBUG | Hangfire.MemoryStorage.ExpirationManager | Background process 'Composite C1 Records Expiration Manager' started. 
+
+2018-09-21 12:32:52.7984 | DEBUG | Hangfire.MemoryStorage.ExpirationManager | Background process 'Composite C1 Records Expiration Manager' started. 
+
+2018-09-21 12:43:06.2992 | DEBUG | Hangfire.MemoryStorage.ExpirationManager | Background process 'Composite C1 Records Expiration Manager' started. 
+
+2018-09-21 12:55:10.4831 | DEBUG | Hangfire.MemoryStorage.ExpirationManager | Background process 'Composite C1 Records Expiration Manager' started. 
+
+2018-09-21 12:57:41.2484 | DEBUG | Hangfire.MemoryStorage.ExpirationManager | Background process 'Composite C1 Records Expiration Manager' started. 
+
+2018-09-21 12:58:05.1021 | DEBUG | Hangfire.MemoryStorage.ExpirationManager | Background process 'Composite C1 Records Expiration Manager' started. 
+

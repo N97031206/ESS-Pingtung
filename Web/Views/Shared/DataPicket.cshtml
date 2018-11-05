@@ -1,0 +1,64 @@
+﻿@*http://www.daterangepicker.com/*@
+@*https://blog.csdn.net/qing_gee/article/details/65629720*@
+<link type="text/css" href="~/Scripts/DataPicket/daterangepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/DataPicket/jquery.min.js"></script>
+<script type="text/javascript" src="~/Scripts/DataPicket/moment.min.js"></script>
+<script type="text/javascript" src="~/Scripts/DataPicket/daterangepicker.min.js"></script>
+
+
+<script>
+    $(function () {
+        $(".daterange input").each(function () {
+            var $this = $(this);
+            $this.daterangepicker({
+
+                locale: {
+                    "format": "YYYY/MM/DD",// 显示格式
+                    "separator": " - ",// 两个日期之间的分割线
+                    // 中文化
+                    "applyLabel": "確定",
+                    "cancelLabel": "取消",
+                    "fromLabel": "開始日期",
+                    "toLabel": "結束日期",
+                    "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
+                    "monthNames": ["一月", "二月", "三月", "四月", "五月", "六", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                    "firstDay": 1
+                },
+            }, function (start, end, label) {
+                // 点击确定后的事件，下面是为了bootstrap validate得校验，
+                // 若未使用，可忽视
+                if ($this.parents("form.required-validate").length > 0) {
+                    var $form = $this.parents("form.required-validate");
+
+                    var name = $this.attr("name");
+                    if ($form.length > 0) {
+                        var data = $form.data('bootstrapValidator');
+                        data.updateStatus(name, 'NOT_VALIDATED', null)
+                            // Validate the field
+                            .validateField(name);
+                    }
+                }
+                // 设置最小宽度，否则显示不全
+            }).css("min-width", "210px").next("i").click(function () {
+                // 对日期的i标签增加click事件，使其在鼠标点击时可以拉出日期选择
+                $(this).parent().find('submit').click();
+            });
+        });
+    });
+</script>
+
+<style type="text/css">
+    /* 定位i标签在input标签内 */
+    .daterange i {
+        position: absolute;
+        bottom: 10px;
+        right: 14px;
+        top: auto;
+        cursor: pointer;
+    }
+
+    .daterange {
+        position: relative;
+    }
+    /* daterange i end */
+</style>

@@ -1,0 +1,94 @@
+﻿<script type="text/javascript">
+                var dom = document.getElementById("Chart");
+            var Chart = echarts.init(dom);
+            //時間兩位
+            function paddingLeft(str, lenght) {
+                if (str.length >= lenght)
+                    return str;
+                else
+                    return paddingLeft("0" + str, lenght);
+            }
+            //X軸座標
+                var xData = [];
+                var h=@ViewBag.hh;
+                var m =@ViewBag.mm;
+                for (var i = 0; i < 24; i++) {
+                    for (var j = 0; j < 60; j = j + 15) {
+                        if (h > 0)
+                        {
+                            var hh = i + h;
+                            if (m > 0) {
+                                var mm = j + m;
+                                if (mm >= 60)
+                                {
+                                    mm = mm - 60;
+                                    hh = hh + 1;
+                                }
+                            }
+                            if (hh >= 24)
+                            {
+                                hh = hh - 24;
+                            }
+                        }
+                        xData.push("'" + paddingLeft(hh.toString(), 2) + "時" + paddingLeft(mm.toString(), 2) + "分'");
+                    }
+                }
+            //Y軸座標
+                var BatteryData = [];
+                BatteryData.push(@ViewBag.BatteryData);
+                option = null;
+                option = {
+                    title: {
+                        text: '每日用電瓦數',
+                        textStyle: {
+                            fontWeight: 'normal',
+                            color: 'white'
+                        },
+                        x: "center"
+                    },
+                    tooltip: {
+                        show: true
+                    },
+                    xAxis: [
+                        {
+                            name: '時間軸',
+                            type: 'category',
+                            data: BatteryData,
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'white',
+                                    width: 10
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        },
+                    ],
+                    yAxis: [
+                        {
+                            name: '用電單位',
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'white',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value} kW'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            "name": "每日用電瓦數",
+                            "type": "bar",
+                            "data": BatteryData,
+                        }
+                    ]
+                };
+                if (option && typeof option === "object") {
+                    Chart.setOption(option, true);
+                }
+</script>

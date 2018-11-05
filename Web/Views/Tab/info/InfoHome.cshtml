@@ -1,0 +1,116 @@
+﻿<div class="row">
+    <!--lift-->
+    <div class="col-2 h6">
+        <div class="row " id="pc1">
+            <div class="col-7 font-weight-bold small">電壓(V)</div>
+            <div class="col font-italic">@ViewBag.Vavg</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電流(A)</div>
+            <div class="col font-italic">@ViewBag.Isum</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">實功率(W)</div>
+            <div class="col font-italic">@ViewBag.Watt_t</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">虛功率(VAR)</div>
+            <div class="w-100"></div>
+            <div class="col  font-weight-bold small">視在功率(VA)</div>
+            <div class="col font-italic">@ViewBag.VA_t</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">公因</div>
+            <div class="col font-italic">@ViewBag.PF_t</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">頻率(Hz)</div>
+            <div class="col font-italic">@ViewBag.Frequency</div>
+        </div>
+    </div>
+    <!--middle-->
+    <div class="col-8">
+        <div id="powerChart" style="height:500px">
+            <script type="text/javascript">
+                var dom = document.getElementById("powerChart");
+                var powerChart = echarts.init(dom);
+                //時間兩位
+                function paddingLeft(str, lenght) {
+                    if (str.length >= lenght)
+                        return str;
+                    else
+                        return paddingLeft("0"+str, lenght);
+                }
+
+                //X軸座標
+                var xData = [];
+                for (var i = 0; i < 24; i++) {
+                    for (var j = 0; j < 60; j = j + 15){
+                        xData.push("'" + paddingLeft(i.toString(), 2) + ":" + paddingLeft(j.toString(), 2) + "'");
+                    }
+                }
+                //Y軸座標
+                var yData =@ViewBag.yData;
+
+                option = null;
+                option = {
+                    title: {
+                        text: '每日用電瓦數',
+                        textStyle: {
+                            fontWeight: 'normal',
+                            color: 'white'
+                        },
+                        x: "center"
+                    },
+                    tooltip: {
+                        show: true
+
+                    },
+                    xAxis: [
+                        {
+                            name: '時間軸',
+                            type: 'category',
+                            data: xData,
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'white',
+                                    width: 5
+                                }
+                            }
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            name: '用電單位',
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'white',
+                                    width: 2
+                                }
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            "name": "每日用電瓦數",
+                            "type": "bar",
+                            "data": yData,
+                        }
+                    ]
+
+                };
+                if (option && typeof option === "object") {
+                    powerChart.setOption(option, true);
+                }
+
+            </script>
+        </div>
+    </div>
+    <!--right-->
+    <div class="col-2 h3">
+        <div class=" bg-light">可用總電量</div>
+        <div class="font-italic">@ViewBag.Demand  kWh</div>
+        <div class="bg-light">可用電時數</div>
+        <div class="font-italic">@ViewBag.RemainTime 小時</div>
+    </div>
+</div>
+
+
+
+

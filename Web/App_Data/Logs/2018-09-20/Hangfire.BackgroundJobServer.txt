@@ -1,0 +1,350 @@
+2018-09-20 13:23:47.8475 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 13:23:47.8525 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 13:23:47.8525 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 13:23:47.8525 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 13:23:47.8525 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 13:23:47.8695 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 13:23:47.8695 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 13:27:52.2765 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 13:27:52.2765 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 13:27:52.2885 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 13:27:52.2885 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 13:27:52.2885 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 13:27:52.2885 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 13:27:52.2885 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 13:32:56.6139 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 13:32:56.6189 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 13:32:56.6189 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 13:32:56.6389 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 13:32:56.6389 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 13:32:56.6499 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 13:32:56.6499 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 13:35:24.6894 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 13:35:24.6934 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 13:35:24.6934 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 13:35:24.6934 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 13:35:24.6934 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 13:35:24.7124 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 13:35:24.7124 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 13:41:44.3601 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 13:41:44.3601 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 13:41:44.3701 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 13:41:44.4251 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 13:41:44.4291 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 13:41:44.4291 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 13:41:44.4591 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 13:43:28.3551 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 13:43:28.3631 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 13:43:28.3631 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 13:43:28.3801 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 13:43:28.3801 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 13:43:28.3931 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 13:43:28.3931 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 14:35:16.7569 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 14:35:16.7569 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 14:35:16.7569 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 14:35:16.7569 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 14:35:16.7749 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 14:35:16.7749 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 14:35:16.7749 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 14:36:41.3697 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 14:36:41.3697 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 14:36:41.3697 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 14:36:41.4027 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 14:36:41.4027 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 14:36:41.4027 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 14:36:41.4027 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 14:38:59.8696 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 14:38:59.8696 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 14:38:59.8696 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 14:38:59.8696 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 14:38:59.8886 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 14:38:59.8886 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 14:38:59.8996 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 14:40:14.9679 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 14:40:14.9679 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 14:40:14.9679 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 14:40:14.9839 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 14:40:14.9839 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 14:40:14.9839 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 14:40:15.0009 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 14:41:06.9169 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 14:41:06.9169 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 14:41:06.9169 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 14:41:06.9309 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 14:41:06.9309 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 14:41:06.9309 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 14:41:06.9309 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 14:51:53.1669 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 14:51:53.1669 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 14:51:53.1669 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 14:51:53.1669 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 14:51:53.1839 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 14:51:53.1839 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 14:51:53.1839 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 14:52:37.7324 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 14:52:37.7364 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 14:52:37.7364 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 14:52:37.7364 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 14:52:37.7504 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 14:52:37.7504 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 14:52:37.7504 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 15:02:50.5885 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 15:02:50.5885 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 15:02:50.5885 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 15:02:50.6025 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 15:02:50.6025 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 15:02:50.6025 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 15:02:50.6165 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 15:06:25.5607 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 15:06:25.5607 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 15:06:25.5717 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 15:06:25.5717 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 15:06:25.5717 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 15:06:25.5908 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 15:06:25.5908 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 15:07:21.7970 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 15:07:21.7970 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 15:07:21.7970 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 15:07:21.8130 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 15:07:21.8130 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 15:07:21.8130 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 15:07:21.8240 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 15:10:09.5556 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 15:10:09.5556 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 15:10:09.5556 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 15:10:09.5556 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 15:10:09.5726 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 15:10:09.5726 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 15:10:09.5726 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 15:11:46.1031 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 15:11:46.1081 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 15:11:46.1081 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 15:11:46.1211 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 15:11:46.1211 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 15:11:46.1211 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 15:11:46.1381 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 15:13:35.5453 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 15:13:35.5453 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 15:13:35.5553 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 15:13:35.5553 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 15:13:35.5553 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 15:13:35.5553 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 15:13:35.5733 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 15:14:33.1256 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 15:14:33.1256 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 15:14:33.1376 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 15:14:33.1376 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 15:14:33.1376 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 15:14:33.1556 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 15:14:33.1556 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 15:16:01.0397 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 15:16:01.0447 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 15:16:01.0447 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 15:16:01.0447 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 15:16:01.0577 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 15:16:01.0577 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 15:16:01.0577 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 15:17:12.9658 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 15:17:12.9658 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 15:17:12.9748 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 15:17:12.9748 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 15:17:12.9748 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 15:17:12.9888 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 15:17:12.9888 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 15:23:59.8431 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 15:23:59.8431 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 15:23:59.8561 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 15:23:59.8561 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 15:23:59.8561 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 15:23:59.8561 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 15:23:59.8761 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 15:30:23.9190 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 15:30:23.9190 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 15:30:23.9190 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 15:30:23.9320 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 15:30:23.9320 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 15:30:23.9320 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 15:30:23.9470 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+
+2018-09-20 15:45:42.3956 | INFO | Hangfire.BackgroundJobServer | Starting Hangfire Server 
+
+2018-09-20 15:45:42.3956 | INFO | Hangfire.BackgroundJobServer | Using job storage: 'Hangfire.MemoryStorage.MemoryStorage' 
+
+2018-09-20 15:45:42.4046 | INFO | Hangfire.BackgroundJobServer | Using the following options for Hangfire Server: 
+
+2018-09-20 15:45:42.4046 | INFO | Hangfire.BackgroundJobServer |     Worker count: 20 
+
+2018-09-20 15:45:42.4046 | INFO | Hangfire.BackgroundJobServer |     Listening queues: 'default' 
+
+2018-09-20 15:45:42.4176 | INFO | Hangfire.BackgroundJobServer |     Shutdown timeout: 00:00:15 
+
+2018-09-20 15:45:42.4176 | INFO | Hangfire.BackgroundJobServer |     Schedule polling interval: 00:00:15 
+

@@ -1,0 +1,50 @@
+﻿@model Service.ESS.Model.Account
+@using Support.Authorize;
+@{
+    ViewBag.Title = Resources.Resource.Maintain;
+    Layout = "~/Views/Shared/_LayoutTab.cshtml";
+    bool admin = User.Identity.Name.Split(',')[2].ToString().Trim().Equals(RoleType.系統管理員.ToString().Trim());
+}
+
+<div class="container">
+    <br />
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <h5 class="card-header">使用者管理</h5>
+                <div class="card-body">
+                    <button type="button" class="btn btn-outline-info btn-lg btn-block" onclick="location.href='@Url.Action("List", "Account")'">使用者列表</button>
+                    @if (admin)
+                    {
+                        <button type="button" class="btn btn-outline-primary btn-lg  btn-block" onclick="location.href='@Url.Action("Create", "Account")'">新增使用者</button>
+                    }
+                </div>
+            </div>
+        </div>
+        @if (admin)
+        {
+            <div class="col">
+                <div class="card">
+                    <h5 class="card-header">新增管理</h5>
+                    <div class="card-body">
+                        <button type="button" class="btn btn-outline-info btn-lg btn-block" onclick="location.href='@Url.Action("CreateAbnormal", "Tab")'">新增異常</button>
+                        <button type="button" class="btn btn-outline-info btn-lg  btn-block" onclick="location.href='@Url.Action("CreateOrgin", "Tab")'">新增單位</button>
+                        <button type="button" class="btn btn-outline-info btn-lg btn-block" onclick="location.href='@Url.Action("CreateBulletin", "Tab")'">新增公佈</button>
+                        <button type="button" class="btn btn-outline-info btn-lg  btn-block" onclick="location.href='@Url.Action("CreateStation", "Tab")'">新增站別</button>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="col">
+            <div class="card">
+                <h5 class="card-header">其他管理</h5>
+                <div class="card-body">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,62 @@
+﻿@model Web.Models.Json.schemaJson
+
+@{
+    ViewBag.Title = "Json";
+    Layout = "~/Views/Shared/_LayoutDetail.cshtml";
+}
+
+@if (Model.stationUUID != null)
+{
+    <h2>Json @ViewBag.json </h2>
+    <h6>@ViewBag.jsonCode</h6>
+    <h5 class="text-danger">@Model.stationUUID</h5>
+    <h5 class="text-danger">@Model.stationName</h5>
+    <h5 class="text-danger">@Model.updateTime.ToString()</h5>
+
+
+    foreach (var g in Model.GridPowers.ToList())
+    {
+        <h4 class="text-success">@g.index.ToString()</h4>
+        <h4 class="text-success">@g.serialNO.ToString()</h4>
+        <h4 class="text-success">@g.modelSerial.ToString()</h4>
+    }
+    <br>
+    foreach (var g in Model.LoadPowers.ToList())
+    {
+        <h4 class="text-success">@g.index.ToString()</h4>
+        <h4 class="text-success">@g.serialNO.ToString()</h4>
+        <h4 class="text-success">@g.modelSerial.ToString()</h4>
+    }
+    <br>
+    foreach (var g in Model.Generators.ToList())
+    {
+        <h4 class="text-success">@g.index.ToString()</h4>
+        <h4 class="text-success">@g.serialNO.ToString()</h4>
+        <h4 class="text-success">@g.modelSerial.ToString()</h4>
+        <h4 class="text-success">@g.UpdateTime.ToString()</h4>
+        <h3 class="text-primary">@g.Alarm.NumberOfNamedAlarms.ToString()</h3>
+    }
+    <br>
+    foreach (var g in Model.Inverters.ToList())
+    {
+        <h4 class="text-success">@g.index.ToString()</h4>
+        <h4 class="text-success">@g.serialNO.ToString()</h4>
+        <h4 class="text-success">@g.modelSerial.ToString()</h4>
+        <h4 class="text-success">@g.UpdateTime.ToString()</h4>
+
+    }
+    <br>
+    foreach (var g in Model.Battery.ToList())
+    {
+        <h4 class="text-success">@g.index.ToString()</h4>
+        <h4 class="text-success">@g.serialNO.ToString()</h4>
+        <h4 class="text-success">@g.modelSerial.ToString()</h4>
+        foreach (var gb in @g.Cells)
+        {
+            <h4 class="text-success">@gb.voltage.ToString()</h4>
+        }
+        <h3 class="text-primary">@g.AlarmState.OC0_DIS.ToString()</h3>
+    }
+}
+
+

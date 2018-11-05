@@ -1,0 +1,50 @@
+2018-09-20 13:23:48.4166 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 13:27:52.8416 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 13:32:57.1370 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 13:35:25.1514 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 13:41:44.9832 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 13:43:28.9541 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 14:35:17.3369 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 14:36:41.9427 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 14:39:00.4147 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 14:40:15.5289 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 14:41:07.3899 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 14:51:53.8849 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 14:52:38.1684 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 15:02:51.2095 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 15:06:26.2708 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 15:07:22.3850 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 15:10:10.1836 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 15:11:46.3301 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 15:13:36.0814 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 15:14:33.7657 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 15:16:01.6027 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 15:17:13.6908 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 15:24:00.5001 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 15:30:24.5051 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+
+2018-09-20 15:45:42.8746 | DEBUG | Hangfire.Server.RecurringJobScheduler | Background process 'RecurringJobScheduler' started. 
+

@@ -1,0 +1,71 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using Service.ESS.Provider;
+
+@model IPagedList<Service.ESS.Model.Alart>
+@{
+    ViewBag.Title = Resources.Resource.Abnormal;
+    Layout = "~/Views/Shared/_LayoutTab.cshtml";
+    StationService stationService = new StationService();
+    AlartTypeService alarttyprService = new AlartTypeService();
+}
+@Html.Partial("DataPicket")
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col text-left">
+            @using (Html.BeginForm("Abnormal", "Tab", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col h5">
+                        <div class="daterange ">
+                            @Html.Label("站別")
+                            @Html.DropDownList("Statons", (IEnumerable<SelectListItem>)ViewBag.station)
+                            <label>啟始時間區間</label>
+                            <input class="col-4 " name="range_date" type="text">
+                            @Html.Label("異常設備")
+                            @Html.DropDownList("AlartTypes", (IEnumerable<SelectListItem>)ViewBag.alartType)
+                            <i class="fa fa-calendar"></i>
+                            <button type="submit" class="btn btn-success" id="btnBulletin">查詢</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width:10%">站點名稱</th>
+                        <th scope="col" style="width:20%">異常啟始時間</th>
+                        <th scope="col" style="width:10%">異常設備</th>
+                        <th scope="col" style="width:30%">異常描述</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var alart in Model)
+                    {
+                        <tr>
+                            <th scope="row">@stationService.ReadID(alart.StationID).StationName.ToString()</th>
+                            <td>@alart.StartTimet</td>
+                            <td>@alarttyprService.ReadID(alart.AlartTypeID).AlartTypeName.ToString()</td>
+                            <td>@alart.AlartContext</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>@Html.PagedListPager(Model, Page => Url.Action("Abnormal", new { Page }))</div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

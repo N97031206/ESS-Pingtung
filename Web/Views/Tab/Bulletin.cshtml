@@ -1,0 +1,81 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using Service.ESS.Provider;
+
+@model IPagedList<Service.ESS.Model.Bulletin>
+
+@{
+    ViewBag.Title = Resources.Resource.Bulletin;
+    Layout = "~/Views/Shared/_LayoutTab.cshtml";
+    OrginService orginService = new OrginService();
+}
+
+@Html.Partial("DataPicket")
+
+<br/>
+@using (Html.BeginForm("Bulletin", "Tab", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="daterange h5 text-center">
+        <label>發表時間</label>
+        <input class="col-3  " name="range_date" type="text">
+        <button type="submit" class="btn btn-success btn-sm" id="btnBulletin">查詢</button>
+        <i class="fa fa-calendar"></i>
+    </div>
+}
+<br>
+
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr class="text-left">
+                <th scope="col" style="width:20%">發佈日期</th>
+                <th scope="col" style="width:30%">標題</th>
+                <th scope="col" style="width:30%">單位</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var bl in Model)
+            {
+                <tr class="text-left">
+                    <th scope="row">@bl.CreateDate.ToString("yyyy/MM/dd tt hh:mm:ss") </th>
+                    <td>
+                        <button type="button" class="btn btn-link align-baseline " data-toggle="modal" data-target="#@bl.Id">@bl.title</button>
+                    </td>
+                    <td>
+                        @orginService.ReadID(bl.OrginID).OrginName.ToString().Trim()
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        @foreach (var bl in Model)
+        {
+            <div class="modal fade" id="@bl.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">@bl.title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            @bl.context
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div>@Html.PagedListPager(Model, Page => Url.Action("Bulletin", new { Page }))</div>
+</div>
+
+
+
+
+

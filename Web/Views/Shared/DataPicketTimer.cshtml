@@ -1,0 +1,21 @@
+﻿@*http://www.daterangepicker.com/*@
+@*https://blog.csdn.net/qing_gee/article/details/65629720*@
+
+<script type="text/javascript" src="~/Scripts/DataPicket/jquery.min.js"></script>
+<script type="text/javascript" src="~/Scripts/DataPicket/moment.min.js"></script>
+<script type="text/javascript" src="~/Scripts/DataPicket/daterangepicker.min.js"></script>
+<link type="text/css" href="~/Scripts/DataPicket/daterangepicker.css" rel="stylesheet" />
+
+<script>
+    $(function () {
+        $('input[name="datetimes"]').daterangepicker({
+            timePicker: true,
+            startDate: moment().startOf('hour').add(-24, 'hour'),
+            endDate: moment().startOf('hour'),
+            locale: {
+                format: 'YYYY/MM/DD hh:mm A'
+            }
+        });
+    });
+</script>
+

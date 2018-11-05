@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width , initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    @Html.Partial("Stylesheet")
+    @Html.Partial("Scripts")
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="container-fluid  text-center" style="min-height:80px " width="100%">
+        <!---->
+        <div class="row">
+            <div class="col-4">
+            </div>
+            <div class="col-4 "  style="font-family:DFKai-sb;">                 
+                    <img width="50" height="50" src="~/Content/Image/Emblem_of_Pingtung_County.png"  />
+                    <h4>@ViewBag.Logo</h4> 
+            </div>
+            <div class="col-4  ">
+                <div class="align-bottom text-right">@ViewBag.User  @Html.ActionLink("登出", "Logout", "Account")</div>
+            </div>
+        </div>
+        <!---->
+        <div class="row bg-dark">
+            <div class="col-md-12">
+                @Html.Partial("_TabButtom")
+            </div>    
+        </div>      
+        <!---->        
+        <div class="row">       
+            <div class="col-md-12">            
+                <div class="mainBody">             
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
