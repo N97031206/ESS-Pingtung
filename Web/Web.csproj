@@ -1187,6 +1187,7 @@
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Monitor\Frames.cshtml" />
     <Content Include="Views\Monitor\Frames-copy.cshtml" />
+    <Content Include="Views\Tab\DisableBulletin.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -12,6 +12,9 @@ using Newtonsoft.Json;
 using NLog;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
+using Web.Models.Json;
+using Battery = Service.ESS.Model.Battery;
+using System.Net.Http.Formatting;
 
 namespace Web.Controllers.Api
 {
@@ -371,6 +374,435 @@ namespace Web.Controllers.Api
             Data += "}}";
             return Ok(Data);
         }
+
+
+        [Route("api/Android")]
+        [HttpGet]
+        public IHttpActionResult Android()
+        {
+            string jsonStr = JsonConvert.SerializeObject(JsonString);
+            Console.Write(jsonStr);
+            return Json(jsonStr);
+        }
+
+        private readonly string JsonString =
+         @"{
+                      'updateTime': '2018-10-17T14:46:06.851Z',
+                      'stationName': '霧台鄉',
+                      'stationUUID': 'd4788824-ba3e-11e8-96f8-529269fb1459',
+                      'GridPowers': [
+                        {
+                          'version': 1,
+                          'index': 0,
+                          'modelSerial': '0000111122223333',
+                          'serialNO': 'SCB-MC01',
+                          'name': '市電',
+                          'connected': true,
+                          'date_time': '2018-10-17T14:45:53.668Z',
+                          'va': 0,
+                          'vb': 0,
+                          'vc': 0,
+                          'vavg': 0,
+                          'ia': 0,
+                          'ib': 0,
+                          'ic': 0,
+                          'in': 0,
+                          'isum': 0,
+                          'watt_a': 0,
+                          'watt_b': 0,
+                          'watt_c': 0,
+                          'watt_t': 0,
+                          'var_a': 0,
+                          'var_b': 0,
+                          'var_c': 0,
+                          'var_t': 0,
+                          'va_a': 0,
+                          'va_b': 0,
+                          'va_c': 0,
+                          'va_t': 0,
+                          'pf_a': 0,
+                          'pf_b': 0,
+                          'pf_c': 0,
+                          'pf_t': 0,
+                          'angle_va': 0,
+                          'angle_vb': 96.4,
+                          'angle_vc': 186,
+                          'angle_ia': 55.5,
+                          'angle_ib': 262.6,
+                          'angle_ic': 271.3,
+                          'frequency': 0,
+                          'vab': 0,
+                          'vbc': 0,
+                          'vca': 0,
+                          'vii_avg': 0,
+                          'kwht': 0.1,
+                          'kwha': 0,
+                          'kwhb': 0,
+                          'kwhc': 0,
+                          'kvarht': 0,
+                          'kvarha': 0,
+                          'kvarhb': 0,
+                          'kvarhc': 0,
+                          'kvaht': 0.1,
+                          'kvaha': 0,
+                          'kvahb': 0,
+                          'kvahc': 0,
+                          'demand': 0,
+                          'prev_demand': 0,
+                          'prev_demand2': 0,
+                          'prev_demand3': 0,
+                          'maxdemand_currnetmonth': 0,
+                          'maxdemand_lastmonth': 0,
+                          'remain_time': 7,
+                          'events': []
+                        }
+                      ],
+                      'LoadPowers': [],
+                      'Generators': [],
+                      'Inverters': [],
+                      'Battery': [
+                        {
+                          'version': 1,
+                          'index': 0,
+                          'modelSerial': 'FSP-BS4866',
+                          'serialNO': '0000111122223333',
+                          'name': 'FSP-BS4866',
+                          'connected': false,
+                          'voltage': 0,
+                          'charging_current': 0,
+                          'discharging_current': 0,
+                          'charging_watt': 0,
+                          'discharging_watt': 0,
+                          'SOC': 0,
+                          'Cycle': 1,
+                          'charge_direction': 0,
+                          'temperature': 0,
+                          'Cells': [
+                            {
+                              'index': 1,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 2,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 3,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 4,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 5,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 6,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 7,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 8,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 9,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 10,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 11,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 12,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 13,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 14,
+                              'voltage': 0
+                            }
+                          ],
+                          'AlarmState': {
+                            'OV_DIS': false,
+                            'UV_DIS': false,
+                            'OC_DIS': false,
+                            'SC_DIS': false,
+                            'OT_DIS': false,
+                            'UT_DIS': false,
+                            'RV_DIS': false,
+                            'OC0_DIS': false
+                          }
+                        },
+                        {
+                          'version': 1,
+                          'index': 1,
+                          'modelSerial': 'FSP-BS4866',
+                          'serialNO': '0000111122223333',
+                          'name': 'FSP-BS4866',
+                          'connected': false,
+                          'voltage': 0,
+                          'charging_current': 0,
+                          'discharging_current': 0,
+                          'charging_watt': 0,
+                          'discharging_watt': 0,
+                          'SOC': 0,
+                          'Cycle': 1,
+                          'charge_direction': 0,
+                          'temperature': 0,
+                          'Cells': [
+                            {
+                              'index': 1,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 2,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 3,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 4,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 5,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 6,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 7,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 8,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 9,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 10,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 11,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 12,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 13,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 14,
+                              'voltage': 0
+                            }
+                          ],
+                          'AlarmState': {
+                            'OV_DIS': false,
+                            'UV_DIS': false,
+                            'OC_DIS': false,
+                            'SC_DIS': false,
+                            'OT_DIS': false,
+                            'UT_DIS': false,
+                            'RV_DIS': false,
+                            'OC0_DIS': false
+                          }
+                        },
+                        {
+                          'version': 1,
+                          'index': 2,
+                          'modelSerial': 'FSP-BS4866',
+                          'serialNO': '0000111122223333',
+                          'name': 'FSP-BS4866',
+                          'connected': false,
+                          'voltage': 0,
+                          'charging_current': 0,
+                          'discharging_current': 0,
+                          'charging_watt': 0,
+                          'discharging_watt': 0,
+                          'SOC': 0,
+                          'Cycle': 1,
+                          'charge_direction': 0,
+                          'temperature': 0,
+                          'Cells': [
+                            {
+                              'index': 1,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 2,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 3,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 4,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 5,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 6,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 7,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 8,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 9,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 10,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 11,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 12,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 13,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 14,
+                              'voltage': 0
+                            }
+                          ],
+                          'AlarmState': {
+                            'OV_DIS': false,
+                            'UV_DIS': false,
+                            'OC_DIS': false,
+                            'SC_DIS': false,
+                            'OT_DIS': false,
+                            'UT_DIS': false,
+                            'RV_DIS': false,
+                            'OC0_DIS': false
+                          }
+                        },
+                        {
+                          'version': 1,
+                          'index': 3,
+                          'modelSerial': 'FSP-BS4866',
+                          'serialNO': '0000111122223333',
+                          'name': 'FSP-BS4866',
+                          'connected': false,
+                          'voltage': 0,
+                          'charging_current': 0,
+                          'discharging_current': 0,
+                          'charging_watt': 0,
+                          'discharging_watt': 0,
+                          'SOC': 0,
+                          'Cycle': 1,
+                          'charge_direction': 0,
+                          'temperature': 0,
+                          'Cells': [
+                            {
+                              'index': 1,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 2,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 3,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 4,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 5,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 6,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 7,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 8,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 9,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 10,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 11,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 12,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 13,
+                              'voltage': 0
+                            },
+                            {
+                              'index': 14,
+                              'voltage': 0
+                            }
+                          ],
+                          'AlarmState': {
+                            'OV_DIS': false,
+                            'UV_DIS': false,
+                            'OC_DIS': false,
+                            'SC_DIS': false,
+                            'OT_DIS': false,
+                            'UT_DIS': false,
+                            'RV_DIS': false,
+                            'OC0_DIS': false
+                          }
+                        }
+                      ]
+                    }";
 
     }
 }

@@ -129,22 +129,25 @@ namespace Web.Controllers
 
 
         [Authorize]
-        public ActionResult ListBulletin()
+        public ActionResult DisableBulletin()
         {
             TagTitle();
             StationList();
             AlartTypeList();
             OrginTypeList();
+
             return View();
         }
 
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult ListBulletin(FormCollection From)
+        public ActionResult DisableBulletin(FormCollection From)
         {
             return View();
         }
+
+
 
         #endregion
 
@@ -684,20 +687,18 @@ namespace Web.Controllers
         {
             try
             {
-                bool R1 = string.IsNullOrEmpty(Request.Form["inlineRadio1"]);
-                bool R2 = string.IsNullOrEmpty(Request.Form["inlineRadio2"]);
-                bool R3 = string.IsNullOrEmpty(Request.Form["inlineRadio3"]);
+                var radio = Request.Form["inlineRadio"];
                 string tabType = Request.Form["tabType"].Trim();
 
                 DateTime startDay = Convert.ToDateTime(Request.Form["startDay"] + " " + Request.Form["startTime"]);
                 DateTime endDay = Convert.ToDateTime(Request.Form["endDay"] + " " + Request.Form["endTime"]);
 
-                if (!R1)
+                if (radio.Equals("option1"))
                 {
                     startDay = DateTime.Today;
                     endDay = DateTime.Now;
                 }
-                else if (!R2)
+                else if (radio.Equals("option2"))
                 {
                     startDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
                     endDay = DateTime.Now;

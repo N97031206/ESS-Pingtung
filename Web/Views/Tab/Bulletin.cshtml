@@ -8,7 +8,9 @@
     ViewBag.Title = Resources.Resource.Bulletin;
     Layout = "~/Views/Shared/_LayoutTab.cshtml";
     OrginService orginService = new OrginService();
-}
+    int x = 1,y = 1;
+    string str = null;
+    }
 
 @Html.Partial("DataPicket")
 
@@ -32,11 +34,15 @@
                 <th scope="col" style="width:20%">發佈日期</th>
                 <th scope="col" style="width:30%">標題</th>
                 <th scope="col" style="width:30%">單位</th>
+                <th scope="col" style="width:30%">內容</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var bl in Model)
             {
+                if (bl.Disabled == false)
+                {
+                    str= "bl" + x;
                 <tr class="text-left">
                     <th scope="row">@bl.CreateDate.ToString("yyyy/MM/dd tt hh:mm:ss") </th>
                     <td>
@@ -45,14 +51,24 @@
                     <td>
                         @orginService.ReadID(bl.OrginID).OrginName.ToString().Trim()
                     </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#@str">
+                            內容
+                        </button>
+                    </td>
                 </tr>
+                x++;
             }
+        }
         </tbody>
     </table>
     <div>
         @foreach (var bl in Model)
         {
-            <div class="modal fade" id="@bl.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            if (bl.Disabled == false)
+            {
+               str= "bl" + y;
+            <div class="modal fade" id="@str" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -70,7 +86,9 @@
                     </div>
                 </div>
             </div>
+            y++;
         }
+    }
     </div>
     <div>@Html.PagedListPager(Model, Page => Url.Action("Bulletin", new { Page }))</div>
 </div>

@@ -90,7 +90,7 @@ namespace Web.Controllers
             return Json(frames);
         }
 
-        public class FrameData
+        private class FrameData
         {
             public float Solar { get; set; }
             public float GirdPower { get; set; }
