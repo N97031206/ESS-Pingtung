@@ -3,33 +3,44 @@
 @{
     BatteryService BatteryService = new BatteryService();
     Battery battery = BatteryService.ReadNow();
-    int cd = Convert.ToInt32(battery.charge_direction);
-    string direction = (cd == 0)? "離線" : (cd == 1)?"充電":"放電";
+    string Info1 = "", Info2 = "", Info3 = "", Info4 = "", Info5 = "", Info6 = "", Info7 = "";
+
+    if ( battery!=null)
+    {
+        Info1 = battery.updateTime.AddHours(8).ToString();
+        Info2 = string.Format("{0:#,0.00}", battery.voltage);
+        Info3 = string.Format("{0:#,0.00}", battery.charging_current);
+        Info4 = string.Format("{0:#,0.00}", battery.discharging_current);
+        Info5 = string.Format("{0:#,0.00}", battery.SOC);
+        Info6 = string.Format("{0:#,0.00}", battery.Cycle);
+        int cd = Convert.ToInt32(battery.charge_direction);
+        Info7 = (cd == 1) ? "充電" : (cd == 2) ? "放電": "離線"  ;
+    }
 }
 <div class="row">
     <!--lift-->
     <div class="col-2 h6">
         <div class="row " id="pc0">
-            <div class="col font-weight-bold small">資料時間(UTC)</div>
-            <div class="col font-italic">@battery.updateTime</div>
+            <div class="col font-weight-bold small">資料時間(UTC+8)</div>
+            <div class="col font-italic">@Info1</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">電池電壓(V)</div>
-            <div class="col font-italic">@string.Format("{0:0.0}", battery.voltage)</div>
+            <div class="col font-italic">@Info2</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">充電電流(A)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", battery.charging_current)</div>
+            <div class="col font-italic">@Info3</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">放電電流(A)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", battery.discharging_current)</div>
+            <div class="col font-italic">@Info4</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">電池容量(%)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.00}", battery.SOC)</div>
+            <div class="col font-italic">@Info5</div>
             <div class="w-100"></div>
             <div class="col  font-weight-bold small">充電次數(次)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", battery.Cycle)</div>
+            <div class="col font-italic">@Info6</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">充電方向</div>
-            <div class="col font-italic">@direction</div>
+            <div class="col font-italic">@Info7</div>
         </div>
     </div>
     <!--middle-->
@@ -121,7 +132,7 @@
                                 }
                             },
                             axisLabel: {
-                                formatter: '{value} kW'
+                                formatter: '{value} kWh'
                             }
                         }
                     ],
@@ -147,7 +158,6 @@
         <div class="font-italic">@ViewBag.RemainTime 小時</div>
     </div>
 </div>
-
 
 
 

@@ -11,6 +11,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using Web.Models;
+using NLog;
+using Support.Authorize;
 
 namespace Web.Controllers
 {
@@ -22,7 +24,9 @@ namespace Web.Controllers
         private OrginService orginService = new OrginService();
         //分頁
         private int PageSizes() { if (!int.TryParse(ConfigurationManager.AppSettings["PageSize"], out int s)) { s = 10; } return s; }
-
+        //Log檔
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+        
         // GET: Account
         public ActionResult Index()
         {
@@ -87,6 +91,11 @@ namespace Web.Controllers
                 else //有資料
                 {
                     LoginFormsAuthentication(account, UserName, Password);
+
+                    string ClientIP = Support.Http.IP.GetClientIP(Request);
+                    logger.Info("user:"+UserName+";IP:"+ ClientIP);
+
+                  
                     return RedirectToAction("Index", "Tab");
                 }
             }

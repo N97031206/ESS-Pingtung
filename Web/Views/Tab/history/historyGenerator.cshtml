@@ -14,6 +14,8 @@
     string endTime = endDay.ToString("HH:mm:ss");
     var tabType = "Generator";
     string connStr = tabType + "+" + sDay + "+" + eDay;
+    List<string> IDList = new List<string>();
+    int x = 1, y = 1, c = 1;
 }
 
 <script type="text/javascript">
@@ -115,12 +117,13 @@
                 {
                     if (!string.IsNullOrEmpty(gens.GeneratorIDs))
                     {
-                        string status = null;
-                        string T1 = null, T2 = null, T3 = null, T4 = null, T5 = null, T6 = null, T7 = null, T8 = null, T9 = null, T10 = null, T11 = null, T12 = null, T13 = null, T14 = null, T15 = null;
-                        string[] IDs = gens.GeneratorIDs.Trim().Split('+');
+                        string status = null, T1 = null, T2 = null, T3 = null, T4 = null, T5 = null, T6 = null, T7 = null, T8 = null, T9 = null, T10 = null, T11 = null, T12 = null, T13 = null, T14 = null, T15 = null;
+                        string[] IDs = gens.GeneratorIDs.Trim().Split('|');
+                        List<string> BtnGroup = new List<string>();
+                        int cut = 1;
                         foreach (var lo in IDs)
                         {
-                            if (!string.IsNullOrEmpty(lo))
+                            if (!string.IsNullOrEmpty(lo.Trim()))
                             {
                                 Guid ID = Guid.Parse(lo);
                                 Generator generator = generatorService.ReadByID(ID);
@@ -140,32 +143,37 @@
                                 T13 = status;
                                 T14 = string.Format("{0:#,0.0}", generator.AvailabilityEnergy);
                                 T15 = string.Format("{0:#,0.0}", generator.AvailabilityHour);
-                                <tr>
-                                    <th scope="row">@T1</th>
-                                    <td>@T2</td>
-                                    <td>@T3</td>
-                                    <td>@T4</td>
-                                    <td>@T5</td>
-                                    <td>@T6</td>
-                                    <td>@T7</td>
-                                    <td>@T8</td>
-                                    <td>@T9</td>
-                                    <td>@T10</td>
-                                    <td>@T11</td>
-                                    <td>@T12</td>
-                                    <td>@T13</td>
-                                    <td>@T14</td>
-                                    <td>@T15</td>
-                                </tr>
+                                x++;
+                                cut++;
                             }
                         }
+                        <tr>
+                            <th scope="row">@T1</th>
+                            <td>@T2</td>
+                            <td>@T3</td>
+                            <td>@T4</td>
+                            <td>@T5</td>
+                            <td>@T6</td>
+                            <td>@T7</td>
+                            <td>@T8</td>
+                            <td>@T9</td>
+                            <td>@T10</td>
+                            <td>@T11</td>
+                            <td>@T12</td>
+                            <td>@T13</td>
+                            <td>@T14</td>
+                            <td>@T15</td>
+                        </tr>
                     }
                 }
             </tbody>
         </table>
-        @if (!string.IsNullOrEmpty(Model.FirstOrDefault().GeneratorIDs))
+        @if (Model.Count > 0)
         {
-            <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historyGenerator", new { connStr, Page }))</div>
+            if (!string.IsNullOrEmpty(Model.FirstOrDefault().GeneratorIDs))
+            {
+                <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historyGenerator", new { connStr, Page }))</div>
+            }
         }
-    </div>
+        </div>
 </div>

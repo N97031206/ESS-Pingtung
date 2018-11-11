@@ -52,20 +52,20 @@ namespace Service.ESS.Provider
 
         public Model.LoadPower ReadNow()
         {
-            Domain.LoadPower loadPower = loadRepository.ReadAll().OrderByDescending(x => x.updateTime).FirstOrDefault();
+            Domain.LoadPower loadPower = loadRepository.ReadAll().OrderByDescending(x => x.date_Time).FirstOrDefault();
             return this.mapper.Map<Model.LoadPower>(loadPower);
         }
 
         public List<Model.LoadPower> ReadByInfoList(DateTime StartTime, DateTime endTime)
         {
             List<Domain.LoadPower> loadPower =
-                loadRepository.ReadListBy(x => x.updateTime >= StartTime && x.updateTime < endTime).ToList();
+                loadRepository.ReadListBy(x => x.date_Time >= StartTime && x.date_Time < endTime).ToList();
             return this.mapper.Map<List<Model.LoadPower>>(loadPower);
         }
 
         public int Count(DateTime StartTime, DateTime endTime)
         {
-            return loadRepository.ReadListBy(x => x.updateTime >= StartTime && x.updateTime < endTime).Count();
+            return loadRepository.ReadListBy(x => x.date_Time >= StartTime && x.date_Time < endTime).Count();
         }
     }
 }

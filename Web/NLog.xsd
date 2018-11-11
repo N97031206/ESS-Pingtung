@@ -181,6 +181,7 @@
       <xs:enumeration value="Warn" />
       <xs:enumeration value="Error" />
       <xs:enumeration value="Fatal" />
+      <xs:enumeration value="Userlog" />   
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="LineEndingMode">
@@ -194,7 +195,7 @@
   </xs:simpleType>
   <xs:simpleType name="NLogLevelList">
     <xs:restriction base="xs:string">
-      <xs:pattern value="(|Trace|Debug|Info|Warn|Error|Fatal)(,(Trace|Debug|Info|Warn|Error|Fatal))*" />
+      <xs:pattern value="(|Trace|Debug|Info|Warn|Error|Fatal|Userlog)(,(Trace|Debug|Info|Warn|Error|Fatal|Userlog))*" />
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="NLogInclude">

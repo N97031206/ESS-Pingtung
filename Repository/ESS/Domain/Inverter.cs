@@ -11,7 +11,6 @@ namespace Repository.ESS.Domain
         /// </summary>
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-        ///
         //start
         public int version { get; set; }    //	model版本	
         public int index { get; set; }  //	陣列編號	
@@ -19,7 +18,6 @@ namespace Repository.ESS.Domain
         public string serialNO { get; set; }    //	序號	
         public string name { get; set; }    //	名稱	
         public bool connected { get; set; } //	連線通訊狀態	
-        public DateTime UpdateTime { get; set; }
         public string DeviceMode { get; set; }
         //WarningStatus start
         public bool InverterFault { get; set; }
@@ -53,41 +51,41 @@ namespace Repository.ESS.Domain
         //WarningStatus end
 
         //ParallelInformation start
-        public bool ParallelInformation_IsExist { get; set; }
+        public string ParallelInformation_IsExist { get; set; }
         public string ParallelInformation_SerialNumber { get; set; }
         public string ParallelInformation_WorkMode { get; set; }
         public string ParallelInformation_FaultCode { get; set; }
-        public float ParallelInformation_GridVoltage { get; set; }
-        public float ParallelInformation_GridFrequency { get; set; }
-        public float ParallelInformation_ACOutputVoltage { get; set; }
-        public float ParallelInformation_ACOutputFrequency { get; set; }
-        public float ParallelInformation_ACOutputApparentPower { get; set; }
-        public float ParallelInformation_ACOutputActivePower { get; set; }
-        public float ParallelInformation_LoadPercentage { get; set; }
-        public float ParallelInformation_BatteryVoltage { get; set; }
-        public float ParallelInformation_BatteryChargingCurrent { get; set; }
-        public float ParallelInformation_BatteryCapacity { get; set; }
-        public float ParallelInformation_PV_InputVoltage { get; set; }
-        public float ParallelInformation_TotalChargingCurrent { get; set; }
-        public float ParallelInformation_Total_AC_OutputApparentPower { get; set; }
-        public float ParallelInformation_TotalOutputActivePower { get; set; }
-        public float ParallelInformation_Total_AC_OutputPercentage { get; set; }
+        public string ParallelInformation_GridVoltage { get; set; }
+        public string ParallelInformation_GridFrequency { get; set; }
+        public string ParallelInformation_ACOutputVoltage { get; set; }
+        public string ParallelInformation_ACOutputFrequency { get; set; }
+        public string ParallelInformation_ACOutputApparentPower { get; set; }
+        public string ParallelInformation_ACOutputActivePower { get; set; }
+        public string ParallelInformation_LoadPercentage { get; set; }
+        public string ParallelInformation_BatteryVoltage { get; set; }
+        public string ParallelInformation_BatteryChargingCurrent { get; set; }
+        public string ParallelInformation_BatteryCapacity { get; set; }
+        public string ParallelInformation_PV_InputVoltage { get; set; }
+        public string ParallelInformation_TotalChargingCurrent { get; set; }
+        public string ParallelInformation_Total_AC_OutputApparentPower { get; set; }
+        public string ParallelInformation_TotalOutputActivePower { get; set; }
+        public string ParallelInformation_Total_AC_OutputPercentage { get; set; }
         //InverterStatus start
-        public bool SCC_OK { get; set; }
-        public bool AC_Charging { get; set; }
-        public bool SCC_Charging { get; set; }
+        public string SCC_OK { get; set; }
+        public string AC_Charging { get; set; }
+        public string SCC_Charging { get; set; }
         public string Battery { get; set; }
-        public bool Line_OK { get; set; }
-        public bool loadOn { get; set; }
-        public bool ConfigurationChange { get; set; }
+        public string Line_OK { get; set; }
+        public string loadOn { get; set; }
+        public string ConfigurationChange { get; set; }
         //InverterStatus end
         public string ParallelInformation_OutputMode { get; set; }
         public string ParallelInformation_ChargerSourcePriority { get; set; }
-        public float ParallelInformation_MaxChargerCurrent { get; set; }
-        public float ParallelInformation_MaxChargerRange { get; set; }
-        public float ParallelInformation_Max_AC_ChargerCurrent { get; set; }
-        public float ParallelInformation_PV_InputCurrentForBattery { get; set; }
-        public float ParallelInformation_BatteryDischargeCurrent { get; set; }
+        public string ParallelInformation_MaxChargerCurrent { get; set; }
+        public string ParallelInformation_MaxChargerRange { get; set; }
+        public string ParallelInformation_Max_AC_ChargerCurrent { get; set; }
+        public string ParallelInformation_PV_InputCurrentForBattery { get; set; }
+        public string ParallelInformation_BatteryDischargeCurrent { get; set; }
         //ParallelInformation end
         public float GridVoltage { get; set; }
         public float GridFrequency { get; set; }
@@ -123,11 +121,12 @@ namespace Repository.ESS.Domain
         public float PV_ChargingPower { get; set; }
 
         //107/10/01 新增
-        public float SPM90Voltage { get; set; }
-        public float SPM90Current { get; set; }
-        public float SPM90ActivePower { get; set; }
-        public float SPM90ActiveEnergy { get; set; }
-        public float SPM90VoltageDirection { get; set; }
+        public string SPM90Voltage { get; set; }
+        public string SPM90Current { get; set; }
+        public string SPM90ActivePower { get; set; }
+        public string SPM90ActiveEnergy { get; set; }
+        public string SPM90VoltageDirection { get; set; }
         //end
+        public DateTime CreateTime { get; set; }
     }
 }

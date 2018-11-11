@@ -3,56 +3,76 @@
 @{
     GeneratorService GeneratorService = new GeneratorService();
     Generator generator = GeneratorService.ReadNow();
-            string status = (generator.ControlStatus == "true") ? "已啟動": "關閉中";
+    string Info1 = "", Info2 = "", Info3 = "", Info4 = "", Info5 = "", Info6 = "", Info7 = "", Info8 = "",
+        Info9 = "", Info10 = "", Info11 = "", Info12 = "", Info13 = "", Info14 = "", Info15 = "";
+
+    if (generator != null)
+    {
+        Info1 = generator.UpdateTime.AddHours(8).ToString();
+        Info2 = string.Format("{0:#,0.00}", generator.FuleLevel);
+        Info3 = string.Format("{0:#,0.00}", generator.L1Nvoltage);
+        Info4 = string.Format("{0:#,0.00}", generator.L2Nvoltage);
+        Info5 = string.Format("{0:#,0.00}", generator.L3Nvoltage);
+        Info6 = string.Format("{0:#,0.00}", generator.L1current);
+        Info7 = string.Format("{0:#,0.00}", generator.L2current);
+        Info8 = string.Format("{0:#,0.00}", generator.L3current);
+        Info9 = string.Format("{0:#,0.00}", generator.totalwatts / 1000);
+        Info10 = string.Format("{0:#,0.00}", generator.averagepowerfactor);
+        Info11 = string.Format("{0:#,0.00}", generator.positiveKWhours);
+        Info12 = string.Format("{0:#,0.00}", generator.negativeKWhours);
+        Info13 = generator.ControlStatus.Equals("true")? "已啟動" : "關閉中";
+        Info14 = string.Format("{0:#,0.00}", generator.AvailabilityEnergy);
+        Info15 = string.Format("{0:#,0.00}", generator.AvailabilityHour);
+    }
 }
 <div class="row">
     <!--lift-->
     <div class="col-2 h6">
         <div class="row " id="pc0">
-            <div class="col font-weight-bold small">資料時間(UTC)</div>
-            <div class="col font-italic">@generator.UpdateTime</div>
+            <div class="col font-weight-bold small">資料時間(UTC+8)</div>
+            <div class="col font-italic">@Info1</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">發電機油位 (%)</div>
-            <div class="col font-italic">@string.Format("{0:0.0}", generator.FuleLevel)</div>
+            <div class="col font-italic">@Info2</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">L1-N相電壓(V)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", generator.L1Nvoltage)</div>
+            <div class="col font-italic">@Info3</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">L2-N相電壓(V)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", generator.L2Nvoltage)</div>
+            <div class="col font-italic">@Info4</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">L3-N相電壓 (V)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.00}", generator.L3Nvoltage)</div>
+            <div class="col font-italic">@Info5</div>
             <div class="w-100"></div>
             <div class="col  font-weight-bold small">L1相電流(A)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", generator.L1current)</div>
+            <div class="col font-italic">@Info6</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">L2相電流(A)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", generator.L2current)</div>
+            <div class="col font-italic">@Info7</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">L3相電流(A)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", generator.L3current)</div>
+            <div class="col font-italic">@Info8</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">總實功率(kW)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", generator.totalwatts / 1000)</div>
+            <div class="col font-italic">@Info9</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">平均功率因數</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", generator.averagepowerfactor)</div>
+            <div class="col font-italic">@Info10</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">正的千瓦時(kWh)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", generator.positiveKWhours)</div>
+            <div class="col font-italic">@Info11</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">負的千瓦時(kWh)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", generator.negativeKWhours)</div>
+            <div class="col font-italic">@Info12</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">發電機狀態</div>
-            <div class="col font-italic">@status</div>
+            <div class="col font-italic">@Info13</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">可用總電量(kWh)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", generator.AvailabilityEnergy)</div>
+            <div class="col font-italic">@Info14</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">可用電時數(H)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", generator.AvailabilityHour)</div>
+            <div class="col font-italic">@Info15</div>
         </div>
       
     </div>
@@ -146,7 +166,7 @@
                                 }
                             },
                             axisLabel: {
-                                formatter: '{value} kW'
+                                formatter: '{value} kWh'
                             }
                         }
                     ],

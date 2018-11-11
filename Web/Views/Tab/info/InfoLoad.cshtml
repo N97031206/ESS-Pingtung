@@ -3,37 +3,50 @@
 @{
     LoadPowerService LoadPowerService = new LoadPowerService();
     LoadPower loadPower = LoadPowerService.ReadNow();
+    string Info1 = "", Info2 = "", Info3 = "", Info4 = "", Info5 = "", Info6 = "", Info7 = "", Info8 = "",Info9 = "";
+    if (loadPower!=null)
+    {
+        Info1 = loadPower.date_Time.AddHours(8).ToString();
+        Info2 = string.Format("{0:0.0}", loadPower.Vavg);
+        Info3 = string.Format("{0:#,0.0}", loadPower.Isum);
+        Info4 = string.Format("{0:#,0.0}", loadPower.Watt_t / 1000.0);
+        Info5 = string.Format("{0:#,0.00}", loadPower.Var_t / 1000.00);
+        Info6 = string.Format("{0:#,0.0}", loadPower.VA_t / 1000.0);
+        Info7 = string.Format("{0:#,0.0}", loadPower.PF_t);
+        Info8 = string.Format("{0:#,0.0}", loadPower.Frequency);
+        Info9 = string.Format("{0:#,0.0}", loadPower.kWHt);
+    }
 }
 <div class="row">
     <!--lift-->
     <div class="col-2 h6">
         <div class="row " id="pc0">
-            <div class="col font-weight-bold small">資料時間(UTC)</div>
-            <div class="col font-italic">@loadPower.updateTime</div>
+            <div class="col font-weight-bold small">資料時間(UTC+8)</div>
+            <div class="col font-italic">@Info1</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">電壓(V)</div>
-            <div class="col font-italic">@string.Format("{0:0.0}", loadPower.Vavg)</div>
+            <div class="col font-italic">@Info2</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">電流(A)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", loadPower.Isum)</div>
+            <div class="col font-italic">@Info3</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">實功率(kW)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", loadPower.Watt_t / 1000.0)</div>
+            <div class="col font-italic">@Info4</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">虛功率(kVAR)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.00}", loadPower.Var_t / 1000.00)</div>
+            <div class="col font-italic">@Info5</div>
             <div class="w-100"></div>
             <div class="col  font-weight-bold small">視在功率(kVA)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", loadPower.VA_t / 1000.0)</div>
+            <div class="col font-italic">@Info6</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">功率因數(PF)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", loadPower.PF_t)</div>
+            <div class="col font-italic">@Info7</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">頻率(Hz)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", loadPower.Frequency)</div>
+            <div class="col font-italic">@Info8</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">用電量(kWh)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", loadPower.kWHt)</div>
+            <div class="col font-italic">@Info9</div>
         </div>
     </div>
     <!--middle-->
@@ -125,7 +138,7 @@
                                 }
                             },
                             axisLabel: {
-                                formatter: '{value} kW'
+                                formatter: '{value} kWh'
                             }
                         }
                     ],

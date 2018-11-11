@@ -105,7 +105,7 @@
                     if (!string.IsNullOrEmpty(bas.BatteryIDs))
                     {
                         string T1 = null, T2 = null, T3 = null, T4 = null, T5 = null, T6 = null, T7 = null;
-                        string[] IDs = bas.BatteryIDs.Trim().Split('+');
+                        string[] IDs = bas.BatteryIDs.Trim().Split('|');
                         List<string> BtnGroup = new List<string>();
                         int cut = 1;
                         foreach (var ba in IDs)
@@ -118,11 +118,11 @@
                                 string direct = (cd == 0) ? "離線" : (cd == 1) ? "充電" : "放電";
                                 IDList.Add(ba.Trim());
                                 T1 = battery.updateTime.ToString();
-                                T2 += cut.ToString()+":["+string.Format("{0:#,0.0}", battery.voltage) + "] ";
+                                T2 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", battery.voltage) + "] ";
                                 T3 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", battery.charging_current) + "] ";
                                 T4 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", battery.discharging_current) + "] ";
-                                T5 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", battery.SOC) +"] ";
-                                T6 += cut.ToString() + ":[" + string.Format("{0:#,0}", battery.Cycle)+ "] ";
+                                T5 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", battery.SOC) + "] ";
+                                T6 += cut.ToString() + ":[" + string.Format("{0:#,0}", battery.Cycle) + "] ";
                                 T7 += cut.ToString() + ":[" + direct + "] ";
                                 BtnGroup.Add("cellmodal" + Convert.ToString(x));
                                 x++;
@@ -148,15 +148,18 @@
                                 </div>
                             </td>
                         </tr>
-                        T1 = null; T2 = null; T3 = null; T4 = null; T5 = null; T6 = null; T7 = null; BtnGroup.Clear();c = 1;
+                        T1 = null; T2 = null; T3 = null; T4 = null; T5 = null; T6 = null; T7 = null; BtnGroup.Clear(); c = 1;
                     }
                 }
             </tbody>
         </table>
-        @if (!string.IsNullOrEmpty(Model.FirstOrDefault().BatteryIDs))
+        @if (Model.Count > 0)
         {
-        <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historyBattery", new { connStr, Page }))</div>
-        }           
+            if (!string.IsNullOrEmpty(Model.FirstOrDefault().BatteryIDs))
+            {
+                <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historyBattery", new { connStr, Page }))</div>
+            }
+        }
         </div>
 </div>
 
@@ -165,8 +168,8 @@
     @foreach (string id in IDList)
     {
         var Cells = batteryService.ReadByID(Guid.Parse(id.Trim()));
-        var cellIndex = Cells.cells_index.Split('+');
-        var cellvolta = Cells.cells_voltage.Split('+');
+        var cellIndex = Cells.cells_index.Split('|');
+        var cellvolta = Cells.cells_voltage.Split('|');
         string modal = "cellmodal" + Convert.ToString(y);
         <div class="modal fade" id="@modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog modal-sm" role="document">

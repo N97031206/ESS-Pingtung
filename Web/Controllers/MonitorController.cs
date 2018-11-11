@@ -54,7 +54,6 @@ namespace Web.Controllers
             ViewBag.Title = ConfigurationManager.AppSettings["LogoInfo"];          
             return View();
         }
-
   
        [HttpPost]
         public JsonResult ReadframeList()
@@ -62,34 +61,39 @@ namespace Web.Controllers
             Battery battery = BatteryService.ReadNow();
             int cd = Convert.ToInt32(battery.charge_direction);
 
-            //Random random = new Random();
-            //int direct = Convert.ToInt32(Math.Round(random.Next(0, 20) / 10.0));
+            #region 正式資料
             //FrameData frames = new FrameData()
             //{
-            //    Solar = random.Next(-10, 30) / 10.0f,
-            //    GirdPower = random.Next(20, 40) / 10.0f,
-            //    Load = random.Next(50, 100) / 10.0f,
-            //    BatteyMode = (direct == 0) ? "離線" : (direct == 1) ? "充電" : "放電",
-            //    BatteySOC = random.Next(800, 990) / 10.0f,
-            //    BatteyPower = random.Next(20, 30) / 10.0f,
-            //    GeneratorPower = random.Next(1050, 1150) / 10.0f,
-            //    Direction = direct
-            //};
+            //    Solar = InverterService.ReadNow().SPM90ActivePower,
+            //    GirdPower = GridPowerService.ReadNow().Watt_t,
+            //    Load = LoadPowerService.ReadNow().Watt_t,
+            //    BatteyMode = (cd == 0) ? "離線" : (cd == 1) ? "充電" : "放電",
+            //    BatteySOC = battery.SOC,
+            //    BatteyPower = battery.discharging_watt,
+            //    Direction = cd
+            //};           
+            #endregion
 
+            #region 測試資料
+            Random random = new Random();
+            int direct = Convert.ToInt32(Math.Round(random.Next(0, 20) / 10.0));
             FrameData frames = new FrameData()
             {
-                Solar = InverterService.ReadNow().SPM90ActivePower,
-                GirdPower = GridPowerService.ReadNow().Watt_t,
-                Load = LoadPowerService.ReadNow().Watt_t,
-                BatteyMode = (cd == 0) ? "離線" : (cd == 1) ? "充電" : "放電",
-                BatteySOC = battery.SOC,
-                BatteyPower = battery.discharging_watt,
-                Direction = cd
+                Solar = random.Next(-10, 30) / 10.0f,
+                GirdPower = random.Next(20, 40) / 10.0f,
+                Load = random.Next(50, 100) / 10.0f,
+                BatteyMode = (direct == 0) ? "離線" : (direct == 1) ? "充電" : "放電",
+                BatteySOC = random.Next(800, 990) / 10.0f,
+                BatteyPower = random.Next(20, 30) / 10.0f,
+                GeneratorPower = random.Next(1050, 1150) / 10.0f,
+                Direction = direct
             };
+            #endregion
 
             return Json(frames);
         }
 
+        //Angular首頁資料結構
         private class FrameData
         {
             public float Solar { get; set; }

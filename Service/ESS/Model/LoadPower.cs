@@ -15,7 +15,6 @@ namespace Service.ESS.Model
         public string serialNO { get; set; }    //	序號	
         public string name { get; set; }    //	名稱	
         public bool connected { get; set; } //	連線通訊狀態
-        public DateTime updateTime { get; set; }
         public DateTime date_Time { get; set; }
         //start
         public float VA { get; set; }   //	A相電壓	V
@@ -75,15 +74,15 @@ namespace Service.ESS.Model
         public float remain_time { get; set; }  //	需量	kW
 
         //event
-        public bool IsCurrent { get; set; }
+        public string IsCurrent { get; set; }
         public string ErrorMessage { get; set; }
-        public int event_info { get; set; }
-        public DateTime event_date_time { get; set; }
+        public string event_info { get; set; }
+        public string event_date_time { get; set; }
         //info
-        public int Alarm { get; set; }
-        public int ELeve { get; set; }
-        public int EType { get; set; }
-        public int ELoop { get; set; }
+        public string Alarm { get; set; }
+        public string ELeve { get; set; }
+        public string EType { get; set; }
+        public string ELoop { get; set; }
         //end
     }
 }

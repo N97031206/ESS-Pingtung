@@ -13,7 +13,6 @@ namespace Repository.ESS.Domain
         public Guid Id { get; set; }
 
         [Required]
-
         public Guid StationID { get; set; }
         [ForeignKey("StationID")]
         [Column(Order = 1)]

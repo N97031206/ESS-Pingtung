@@ -35,6 +35,7 @@ namespace Service.ESS.Provider
         public Guid Create(Model.Inverter model)
         {
             Domain.Inverter domain = this.mapper.Map<Domain.Inverter>(model);
+
             inverterRepository.Create(domain);
             inverterRepository.SaveChanges();
             return domain.Id;
@@ -42,20 +43,20 @@ namespace Service.ESS.Provider
 
         public Model.Inverter ReadNow()
         {
-            Domain.Inverter inverter = inverterRepository.ReadAll().OrderByDescending(x => x.UpdateTime).FirstOrDefault();
+            Domain.Inverter inverter = inverterRepository.ReadAll().OrderByDescending(x => x.CreateTime).FirstOrDefault();
             return this.mapper.Map<Model.Inverter>(inverter);
         }
 
         public List<Model.Inverter> ReadByInfoList(DateTime StartTime, DateTime endTime)
         {
             List<Domain.Inverter> inverterList =
-                inverterRepository.ReadListBy(x => x.UpdateTime >= StartTime && x.UpdateTime < endTime).ToList();
+                inverterRepository.ReadListBy(x => x.CreateTime>= StartTime && x.CreateTime < endTime).ToList();
             return this.mapper.Map<List<Model.Inverter>>(inverterList);
         }
 
         public int Count(DateTime StartTime, DateTime endTime)
         {
-            return inverterRepository.ReadListBy(x => x.UpdateTime >= StartTime && x.UpdateTime < endTime).Count();
+            return inverterRepository.ReadListBy(x => x.CreateTime >= StartTime && x.CreateTime < endTime).Count();
         }
     }
 }

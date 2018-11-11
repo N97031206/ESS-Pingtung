@@ -3,31 +3,40 @@
 @{
     InverterService inverterService = new InverterService();
     Inverter inverter = inverterService.ReadNow();
+    string Info1 = "", Info2 = "", Info3 = "", Info4 = "", Info5 = "";
+    if (inverter!=null)
+    {
+        Info1 = inverter.CreateTime.ToString();
+        Info2 = string.Format("{0:#,0.00}", inverter.SPM90Voltage.Split('|'));
+        Info3 = string.Format("{0:#,0.00}", inverter.SPM90Current.Split('|'));
+        Info4 = string.Format("{0:#,0.00}", inverter.SPM90ActiveEnergy.Split('|').ToList().Sum(x => x.IsEmpty() ? 0 : Convert.ToDouble(x)) / 1000.0);
+        Info5 = string.Format("{0:#,0.00}", inverter.SPM90ActivePower.Split('|').ToList().Sum(x => x.IsEmpty() ? 0 : Convert.ToDouble(x)) / 1000.0);
+    }
 }
 <div class="row">
     <!--lift-->
     <div class="col-2 h6">
         <div class="row " id="pc0">
-            <div class="col font-weight-bold small">資料時間(UTC)</div>
-            <div class="col font-italic">@inverter.UpdateTime</div>
+            <div class="col font-weight-bold small">資料時間(UTC+8)</div>
+            <div class="col font-italic">@Info1</div>
         </div>
         <div class="row " id="pc1">
             <div class="col font-weight-bold small">電壓(V)</div>
-            <div class="col font-italic">@string.Format("{0:0.0}", inverter.SPM90Voltage)</div>
+            <div class="col font-italic">@Info2</div>
         </div>
         <div class="row " id="pc2">
             <div class="col font-weight-bold small">電流(A)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", inverter.SPM90Current)</div>
+            <div class="col font-italic">@Info3</div>
         </div>
         <div class="row " id="pc3">
             <div class="col font-weight-bold small">功率(kW)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.0}", inverter.SPM90ActiveEnergy / 1000.0)</div>
+            <div class="col font-italic">@Info4</div>
         </div>
         <div class="row " id="pc4">
             <div class="col font-weight-bold small">發電量(kWh)</div>
-            <div class="col font-italic">@string.Format("{0:#,0.00}", inverter.SPM90ActivePower)</div>
+            <div class="col font-italic">@Info5</div>
         </div>
-       
+
     </div>
     <!--middle-->
     <div class="col-8">
@@ -118,7 +127,7 @@
                                 }
                             },
                             axisLabel: {
-                                formatter: '{value} kW'
+                                formatter: '{value} kWh'
                             }
                         }
                     ],

@@ -1153,7 +1153,6 @@
     <Content Include="Views\Tab\Abnormal.cshtml" />
     <Content Include="Views\Tab\History.cshtml" />
     <Content Include="Views\Tab\Maintain.cshtml" />
-    <Content Include="Views\Tab\info\InfoHome.cshtml" />
     <Content Include="Views\Tab\info\InfoBattery.cshtml" />
     <Content Include="Views\Tab\info\InfoSolar.cshtml" />
     <Content Include="Views\Tab\info\InfoLoad.cshtml" />
@@ -1242,7 +1241,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1698</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1698/</IISUrl>
+          <IISUrl>http://localhost:6698/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -9,6 +9,7 @@ using PagedList;
 using NLog;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
+using System.Web.WebPages;
 
 namespace Web.Controllers
 {
@@ -258,17 +259,17 @@ namespace Web.Controllers
             {
                 case "GridPower":
                     #region GridPowerChart
-                    var now = GridPowerService.ReadNow();
-                    endTime = GridPowerService.ReadNow().date_time;
+                    var gridNow = GridPowerService.ReadNow();
+                    endTime = (gridNow == null) ? DateTime.Now : gridNow.date_time;
                     start = endTime.AddMinutes(-1440);
                     min = Math.Abs(start.Minute / 15);
                     if (min.Equals(0)) { min = 0; } else if (min.Equals(1)) { min = 15; } else if (min.Equals(2)) { min = 30; } else if (min.Equals(3)) { min = 45; } else { min = 0; }
                     starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, min, 00, 00);
                     //資料                
-                    for (int i = 0; i < 96; i ++)
+                    for (int i = 0; i < 96; i++)
                     {
                         var count = GridPowerService.ReadByInfoList(starttime, starttime.AddMinutes(15));
-                        Data += string.Format("{0:N2},", count.Count == 0 ?0:count.Average(x => x.Vavg)).Trim();
+                        Data += string.Format("{0:N2},", count.Count == 0 ? 0 : count.Average(x => x.Vavg)).Trim();
                         starttime = starttime.AddMinutes(15);
                     }
                     //組圖表資料
@@ -279,7 +280,8 @@ namespace Web.Controllers
                     break;
                 case "Inverters":
                     #region InvertersChart
-                    endTime = InverterService.ReadNow().UpdateTime;
+                    var Invnow = InverterService.ReadNow();
+                    endTime = (Invnow == null) ? DateTime.Now : Invnow.CreateTime;
                     start = endTime.AddMinutes(-1440);
                     min = Math.Abs(start.Minute / 15);
                     if (min.Equals(0)) { min = 0; } else if (min.Equals(1)) { min = 15; } else if (min.Equals(2)) { min = 30; } else if (min.Equals(3)) { min = 45; } else { min = 0; }
@@ -288,7 +290,7 @@ namespace Web.Controllers
                     for (int i = 0; i < 96; i++)
                     {
                         var count = InverterService.ReadByInfoList(starttime, starttime.AddMinutes(15));
-                        Data += string.Format("{0:N2},", count.Count==0?0:count.Average(x => x.ParallelInformation_TotalOutputActivePower)).Trim();
+                        Data += string.Format("{0:N2},", (count.Count == 0) ? 0 : (count.Sum(x => x.ParallelInformation_TotalOutputActivePower.Split('|').ToList().Sum(y => y.IsEmpty() ? 0 : Convert.ToDouble(y))))/1000.0).Trim();
                         starttime = starttime.AddMinutes(15);
                     }
                     //組圖表資料
@@ -299,7 +301,8 @@ namespace Web.Controllers
                     break;
                 case "Solar":
                     #region SolarChart
-                    endTime = InverterService.ReadNow().UpdateTime;
+                    var solarnow = InverterService.ReadNow();
+                    endTime = (solarnow == null) ? DateTime.Now : solarnow.CreateTime;
                     start = endTime.AddMinutes(-1440);
                     min = Math.Abs(start.Minute / 15);
                     if (min.Equals(0)) { min = 0; } else if (min.Equals(1)) { min = 15; } else if (min.Equals(2)) { min = 30; } else if (min.Equals(3)) { min = 45; } else { min = 0; }
@@ -308,7 +311,7 @@ namespace Web.Controllers
                     for (int i = 0; i < 96; i++)
                     {
                         var count = InverterService.ReadByInfoList(starttime, starttime.AddMinutes(15));
-                        Data += string.Format("{0:N2},", count.Count==0?0:count.Average(x => x.SPM90ActiveEnergy)).Trim();
+                        Data+= string.Format("{0:N2},", (count.Count == 0) ? 0 : (count.Sum(x => x.SPM90ActiveEnergy.Split('|').ToList().Sum(y => y.IsEmpty() ? 0 : Convert.ToDouble(y))))).Trim();
                         starttime = starttime.AddMinutes(15);
                     }
                     //組圖表資料
@@ -319,7 +322,8 @@ namespace Web.Controllers
                     break;
                 case "Battery":
                     #region BatteryChart
-                    endTime = BatteryService.ReadNow().updateTime;
+                    var batterynow = InverterService.ReadNow();
+                    endTime = (batterynow == null) ? DateTime.Now : batterynow.CreateTime;
                     start = endTime.AddMinutes(-1440);
                     min = Math.Abs(start.Minute / 15);
                     if (min.Equals(0)) { min = 0; } else if (min.Equals(1)) { min = 15; } else if (min.Equals(2)) { min = 30; } else if (min.Equals(3)) { min = 45; } else { min = 0; }
@@ -328,7 +332,7 @@ namespace Web.Controllers
                     for (int i = 0; i < 96; i++)
                     {
                         var count = BatteryService.ReadByInfoList(starttime, starttime.AddMinutes(15));
-                        Data += string.Format("{0:N2},", count.Count==0?0:count.Average(x => x.SOC)).Trim();
+                        Data += string.Format("{0:N2},", count.Count == 0 ? 0 : count.Average(x => x.SOC)).Trim();
                         starttime = starttime.AddMinutes(15);
                     }
                     //組圖表資料
@@ -339,16 +343,17 @@ namespace Web.Controllers
                     break;
                 case "Load":
                     #region LoadChart
-                    endTime = LoadPowerService.ReadNow().updateTime;
+                    var loadnow = InverterService.ReadNow();
+                    endTime = (loadnow == null) ? DateTime.Now : loadnow.CreateTime;
                     start = endTime.AddMinutes(-1440);
                     min = Math.Abs(start.Minute / 15);
-                    if (min.Equals(0)) { min = 0; } else if (min.Equals(1)) { min = 15; } else if (min.Equals(2)) { min = 30; } else if (min.Equals(3)) { min = 45; }else { min = 0; }
+                    if (min.Equals(0)) { min = 0; } else if (min.Equals(1)) { min = 15; } else if (min.Equals(2)) { min = 30; } else if (min.Equals(3)) { min = 45; } else { min = 0; }
                     starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, min, 00, 00);
                     //資料
                     for (int i = 0; i < 96; i++)
                     {
                         var count = LoadPowerService.ReadByInfoList(starttime, starttime.AddMinutes(15));
-                        Data += string.Format("{0:N2},", count.Count == 0 ? 0: count.Average(x => x.Vavg)).Trim();
+                        Data += string.Format("{0:N2},", count.Count == 0 ? 0 : count.Average(x => x.Vavg)).Trim();
                         starttime = starttime.AddMinutes(15);
                     }
                     //組圖表資料
@@ -359,15 +364,13 @@ namespace Web.Controllers
                     break;
                 case "Generator":
                     #region GeneratorChart
-                    endTime = GeneratorService.ReadNow().UpdateTime;
+                    var gennow = InverterService.ReadNow();
+                    endTime = (gennow == null) ? DateTime.Now : gennow.CreateTime;
                     start = endTime.AddMinutes(-1440);
                     min = Math.Abs(start.Minute / 15);
-                    if (min.Equals(0)) { min = 0; } else if (min.Equals(1)) { min = 15; } else if (min.Equals(2)) { min = 30; } else if (min.Equals(3)) { min = 45; }else { min = 0; }
+                    if (min.Equals(0)) { min = 0; } else if (min.Equals(1)) { min = 15; } else if (min.Equals(2)) { min = 30; } else if (min.Equals(3)) { min = 45; } else { min = 0; }
                     starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, min, 00, 00);
                     //資料
-                    //count = GeneratorService.Count(starttime, endTime);
-                    //for (int i = 0; i < count; i += 15)
-                    //{
                     for (int i = 0; i < 96; i++)
                     {
                         var count = GeneratorService.ReadByInfoList(starttime, starttime.AddMinutes(15));
@@ -383,9 +386,9 @@ namespace Web.Controllers
                 default:
                     break;
             }
-            ViewBag.Demand = "555.1";//可用總電量</div>
-            ViewBag.RemainTime = "200";//可用電時數</div>
-        }             
+            ViewBag.Demand = "555.1";//可用總電量
+            ViewBag.RemainTime = "200";//可用電時數
+        }
         #endregion
 
         #region Abnormal
@@ -770,7 +773,7 @@ namespace Web.Controllers
                     conlumnIndex = 1;   //每筆資料欄位起始位置
                     foreach (var gps in data)
                     {
-                        string[] IDs = gps.GridPowerIDs.Trim().Split('+');
+                        string[] IDs = gps.GridPowerIDs.Trim().Split('|');
                         foreach (var gp in IDs)
                         {
                             Guid ID = Guid.Parse(gp);
@@ -806,7 +809,7 @@ namespace Web.Controllers
                     conlumnIndex = 1;
                     foreach (var invs in data)
                     {
-                        string[] IDs = invs.GridPowerIDs.Trim().Split('+');
+                        string[] IDs = invs.GridPowerIDs.Trim().Split('|');
                         foreach (var inv in IDs)
                         {
                             Guid ID = Guid.Parse(inv);
@@ -819,13 +822,13 @@ namespace Web.Controllers
                             else if (mod == "F") { mod = "Fault Mode"; }
                             else if (mod == "H") { mod = "Power Saving Mode"; }
                             else { mod = "Unknown Mode"; }
-                            sheet.Cell(rowIdx, 1).Value = inverter.UpdateTime.ToString().Trim();
+                            sheet.Cell(rowIdx, 1).Value = inverter.CreateTime.ToString().Trim();
                             sheet.Cell(rowIdx, 2).Value = mod;
                             sheet.Cell(rowIdx, 3).Value = string.Format("{0:#,0.0}", inverter.GridVoltage);
                             sheet.Cell(rowIdx, 4).Value = string.Format("{0:#,0.0}", inverter.GridFrequency);
                             sheet.Cell(rowIdx, 5).Value = string.Format("{0:#,0.0}", inverter.AC_OutputVoltage);
                             sheet.Cell(rowIdx, 6).Value = string.Format("{0:#,0.0}", inverter.AC_OutputFrequency);
-                            sheet.Cell(rowIdx, 7).Value = string.Format("{0:#,0.0}", inverter.ParallelInformation_TotalOutputActivePower / 1000.0);
+                            sheet.Cell(rowIdx, 7).Value = string.Format("{0:#,0.0}", Convert.ToDouble(inverter.ParallelInformation_TotalOutputActivePower )/ 1000.0);
                             sheet.Cell(rowIdx, 8).Value = string.Format("{0:#,0.0}", inverter.BatteryVoltage);
                             sheet.Cell(rowIdx, 9).Value = string.Format("{0:#,0.0}", inverter.BatteryCapacity);
                             sheet.Cell(rowIdx, 10).Value = string.Format("{0:#,0.0}", inverter.PV_InputVoltage);
@@ -845,15 +848,15 @@ namespace Web.Controllers
                     colIdx++;
                     foreach (var invs in data)
                     {
-                        string[] IDs = invs.GridPowerIDs.Trim().Split('+');
+                        string[] IDs = invs.GridPowerIDs.Trim().Split('|');
                         foreach (var inv in IDs)
                         {
                             Guid ID = Guid.Parse(inv);
                             Inverter inverter = InverterService.ReadByID(ID);
-                            sheet.Cell(rowIdx, 1).Value = inverter.UpdateTime.ToString().Trim();
+                            sheet.Cell(rowIdx, 1).Value = inverter.CreateTime.ToString().Trim();
                             sheet.Cell(rowIdx, 2).Value = string.Format("{0:#,0.0}", inverter.SPM90Voltage);
                             sheet.Cell(rowIdx, 3).Value = string.Format("{0:#,0.0}", inverter.SPM90Current);
-                            sheet.Cell(rowIdx, 4).Value = string.Format("{0:#,0.0}", inverter.SPM90ActiveEnergy / 1000.0);
+                            sheet.Cell(rowIdx, 4).Value = string.Format("{0:#,0.0}", Convert.ToDouble(inverter.SPM90ActiveEnergy) / 1000.0);
                             sheet.Cell(rowIdx, 5).Value = string.Format("{0:#,0.0}", inverter.SPM90ActivePower);
                             conlumnIndex++;
                             rowIdx++;
@@ -874,7 +877,7 @@ namespace Web.Controllers
                     conlumnIndex = 1;
                     foreach (var bas in data)
                     {
-                        string[] IDs = bas.GridPowerIDs.Trim().Split('+');
+                        string[] IDs = bas.GridPowerIDs.Trim().Split('|');
                         foreach (var ba in IDs)
                         {
                             Guid ID = Guid.Parse(ba);
@@ -908,12 +911,12 @@ namespace Web.Controllers
                     conlumnIndex = 1;
                     foreach (var los in data)
                     {
-                        string[] IDs = los.GridPowerIDs.Trim().Split('+');
+                        string[] IDs = los.GridPowerIDs.Trim().Split('|');
                         foreach (var lo in IDs)
                         {
                             Guid ID = Guid.Parse(lo);
                             LoadPower loadPower = LoadPowerService.ReadByID(ID);
-                            sheet.Cell(rowIdx, 1).Value = loadPower.updateTime.ToString();
+                            sheet.Cell(rowIdx, 1).Value = loadPower.date_Time.ToString();
                             sheet.Cell(rowIdx, 2).Value = string.Format("{0:#,0.0}", loadPower.Vavg);
                             sheet.Cell(rowIdx, 3).Value = string.Format("{0:#,0.0}", loadPower.Isum);
                             sheet.Cell(rowIdx, 4).Value = string.Format("{0:#,0.0}", loadPower.Watt_t / 1000.0);
@@ -947,7 +950,7 @@ namespace Web.Controllers
                     conlumnIndex = 1;
                     foreach (var gens in data)
                     {
-                        string[] IDs = gens.GridPowerIDs.Trim().Split('+');
+                        string[] IDs = gens.GridPowerIDs.Trim().Split('|');
                         foreach (var lo in IDs)
                         {
                             Guid ID = Guid.Parse(lo);
