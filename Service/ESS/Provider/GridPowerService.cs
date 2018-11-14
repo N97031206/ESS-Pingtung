@@ -48,7 +48,7 @@ namespace Service.ESS.Provider
         {
             List<Domain.GridPower> gridPowersList = new List<Domain.GridPower>();
             string[] IDs=null;
-            ESSList.ForEach(x => { IDs = x.GridPowerIDs.Trim().Split('+'); });
+            ESSList.ForEach(x => { IDs = x.GridPowerIDs.Trim().Split('|'); });
             foreach (var gp in IDs)
             {
                 Guid gpID = Guid.Parse(gp);

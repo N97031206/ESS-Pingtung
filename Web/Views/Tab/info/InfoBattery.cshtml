@@ -1,47 +1,73 @@
 ﻿@using Service.ESS.Provider;
 @using Service.ESS.Model;
 @{
+    //取最新時間
+    ESSObjecterService eSSObjecterService = new ESSObjecterService();
+    string EssTime = eSSObjecterService.ReadNow().CreateTime.ToString();
+    //取相關資料
+    var batteryID = eSSObjecterService.ReadNow().BatteryIDs.Split('|');
     BatteryService BatteryService = new BatteryService();
-    Battery battery = BatteryService.ReadNow();
-    string Info1 = "", Info2 = "", Info3 = "", Info4 = "", Info5 = "", Info6 = "", Info7 = "";
-
-    if ( battery!=null)
+    List<Battery> batteries = new List<Battery>();
+    foreach (var x in batteryID)
     {
-        Info1 = battery.updateTime.AddHours(8).ToString();
-        Info2 = string.Format("{0:#,0.00}", battery.voltage);
-        Info3 = string.Format("{0:#,0.00}", battery.charging_current);
-        Info4 = string.Format("{0:#,0.00}", battery.discharging_current);
-        Info5 = string.Format("{0:#,0.00}", battery.SOC);
-        Info6 = string.Format("{0:#,0.00}", battery.Cycle);
-        int cd = Convert.ToInt32(battery.charge_direction);
-        Info7 = (cd == 1) ? "充電" : (cd == 2) ? "放電": "離線"  ;
+        if (!string.IsNullOrEmpty(x))
+        {
+            Guid id = Guid.Parse(x.Trim());
+            batteries.Add(BatteryService.ReadByID(id));
+        }
     }
 }
+
+<style>
+    .line {
+        width: auto;
+        height: auto;
+        border-bottom: 1px solid black;
+    }
+</style>
+
 <div class="row">
     <!--lift-->
     <div class="col-2 h6">
+        @if (batteries != null)
+        {
         <div class="row " id="pc0">
             <div class="col font-weight-bold small">資料時間(UTC+8)</div>
-            <div class="col font-italic">@Info1</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">電池電壓(V)</div>
-            <div class="col font-italic">@Info2</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">充電電流(A)</div>
-            <div class="col font-italic">@Info3</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">放電電流(A)</div>
-            <div class="col font-italic">@Info4</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">電池容量(%)</div>
-            <div class="col font-italic">@Info5</div>
-            <div class="w-100"></div>
-            <div class="col  font-weight-bold small">充電次數(次)</div>
-            <div class="col font-italic">@Info6</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">充電方向</div>
-            <div class="col font-italic">@Info7</div>
+            <div class="col font-italic">@EssTime</div>
+            @foreach (var ba in batteries)
+            {
+                string Info1 = ba.index.ToString();
+                string Info2 = string.Format("{0:#,0.00}", ba.voltage);
+                string Info3 = string.Format("{0:#,0.00}", ba.charging_current);
+                string Info4 = string.Format("{0:#,0.00}", ba.discharging_current);
+                string Info5 = string.Format("{0:#,0.00}", BatteryService.EachSOC(ba.voltage));
+                string Info6 = string.Format("{0:#,0}", ba.Cycle);
+                int cd = Convert.ToInt32(ba.charge_direction);
+                string Info7 = (cd == 1) ? "充電" : (cd == 2) ? "放電" : "離線";
+                <div class="w-100 line"></div>
+                <div class="col font-weight-bold small">電池組</div>
+                <div class="col font-italic">@Info1</div>
+                <div class="w-100"></div>
+                <div class="col font-weight-bold small">電池電壓(V)</div>
+                <div class="col font-italic">@Info2</div>
+                <div class="w-100"></div>
+                <div class="col font-weight-bold small">充電電流(A)</div>
+                <div class="col font-italic">@Info3</div>
+                <div class="w-100"></div>
+                <div class="col font-weight-bold small">放電電流(A)</div>
+                <div class="col font-italic">@Info4</div>
+                <div class="w-100"></div>
+                <div class="col font-weight-bold small">電池容量(%)</div>
+                <div class="col font-italic">@Info5</div>
+                <div class="w-100"></div>
+                <div class="col  font-weight-bold small">充電次數(次)</div>
+                <div class="col font-italic">@Info6</div>
+                <div class="w-100"></div>
+                <div class="col font-weight-bold small">充電方向</div>
+                <div class="col font-italic">@Info7</div>
+            }
         </div>
+        }
     </div>
     <!--middle-->
     <div class="col-8">
@@ -95,7 +121,7 @@
                 option = null;
                 option = {
                     title: {
-                        text: '每日用電瓦數',
+                        text: 'SOC',
                         textStyle: {
                             fontWeight: 'normal',
                             color: 'white'
@@ -117,7 +143,7 @@
                                 }
                             },
                             axisLabel: {
-                                formatter: '{value}'
+                                formatter: '{value}' 
                             }
                         },
                     ],
@@ -132,14 +158,14 @@
                                 }
                             },
                             axisLabel: {
-                                formatter: '{value} kWh'
+                                formatter: '{value}%'
                             }
                         }
                     ],
                     series: [
                         {
-                            "name": "每日用電瓦數",
-                            "type": "bar",
+                            "name": "SOC",
+                            "type": "line",
                             "data": BatteryData,
                         }
                     ]
@@ -153,9 +179,9 @@
     <!--right-->
     <div class="col-2 h3">
         <div class=" bg-light">可用總電量</div>
-        <div class="font-italic">@ViewBag.Demand  kWh</div>
+        <div class="font-italic">@ViewBag.Demand</div>
         <div class="bg-light">可用電時數</div>
-        <div class="font-italic">@ViewBag.RemainTime 小時</div>
+        <div class="font-italic">@ViewBag.RemainTime</div>
     </div>
 </div>
 

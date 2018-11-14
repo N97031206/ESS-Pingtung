@@ -167,7 +167,11 @@
                         <div class="col-4"></div>
                         <div class="w-100"></div>
                         <div class="col-8 pictureGrid"></div>
-                        <div class="col-4"><div class="ArrowRight"></div></div>
+                        <div class="col-4">
+                            <div ng-if="GirdPower>0">
+                                <div class="ArrowRight"></div>
+                            </div>
+                        </div>
                         <div class="w-100"></div>
                         <div class="col-8 " style="height:150px; margin: auto;">
                             <div class="h5 down">
@@ -178,11 +182,15 @@
                         <div class="col-4"></div>
                         <div class="w-100"></div>
                         <div class="col-8 pictureGen"></div>
-                        <div class="col-4"><div class="ArrowRight"></div></div>                                                 
-                        <div class="w-100"></div>
-                        <div class="col-8"></div>
-                        <div class="col-4"></div>
-                    </div>
+                        <div class="col-4">
+                            <div ng-if="GeneratorPower>0">
+                                <div class="ArrowRight"></div>
+                            </div>                       
+                            </div>
+                            <div class="w-100"></div>
+                            <div class="col-8"></div>
+                            <div class="col-4"></div>
+                        </div>
                 </div>
                 @*col2*@
                 <div id=" col2" class="col-4 col-sm-4 col-md-4 col-lg-4  ">
@@ -205,7 +213,6 @@
                             <div class="ArrowdownBreak" ></div>
                         </div>*@
                     </div>
-
                     <div class="w-100"></div>
                     <div class="col pictureMain"></div>
                 </div>
@@ -221,7 +228,9 @@
                         </div>
                         <div class="w-100"></div>
                         <div class="col">
-                            <div class="ArrowRight"></div>
+                            <div ng-if="Load>0">
+                                <div class=" ArrowLeft"></div>
+                            </div>
                         </div>
                         <div class="col-7 pictureLoad"></div>
                         <div class="w-100"></div>
@@ -230,8 +239,8 @@
                             <div class="h5 down">
                                 <div>儲能電池</div>
                                 <div>狀態 :  {{BatteyMode}} </div>
-                                <div>SOC :  {{BatteySOC}} % </div>
-                                <div>功率 :   {{BatteyPower}}  kW</div>
+                                <div>SOC :  {{BatteySOC}}% </div>
+                                <div>功率 :  約{{BatteyPower}}kW</div>
                             </div>
                         </div>
                         <div class="w-100"></div>
@@ -256,5 +265,4 @@
             </div>
         </div>
     </div>
-
 </div>

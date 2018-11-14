@@ -92,6 +92,14 @@
     <Compile Include="Migrations\201811080858005_InitialCreate.Designer.cs">
       <DependentUpon>201811080858005_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811130627350_AddSPMid.cs" />
+    <Compile Include="Migrations\201811130627350_AddSPMid.Designer.cs">
+      <DependentUpon>201811130627350_AddSPMid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811130723169_AddSPMconnected.cs" />
+    <Compile Include="Migrations\201811130723169_AddSPMconnected.Designer.cs">
+      <DependentUpon>201811130723169_AddSPMconnected.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -111,6 +119,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201811080858005_InitialCreate.resx">
       <DependentUpon>201811080858005_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811130627350_AddSPMid.resx">
+      <DependentUpon>201811130627350_AddSPMid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811130723169_AddSPMconnected.resx">
+      <DependentUpon>201811130723169_AddSPMconnected.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

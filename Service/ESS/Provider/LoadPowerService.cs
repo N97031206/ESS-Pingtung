@@ -56,6 +56,14 @@ namespace Service.ESS.Provider
             return this.mapper.Map<Model.LoadPower>(loadPower);
         }
 
+        public List<Model.LoadPower> ReadNowList()
+        {
+            List<Domain.LoadPower> LoadPowersList = new List<Domain.LoadPower>();
+            LoadPowersList.AddRange(loadRepository.ReadAll().OrderByDescending(x => x.date_Time).Take(2));
+            return this.mapper.Map<List<Model.LoadPower>>(LoadPowersList);
+        }
+
+
         public List<Model.LoadPower> ReadByInfoList(DateTime StartTime, DateTime endTime)
         {
             List<Domain.LoadPower> loadPower =

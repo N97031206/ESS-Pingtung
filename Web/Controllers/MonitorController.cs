@@ -62,32 +62,32 @@ namespace Web.Controllers
             int cd = Convert.ToInt32(battery.charge_direction);
 
             #region 正式資料
-            //FrameData frames = new FrameData()
-            //{
-            //    Solar = InverterService.ReadNow().SPM90ActivePower,
-            //    GirdPower = GridPowerService.ReadNow().Watt_t,
-            //    Load = LoadPowerService.ReadNow().Watt_t,
-            //    BatteyMode = (cd == 0) ? "離線" : (cd == 1) ? "充電" : "放電",
-            //    BatteySOC = battery.SOC,
-            //    BatteyPower = battery.discharging_watt,
-            //    Direction = cd
-            //};           
+            FrameData frames = new FrameData()
+            {
+                Solar = Math.Round(InverterService.ReadNow().SPM90ActivePower.Split('|').ToList().Sum(x => string.IsNullOrEmpty(x) ? 0 : Convert.ToDouble(x) / 1000.0), 2),
+                GirdPower = GridPowerService.ReadNow().Watt_t,
+                Load = LoadPowerService.ReadNow().Watt_t,
+                BatteyMode = (cd == 1)?"充電": (cd == 2) ? "放電": "離線",
+                BatteySOC =  BatteryService.EachSOC(battery.voltage),
+                BatteyPower = (cd == 1) ?  Math.Round(battery.charging_watt/1000.0,2): (cd == 2) ?Math.Round(battery.discharging_watt/1000.0,2) : 0,
+                Direction = cd
+            };
             #endregion
 
             #region 測試資料
-            Random random = new Random();
-            int direct = Convert.ToInt32(Math.Round(random.Next(0, 20) / 10.0));
-            FrameData frames = new FrameData()
-            {
-                Solar = random.Next(-10, 30) / 10.0f,
-                GirdPower = random.Next(20, 40) / 10.0f,
-                Load = random.Next(50, 100) / 10.0f,
-                BatteyMode = (direct == 0) ? "離線" : (direct == 1) ? "充電" : "放電",
-                BatteySOC = random.Next(800, 990) / 10.0f,
-                BatteyPower = random.Next(20, 30) / 10.0f,
-                GeneratorPower = random.Next(1050, 1150) / 10.0f,
-                Direction = direct
-            };
+            //Random random = new Random();
+            //int direct = Convert.ToInt32(Math.Round(random.Next(0, 20) / 10.0));
+            //FrameData frames = new FrameData()
+            //{
+            //    Solar = random.Next(-10, 30) / 10.0f,
+            //    GirdPower = random.Next(-20, 40) / 10.0f,
+            //    Load = random.Next(-50, 100) / 10.0f,
+            //    BatteyMode = (direct == 0) ? "離線" : (direct == 1) ? "充電" : "放電",
+            //    BatteySOC = random.Next(800, 990) / 10.0f,
+            //    BatteyPower = random.Next(20, 30) / 10.0f,
+            //    GeneratorPower = random.Next(-1050, 1150) / 10.0f,
+            //    Direction = direct
+            //};
             #endregion
 
             return Json(frames);
@@ -96,13 +96,13 @@ namespace Web.Controllers
         //Angular首頁資料結構
         private class FrameData
         {
-            public float Solar { get; set; }
-            public float GirdPower { get; set; }
-            public float Load { get; set; }
+            public double Solar { get; set; }
+            public double GirdPower { get; set; }
+            public double Load { get; set; }
             public string BatteyMode { get; set; }
-            public float BatteySOC { get; set; }
-            public float BatteyPower { get; set; }
-            public float GeneratorPower { get; set; }
+            public double BatteySOC { get; set; }
+            public double BatteyPower { get; set; }
+            public double GeneratorPower { get; set; }
             public int Direction { get; set; }
         }
     }

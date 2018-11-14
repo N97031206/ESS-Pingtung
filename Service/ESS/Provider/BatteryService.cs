@@ -34,14 +34,10 @@ namespace Service.ESS.Provider
 
 
         public Guid Create(Model.Battery model)
-        {
-            model.updateTime = DateTime.Now;
- 
+        { 
             Domain.Battery domain = this.mapper.Map<Domain.Battery>(model);
-
             batteryRepository.Create(domain);
             batteryRepository.SaveChanges();
-
             return domain.Id;
         }
 
@@ -62,5 +58,17 @@ namespace Service.ESS.Provider
         {
             return batteryRepository.ReadListBy(x => x.updateTime >= StartTime && x.updateTime < endTime).Count(); 
         }
+
+        public double totalSOC()
+        {
+            List<Domain.Battery> four = batteryRepository.ReadAll().OrderByDescending(x => x.updateTime).Take(4).ToList();  
+            return (((four.Average(x => x.voltage) -42) / (58 - 42))*100);
+        }
+
+        public double EachSOC(float voltage)
+        {
+            return ((voltage - 42) / (58 - 42)) * 100.00;
+        }
+
     }
 }

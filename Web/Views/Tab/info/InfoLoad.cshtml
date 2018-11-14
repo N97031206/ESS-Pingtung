@@ -1,53 +1,80 @@
 ﻿@using Service.ESS.Provider;
 @using Service.ESS.Model;
 @{
+    //取最新時間
+    ESSObjecterService eSSObjecterService = new ESSObjecterService();
+    string EssTime = eSSObjecterService.ReadNow().CreateTime.ToString();
+    var LoadID = eSSObjecterService.ReadNow().LoadPowerIDs.Split('|');
+    //取相關資料
     LoadPowerService LoadPowerService = new LoadPowerService();
-    LoadPower loadPower = LoadPowerService.ReadNow();
-    string Info1 = "", Info2 = "", Info3 = "", Info4 = "", Info5 = "", Info6 = "", Info7 = "", Info8 = "",Info9 = "";
-    if (loadPower!=null)
+    List <LoadPower> loadPowers = new List<LoadPower>();
+    foreach (var x in LoadID)
     {
-        Info1 = loadPower.date_Time.AddHours(8).ToString();
-        Info2 = string.Format("{0:0.0}", loadPower.Vavg);
-        Info3 = string.Format("{0:#,0.0}", loadPower.Isum);
-        Info4 = string.Format("{0:#,0.0}", loadPower.Watt_t / 1000.0);
-        Info5 = string.Format("{0:#,0.00}", loadPower.Var_t / 1000.00);
-        Info6 = string.Format("{0:#,0.0}", loadPower.VA_t / 1000.0);
-        Info7 = string.Format("{0:#,0.0}", loadPower.PF_t);
-        Info8 = string.Format("{0:#,0.0}", loadPower.Frequency);
-        Info9 = string.Format("{0:#,0.0}", loadPower.kWHt);
+        if (!string.IsNullOrEmpty(x))
+        {
+            Guid id = Guid.Parse(x.Trim());
+            loadPowers.Add(LoadPowerService.ReadByID(id));
+        }
     }
 }
+
+<style>
+    .line {
+        width: auto;
+        height: auto;
+        border-bottom: 1px solid black;
+    }
+</style>
+
 <div class="row">
     <!--lift-->
     <div class="col-2 h6">
-        <div class="row " id="pc0">
-            <div class="col font-weight-bold small">資料時間(UTC+8)</div>
-            <div class="col font-italic">@Info1</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">電壓(V)</div>
-            <div class="col font-italic">@Info2</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">電流(A)</div>
-            <div class="col font-italic">@Info3</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">實功率(kW)</div>
-            <div class="col font-italic">@Info4</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">虛功率(kVAR)</div>
-            <div class="col font-italic">@Info5</div>
-            <div class="w-100"></div>
-            <div class="col  font-weight-bold small">視在功率(kVA)</div>
-            <div class="col font-italic">@Info6</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">功率因數(PF)</div>
-            <div class="col font-italic">@Info7</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">頻率(Hz)</div>
-            <div class="col font-italic">@Info8</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">用電量(kWh)</div>
-            <div class="col font-italic">@Info9</div>
-        </div>
+        @if (loadPowers != null)
+        {
+            <div class="row " id="pc0">
+                <div class="col font-weight-bold small">資料時間(UTC+8)</div>
+                <div class="col font-italic">@EssTime</div>
+                @foreach (var lo in loadPowers)
+                {
+                    string Info1 = lo.name;
+                    string Info2 = string.Format("{0:#,0.00}", lo.Vavg);
+                    string Info3 = string.Format("{0:#,0.00}", lo.Isum);
+                    string Info4 = string.Format("{0:#,0.00}", lo.Watt_t / 1000.0);
+                    string Info5 = string.Format("{0:#,0.00}", lo.Var_t / 1000.00);
+                    string Info6 = string.Format("{0:#,0.00}", lo.VA_t / 1000.0);
+                    string Info7 = string.Format("{0:#,0.00}", lo.PF_t);
+                    string Info8 = string.Format("{0:#,0.00}", lo.Frequency);
+                    string Info9 = string.Format("{0:#,0.00}", lo.kWHt);
+                    <div class="w-100 line"></div>
+                    <div class="col font-weight-bold small">負載</div>
+                    <div class="col font-italic">@Info1</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">電壓(V)</div>
+                    <div class="col font-italic">@Info2</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">電流(A)</div>
+                    <div class="col font-italic">@Info3</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">實功率(kW)</div>
+                    <div class="col font-italic">@Info4</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">虛功率(kVAR)</div>
+                    <div class="col font-italic">@Info5</div>
+                    <div class="w-100"></div>
+                    <div class="col  font-weight-bold small">視在功率(kVA)</div>
+                    <div class="col font-italic">@Info6</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">功率因數(PF)</div>
+                    <div class="col font-italic">@Info7</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">頻率(Hz)</div>
+                    <div class="col font-italic">@Info8</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">用電量(kWh)</div>
+                    <div class="col font-italic">@Info9</div>
+                }
+            </div>
+        }
     </div>
     <!--middle-->
     <div class="col-8">
@@ -101,7 +128,7 @@
                 option = null;
                 option = {
                     title: {
-                        text: '每日用電瓦數',
+                        text: '用電瓦數',
                         textStyle: {
                             fontWeight: 'normal',
                             color: 'white'
@@ -138,14 +165,14 @@
                                 }
                             },
                             axisLabel: {
-                                formatter: '{value} kWh'
+                                formatter: '{value} kW'
                             }
                         }
                     ],
                     series: [
                         {
-                            "name": "每日用電瓦數",
-                            "type": "bar",
+                            "name": "用電瓦數",
+                            "type": "line",
                             "data": LoadPoweData,
                         }
                     ]
@@ -159,9 +186,9 @@
     <!--right-->
     <div class="col-2 h3">
         <div class=" bg-light">可用總電量</div>
-        <div class="font-italic">@ViewBag.Demand  kWh</div>
+        <div class="font-italic">@ViewBag.Demand</div>
         <div class="bg-light">可用電時數</div>
-        <div class="font-italic">@ViewBag.RemainTime 小時</div>
+        <div class="font-italic">@ViewBag.RemainTime</div>
     </div>
 </div>
 

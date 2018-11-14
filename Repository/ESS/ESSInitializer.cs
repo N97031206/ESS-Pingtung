@@ -81,18 +81,6 @@ namespace Repository.ESS
                 new Orgin()
                 {
                     OrginName = "訪客"
-                },
-                new Orgin()
-                {
-                    OrginName = "市電組"
-                },
-                new Orgin()
-                {
-                    OrginName = "太陽能組"
-                },
-                new Orgin()
-                {
-                    OrginName = "發電機組"
                 }
             };
             return orgins;
@@ -230,19 +218,19 @@ namespace Repository.ESS
                 },
                 new AlartType()
                 {
-                    AlartTypeName = "行控中心"
-                },
-                new AlartType()
-                {
-                    AlartTypeName = "充電樁"
-                },
-                new AlartType()
-                {
                     AlartTypeName = "電池"
                 },
                 new AlartType()
                 {
                     AlartTypeName = "太陽能"
+                },
+                new AlartType()
+                {
+                    AlartTypeName = "負載"
+                },
+                new AlartType()
+                {
+                    AlartTypeName = "發電機"
                 },
                 new AlartType()
                 {
@@ -262,11 +250,15 @@ namespace Repository.ESS
                 },
                 new Station()
                 {
-                    StationName = "林邊"
+                    StationName = "林邊鄉光彩濕地"
                 },
                 new Station()
                 {
-                    StationName = "墾丁"
+                    StationName = "霧台鄉大武社區活動中心"
+                },
+                                new Station()
+                {
+                    StationName = "泰武鄉佳興社區活動中心"
                 }
             };
             return station;

@@ -1,53 +1,86 @@
 ﻿@using Service.ESS.Provider;
 @using Service.ESS.Model;
 @{
+    //取最新時間
+    ESSObjecterService eSSObjecterService = new ESSObjecterService();
+    string EssTime = eSSObjecterService.ReadNow().CreateTime.ToString();
+    //取相關資料
+
     GridPowerService gridPowerService = new GridPowerService();
-    GridPower gridPowers = gridPowerService.ReadNow();
-    string Info1 = "", Info2 = "", Info3 = "", Info4 = "", Info5 = "", Info6 = "", Info7 = "", Info8 = "", Info9 = "";
-    if (gridPowers!=null)
+    List<GridPower> gridPowers = new List<GridPower>();
+    var ReadNow = eSSObjecterService.ReadNow().GridPowerIDs;
+    if (ReadNow != null)
     {
-        Info1 = gridPowers.date_time.AddHours(8).ToString();
-        Info2 = string.Format("{0:#,0.00}", gridPowers.Vavg);
-        Info3 = string.Format("{0:#,0.00}", gridPowers.Isum);
-        Info4 = string.Format("{0:#,0.00}", gridPowers.Watt_t / 1000.0);
-        Info5 = string.Format("{0:#,0.00}", gridPowers.Var_t / 1000.00);
-        Info6 = string.Format("{0:#,0.00}", gridPowers.VA_t / 1000.0);
-        Info7 = string.Format("{0:#,0.00}", gridPowers.PF_t);
-        Info8 = string.Format("{0:#,0.00}", gridPowers.Frequency);
-        Info9 = string.Format("{0:#,0.00}", gridPowers.kWHt);
+        var gridID = ReadNow.Split('|');
+        foreach (var x in gridID)
+        {
+            if (!string.IsNullOrEmpty(x))
+            {
+                Guid id = Guid.Parse(x.Trim());
+                gridPowers.Add(gridPowerService.ReadByID(id));
+            }
+        }
     }
 }
+
+<style>
+    .line {
+        width: auto;
+        height: auto;
+        border-bottom: 1px solid black;
+    }
+</style>
+
 <div class="row">
     <!--lift-->
     <div class="col-2 h6">
-        <div class="row " id="pc0">
-            <div class="col font-weight-bold small">資料時間(UTC+8)</div>
-            <div class="col font-italic">@Info1</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">電壓(V)</div>
-            <div class="col font-italic">@Info2</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">電流(A)</div>
-            <div class="col font-italic">@Info3</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">實功率(kW)</div>
-            <div class="col font-italic">@Info4</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">虛功率(kVAR)</div>
-            <div class="col font-italic">@Info5</div>
-            <div class="w-100"></div>
-            <div class="col  font-weight-bold small">視在功率(kVA)</div>
-            <div class="col font-italic">@Info6</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">功率因數(PF)</div>
-            <div class="col font-italic">@Info7</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">頻率(Hz)</div>
-            <div class="col font-italic">@Info8</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">用電量(kWh)</div>
-            <div class="col font-italic">@Info9</div>
-        </div>
+        @if (gridPowers != null)
+        {
+            <div class="row " id="pc0">
+                <div class="col font-weight-bold small">資料時間(UTC+8)</div>
+                <div class="col font-italic">@EssTime</div>
+                @foreach (var gp in gridPowers)
+                {
+                    string Info1 = gp.name;
+                    string Info2 = string.Format("{0:#,0.00}", gp.Vavg);
+                    string Info3 = string.Format("{0:#,0.00}", gp.Isum);
+                    string Info4 = string.Format("{0:#,0.00}", gp.Watt_t / 1000.0);
+                    string Info5 = string.Format("{0:#,0.00}", gp.Var_t / 1000.00);
+                    string Info6 = string.Format("{0:#,0.00}", gp.VA_t / 1000.0);
+                    string Info7 = string.Format("{0:#,0.00}", gp.PF_t);
+                    string Info8 = string.Format("{0:#,0.00}", gp.Frequency);
+                    string Info9 = string.Format("{0:#,0.00}", gp.kWHt);
+                    <div class="w-100 line"></div>
+                    <div class="col font-weight-bold small">市電</div>
+                    <div class="col font-italic">@Info1</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">電壓(V)</div>
+                    <div class="col font-italic">@Info2</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">電流(A)</div>
+                    <div class="col font-italic">@Info3</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">實功率(kW)</div>
+                    <div class="col font-italic">@Info4</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">虛功率(kVAR)</div>
+                    <div class="col font-italic">@Info5</div>
+                    <div class="w-100"></div>
+                    <div class="col  font-weight-bold small">視在功率(kVA)</div>
+                    <div class="col font-italic">@Info6</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">功率因數(PF)</div>
+                    <div class="col font-italic">@Info7</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">頻率(Hz)</div>
+                    <div class="col font-italic">@Info8</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">用電量(kWh)</div>
+                    <div class="col font-italic">@Info9</div>
+                    <div class="w-100"></div>
+                }
+            </div>
+        }
     </div>
     <!--middle-->
     <div class="col-8">
@@ -94,14 +127,14 @@
                         }
                         xData.push("'" + paddingLeft(hh.toString(), 2) + "時" + paddingLeft(mm.toString(), 2) + "分'");
                     }
-                }            
+                }
             //Y軸座標
                 var GridPowerData = [];
                 GridPowerData.push(@TempData["GridPowerData"] );
                 option = null;
                 option = {
                     title: {
-                        text: '每日用電瓦數',
+                        text: '用電瓦數',
                         textStyle: {
                             fontWeight: 'normal',
                             color: 'white'
@@ -119,7 +152,7 @@
                             axisLine: {
                                 lineStyle: {
                                     color: 'white',
-                                    width: 10
+                                    width: 100
                                 }
                             },
                             axisLabel: {
@@ -138,15 +171,16 @@
                                 }
                             },
                             axisLabel: {
-                                formatter: '{value} kWh'
+                                formatter: '{value} kW'
                             }
                         }
                     ],
                     series: [
                         {
-                            "name": "每日用電瓦數",
-                            "type": "bar",
+                            "name": "用電瓦數",
+                            "type": "line",
                             "data": GridPowerData,
+                            "areaStyle": {},
                         }
                     ]
                 };
@@ -159,8 +193,8 @@
     <!--right-->
     <div class="col-2 h3">
         <div class=" bg-light">可用總電量</div>
-        <div class="font-italic">@ViewBag.Demand  kWh</div>
+        <div class="font-italic">@ViewBag.Demand</div>
         <div class="bg-light">可用電時數</div>
-        <div class="font-italic">@ViewBag.RemainTime 小時</div>
+        <div class="font-italic">@ViewBag.RemainTime</div>
     </div>
 </div>

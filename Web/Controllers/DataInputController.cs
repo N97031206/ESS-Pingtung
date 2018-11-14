@@ -46,7 +46,6 @@ namespace Web.Controllers
                     JsonObject = json;
                     ViewBag.json = "Post In";
                     logger.Info(json);
-
                 }
                 return View(JsonObject);
             }
@@ -120,7 +119,6 @@ namespace Web.Controllers
                             gridPower.modelSerial = Json.modelSerial;
                             gridPower.serialNO = Json.serialNO;
                             gridPower.name = Json.name;
-                            // gridPower.updateTime = Json.updateTime;
                             gridPower.date_time = Json.date_time;
                             gridPower.VA = Json.VA;
                             gridPower.VB = Json.VB;
@@ -412,7 +410,7 @@ namespace Web.Controllers
                             generator.AvailabilityHour = GenJson.AvailabilityHour;
 
                             generatorID = GeneratorService.Create(generator);
-                            generatorIDs += generatorID.ToString()+"+";
+                            generatorIDs += generatorID.ToString()+"|";
                         }
 
                     }
@@ -535,11 +533,16 @@ namespace Web.Controllers
                             inverter.EEPROM_Version = Json.EEPROM_Version;
                             inverter.PV_ChargingPower = Json.PV_ChargingPower;
                             //Solar 
-                            inverter.SPM90Voltage += Json.SPM90Voltage + "|";
-                            inverter.SPM90Current += Json.SPM90Current + "|";
-                            inverter.SPM90ActivePower += Json.SPM90ActivePower + "|";
-                            inverter.SPM90ActiveEnergy += Json.SPM90ActiveEnergy + "|";
-                            inverter.SPM90VoltageDirection += Json.SPM90VoltageDirection + "|";
+                            foreach (var s in Json.SPM90s)
+                            {
+                                inverter.SPMid += s.id + "|";
+                                inverter.SPMconnected = s.connected + "|";
+                                inverter.SPM90Voltage += s.Voltage + "|";
+                                inverter.SPM90Current += s.Current + "|";
+                                inverter.SPM90ActivePower += s.ActivePower + "|";
+                                inverter.SPM90ActiveEnergy += s.ActiveEnergy + "|";
+                                inverter.SPM90VoltageDirection += s.VoltageDirection + "|";
+                            }
                             //時間
                             inverter.CreateTime=DateTime.UtcNow;
                             //新增資料
@@ -562,6 +565,7 @@ namespace Web.Controllers
                             battery.serialNO = Json.serialNO;
                             battery.name = Json.name;
                             battery.connected = Json.connected;
+                            battery.updateTime = Json.updateTime;
                             battery.voltage = Json.voltage;
                             battery.charging_current = Json.charging_current;
                             battery.discharging_current = Json.discharging_current;
@@ -639,663 +643,925 @@ namespace Web.Controllers
         /// Json示範碼
         /// </summary>
         #region JsonString
-        private readonly string JsonString =@"{
-                  'updateTime': '2018-11-08T02:43:37.205Z',
-                  'stationName': '大武社區',
-                  'stationUUID': 'd4788824-ba3e-11e8-96f8-529269fb1459',
-                  'GridPowers': [],
-                  'LoadPowers': [
-                    {
-                      'version': 1,
-                      'index': 2,
-                      'modelSerial': '0000111122223333',
-                      'serialNO': 'SCB-SC01',
-                      'name': '負載迴路1',
-                      'connected': true,
-                      'date_time': '2018-11-08T02:43:30.288Z',
-                      'va': 220.1,
-                      'vb': 0,
-                      'vc': 0,
-                      'vavg': 220.1,
-                      'ia': 0,
-                      'ib': 0,
-                      'ic': 0,
-                      'in': 0,
-                      'isum': 0,
-                      'watt_a': 0,
-                      'watt_b': 0,
-                      'watt_c': 0,
-                      'watt_t': 0,
-                      'var_a': 0,
-                      'var_b': 0,
-                      'var_c': 0,
-                      'var_t': 0,
-                      'va_a': 0,
-                      'va_b': 0,
-                      'va_c': 0,
-                      'va_t': 0,
-                      'pf_a': 0,
-                      'pf_b': 0,
-                      'pf_c': 0,
-                      'pf_t': 0,
-                      'angle_va': 0,
-                      'angle_vb': 247.8,
-                      'angle_vc': 180.4,
-                      'angle_ia': 47.5,
-                      'angle_ib': 253.5,
-                      'angle_ic': 18.1,
-                      'frequency': 60,
-                      'vab': 220.1,
-                      'vbc': 220.1,
-                      'vca': 220.1,
-                      'vii_avg': 0,
-                      'kwht': 0.4,
-                      'kwha': 0.4,
-                      'kwhb': 0,
-                      'kwhc': 0,
-                      'kvarht': 0,
-                      'kvarha': 0,
-                      'kvarhb': 0,
-                      'kvarhc': 0,
-                      'kvaht': 0.4,
-                      'kvaha': 0.4,
-                      'kvahb': 0,
-                      'kvahc': 0,
-                      'demand': 0,
-                      'prev_demand': 0,
-                      'prev_demand2': 0,
-                      'prev_demand3': 0,
-                      'maxdemand_currnetmonth': 0,
-                      'maxdemand_lastmonth': 0,
-                      'remain_time': 812,
-                      'events': []
-                    },
-                    {
-                      'version': 1,
-                      'index': 3,
-                      'modelSerial': '0000111122223333',
-                      'serialNO': 'SCB-SC01',
-                      'name': '負載迴路2',
-                      'connected': true,
-                      'date_time': '2018-11-08T02:43:33.646Z',
-                      'va': 220,
-                      'vb': 0,
-                      'vc': 0,
-                      'vavg': 220,
-                      'ia': 0,
-                      'ib': 0,
-                      'ic': 0,
-                      'in': 0,
-                      'isum': 0,
-                      'watt_a': 0,
-                      'watt_b': 0,
-                      'watt_c': 0,
-                      'watt_t': 0,
-                      'var_a': 0,
-                      'var_b': 0,
-                      'var_c': 0,
-                      'var_t': 0,
-                      'va_a': 0,
-                      'va_b': 0,
-                      'va_c': 0,
-                      'va_t': 0,
-                      'pf_a': 0,
-                      'pf_b': 0,
-                      'pf_c': 0,
-                      'pf_t': 0,
-                      'angle_va': 0,
-                      'angle_vb': 200.9,
-                      'angle_vc': 211.5,
-                      'angle_ia': 250.3,
-                      'angle_ib': 261.6,
-                      'angle_ic': 181.7,
-                      'frequency': 59.96,
-                      'vab': 220,
-                      'vbc': 220,
-                      'vca': 220,
-                      'vii_avg': 0,
-                      'kwht': 60.4,
-                      'kwha': 60.4,
-                      'kwhb': 0,
-                      'kwhc': 0,
-                      'kvarht': 29.8,
-                      'kvarha': 28.7,
-                      'kvarhb': 0.5,
-                      'kvarhc': 0.4,
-                      'kvaht': 113.3,
-                      'kvaha': 75.1,
-                      'kvahb': 19.1,
-                      'kvahc': 19,
-                      'demand': 0,
-                      'prev_demand': 0,
-                      'prev_demand2': 0,
-                      'prev_demand3': 0,
-                      'maxdemand_currnetmonth': 0,
-                      'maxdemand_lastmonth': 0,
-                      'remain_time': 808,
-                      'events': []
-                    }
-                  ],
-                  'Generators': [],
-                  'Inverters': [
-                    {
-                      'version': 1,
-                      'index': 0,
-                      'modelSerial': 'OPTI-SP5000',
-                      'serialNO': '0000111122223333',
-                      'name': 'OPTI SP5000 Brilliant Ultra',
-                      'connected': true,
-                      'DeviceMode': 'B',
-                      'WarningStatus': {
-                        'InverterFault': false,
-                        'BusOver': false,
-                        'BusUnder': false,
-                        'BusSoftFail': false,
-                        'LINE_FAIL': true,
-                        'OPVShort': false,
-                        'InverterVoltageTooLow': false,
-                        'InverterVoltageTooHigh': false,
-                        'OverTemperature': false,
-                        'FanLocked': false,
-                        'BatteryVoltageHigh': false,
-                        'BatteryLowAlarm': false,
-                        'BatteryUnderShutdown': false,
-                        'OverLoad': false,
-                        'EepromFault': false,
-                        'InverterOverCurrent': false,
-                        'InverterSoftFail': false,
-                        'SelfTestFail': false,
-                        'OP_DC_VoltageOver': false,
-                        'BatOpen': false,
-                        'CurrentSensorFail': false,
-                        'BatteryShort': false,
-                        'PowerLimit': false,
-                        'PV_VoltageHigh': false,
-                        'MPPT_OverloadFault': false,
-                        'MPPT_OverloadWarning': false,
-                        'BatteryTooLowToCharge': false,
-                        'Message': '[LINE_FAIL]'
-                      },
-                      'ParallelInformation': [
-                        {
-                          'IsExist': true,
-                          'SerialNumber': '92931807102938',
-                          'WorkMode': 'B',
-                          'FaultCode': '00',
-                          'GridVoltage': 0,
-                          'GridFrequency': 0,
-                          'ACOutputVoltage': 220,
-                          'ACOutputFrequency': 59.99,
-                          'ACOutputApparentPower': 44,
-                          'ACOutputActivePower': 8,
-                          'LoadPercentage': 0,
-                          'BatteryVoltage': 52.4,
-                          'BatteryChargingCurrent': 0,
-                          'BatteryCapacity': 100,
-                          'PV_InputVoltage': 54.3,
-                          'TotalChargingCurrent': 0,
-                          'Total_AC_OutputApparentPower': 87,
-                          'TotalOutputActivePower': 41,
-                          'Total_AC_OutputPercentage': 0,
-                          'InverterStatus': {
-                            'SCC_OK': false,
-                            'AC_Charging': false,
-                            'SCC_Charging': false,
-                            'Battery': '00',
-                            'Line_OK': false,
-                            'loadOn': true,
-                            'ConfigurationChange': false
-                          },
-                          'OutputMode': '1',
-                          'ChargerSourcePriority': '3',
-                          'MaxChargerCurrent': 20,
-                          'MaxChargerRange': 80,
-                          'Max_AC_ChargerCurrent': 20,
-                          'PV_InputCurrentForBattery': 0,
-                          'BatteryDischargeCurrent': 0
-                        },
-                        {
-                          'IsExist': true,
-                          'SerialNumber': '92931807102904',
-                          'WorkMode': 'B',
-                          'FaultCode': '00',
-                          'GridVoltage': 0,
-                          'GridFrequency': 0,
-                          'ACOutputVoltage': 219.9,
-                          'ACOutputFrequency': 59.97,
-                          'ACOutputApparentPower': 43,
-                          'ACOutputActivePower': 35,
-                          'LoadPercentage': 0,
-                          'BatteryVoltage': 52.4,
-                          'BatteryChargingCurrent': 0,
-                          'BatteryCapacity': 100,
-                          'PV_InputVoltage': 54.4,
-                          'TotalChargingCurrent': 0,
-                          'Total_AC_OutputApparentPower': 87,
-                          'TotalOutputActivePower': 35,
-                          'Total_AC_OutputPercentage': 0,
-                          'InverterStatus': {
-                            'SCC_OK': false,
-                            'AC_Charging': false,
-                            'SCC_Charging': false,
-                            'Battery': '00',
-                            'Line_OK': false,
-                            'loadOn': true,
-                            'ConfigurationChange': false
-                          },
-                          'OutputMode': '1',
-                          'ChargerSourcePriority': '2',
-                          'MaxChargerCurrent': 20,
-                          'MaxChargerRange': 80,
-                          'Max_AC_ChargerCurrent': 20,
-                          'PV_InputCurrentForBattery': 0,
-                          'BatteryDischargeCurrent': 1
-                        }
-                      ],
-                      'GridVoltage': 0,
-                      'GridFrequency': 0,
-                      'AC_OutputVoltage': 219.9,
-                      'AC_OutputFrequency': 59.9,
-                      'AC_OutputApparentPower': 43,
-                      'AC_OutputActivePower': 4,
-                      'OutputLoadPercent': 0,
-                      'BUSVoltage': 367,
-                      'BatteryVoltage': 52.4,
-                      'BatteryChargingCurrent': 0,
-                      'BatteryCapacity': 100,
-                      'InverterHeatSinkTemperature': 35,
-                      'PV_InputCurrentForBattery': 0,
-                      'PV_InputVoltage': 0,
-                      'BatteryVoltageFrom_SCC': 0,
-                      'BatteryDischargeCurrent': 0,
-                      'DeviceStatus': {
-                        'Has_SBU_PriorityVersion': false,
-                        'ConfigurationStatus_Change': false,
-                        'SCC_FirmwareVersion_Updated': false,
-                        'LoadStatus_On': true,
-                        'BatteryVoltageTOSteadyWhileCharging': false,
-                        'ChargingStatus_On': false,
-                        'ChargingSstatus_SCC_Charging_On': false,
-                        'ChargingStatus_AC_Charging_On': false,
-                        'ChargingStatusCharging': '000',
-                        'ChargingToFloatingMode': false,
-                        'SwitchOn': true
-                      },
-                      'BatteryVoltageOffsetForFansOn': 0,
-                      'EEPROM_Version': 0,
-                      'PV_ChargingPower': 8,
-                      'SPM90s': [
-                        {
-                          'id': 1,
-                          'connected': true,
-                          'Voltage': 0,
-                          'Current': 0,
-                          'ActivePower': 0,
-                          'ActiveEnergy': 0.14,
-                          'VoltageDirection': 0
-                        },
-                        {
-                          'id': 4,
-                          'connected': true,
-                          'Voltage': 0,
-                          'Current': 0,
-                          'ActivePower': 0,
-                          'ActiveEnergy': 0,
-                          'VoltageDirection': 0
-                        }
-                      ],
-                      'SPM90Voltage': 0,
-                      'SPM90Current': 0,
-                      'SPM90ActivePower': 0,
-                      'SPM90ActiveEnergy': 0.14,
-                      'SPM90VoltageDirection': 0
-                    }
-                  ],
-                  'Battery': [
-                    {
-                      'version': 1,
-                      'index': 0,
-                      'modelSerial': 'FSP-BS4866',
-                      'serialNO': '0000000000010000',
-                      'name': 'FSP-BS4866',
-                      'connected': true,
-                      'updateTime': '2018-11-08T02:43:27.791Z',
-                      'voltage': 52,
-                      'charging_current': 0,
-                      'discharging_current': 0,
-                      'charging_watt': 0,
-                      'discharging_watt': 0,
-                      'SOC': 15,
-                      'Cycle': 1,
-                      'charge_direction': 0,
-                      'temperature': 28,
-                      'Cells': [
-                        {
-                          'index': 1,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 2,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 3,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 4,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 5,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 6,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 7,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 8,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 9,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 10,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 11,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 12,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 13,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 14,
-                          'voltage': 3.2861000000000002
-                        }
-                      ],
-                      'AlarmState': {
-                        'OV_DIS': false,
-                        'UV_DIS': false,
-                        'OC_DIS': false,
-                        'SC_DIS': false,
-                        'OT_DIS': false,
-                        'UT_DIS': false,
-                        'RV_DIS': false,
-                        'OC0_DIS': false
-                      }
-                    },
-                    {
-                      'version': 1,
-                      'index': 1,
-                      'modelSerial': 'FSP-BS4866',
-                      'serialNO': '0000000000020000',
-                      'name': 'FSP-BS4866',
-                      'connected': false,
-                      'voltage': 0,
-                      'charging_current': 0,
-                      'discharging_current': 0,
-                      'charging_watt': 0,
-                      'discharging_watt': 0,
-                      'SOC': 0,
-                      'Cycle': 1,
-                      'charge_direction': 0,
-                      'temperature': 0,
-                      'Cells': [
-                        {
-                          'index': 1,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 2,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 3,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 4,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 5,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 6,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 7,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 8,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 9,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 10,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 11,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 12,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 13,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 14,
-                          'voltage': 0
-                        }
-                      ],
-                      'AlarmState': {
-                        'OV_DIS': false,
-                        'UV_DIS': false,
-                        'OC_DIS': false,
-                        'SC_DIS': false,
-                        'OT_DIS': false,
-                        'UT_DIS': false,
-                        'RV_DIS': false,
-                        'OC0_DIS': false
-                      }
-                    },
-                    {
-                      'version': 1,
-                      'index': 2,
-                      'modelSerial': 'FSP-BS4866',
-                      'serialNO': '0000000000030000',
-                      'name': 'FSP-BS4866',
-                      'connected': false,
-                      'voltage': 0,
-                      'charging_current': 0,
-                      'discharging_current': 0,
-                      'charging_watt': 0,
-                      'discharging_watt': 0,
-                      'SOC': 0,
-                      'Cycle': 1,
-                      'charge_direction': 0,
-                      'temperature': 0,
-                      'Cells': [
-                        {
-                          'index': 1,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 2,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 3,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 4,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 5,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 6,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 7,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 8,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 9,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 10,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 11,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 12,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 13,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 14,
-                          'voltage': 0
-                        }
-                      ],
-                      'AlarmState': {
-                        'OV_DIS': false,
-                        'UV_DIS': false,
-                        'OC_DIS': false,
-                        'SC_DIS': false,
-                        'OT_DIS': false,
-                        'UT_DIS': false,
-                        'RV_DIS': false,
-                        'OC0_DIS': false
-                      }
-                    },
-                    {
-                      'version': 1,
-                      'index': 3,
-                      'modelSerial': 'FSP-BS4866',
-                      'serialNO': '0000000000040000',
-                      'name': 'FSP-BS4866',
-                      'connected': true,
-                      'updateTime': '2018-11-08T02:43:14.457Z',
-                      'voltage': 52,
-                      'charging_current': 0,
-                      'discharging_current': 0.9390000000000001,
-                      'charging_watt': 0,
-                      'discharging_watt': 48.828,
-                      'SOC': 10,
-                      'Cycle': 1,
-                      'charge_direction': 2,
-                      'temperature': 30,
-                      'Cells': [
-                        {
-                          'index': 1,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 2,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 3,
-                          'voltage': 3.291
-                        },
-                        {
-                          'index': 4,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 5,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 6,
-                          'voltage': 3.2836000000000003
-                        },
-                        {
-                          'index': 7,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 8,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 9,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 10,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 11,
-                          'voltage': 3.291
-                        },
-                        {
-                          'index': 12,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 13,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 14,
-                          'voltage': 3.2836000000000003
-                        }
-                      ],
-                      'AlarmState': {
-                        'OV_DIS': false,
-                        'UV_DIS': false,
-                        'OC_DIS': false,
-                        'SC_DIS': false,
-                        'OT_DIS': false,
-                        'UT_DIS': false,
-                        'RV_DIS': false,
-                        'OC0_DIS': false
-                      }
-                    }
-                  ]
-                }";
+        private readonly string JsonString = @"{
+  'updateTime': '2018-11-13T07:00:00.000Z',
+  'stationName': '大武社區',
+  'stationUUID': 'd4788824-ba3e-11e8-96f8-529269fb1459',
+  'GridPowers': [
+    {
+      'version': 1,
+      'index': 0,
+      'modelSerial': '0100000000110000',
+      'serialNO': 'SCB-SC01',
+      'name': '市電迴路1',
+      'connected': false,
+      'date_time': '2018-11-13T05:58:09.941Z',
+      'va': 38.7,
+      'vb': 0,
+      'vc': 40.6,
+      'vavg': 39.6,
+      'ia': 0,
+      'ib': 0,
+      'ic': 0,
+      'in': 0,
+      'isum': 0,
+      'watt_a': 0,
+      'watt_b': 0,
+      'watt_c': 0,
+      'watt_t': 0,
+      'var_a': 0,
+      'var_b': 0,
+      'var_c': 0,
+      'var_t': 0,
+      'va_a': 0,
+      'va_b': 0,
+      'va_c': 0,
+      'va_t': 0,
+      'pf_a': 0,
+      'pf_b': 0,
+      'pf_c': 0,
+      'pf_t': 0,
+      'angle_va': 0,
+      'angle_vb': 68.7,
+      'angle_vc': 155.4,
+      'angle_ia': 135.4,
+      'angle_ib': 149.9,
+      'angle_ic': 291.1,
+      'frequency': 59.98,
+      'vab': 38.7,
+      'vbc': 38.7,
+      'vca': 77.4,
+      'vii_avg': 0,
+      'kwht': 31.1,
+      'kwha': 4.3,
+      'kwhb': 0,
+      'kwhc': 26.7,
+      'kvarht': 52.8,
+      'kvarha': 33,
+      'kvarhb': 0,
+      'kvarhc': 19.7,
+      'kvaht': 67.8,
+      'kvaha': 34,
+      'kvahb': 0,
+      'kvahc': 33.8,
+      'demand': 0.1,
+      'prev_demand': 0.3,
+      'prev_demand2': 0.6,
+      'prev_demand3': 0,
+      'maxdemand_currnetmonth': 1.6,
+      'maxdemand_lastmonth': 0,
+      'remain_time': 828,
+      'events': []
+    },
+    {
+      'version': 1,
+      'index': 1,
+      'modelSerial': '0100000000120000',
+      'serialNO': 'SCB-SC01',
+      'name': '市電迴路2',
+      'connected': false,
+      'date_time': '2018-11-13T05:58:12.267Z',
+      'va': 38.4,
+      'vb': 0,
+      'vc': 40.3,
+      'vavg': 39.3,
+      'ia': 0,
+      'ib': 0,
+      'ic': 0,
+      'in': 0,
+      'isum': 0,
+      'watt_a': 0,
+      'watt_b': 0,
+      'watt_c': 0,
+      'watt_t': 0,
+      'var_a': 0,
+      'var_b': 0,
+      'var_c': 0,
+      'var_t': 0,
+      'va_a': 0,
+      'va_b': 0,
+      'va_c': 0,
+      'va_t': 0,
+      'pf_a': 0,
+      'pf_b': 0,
+      'pf_c': 0,
+      'pf_t': 0,
+      'angle_va': 0,
+      'angle_vb': 159.7,
+      'angle_vc': 357,
+      'angle_ia': 124.9,
+      'angle_ib': 312.5,
+      'angle_ic': 40.6,
+      'frequency': 59.98,
+      'vab': 38.4,
+      'vbc': 38.4,
+      'vca': 2.8,
+      'vii_avg': 0,
+      'kwht': 31,
+      'kwha': 4.5,
+      'kwhb': 0,
+      'kwhc': 26.5,
+      'kvarht': 52.4,
+      'kvarha': 32.7,
+      'kvarhb': 0,
+      'kvarhc': 19.7,
+      'kvaht': 67.4,
+      'kvaha': 33.7,
+      'kvahb': 0,
+      'kvahc': 33.6,
+      'demand': 0,
+      'prev_demand': 0.7,
+      'prev_demand2': 1.4,
+      'prev_demand3': 0.8,
+      'maxdemand_currnetmonth': 2.5,
+      'maxdemand_lastmonth': 0,
+      'remain_time': 65522,
+      'events': []
+    }
+  ],
+  'LoadPowers': [
+    {
+      'version': 1,
+      'index': 2,
+      'modelSerial': '0100000000130001',
+      'serialNO': 'SCB-SC01',
+      'name': '負載迴路1',
+      'connected': false,
+      'date_time': '2018-11-13T05:58:14.581Z',
+      'va': 179.7,
+      'vb': 0,
+      'vc': 40.3,
+      'vavg': 110,
+      'ia': 0,
+      'ib': 0,
+      'ic': 0,
+      'in': 0,
+      'isum': 0,
+      'watt_a': 0,
+      'watt_b': 0,
+      'watt_c': 0,
+      'watt_t': 0,
+      'var_a': 0,
+      'var_b': 0,
+      'var_c': 0,
+      'var_t': 0,
+      'va_a': 0,
+      'va_b': 0,
+      'va_c': 0,
+      'va_t': 0,
+      'pf_a': 0,
+      'pf_b': 0,
+      'pf_c': 0,
+      'pf_t': 0,
+      'angle_va': 0,
+      'angle_vb': 199.8,
+      'angle_vc': 199.7,
+      'angle_ia': 152,
+      'angle_ib': 33.3,
+      'angle_ic': 135.1,
+      'frequency': 59.98,
+      'vab': 179.7,
+      'vbc': 179.7,
+      'vca': 218,
+      'vii_avg': 0,
+      'kwht': 19.2,
+      'kwha': 10.9,
+      'kwhb': 0,
+      'kwhc': 8.2,
+      'kvarht': 33.6,
+      'kvarha': 16.4,
+      'kvarhb': 0,
+      'kvarhc': 17.1,
+      'kvaht': 39.1,
+      'kvaha': 19.8,
+      'kvahb': 0,
+      'kvahc': 19.2,
+      'demand': 0.1,
+      'prev_demand': 0.2,
+      'prev_demand2': 0.2,
+      'prev_demand3': 0.2,
+      'maxdemand_currnetmonth': 0.2,
+      'maxdemand_lastmonth': 0,
+      'remain_time': 823,
+      'events': []
+    },
+    {
+      'version': 1,
+      'index': 3,
+      'modelSerial': '0100000000140001',
+      'serialNO': 'SCB-SC01',
+      'name': '負載迴路2',
+      'connected': false,
+      'date_time': '2018-11-13T05:58:16.065Z',
+      'va': 179.4,
+      'vb': 0,
+      'vc': 40.3,
+      'vavg': 109.8,
+      'ia': 0,
+      'ib': 0,
+      'ic': 0,
+      'in': 0,
+      'isum': 0,
+      'watt_a': 0,
+      'watt_b': 0,
+      'watt_c': 0,
+      'watt_t': 0,
+      'var_a': 0,
+      'var_b': 0,
+      'var_c': 0,
+      'var_t': 0,
+      'va_a': 0,
+      'va_b': 0,
+      'va_c': 0,
+      'va_t': 0,
+      'pf_a': 0,
+      'pf_b': 0,
+      'pf_c': 0,
+      'pf_t': 0,
+      'angle_va': 0,
+      'angle_vb': 181.3,
+      'angle_vc': 188.4,
+      'angle_ia': 198.3,
+      'angle_ib': 215,
+      'angle_ic': 49.8,
+      'frequency': 59.98,
+      'vab': 179.4,
+      'vbc': 179.4,
+      'vca': 219.3,
+      'vii_avg': 0,
+      'kwht': 18.9,
+      'kwha': 10.8,
+      'kwhb': 0,
+      'kwhc': 8.1,
+      'kvarht': 33.2,
+      'kvarha': 16.3,
+      'kvarhb': 0,
+      'kvarhc': 16.9,
+      'kvaht': 38.6,
+      'kvaha': 19.6,
+      'kvahb': 0,
+      'kvahc': 18.9,
+      'demand': 0.1,
+      'prev_demand': 0.2,
+      'prev_demand2': 0.2,
+      'prev_demand3': 0.2,
+      'maxdemand_currnetmonth': 0.2,
+      'maxdemand_lastmonth': 0,
+      'remain_time': 821,
+      'events': []
+    }
+  ],
+  'Generators': [
+    {
+      'version': 1,
+      'index': 0,
+      'modelSerial': 'DSE-9000',
+      'serialNO': '0000111122223333',
+      'name': 'DSE 9000',
+      'connected': true,
+      'updateTime': '2018-10-30T09:10:48.302Z',
+      'OilPressure': 496,
+      'CoolantTemperature': 47,
+      'OilTemperature': 32767,
+      'FuleLevel': 83.5,
+      'InternalFlexibleSenderAnalogueInputType': 0,
+      'ChargeAlternatorVoltage': 10,
+      'EngineBatteryVoltage': 12,
+      'EngineSpeed': 1818,
+      'EngineRunTime': 6396,
+      'NumberOfStarts': 18,
+      'frequency': 60.6,
+      'L1Nvoltage': 106.5,
+      'L2Nvoltage': 104.5,
+      'L3Nvoltage': 106.6,
+      'L1L2voltage': 184,
+      'L2L3voltage': 184,
+      'L3L1voltage': 183.1,
+      'L1current': 0,
+      'L2current': 0,
+      'L3current': 0,
+      'earthcurrent': 0,
+      'L1watts': 0,
+      'L2watts': 0,
+      'L3watts': 0,
+      'currentlaglead': 32767,
+      'totalwatts': 0,
+      'L1VA': 0,
+      'L2VA': 0,
+      'L3VA': 0,
+      'totalVA': 0,
+      'L1Var': 0,
+      'L2Var': 0,
+      'L3Var': 0,
+      'totalVar': 0,
+      'powerfactorL1': 0,
+      'powerfactorL2': 0,
+      'powerfactorL3': 0,
+      'averagepowerfactor': 327.65,
+      'percentageoffullpower': 0,
+      'percentageoffullVar': 0,
+      'positiveKWhours': 44.7,
+      'negativeKWhours': 429496729.5,
+      'KVAhours': 54.6,
+      'KVArhours': 30.4,
+      'ControlStatus': true,
+      'Alarm': {
+        'NumberOfNamedAlarms': 69,
+        'EmergencyStop': 1,
+        'LowOilPressure': 1,
+        'HighCoolantTemperature': 1,
+        'LowCoolantTemperature': 0,
+        'UnderSpeed': 1,
+        'OverSpeed': 1,
+        'GeneratorUnderFrequency': 1,
+        'GeneratorOverFrequency': 1,
+        'GeneratorLowVoltage': 1,
+        'GeneratorHighVoltage': 1,
+        'BatteryLowVoltage': 1,
+        'BatteryHighVoltage': 1,
+        'ChargeAlternatorFailure': 1,
+        'FailToStart': 1,
+        'FailToStop': 1,
+        'GeneratorFailToClose': 1,
+        'MainsFailToClose': 0,
+        'OilPressureSenderFault': 1,
+        'LossOfMagneticPickUp': 1,
+        'MagneticPickUpOpenCircuit': 1,
+        'GeneratorHighCurrent': 1,
+        'NoneA': 1,
+        'LowFuelLevel': 0,
+        'CANECUWarning': 1,
+        'CANECUShutdown': 1,
+        'CANECUDataFail': 1,
+        'LowOillevelSwitch': 1,
+        'HighTemperatureSwitch': 1,
+        'LowFuelLevelSwitch': 1,
+        'ExpansionUnitWatchdogAlarm': 1,
+        'kWOverloadAlarm': 1,
+        'NegativePhaseSequenceCurrentAlarm': 1,
+        'EarthFaultTripAlarm': 1,
+        'GeneratorPhaseRotationAlarm': 1,
+        'AutoVoltageSenseFail': 1,
+        'MaintenanceAlarm': 15,
+        'LoadingFrequencyAlarm': 1,
+        'LoadingVoltageAlarm': 1,
+        'NoneB': 1,
+        'NoneC': 1,
+        'NoneD': 1,
+        'NoneE': 1,
+        'GeneratorShortCircuit': 1,
+        'MainsHighCurrent': 1,
+        'MainsEarthFault': 1,
+        'MainsShortCircuit': 1,
+        'ECUProtect': 1,
+        'NoneF': 1,
+        'Message': '[報警停用：發機低水?：],[報警停用：市電合閘失敗：],[報警停用：低油位：]'
+      },
+      'AvailabilityEnergy': 833.9145,
+      'AvailabilityHour': 0,
+      'FuelRelay': true,
+      'StartRelay': false,
+      'DigitalOutC': true,
+      'DigitalOutD': false,
+      'DigitalOutE': false,
+      'DigitalOutF': false,
+      'DigitalOutG': false,
+      'DigitalOutH': false,
+      'STOPLEDstatus': false,
+      'MANUALLEDstatus': false,
+      'TESTLEDstatus': false,
+      'AUTOLEDstatus': true,
+      'GENLEDstatus': false,
+      'GENBREAKERLEDstatus': false,
+      'MAINSLEDstatus': true,
+      'MAINSBREAKERLEDstatus': true,
+      'USERLED1status': false,
+      'USERLED2statu': false,
+      'USERLED3status': false,
+      'USERLED4status': false
+    }
+  ],
+  'Inverters': [
+    {
+      'version': 1,
+      'index': 0,
+      'modelSerial': 'OPTI-SP5000',
+      'serialNO': '5000000000000002',
+      'name': 'OPTI SP5000 Brilliant Ultra',
+      'connected': false,
+      'DeviceMode': 'B',
+      'WarningStatus': {
+        'InverterFault': false,
+        'BusOver': false,
+        'BusUnder': false,
+        'BusSoftFail': false,
+        'LINE_FAIL': true,
+        'OPVShort': false,
+        'InverterVoltageTooLow': false,
+        'InverterVoltageTooHigh': false,
+        'OverTemperature': false,
+        'FanLocked': false,
+        'BatteryVoltageHigh': false,
+        'BatteryLowAlarm': false,
+        'BatteryUnderShutdown': false,
+        'OverLoad': false,
+        'EepromFault': false,
+        'InverterOverCurrent': false,
+        'InverterSoftFail': false,
+        'SelfTestFail': false,
+        'OP_DC_VoltageOver': false,
+        'BatOpen': false,
+        'CurrentSensorFail': false,
+        'BatteryShort': false,
+        'PowerLimit': false,
+        'PV_VoltageHigh': false,
+        'MPPT_OverloadFault': false,
+        'MPPT_OverloadWarning': false,
+        'BatteryTooLowToCharge': false,
+        'Message': '[LINE_FAIL]'
+      },
+      'ParallelInformation': [
+        {
+          'IsExist': true,
+          'SerialNumber': '92931807102904',
+          'WorkMode': 'B',
+          'FaultCode': '00',
+          'GridVoltage': 0,
+          'GridFrequency': 0,
+          'ACOutputVoltage': 219.8,
+          'ACOutputFrequency': 60,
+          'ACOutputApparentPower': 65,
+          'ACOutputActivePower': 23,
+          'LoadPercentage': 1,
+          'BatteryVoltage': 51.1,
+          'BatteryChargingCurrent': 0,
+          'BatteryCapacity': 89,
+          'PV_InputVoltage': 53.8,
+          'TotalChargingCurrent': 0,
+          'Total_AC_OutputApparentPower': 109,
+          'TotalOutputActivePower': 25,
+          'Total_AC_OutputPercentage': 0,
+          'InverterStatus': {
+            'SCC_OK': false,
+            'AC_Charging': false,
+            'SCC_Charging': false,
+            'Battery': '00',
+            'Line_OK': false,
+            'loadOn': true,
+            'ConfigurationChange': false
+          },
+          'OutputMode': '1',
+          'ChargerSourcePriority': '2',
+          'MaxChargerCurrent': 20,
+          'MaxChargerRange': 80,
+          'Max_AC_ChargerCurrent': 20,
+          'PV_InputCurrentForBattery': 0,
+          'BatteryDischargeCurrent': 1
+        },
+        {
+          'IsExist': true,
+          'SerialNumber': '92931807102938',
+          'WorkMode': 'B',
+          'FaultCode': '00',
+          'GridVoltage': 0,
+          'GridFrequency': 0,
+          'ACOutputVoltage': 220,
+          'ACOutputFrequency': 60,
+          'ACOutputApparentPower': 44,
+          'ACOutputActivePower': 3,
+          'LoadPercentage': 0,
+          'BatteryVoltage': 51.2,
+          'BatteryChargingCurrent': 0,
+          'BatteryCapacity': 90,
+          'PV_InputVoltage': 54.1,
+          'TotalChargingCurrent': 0,
+          'Total_AC_OutputApparentPower': 88,
+          'TotalOutputActivePower': 21,
+          'Total_AC_OutputPercentage': 0,
+          'InverterStatus': {
+            'SCC_OK': false,
+            'AC_Charging': false,
+            'SCC_Charging': false,
+            'Battery': '00',
+            'Line_OK': false,
+            'loadOn': true,
+            'ConfigurationChange': false
+          },
+          'OutputMode': '1',
+          'ChargerSourcePriority': '3',
+          'MaxChargerCurrent': 20,
+          'MaxChargerRange': 80,
+          'Max_AC_ChargerCurrent': 20,
+          'PV_InputCurrentForBattery': 0,
+          'BatteryDischargeCurrent': 0
+        }
+      ],
+      'GridVoltage': 0,
+      'GridFrequency': 0,
+      'AC_OutputVoltage': 220.1,
+      'AC_OutputFrequency': 59.9,
+      'AC_OutputApparentPower': 44,
+      'AC_OutputActivePower': 13,
+      'OutputLoadPercent': 0,
+      'BUSVoltage': 357,
+      'BatteryVoltage': 51,
+      'BatteryChargingCurrent': 0,
+      'BatteryCapacity': 88,
+      'InverterHeatSinkTemperature': 36,
+      'PV_InputCurrentForBattery': 0,
+      'PV_InputVoltage': 0,
+      'BatteryVoltageFrom_SCC': 0,
+      'BatteryDischargeCurrent': 0,
+      'DeviceStatus': {
+        'Has_SBU_PriorityVersion': false,
+        'ConfigurationStatus_Change': false,
+        'SCC_FirmwareVersion_Updated': false,
+        'LoadStatus_On': true,
+        'BatteryVoltageTOSteadyWhileCharging': false,
+        'ChargingStatus_On': false,
+        'ChargingSstatus_SCC_Charging_On': false,
+        'ChargingStatus_AC_Charging_On': false,
+        'ChargingStatusCharging': '000',
+        'ChargingToFloatingMode': false,
+        'SwitchOn': true
+      },
+      'BatteryVoltageOffsetForFansOn': 0,
+      'EEPROM_Version': 0,
+      'PV_ChargingPower': 9,
+      'SPM90s': [
+        {
+          'id': 1,
+          'connected': false,
+          'Voltage': 0,
+          'Current': 0,
+          'ActivePower': 0,
+          'ActiveEnergy': 3.38,
+          'VoltageDirection': 0
+        },
+        {
+          'id': 4,
+          'connected': false,
+          'Voltage': 0,
+          'Current': 0,
+          'ActivePower': 0,
+          'ActiveEnergy': 0,
+          'VoltageDirection': 0
+        }
+      ],
+      'SPM90Voltage': 0,
+      'SPM90Current': 0,
+      'SPM90ActivePower': 0,
+      'SPM90ActiveEnergy': 3.38,
+      'SPM90VoltageDirection': 0
+    }
+  ],
+  'Battery': [
+    {
+      'version': 1,
+      'index': 0,
+      'modelSerial': 'FSP-BS4866',
+      'serialNO': '4866000000010000',
+      'name': 'FSP-BS4866',
+      'connected': false,
+      'voltage': 51,
+      'charging_current': 0,
+      'discharging_current': 0,
+      'charging_watt': 0,
+      'discharging_watt': 0,
+      'SOC': 0,
+      'Cycle': 1,
+      'charge_direction': 0,
+      'temperature': 30,
+      'Cells': [
+        {
+          'index': 1,
+          'voltage': 3.1958
+        },
+        {
+          'index': 2,
+          'voltage': 3.1909
+        },
+        {
+          'index': 3,
+          'voltage': 3.1933000000000002
+        },
+        {
+          'index': 4,
+          'voltage': 3.1982000000000004
+        },
+        {
+          'index': 5,
+          'voltage': 3.186
+        },
+        {
+          'index': 6,
+          'voltage': 3.1909
+        },
+        {
+          'index': 7,
+          'voltage': 3.1982000000000004
+        },
+        {
+          'index': 8,
+          'voltage': 3.1958
+        },
+        {
+          'index': 9,
+          'voltage': 3.1909
+        },
+        {
+          'index': 10,
+          'voltage': 3.1933000000000002
+        },
+        {
+          'index': 11,
+          'voltage': 3.1982000000000004
+        },
+        {
+          'index': 12,
+          'voltage': 3.186
+        },
+        {
+          'index': 13,
+          'voltage': 3.1909
+        },
+        {
+          'index': 14,
+          'voltage': 3.1982000000000004
+        }
+      ],
+      'AlarmState': {
+        'OV_DIS': false,
+        'UV_DIS': false,
+        'OC_DIS': false,
+        'SC_DIS': false,
+        'OT_DIS': false,
+        'UT_DIS': false,
+        'RV_DIS': false,
+        'OC0_DIS': false
+      },
+      'updateTime': '2018-11-13T05:58:14.629Z'
+    },
+    {
+      'version': 1,
+      'index': 1,
+      'modelSerial': 'FSP-BS4866',
+      'serialNO': '4866000000020000',
+      'name': 'FSP-BS4866',
+      'connected': false,
+      'voltage': 51,
+      'charging_current': 0,
+      'discharging_current': 0.665,
+      'charging_watt': 0,
+      'discharging_watt': 33.915,
+      'SOC': 0,
+      'Cycle': 1,
+      'charge_direction': 2,
+      'temperature': 29,
+      'Cells': [
+        {
+          'index': 1,
+          'voltage': 3.1811000000000003
+        },
+        {
+          'index': 2,
+          'voltage': 3.1933000000000002
+        },
+        {
+          'index': 3,
+          'voltage': 3.1958
+        },
+        {
+          'index': 4,
+          'voltage': 3.1884
+        },
+        {
+          'index': 5,
+          'voltage': 3.1811000000000003
+        },
+        {
+          'index': 6,
+          'voltage': 3.1958
+        },
+        {
+          'index': 7,
+          'voltage': 3.1933000000000002
+        },
+        {
+          'index': 8,
+          'voltage': 3.1811000000000003
+        },
+        {
+          'index': 9,
+          'voltage': 3.1933000000000002
+        },
+        {
+          'index': 10,
+          'voltage': 3.1958
+        },
+        {
+          'index': 11,
+          'voltage': 3.1884
+        },
+        {
+          'index': 12,
+          'voltage': 3.1811000000000003
+        },
+        {
+          'index': 13,
+          'voltage': 3.1958
+        },
+        {
+          'index': 14,
+          'voltage': 3.1933000000000002
+        }
+      ],
+      'AlarmState': {
+        'OV_DIS': false,
+        'UV_DIS': false,
+        'OC_DIS': false,
+        'SC_DIS': false,
+        'OT_DIS': false,
+        'UT_DIS': false,
+        'RV_DIS': false,
+        'OC0_DIS': false
+      },
+      'updateTime': '2018-11-13T05:58:14.985Z'
+    },
+    {
+      'version': 1,
+      'index': 2,
+      'modelSerial': 'FSP-BS4866',
+      'serialNO': '4866000000030000',
+      'name': 'FSP-BS4866',
+      'connected': false,
+      'voltage': 51,
+      'charging_current': 0,
+      'discharging_current': 0.704,
+      'charging_watt': 0,
+      'discharging_watt': 35.903999999999996,
+      'SOC': 0,
+      'Cycle': 1,
+      'charge_direction': 2,
+      'temperature': 30,
+      'Cells': [
+        {
+          'index': 1,
+          'voltage': 3.1909
+        },
+        {
+          'index': 2,
+          'voltage': 3.1958
+        },
+        {
+          'index': 3,
+          'voltage': 3.1933000000000002
+        },
+        {
+          'index': 4,
+          'voltage': 3.1909
+        },
+        {
+          'index': 5,
+          'voltage': 3.1835
+        },
+        {
+          'index': 6,
+          'voltage': 3.186
+        },
+        {
+          'index': 7,
+          'voltage': 3.1884
+        },
+        {
+          'index': 8,
+          'voltage': 3.1909
+        },
+        {
+          'index': 9,
+          'voltage': 3.1958
+        },
+        {
+          'index': 10,
+          'voltage': 3.1933000000000002
+        },
+        {
+          'index': 11,
+          'voltage': 3.1909
+        },
+        {
+          'index': 12,
+          'voltage': 3.1835
+        },
+        {
+          'index': 13,
+          'voltage': 3.186
+        },
+        {
+          'index': 14,
+          'voltage': 3.1884
+        }
+      ],
+      'AlarmState': {
+        'OV_DIS': false,
+        'UV_DIS': false,
+        'OC_DIS': false,
+        'SC_DIS': false,
+        'OT_DIS': false,
+        'UT_DIS': false,
+        'RV_DIS': false,
+        'OC0_DIS': false
+      },
+      'updateTime': '2018-11-13T05:58:15.391Z'
+    },
+    {
+      'version': 1,
+      'index': 3,
+      'modelSerial': 'FSP-BS4866',
+      'serialNO': '4866000000040000',
+      'name': 'FSP-BS4866',
+      'connected': false,
+      'voltage': 51,
+      'charging_current': 0,
+      'discharging_current': 0.9390000000000001,
+      'charging_watt': 0,
+      'discharging_watt': 47.889,
+      'SOC': 0,
+      'Cycle': 1,
+      'charge_direction': 2,
+      'temperature': 33,
+      'Cells': [
+        {
+          'index': 1,
+          'voltage': 3.1909
+        },
+        {
+          'index': 2,
+          'voltage': 3.1933000000000002
+        },
+        {
+          'index': 3,
+          'voltage': 3.1958
+        },
+        {
+          'index': 4,
+          'voltage': 3.1933000000000002
+        },
+        {
+          'index': 5,
+          'voltage': 3.1933000000000002
+        },
+        {
+          'index': 6,
+          'voltage': 3.1909
+        },
+        {
+          'index': 7,
+          'voltage': 3.1884
+        },
+        {
+          'index': 8,
+          'voltage': 3.1909
+        },
+        {
+          'index': 9,
+          'voltage': 3.1933000000000002
+        },
+        {
+          'index': 10,
+          'voltage': 3.1958
+        },
+        {
+          'index': 11,
+          'voltage': 3.1933000000000002
+        },
+        {
+          'index': 12,
+          'voltage': 3.1933000000000002
+        },
+        {
+          'index': 13,
+          'voltage': 3.1909
+        },
+        {
+          'index': 14,
+          'voltage': 3.1884
+        }
+      ],
+      'AlarmState': {
+        'OV_DIS': false,
+        'UV_DIS': false,
+        'OC_DIS': false,
+        'SC_DIS': false,
+        'OT_DIS': false,
+        'UT_DIS': false,
+        'RV_DIS': false,
+        'OC0_DIS': false
+      },
+      'updateTime': '2018-11-13T07:00:00.000Z'
+    }
+  ]
+}";
 
 
         #endregion

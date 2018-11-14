@@ -14,8 +14,6 @@
     string endTime = endDay.ToString("HH:mm:ss");
     var tabType = "Load";
     string connStr = tabType + "+" + sDay + "+" + eDay;
-    List<string> IDList = new List<string>();
-    int x = 1, y = 1, c = 1;
 }
 <script type="text/javascript">
     function closeLoadModel() {
@@ -91,7 +89,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col" style="width:20%">資料時間(UTC)</th>
+                    <th scope="col" style="width:20%">資料時間(UTC+8)</th>
                     <th scope="col" style="width:10%">電壓(V)</th>
                     <th scope="col" style="width:10%">電流(A)</th>
                     <th scope="col" style="width:10%">實功率(kW)</th>
@@ -105,42 +103,42 @@
             <tbody>
                 @foreach (var los in Model)
                 {
+                    var time = los.UpdateDate.AddHours(8).ToString();
                     if (!string.IsNullOrEmpty(los.LoadPowerIDs))
                     {
-                        string T1 = null, T2 = null, T3 = null, T4 = null, T5 = null, T6 = null, T7 = null, T8 = null, T9 = null;
+                        string Timer = null;
+                        double T1 = 0, T2 = 0, T3 = 0, T4 = 0, T5 = 0, T6 = 0, T7 = 0, T8 = 0;
                         string[] IDs = los.LoadPowerIDs.Trim().Split('|');
-                        List<string> BtnGroup = new List<string>();
-                        int cut = 1;
+                        int x = 0;
                         foreach (var lo in IDs)
                         {
                             if (!string.IsNullOrEmpty(lo.Trim()))
                             {
                                 Guid ID = Guid.Parse(lo);
                                 LoadPower loadPower = loadPowerService.ReadByID(ID);
-                                T1 = loadPower.date_Time.ToString();
-                                T2 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", loadPower.Vavg) + "] ";
-                                T3 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", loadPower.Isum) + "] ";
-                                T4 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", loadPower.Watt_t / 1000.0) + "] ";
-                                T5 += cut.ToString() + ":[" + string.Format("{0:#,0.00}", loadPower.Var_t / 1000.00) + "] ";
-                                T6 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", loadPower.VA_t / 1000.0) + "] ";
-                                T7 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", loadPower.PF_t) + "] ";
-                                T8 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", loadPower.Frequency) + "] ";
-                                T9 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", loadPower.kWHt) + "] ";
+                                Timer = time;
+                                T1 += loadPower.Vavg ;
+                                T2 += loadPower.Isum ;
+                                T3 += loadPower.Watt_t / 1000.0 ;
+                                T4 +=  loadPower.Var_t / 1000.0 ;
+                                T5 += loadPower.VA_t / 1000.0;
+                                T6 += loadPower.PF_t;
+                                T7 +=  loadPower.Frequency;
+                                T8 +=  loadPower.kWHt;
                                 x++;
-                                cut++;
                             }
                         }
-                        <tr>
-                            <th scope="row">@T1</th>
-                            <td>@T2</td>
-                            <td>@T3</td>
-                            <td>@T4</td>
-                            <td>@T5</td>
-                            <td>@T6</td>
-                            <td>@T7</td>
-                            <td>@T8</td>
-                            <td>@T9</td>
-                        </tr>
+                <tr>
+                    <th scope="row">@Timer</th>
+                    <td>@string.Format("{0:#,0.0}", T1 / x)</td>
+                    <td>@string.Format("{0:#,0.0}", T2)</td>
+                    <td>@string.Format("{0:#,0.0}", T3)</td>
+                    <td>@string.Format("{0:#,0.0}", T4)</td>
+                    <td>@string.Format("{0:#,0.0}", T5)</td>
+                    <td>@string.Format("{0:#,0.0}", T6 / x)</td>
+                    <td>@string.Format("{0:#,0.0}", T7 / x)</td>
+                    <td>@string.Format("{0:#,0.0}", T8)</td>
+                </tr>
                     }
                 }
             </tbody>

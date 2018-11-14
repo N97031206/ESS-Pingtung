@@ -116,8 +116,9 @@ namespace Service.ESS.Model
         public float BatteryVoltageOffsetForFansOn { get; set; }
         public float EEPROM_Version { get; set; }
         public float PV_ChargingPower { get; set; }
-
         //107/10/01 新增
+        public string SPMid { get; set; }
+        public string SPMconnected { get; set; }
         public string SPM90Voltage { get; set; }
         public string SPM90Current { get; set; }
         public string SPM90ActivePower { get; set; }

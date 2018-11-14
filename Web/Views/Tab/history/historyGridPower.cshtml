@@ -14,8 +14,6 @@
     string endTime = endDay.ToString("HH:mm:ss");
     string tabType = "GridPower";
     string connStr = tabType + "+" + sDay + "+" + eDay;
-    List<string> IDList = new List<string>();
-    int x = 1, y = 1, c = 1;
 }
 
 <script type="text/javascript">
@@ -33,7 +31,7 @@
     </div>
     @*<div class="col h5">@ViewBag.GridPower</div>*@
     <div class="col ">
-        <p>@ViewBag.execlInfo</p>
+        @*<p>@ViewBag.execlInfo</p>*@
         <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#GridPowerModal" style="float:right">
             Excel
         </button>
@@ -92,7 +90,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col" style="width:20%">資料時間(UTC)</th>
+                    <th scope="col" style="width:20%">資料時間(UTC+8)</th>
                     <th scope="col" style="width:10%">電壓(V)</th>
                     <th scope="col" style="width:10%">電流(A)</th>
                     <th scope="col" style="width:10%">實功率(kW)</th>
@@ -106,42 +104,41 @@
             <tbody>
                 @foreach (var gps in Model)
                 {
-
+                    var time = gps.UpdateDate.AddHours(8).ToString();
                     if (!string.IsNullOrEmpty(gps.GridPowerIDs))
                     {
-                        string T1 = null, T2 = null, T3 = null, T4 = null, T5 = null, T6 = null, T7 = null, T8 = null, T9 = null;
+                        string Timer = null;
+                        double T1 = 0, T2 = 0, T3 = 0, T4 = 0, T5 = 0, T6 = 0, T7 = 0, T8 = 0;
                         string[] IDs = gps.GridPowerIDs.Trim().Split('|');
-                        List<string> BtnGroup = new List<string>();
-                        int cut = 1;
+                        int x = 0;
                         foreach (var gp in IDs)
                         {
                             if (!string.IsNullOrEmpty(gp.Trim()))
                             {
                                 Guid ID = Guid.Parse(gp);
                                 GridPower gridPowers = gridPowerService.ReadByID(ID);
-                                T1 = gridPowers.date_time.ToString();
-                                T2 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", gridPowers.Vavg) + "] ";
-                                T3 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", gridPowers.Isum) + "] ";
-                                T4 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", gridPowers.Watt_t / 1000.0) + "] ";
-                                T5 += cut.ToString() + ":[" + string.Format("{0:#,0.00}", gridPowers.Var_t / 1000.00) + "] ";
-                                T6 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", gridPowers.VA_t / 1000.0) + "] ";
-                                T7 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", gridPowers.PF_t) + "] ";
-                                T8 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", gridPowers.Frequency) + "] ";
-                                T9 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", gridPowers.kWHt) + "] ";
+                                Timer = time;
+                                T1 += gridPowers.Vavg;
+                                T2 += gridPowers.Isum;
+                                T3 += gridPowers.Watt_t / 1000.0;
+                                T4 += gridPowers.Var_t / 1000.00;
+                                T5 += gridPowers.VA_t / 1000.00;
+                                T6 += gridPowers.PF_t;
+                                T7 += gridPowers.Frequency;
+                                T8 += gridPowers.kWHt;
                                 x++;
-                                cut++;
                             }
                         }
                         <tr>
-                            <th scope="row">@T1</th>
-                            <td>@T2</td>
-                            <td>@T3</td>
-                            <td>@T4</td>
-                            <td>@T5</td>
-                            <td>@T6</td>
-                            <td>@T7</td>
-                            <td>@T8</td>
-                            <td>@T9</td>
+                            <th scope="row">@Timer</th>
+                            <td>@string.Format("{0:#,0.0}", T1 / x)</td>
+                            <td>@string.Format("{0:#,0.0}", T2)</td>
+                            <td>@string.Format("{0:#,0.0}", T3)</td>
+                            <td>@string.Format("{0:#,0.0}", T4)</td>
+                            <td>@string.Format("{0:#,0.0}", T5)</td>
+                            <td>@string.Format("{0:#,0.0}", T6 / x)</td>
+                            <td>@string.Format("{0:#,0.0}", T7 / x)</td>
+                            <td>@string.Format("{0:#,0.0}", T8)</td>
                         </tr>
                     }
                 }

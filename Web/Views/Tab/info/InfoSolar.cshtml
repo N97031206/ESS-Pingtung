@@ -1,42 +1,80 @@
 ﻿@using Service.ESS.Provider;
 @using Service.ESS.Model;
+@using Web.Models.Json.Inverter;
 @{
-    InverterService inverterService = new InverterService();
-    Inverter inverter = inverterService.ReadNow();
-    string Info1 = "", Info2 = "", Info3 = "", Info4 = "", Info5 = "";
-    if (inverter!=null)
+    //取最新時間
+    ESSObjecterService eSSObjecterService = new ESSObjecterService();
+    string EssTime = eSSObjecterService.ReadNow().CreateTime.ToString();
+    //取相關資料
+    InverterService InverterService = new InverterService();
+    List<Inverter> inverters = new List<Inverter>();
+    var ReadNow = eSSObjecterService.ReadNow().InvertersIDs;
+    if (ReadNow != null)
     {
-        Info1 = inverter.CreateTime.ToString();
-        Info2 = string.Format("{0:#,0.00}", inverter.SPM90Voltage.Split('|'));
-        Info3 = string.Format("{0:#,0.00}", inverter.SPM90Current.Split('|'));
-        Info4 = string.Format("{0:#,0.00}", inverter.SPM90ActiveEnergy.Split('|').ToList().Sum(x => x.IsEmpty() ? 0 : Convert.ToDouble(x)) / 1000.0);
-        Info5 = string.Format("{0:#,0.00}", inverter.SPM90ActivePower.Split('|').ToList().Sum(x => x.IsEmpty() ? 0 : Convert.ToDouble(x)) / 1000.0);
+        var invID = ReadNow.Split('|');
+        foreach (var x in invID)
+        {
+            if (!string.IsNullOrEmpty(x))
+            {
+                Guid id = Guid.Parse(x.Trim());
+                inverters.Add(InverterService.ReadByID(id));
+            }
+        }
     }
-}
+    }
+
+<style>
+    .line {
+        width: auto;
+        height: auto;
+        border-bottom: 1px solid black;
+    }
+</style>
+
+
 <div class="row">
     <!--lift-->
     <div class="col-2 h6">
-        <div class="row " id="pc0">
-            <div class="col font-weight-bold small">資料時間(UTC+8)</div>
-            <div class="col font-italic">@Info1</div>
-        </div>
-        <div class="row " id="pc1">
-            <div class="col font-weight-bold small">電壓(V)</div>
-            <div class="col font-italic">@Info2</div>
-        </div>
-        <div class="row " id="pc2">
-            <div class="col font-weight-bold small">電流(A)</div>
-            <div class="col font-italic">@Info3</div>
-        </div>
-        <div class="row " id="pc3">
-            <div class="col font-weight-bold small">功率(kW)</div>
-            <div class="col font-italic">@Info4</div>
-        </div>
-        <div class="row " id="pc4">
-            <div class="col font-weight-bold small">發電量(kWh)</div>
-            <div class="col font-italic">@Info5</div>
-        </div>
+        @if (inverters != null)
+        {
+            <div class="row " id="pc0">
+                <div class="col font-weight-bold small">資料時間(UTC+8)</div>
+                <div class="col font-italic">@EssTime</div>
+                @foreach (var inv in inverters)
+                {
+                    var index = inv.SPMid.Split('|');
+                    var voltage = inv.SPM90Voltage.Split('|');
+                    var current = inv.SPM90Current.Split('|');
+                    var energy = inv.SPM90ActiveEnergy.Split('|');
+                    var power = inv.SPM90ActivePower.Split('|');
 
+                    for (int i = 0; i < index.Length - 1; i++)
+                    {
+                        string Info1 = index[i];
+                        string Info2 = string.Format("{0:#,0.00}", Convert.ToDouble(voltage[i]));
+                        string Info3 = string.Format("{0:#,0.00}", Convert.ToDouble(current[i]));
+                        string Info4 = string.Format("{0:#,0.00}", Convert.ToDouble(power[i]) / 1000.0);
+                        string Info5 = string.Format("{0:#,0.00}", Convert.ToDouble(energy[i]));
+                        <div class="w-100 line"></div>
+                        <div class="col font-weight-bold small">太陽能</div>
+                        <div class="col font-italic">@Info1</div>
+                        <div class="w-100"></div>
+                        <div class="col font-weight-bold small">電壓(V)</div>
+                        <div class="col font-italic">@Info2</div>
+                        <div class="w-100"></div>
+                        <div class="col font-weight-bold small">電流(A)</div>
+                        <div class="col font-italic">@Info3</div>
+                        <div class="w-100"></div>
+                        <div class="col font-weight-bold small">功率(kW)</div>
+                        <div class="col font-italic">@Info4</div>
+                        <div class="w-100"></div>
+                        <div class="col font-weight-bold small">發電量(kWh)</div>
+                        <div class="col font-italic">@Info5</div>
+                        <div class="w-100"></div>
+                    }
+                }
+            </div>
+        }
     </div>
     <!--middle-->
     <div class="col-8">
@@ -90,7 +128,7 @@
                 option = null;
                 option = {
                     title: {
-                        text: '每日用電瓦數',
+                        text: '發電瓦數',
                         textStyle: {
                             fontWeight: 'normal',
                             color: 'white'
@@ -127,14 +165,14 @@
                                 }
                             },
                             axisLabel: {
-                                formatter: '{value} kWh'
+                                formatter: '{value}kW'
                             }
                         }
                     ],
                     series: [
                         {
-                            "name": "每日用電瓦數",
-                            "type": "bar",
+                            "name": "發電瓦數",
+                            "type": "line",
                             "data": SolarData,
                         }
                     ]
@@ -148,9 +186,9 @@
     <!--right-->
     <div class="col-2 h3">
         <div class=" bg-light">可用總電量</div>
-        <div class="font-italic">@ViewBag.Demand  kWh</div>
+        <div class="font-italic">@ViewBag.Demand</div>
         <div class="bg-light">可用電時數</div>
-        <div class="font-italic">@ViewBag.RemainTime 小時</div>
+        <div class="font-italic">@ViewBag.RemainTime</div>
     </div>
 </div>
 

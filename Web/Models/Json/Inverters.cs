@@ -39,13 +39,7 @@ namespace Web.Models.Json
         public float BatteryVoltageOffsetForFansOn { get; set; }
         public float EEPROM_Version { get; set; }
         public float PV_ChargingPower { get; set; }
-
         //107/10/01 新增
-        public float SPM90Voltage { get; set; }
-        public float SPM90Current { get; set; }
-        public float SPM90ActivePower { get; set; }
-        public float SPM90ActiveEnergy { get; set; }
-        public float SPM90VoltageDirection { get; set; }
-
+        public IList<SPM90s> SPM90s { get; set; }
     }
 }

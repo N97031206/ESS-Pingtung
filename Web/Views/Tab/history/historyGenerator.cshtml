@@ -14,8 +14,6 @@
     string endTime = endDay.ToString("HH:mm:ss");
     var tabType = "Generator";
     string connStr = tabType + "+" + sDay + "+" + eDay;
-    List<string> IDList = new List<string>();
-    int x = 1, y = 1, c = 1;
 }
 
 <script type="text/javascript">
@@ -117,38 +115,34 @@
                 {
                     if (!string.IsNullOrEmpty(gens.GeneratorIDs))
                     {
-                        string status = null, T1 = null, T2 = null, T3 = null, T4 = null, T5 = null, T6 = null, T7 = null, T8 = null, T9 = null, T10 = null, T11 = null, T12 = null, T13 = null, T14 = null, T15 = null;
+                        string T1 = null, T2 = null, T3 = null, T4 = null, T5 = null, T6 = null, T7 = null, T8 = null, T9 = null, T10 = null, T11 = null, T12 = null, T13 = null, T14 = null, Timer = null;
                         string[] IDs = gens.GeneratorIDs.Trim().Split('|');
-                        List<string> BtnGroup = new List<string>();
-                        int cut = 1;
                         foreach (var lo in IDs)
                         {
                             if (!string.IsNullOrEmpty(lo.Trim()))
                             {
                                 Guid ID = Guid.Parse(lo);
                                 Generator generator = generatorService.ReadByID(ID);
-                                if (generator.ControlStatus == "true") { status = "啟動"; } else { status = "關閉"; };
-                                T1 = generator.UpdateTime.ToString();
-                                T2 = string.Format("{0:#,0.0}", generator.FuleLevel);
-                                T3 = string.Format("{0:#,0.0}", generator.L1Nvoltage);
-                                T4 = string.Format("{0:#,0.0}", generator.L2Nvoltage);
-                                T5 = string.Format("{0:#,0.0}", generator.L3Nvoltage);
-                                T6 = string.Format("{0:#,0.0}", generator.L1current);
-                                T7 = string.Format("{0:#,0.0}", generator.L2current);
-                                T8 = string.Format("{0:#,0.0}", generator.L3current);
-                                T9 = string.Format("{0:#,0.0}", generator.totalwatts / 1000.0);
-                                T10 = string.Format("{0:#,0.00}", generator.averagepowerfactor);
-                                T11 = string.Format("{0:#,0.0}", generator.positiveKWhours);
-                                T12 = string.Format("{0:#,0.0}", generator.negativeKWhours);
-                                T13 = status;
-                                T14 = string.Format("{0:#,0.0}", generator.AvailabilityEnergy);
-                                T15 = string.Format("{0:#,0.0}", generator.AvailabilityHour);
-                                x++;
-                                cut++;
+                                Timer = gens.UpdateDate.AddHours(8).ToString();
+                                T1 = string.Format("{0:#,0.0}", generator.FuleLevel);
+                                T2 = string.Format("{0:#,0.0}", generator.L1Nvoltage);
+                                T3 = string.Format("{0:#,0.0}", generator.L2Nvoltage);
+                                T4 = string.Format("{0:#,0.0}", generator.L3Nvoltage);
+                                T5 = string.Format("{0:#,0.0}", generator.L1current);
+                                T6 = string.Format("{0:#,0.0}", generator.L2current);
+                                T7 = string.Format("{0:#,0.0}", generator.L3current);
+                                T8 = string.Format("{0:#,0.0}", generator.totalwatts / 1000.0);
+                                T9 = string.Format("{0:#,0.0}", generator.averagepowerfactor);
+                                T10 = string.Format("{0:#,0.0}", generator.positiveKWhours);
+                                T11 = string.Format("{0:#,0.0}", generator.negativeKWhours);
+                                T12 = generator.ControlStatus.Equals("true")?"啟動" : "關閉";
+                                T13 = string.Format("{0:#,0.0}", generator.AvailabilityEnergy);
+                                T14 = string.Format("{0:#,0.0}", generator.AvailabilityHour);
                             }
                         }
                         <tr>
-                            <th scope="row">@T1</th>
+                            <th scope="row">@Timer</th>
+                            <td>@T1</td>
                             <td>@T2</td>
                             <td>@T3</td>
                             <td>@T4</td>
@@ -162,7 +156,6 @@
                             <td>@T12</td>
                             <td>@T13</td>
                             <td>@T14</td>
-                            <td>@T15</td>
                         </tr>
                     }
                 }

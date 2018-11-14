@@ -168,14 +168,8 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Image\Arrow\breakIN-icon.png" />
-    <Content Include="Content\Image\Arrow\circulo_setas_animadas.gif" />
-    <Content Include="Content\Image\Arrow\diagonal-arrow.png" />
     <Content Include="Content\Image\Arrow\arrow.gif" />
-    <Content Include="Content\Image\Arrow\down-arrow.png" />
-    <Content Include="Content\Image\Arrow\right-arrow.png" />
-    <Content Include="Content\Image\Arrow\transfer.png" />
     <Content Include="Content\Image\Emblem_of_Pingtung_County.png" />
-    <Content Include="Content\Image\Emblem_of_Pingtung_County.svg" />
     <Content Include="Content\Image\favicon.ico" />
     <Content Include="Content\Image\太陽能.png" />
     <Content Include="Content\Image\市電.png" />
@@ -1129,6 +1123,7 @@
     <Compile Include="Models\Json\Inverter\DeviceStatus.cs" />
     <Compile Include="Models\Json\Inverter\InverterStatus.cs" />
     <Compile Include="Models\Json\Inverter\ParallelInformation.cs" />
+    <Compile Include="Models\Json\Inverter\SPM90s.cs" />
     <Compile Include="Models\Json\Inverter\WarningStatus.cs" />
     <Compile Include="Models\Json\LoadPower\events.cs" />
     <Compile Include="Models\Json\LoadPower\info.cs" />
@@ -1185,7 +1180,6 @@
     <Content Include="Views\Monitor\Frome.cshtml" />
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Monitor\Frames.cshtml" />
-    <Content Include="Views\Monitor\Frames-copy.cshtml" />
     <Content Include="Views\Tab\DisableBulletin.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

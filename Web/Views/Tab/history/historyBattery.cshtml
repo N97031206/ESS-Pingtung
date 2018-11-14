@@ -15,7 +15,7 @@
     string endTime = endDay.ToString("HH:mm:ss");
     string connStr = tabType + "+" + sDay + "+" + eDay;
     List<string> IDList = new List<string>();
-    int x = 1,y=1,c=1;
+    int y = 0 ;
 }
 
 <script type="text/javascript">
@@ -89,7 +89,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col" style="width:15%">資料時間</th>
+                    <th scope="col" style="width:15%">資料時間(UTC+8)</th>
                     <th scope="col" style="width:12%">電池電壓(V)</th>
                     <th scope="col" style="width:12%">充電電流(A)</th>
                     <th scope="col" style="width:12%">放電電流(A)</th>
@@ -102,12 +102,13 @@
             <tbody>
                 @foreach (var bas in Model)
                 {
+                    var time = bas.UpdateDate.AddHours(8).ToString();
                     if (!string.IsNullOrEmpty(bas.BatteryIDs))
                     {
-                        string T1 = null, T2 = null, T3 = null, T4 = null, T5 = null, T6 = null, T7 = null;
+                        int c = 0;
+                        string T1 = null, T2 = null, T3 = null, T4 = null, T5 = null, T6 = null, Timer = null;
                         string[] IDs = bas.BatteryIDs.Trim().Split('|');
                         List<string> BtnGroup = new List<string>();
-                        int cut = 1;
                         foreach (var ba in IDs)
                         {
                             if (!string.IsNullOrEmpty(ba.Trim()))
@@ -117,38 +118,36 @@
                                 int cd = Convert.ToInt32(battery.charge_direction);
                                 string direct = (cd == 0) ? "離線" : (cd == 1) ? "充電" : "放電";
                                 IDList.Add(ba.Trim());
-                                T1 = battery.updateTime.ToString();
-                                T2 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", battery.voltage) + "] ";
-                                T3 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", battery.charging_current) + "] ";
-                                T4 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", battery.discharging_current) + "] ";
-                                T5 += cut.ToString() + ":[" + string.Format("{0:#,0.0}", battery.SOC) + "] ";
-                                T6 += cut.ToString() + ":[" + string.Format("{0:#,0}", battery.Cycle) + "] ";
-                                T7 += cut.ToString() + ":[" + direct + "] ";
-                                BtnGroup.Add("cellmodal" + Convert.ToString(x));
-                                x++;
-                                cut++;
+                                Timer = time;
+                                T1 += battery.index.ToString() + ":[" + string.Format("{0:#,0.0}", battery.voltage) + "] ";
+                                T2 += battery.index.ToString() + ":[" + string.Format("{0:#,0.0}", battery.charging_current) + "] ";
+                                T3 += battery.index.ToString() + ":[" + string.Format("{0:#,0.0}", battery.discharging_current) + "] ";
+                                T4 += battery.index.ToString() + ":[" + string.Format("{0:#,0.0}", batteryService.EachSOC(battery.voltage)) + "] ";
+                                T5 += battery.index.ToString() + ":[" + Math.Round(battery.Cycle, 0) + "] ";
+                                T6 += battery.index.ToString() + ":[" + direct + "] ";
+                                BtnGroup.Add("cellmodal" + Convert.ToString(battery.index.ToString()));
                             }
                         }
                         <tr>
-                            <th scope="row">@T1</th>
+                            <th scope="row">@Timer</th>
+                            <td>@T1</td>
                             <td>@T2</td>
                             <td>@T3</td>
                             <td>@T4</td>
                             <td>@T5</td>
                             <td>@T6</td>
-                            <td>@T7</td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     @foreach (string btn in BtnGroup)
                                     {
-                                        string cellName = "Cell" + c;
+                                        string cellName = "Cell" +c ;
                                         <button type='button' class='btn btn-info' data-toggle='modal' data-target='#@btn.Trim()'>@cellName</button>
                                         c++;
                                     }
                                 </div>
                             </td>
                         </tr>
-                        T1 = null; T2 = null; T3 = null; T4 = null; T5 = null; T6 = null; T7 = null; BtnGroup.Clear(); c = 1;
+                        T1 = null; T2 = null; T3 = null; T4 = null; T5 = null; T6 = null; Timer = null; BtnGroup.Clear(); c = 0;
                     }
                 }
             </tbody>
@@ -175,7 +174,7 @@
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">@id.Trim()</h6>
+                        @*<h6 class="modal-title" id="exampleModalLabel">@id.Trim()</h6>*@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

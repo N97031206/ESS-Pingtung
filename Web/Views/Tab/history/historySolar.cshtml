@@ -14,8 +14,6 @@
     string endTime = endDay.ToString("HH:mm:ss");
     var tabType = "Solar";
     string connStr = tabType + "+" + sDay + "+" + eDay;
-    List<string> IDList = new List<string>();
-    int x = 1, y = 1, c = 1;
 }
 
 <script type="text/javascript">
@@ -91,37 +89,41 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col" style="width:20%">資料時間(UTC)</th>
+                    <th scope="col" style="width:20%">資料時間(UTC+8)</th>
                     <th scope="col" style="width:10%">電壓(V)</th>
                     <th scope="col" style="width:10%">電流(A)</th>
                     <th scope="col" style="width:10%">功率(kW)</th>
                     <th scope="col" style="width:10%">發電量(kWh)</th>
-
                 </tr>
             </thead>
             <tbody>
                 @foreach (var invs in Model)
                 {
+                    var time = invs.UpdateDate.AddHours(8).ToString();
                     if (!string.IsNullOrEmpty(invs.InvertersIDs))
                     {
                         string T1 = null, T2 = null, T3 = null, T4 = null, T5 = null;
                         string[] IDs = invs.InvertersIDs.Trim().Split('|');
-                        List<string> BtnGroup = new List<string>();
-                        int cut = 1;
                         foreach (var inv in IDs)
                         {
                             if (!string.IsNullOrEmpty(inv))
                             {
+                                T1 = time;
                                 Guid ID = Guid.Parse(inv);
                                 Inverter inverter = inverterService.ReadByID(ID);
+                                var id = inverter.SPMid.Split('|');
+                                var volt = inverter.SPM90Voltage.Split('|');
+                                var curent = inverter.SPM90Current.Split('|');
+                                var activeEnergy = inverter.SPM90ActiveEnergy.Split('|');
+                                var activePower = inverter.SPM90ActivePower.Split('|');
 
-                                T1 = inverter.CreateTime.ToString();
-                                T2 = cut.ToString() + ":[" + string.Format("{0:#,0.0}", inverter.SPM90Voltage.TrimEnd('|')) + "] ";
-                                T3 = cut.ToString() + ":[" + string.Format("{0:#,0.0}", inverter.SPM90Current.TrimEnd('|')) + "] ";
-                                T4 = cut.ToString() + ":[" + string.Format("{0:#,0.0}", Convert.ToDouble(inverter.SPM90ActiveEnergy.TrimEnd('|')) / 1000.0) + "] ";
-                                T5 = cut.ToString() + ":[" + string.Format("{0:#,0.0}", inverter.SPM90ActivePower.TrimEnd('|')) + "] ";
-                                x++;
-                                cut++;
+                                for (int k = 0; k < id.Count()-1; k++)
+                                {
+                                    T2 += id[k] + ":[" + string.Format("{0:#,0.0}", volt[k]) + "] ";
+                                    T3 += id[k] + ":[" + string.Format("{0:#,0.0}", curent[k]) + "] ";
+                                    T4 += id[k] + ":[" + string.Format("{0:#,0.0}", Convert.ToDouble(activePower[k]) / 1000.0) + "] ";
+                                    T5 += id[k] + ":[" + string.Format("{0:#,0.0}", activeEnergy[k]) + "] ";
+                                }
                             }
                         }
                         <tr>

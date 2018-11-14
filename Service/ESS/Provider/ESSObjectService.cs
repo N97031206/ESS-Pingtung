@@ -73,6 +73,12 @@ namespace Service.ESS.Provider
             return this.mapper.Map<List<Model.ESSObject>>(domainEss);
         }
 
+        public Model.ESSObject ReadNow()
+        {
+            Domain.ESSObject ReadNow = objectRepository.ReadAll().OrderByDescending(x => x.CreateTime).FirstOrDefault();
+            return this.mapper.Map<Model.ESSObject>(ReadNow);
+        }
+
 
     }
 }

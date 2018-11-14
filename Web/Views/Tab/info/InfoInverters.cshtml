@@ -1,68 +1,99 @@
 ﻿@using Service.ESS.Provider;
 @using Service.ESS.Model;
 @{
+    //取最新時間
+    ESSObjecterService eSSObjecterService = new ESSObjecterService();
+    string EssTime = eSSObjecterService.ReadNow().CreateTime.ToString();
+    //取相關資料
     InverterService InverterService = new InverterService();
-    Inverter inverter = InverterService.ReadNow();
-    string Info1 = "", Info2 = "", Info3 = "", Info4 = "", Info5 = "", Info6 = "", Info7 = "", Info8 = "",Info9 = "", Info10 = "", Info11 = "";
-    if (inverter != null)
+    List<Inverter> inverters = new List<Inverter>();
+    var ReadNow = eSSObjecterService.ReadNow().InvertersIDs;
+    var invID = ReadNow.Split('|');
+    if (ReadNow != null)
     {
-        Info1 = inverter.CreateTime.ToString();
-        Info2 = inverter.DeviceMode.Trim();
-        if (Info2 == "P") { Info2 = "Power On Mode"; }
-        else if (Info2 == "S") { Info2 = "Standby Mode"; }
-        else if (Info2 == "L") { Info2 = "Line Mode"; }
-        else if (Info2 == "B") { Info2 = "Battery Mode"; }
-        else if (Info2 == "F") { Info2 = "Fault Mode"; }
-        else if (Info2 == "H") { Info2 = "Power Saving Mode"; }
-        else { Info2 = "Unknown Mode"; }
-        Info3 = string.Format("{0:#,0.00}", inverter.GridVoltage);
-        Info4 = string.Format("{0:#,0.00}", inverter.GridFrequency);
-        Info5 = string.Format("{0:#,0.00}", inverter.AC_OutputVoltage);
-        Info6 = string.Format("{0:#,0.00}", inverter.AC_OutputFrequency);
-        Info7 = string.Format("{0:#,0.00}", inverter.ParallelInformation_TotalOutputActivePower.Split('|').ToList().Sum(x => x.IsEmpty() ? 0 : Convert.ToDouble(x)) / 1000.0);
-        Info8 = string.Format("{0:#,0.00}", inverter.BatteryVoltage);
-        Info9 = string.Format("{0:#,0.00}", inverter.BatteryCapacity);
-        Info10 = string.Format("{0:#,0.00}", inverter.PV_InputVoltage);
-        Info11 = string.Format("{0:#,0.00}",inverter.ParallelInformation_TotalChargingCurrent.Split('|').ToList().Sum(x => x.IsEmpty() ? 0 : Convert.ToDouble(x)) / 1000.0);
+        foreach (var x in invID)
+        {
+            if (!string.IsNullOrEmpty(x))
+            {
+                Guid id = Guid.Parse(x.Trim());
+                inverters.Add(InverterService.ReadByID(id));
+            }
+        }
     }
 }
+
+<style>
+    .line {
+        width: auto;
+        height: auto;
+        border-bottom: 1px solid black;
+    }
+</style>
+
 <div class="row">
     <!--lift-->
     <div class="col-2 h6">
-        <div class="row " id="pc0">
-            <div class="col font-weight-bold small">資料時間(UTC+8)</div>
-            <div class="col font-italic">@Info1</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">工作模式</div>
-            <div class="col font-italic">@Info2</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">市電電壓  (V)</div>
-            <div class="col font-italic">@Info3</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">市電頻率  (Hz)</div>
-            <div class="col font-italic">@Info4</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">輸出電壓  (V)</div>
-            <div class="col font-italic">@Info5</div>
-            <div class="w-100"></div>
-            <div class="col  font-weight-bold small">輸出頻率  (Hz)</div>
-            <div class="col font-italic">@Info6</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">總輸出實功率(kW)</div>
-            <div class="col font-italic">@Info7</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">電池電壓  (V)</div>
-            <div class="col font-italic">@Info8</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">電池容量  (%)</div>
-            <div class="col font-italic">@Info9</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">太陽能電壓  (V)</div>
-            <div class="col font-italic">@Info10</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">總充電電流  (A)</div>
-            <div class="col font-italic">@Info11</div>
-        </div>
+        @if (inverters != null)
+        {
+            <div class="row " id="pc0">
+                <div class="col font-weight-bold small">資料時間(UTC+8)</div>
+                <div class="col font-italic">@EssTime</div>
+                @foreach (var inv in inverters)
+                {
+                    string Info1 = inv.index.ToString();
+                    string Info2 = inv.DeviceMode.Trim();
+                    if (Info2 == "P") { Info2 = "Power On Mode"; }
+                    else if (Info2 == "S") { Info2 = "Standby Mode"; }
+                    else if (Info2 == "L") { Info2 = "Line Mode"; }
+                    else if (Info2 == "B") { Info2 = "Battery Mode"; }
+                    else if (Info2 == "F") { Info2 = "Fault Mode"; }
+                    else if (Info2 == "H") { Info2 = "Power Saving Mode"; }
+                    else { Info2 = "Unknown Mode"; }
+                    string Info3 = string.Format("{0:#,0.00}", inv.GridVoltage);
+                    string Info4 = string.Format("{0:#,0.00}", inv.GridFrequency);
+                    string Info5 = string.Format("{0:#,0.00}", inv.AC_OutputVoltage);
+                    string Info6 = string.Format("{0:#,0.00}", inv.AC_OutputFrequency);
+                    string Info7 = string.Format("{0:#,0.00}", inv.ParallelInformation_TotalOutputActivePower.Split('|').ToList().Sum(x => x.IsEmpty() ? 0 : Convert.ToDouble(x)) / 1000.0);
+                    string Info8 = string.Format("{0:#,0.00}", inv.BatteryVoltage);
+                    string Info9 = string.Format("{0:#,0.00}", inv.BatteryCapacity);
+                    string Info10 = string.Format("{0:#,0.00}", inv.PV_InputVoltage);
+                    string Info11 = string.Format("{0:#,0.00}", inv.ParallelInformation_TotalChargingCurrent.Split('|').ToList().Sum(x => x.IsEmpty() ? 0 : Convert.ToDouble(x)) / 1000.0);
+                    <div class="w-100 line"></div>
+                    <div class="col font-weight-bold small">逆變器</div>
+                    <div class="col font-italic">@Info1</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">工作模式</div>
+                    <div class="col font-italic">@Info2</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">市電電壓  (V)</div>
+                    <div class="col font-italic">@Info3</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">市電頻率  (Hz)</div>
+                    <div class="col font-italic">@Info4</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">輸出電壓  (V)</div>
+                    <div class="col font-italic">@Info5</div>
+                    <div class="w-100"></div>
+                    <div class="col  font-weight-bold small">輸出頻率  (Hz)</div>
+                    <div class="col font-italic">@Info6</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">總輸出實功率(kW)</div>
+                    <div class="col font-italic">@Info7</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">電池電壓  (V)</div>
+                    <div class="col font-italic">@Info8</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">電池容量  (%)</div>
+                    <div class="col font-italic">@Info9</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">太陽能電壓  (V)</div>
+                    <div class="col font-italic">@Info10</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">總充電電流  (A)</div>
+                    <div class="col font-italic">@Info11</div>
+                }
+            </div>
+        }
     </div>
     <!--middle-->
     <div class="col-8">
@@ -116,7 +147,7 @@
                 option = null;
                 option = {
                     title: {
-                        text: '每日用電瓦數',
+                        text: '總輸出實功率',
                         textStyle: {
                             fontWeight: 'normal',
                             color: 'white'
@@ -153,14 +184,14 @@
                                 }
                             },
                             axisLabel: {
-                                formatter: '{value} kWh'
+                                formatter: '{value} kW'
                             }
                         }
                     ],
                     series: [
                         {
-                            "name": "每日用電瓦數",
-                            "type": "bar",
+                            "name": "總輸出實功率",
+                            "type": "line",
                             "data": InverterData,
                         }
                     ]
@@ -174,9 +205,9 @@
     <!--right-->
     <div class="col-2 h3">
         <div class=" bg-light">可用總電量</div>
-        <div class="font-italic">@ViewBag.Demand  kWh</div>
+        <div class="font-italic">@ViewBag.Demand </div>
         <div class="bg-light">可用電時數</div>
-        <div class="font-italic">@ViewBag.RemainTime 小時</div>
+        <div class="font-italic">@ViewBag.RemainTime</div>
     </div>
 </div>
 

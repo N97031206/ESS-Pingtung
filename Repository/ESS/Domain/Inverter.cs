@@ -121,6 +121,8 @@ namespace Repository.ESS.Domain
         public float PV_ChargingPower { get; set; }
 
         //107/10/01 新增
+        public string SPMid { get; set; }
+        public string SPMconnected { get; set; }
         public string SPM90Voltage { get; set; }
         public string SPM90Current { get; set; }
         public string SPM90ActivePower { get; set; }
