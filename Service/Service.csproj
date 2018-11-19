@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ESS\Mapper\AccountMapper.cs" />
+    <Compile Include="ESS\Mapper\ErrorCodesMapper.cs" />
     <Compile Include="ESS\Mapper\LoadPowersMapper.cs" />
     <Compile Include="ESS\Mapper\GridPowerMapper.cs" />
     <Compile Include="ESS\Mapper\InverterMapper.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="ESS\Model\AlartType.cs" />
     <Compile Include="ESS\Model\Battery.cs" />
     <Compile Include="ESS\Model\Bulletin.cs" />
+    <Compile Include="ESS\Model\ErrorCodes.cs" />
     <Compile Include="ESS\Model\Generator.cs" />
     <Compile Include="ESS\Model\ESSObject.cs" />
     <Compile Include="ESS\Model\Inverter.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="ESS\Model\Orgin.cs" />
     <Compile Include="ESS\Model\Role.cs" />
     <Compile Include="ESS\Model\Station.cs" />
+    <Compile Include="ESS\Provider\ErrorCodesService.cs" />
     <Compile Include="ESS\Provider\AccountService.cs" />
     <Compile Include="ESS\Provider\AlartService.cs" />
     <Compile Include="ESS\Provider\AlartTypeService.cs" />

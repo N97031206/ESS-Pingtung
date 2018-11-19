@@ -471,7 +471,7 @@ namespace Web.Controllers
             StationList();
             AlartTypeList();
 
-            List<Alart> alartList = alartService.ReadAll().ToList();
+            List<Alart> alartList = alartService.ReadAll().OrderByDescending(x=>x.StartTimet).ToList();
             //分頁
             int currentPage = page < 1 ? 1 : page;
             var result = alartList.ToPagedList(currentPage, PageSizes());
@@ -501,8 +501,7 @@ namespace Web.Controllers
 
             List<Alart> alartList = new List<Alart>();
 
-            alartList = alartService.ReadListBy(Start, End, alarttypeID, stationID).ToList();
-
+            alartList = alartService.ReadListBy(Start, End, alarttypeID, stationID).OrderByDescending(y=>y.StartTimet).ToList();
             //分頁
             int currentPage = page < 1 ? 1 : page;
             var result = alartList.ToPagedList(currentPage, PageSizes());
@@ -792,6 +791,7 @@ namespace Web.Controllers
                     });
                     TempData["message"] = "匯出"+ reportName+"中";
                     return RedirectToAction("History", "Tab", new { connStr });
+
                 }
                 TempData["message"] = "無資料可供匯出";
                 return RedirectToAction("History", "Tab", new { connStr });
@@ -826,7 +826,7 @@ namespace Web.Controllers
             {
                 case "GridPower":
                     colIdx = 1;
-                    sheet.Cell(1, colIdx++).Value = "資料時間(UTC)";
+                    sheet.Cell(1, colIdx++).Value = "資料時間(UTC+8)";
                     sheet.Cell(1, colIdx++).Value = "電壓(V)";
                     sheet.Cell(1, colIdx++).Value = "電流(A)";
                     sheet.Cell(1, colIdx++).Value = "實功率(kW)";
@@ -839,47 +839,53 @@ namespace Web.Controllers
                     conlumnIndex = 1;   //每筆資料欄位起始位置
                     foreach (var gps in data)
                     {
-                        var time = gps.UpdateDate.AddHours(8).ToString();
+                        int count = 1;
                         if (!string.IsNullOrEmpty(gps.GridPowerIDs))
                         {
                             string Timer = null;
                             double T1 = 0, T2 = 0, T3 = 0, T4 = 0, T5 = 0, T6 = 0, T7 = 0, T8 = 0;
-                            string[] IDs = gps.GridPowerIDs.Trim().Split('|');
-                            List<string> BtnGroup = new List<string>();
-                            foreach (var gp in IDs)
+                            string[] IDs = gps.GridPowerIDs?.Trim().Split('|');
+                            if (IDs!=null)
                             {
-                                if (!string.IsNullOrEmpty(gp.Trim()))
+                                foreach (var gp in IDs)
                                 {
-                                    Guid ID = Guid.Parse(gp);
-                                    GridPower gridPowers = GridPowerService.ReadByID(ID);
-                                    Timer = time;
-                                    T1 += gridPowers.Vavg;
-                                    T2 += gridPowers.Isum;
-                                    T3 += gridPowers.Watt_t / 1000.0;
-                                    T4 += gridPowers.Var_t / 1000.00;
-                                    T5 += gridPowers.VA_t / 1000.00;
-                                    T6 += gridPowers.PF_t;
-                                    T7 += gridPowers.Frequency;
-                                    T8 += gridPowers.kWHt;
+                                    if (!string.IsNullOrEmpty(gp.Trim()))
+                                    {
+                                        Guid ID = Guid.Parse(gp);
+                                        GridPower gridPowers = GridPowerService.ReadByID(ID);
+                                        if (gridPowers != null)
+                                        {
+                                            Timer = gps.UpdateDate.AddHours(8).ToString();
+                                            T1 += gridPowers.Vavg;
+                                            T2 += gridPowers.Isum;
+                                            T3 += gridPowers.Watt_t / 1000.0;
+                                            T4 += gridPowers.Var_t / 1000.00;
+                                            T5 += gridPowers.VA_t / 1000.00;
+                                            T6 += gridPowers.PF_t;
+                                            T7 += gridPowers.Frequency;
+                                            T8 += gridPowers.kWHt;
+                                            count++;
+                                        }
+                                    }
                                 }
+                                sheet.Cell(rowIdx, 1).Value = Timer.ToString();
+                                sheet.Cell(rowIdx, 2).Value = string.Format("{0:#,0.0}", T1 / count);
+                                sheet.Cell(rowIdx, 3).Value = string.Format("{0:#,0.0}", T2);
+                                sheet.Cell(rowIdx, 4).Value = string.Format("{0:#,0.0}", T3);
+                                sheet.Cell(rowIdx, 5).Value = string.Format("{0:#,0.0}", T4);
+                                sheet.Cell(rowIdx, 6).Value = string.Format("{0:#,0.0}", T5);
+                                sheet.Cell(rowIdx, 7).Value = string.Format("{0:#,0.0}", T6);
+                                sheet.Cell(rowIdx, 8).Value = string.Format("{0:#,0.0}", T7);
+                                sheet.Cell(rowIdx, 9).Value = string.Format("{0:#,0.0}", T8);
+                                conlumnIndex++;
+                                rowIdx++;
                             }
-                            sheet.Cell(rowIdx, 1).Value = Timer.ToString();
-                            sheet.Cell(rowIdx, 2).Value = string.Format("{0:#,0.0}", T1);
-                            sheet.Cell(rowIdx, 3).Value = string.Format("{0:#,0.0}", T2);
-                            sheet.Cell(rowIdx, 4).Value = string.Format("{0:#,0.0}", T3);
-                            sheet.Cell(rowIdx, 5).Value = string.Format("{0:#,0.0}",T4);
-                            sheet.Cell(rowIdx, 6).Value = string.Format("{0:#,0.0}", T5);
-                            sheet.Cell(rowIdx, 7).Value = string.Format("{0:#,0.0}", T6);
-                            sheet.Cell(rowIdx, 8).Value = string.Format("{0:#,0.0}", T7);
-                            sheet.Cell(rowIdx, 9).Value = string.Format("{0:#,0.0}", T8);
-                            conlumnIndex++;
-                            rowIdx++;
                         }
                     }
                     break;
                 case "Inverters":
                     colIdx = 1;
-                    sheet.Cell(1, colIdx++).Value = "資料時間(UTC)";
+                    sheet.Cell(1, colIdx++).Value = "資料時間(UTC+8)";
                     sheet.Cell(1, colIdx++).Value = "工作模式";
                     sheet.Cell(1, colIdx++).Value = "市電電壓  (V)";
                     sheet.Cell(1, colIdx++).Value = "市電頻率  (Hz)";
@@ -894,181 +900,218 @@ namespace Web.Controllers
                     conlumnIndex = 1;
                     foreach (var invs in data)
                     {
-                        var time = invs.UpdateDate.AddHours(8).ToString();
                         if (!string.IsNullOrEmpty(invs.InvertersIDs))
                         {
                             string Timer = null, T1 = null;
                             double T2 = 0, T3 = 0, T4 = 0, T5 = 0, T6 = 0, T7 = 0, T8 = 0, T9 = 0, T10 = 0;
-                            string[] IDs = invs.InvertersIDs.Trim().Split('|');
-                            List<string> BtnGroup = new List<string>();
-                            foreach (var inv in IDs)
+                            string[] IDs = invs.InvertersIDs?.Trim().Split('|');
+                            if (IDs != null)
                             {
-                                if (!string.IsNullOrEmpty(inv))
+                                foreach (var inv in IDs)
                                 {
-                                    Timer = time;
-                                    Guid ID = Guid.Parse(inv);
-                                    Inverter inverter = InverterService.ReadByID(ID);
-                                    string mod = inverter.DeviceMode.Trim();
-                                    if (mod == "P") { mod = "Power On Mode"; }
-                                    else if (mod == "S") { mod = "Standby Mode"; }
-                                    else if (mod == "L") { mod = "Line Mode"; }
-                                    else if (mod == "B") { mod = "Battery Mode"; }
-                                    else if (mod == "F") { mod = "Fault Mode"; }
-                                    else if (mod == "H") { mod = "Power Saving Mode"; }
-                                    else { mod = "Unknown Mode"; }
-                                    T1 += mod;
-                                    T2 += inverter.GridVoltage;
-                                    T3 += inverter.GridFrequency;
-                                    T4 += inverter.AC_OutputVoltage;
-                                    T5 += inverter.AC_OutputFrequency;
-
-                                    var toc = inverter.ParallelInformation_TotalOutputActivePower.Trim().Split('|');
-                                    int i = 1;
-                                    foreach (var d in toc)
+                                    if (!string.IsNullOrEmpty(inv))
                                     {
-                                        if (!d.IsEmpty())
+                                        Timer = invs.UpdateDate.AddHours(8).ToString(); ;
+                                        Guid ID = Guid.Parse(inv);
+                                        Inverter inverter = InverterService.ReadByID(ID);
+                                        if (inverter != null)
                                         {
-                                            T6 += Convert.ToDouble(d) / 1000.0;
-                                            i++;
-                                        }
-                                    }
-                                    T7 += inverter.BatteryVoltage;
-                                    T8 += inverter.BatteryCapacity;
-                                    T9 += inverter.PV_InputVoltage;
+                                            string mod = inverter.DeviceMode.Trim();
+                                            if (mod == "P") { mod = "Power On Mode"; }
+                                            else if (mod == "S") { mod = "Standby Mode"; }
+                                            else if (mod == "L") { mod = "Line Mode"; }
+                                            else if (mod == "B") { mod = "Battery Mode"; }
+                                            else if (mod == "F") { mod = "Fault Mode"; }
+                                            else if (mod == "H") { mod = "Power Saving Mode"; }
+                                            else { mod = "Unknown Mode"; }
+                                            T1 += mod;
+                                            T2 += inverter.GridVoltage;
+                                            T3 += inverter.GridFrequency;
+                                            T4 += inverter.AC_OutputVoltage;
+                                            T5 += inverter.AC_OutputFrequency;
+                                            var toc = inverter.ParallelInformation_TotalOutputActivePower.Trim().Split('|');
+                                            int i = 1;
+                                            foreach (var d in toc)
+                                            {
+                                                if (!d.IsEmpty())
+                                                {
+                                                    T6 += Convert.ToDouble(d) / 1000.0;
+                                                    i++;
+                                                }
+                                            }
+                                            T7 += inverter.BatteryVoltage;
+                                            T8 += inverter.BatteryCapacity;
+                                            T9 += inverter.PV_InputVoltage;
 
-                                    var tcc = inverter.ParallelInformation_TotalChargingCurrent.Trim().Split('|');
-                                    int j = 1;
-                                    foreach (var d in tcc)
-                                    {
-                                        if (!d.IsEmpty())
-                                        {
-                                            T10 += Convert.ToDouble(d);
-                                            j++;
+                                            var tcc = inverter.ParallelInformation_TotalChargingCurrent.Trim().Split('|');
+                                            int j = 1;
+                                            foreach (var d in tcc)
+                                            {
+                                                if (!d.IsEmpty())
+                                                {
+                                                    T10 += Convert.ToDouble(d);
+                                                    j++;
+                                                }
+                                            }
                                         }
                                     }
                                 }
+                                sheet.Cell(rowIdx, 1).Value = Timer;
+                                sheet.Cell(rowIdx, 2).Value = T1;
+                                sheet.Cell(rowIdx, 3).Value = T2;
+                                sheet.Cell(rowIdx, 4).Value = T3;
+                                sheet.Cell(rowIdx, 5).Value = T4;
+                                sheet.Cell(rowIdx, 6).Value = T5;
+                                sheet.Cell(rowIdx, 7).Value = T6;
+                                sheet.Cell(rowIdx, 8).Value = T7;
+                                sheet.Cell(rowIdx, 9).Value = T8;
+                                sheet.Cell(rowIdx, 10).Value = T9;
+                                sheet.Cell(rowIdx, 11).Value = T10;
+                                conlumnIndex++;
+                                rowIdx++;
                             }
-                            sheet.Cell(rowIdx, 1).Value = Timer.ToString().Trim();
-                            sheet.Cell(rowIdx, 2).Value = T1;
-                            sheet.Cell(rowIdx, 3).Value = T2;
-                            sheet.Cell(rowIdx, 4).Value = T3;
-                            sheet.Cell(rowIdx, 5).Value = T4;
-                            sheet.Cell(rowIdx, 6).Value = T5;
-                            sheet.Cell(rowIdx, 7).Value = T6;
-                            sheet.Cell(rowIdx, 8).Value = T7;
-                            sheet.Cell(rowIdx, 9).Value = T8;
-                            sheet.Cell(rowIdx, 10).Value = T9;
-                            sheet.Cell(rowIdx, 11).Value = T10;
-                            conlumnIndex++;
-                            rowIdx++;
                         }
                     }
                     break;
                 case "Solar":
                     colIdx = 1;
-                    sheet.Cell(1, colIdx++).Value = "資料時間(UTC)";
+                    sheet.Cell(1, colIdx++).Value = "資料時間(UTC+8)";
+                    sheet.Cell(1, colIdx++).Value = "太陽能編號";
                     sheet.Cell(1, colIdx++).Value = "電壓(V)";
                     sheet.Cell(1, colIdx++).Value = "電流(A)";
                     sheet.Cell(1, colIdx++).Value = "功率(kW)";
                     sheet.Cell(1, colIdx++).Value = "發電量(kWh)";
                     colIdx++;
-
                     foreach (var invs in data)
                     {
-                        var time = invs.UpdateDate.AddHours(8).ToString();
                         if (!string.IsNullOrEmpty(invs.InvertersIDs))
                         {
-                            string T1 = null, T2 = null, T3 = null, T4 = null, Timer = null;
                             string[] IDs = invs.InvertersIDs.Trim().Split('|');
-                            List<string> BtnGroup = new List<string>();
-                            foreach (var inv in IDs)
+                            if (IDs != null)
                             {
-                                if (!string.IsNullOrEmpty(inv))
+                                foreach (var inv in IDs)
                                 {
-                                    Timer= time;
-                                    Guid ID = Guid.Parse(inv);
-                                    Inverter inverter = InverterService.ReadByID(ID);
-                                    var id = inverter.SPMid.Split('|');
-                                    var volt = inverter.SPM90Voltage.Split('|');
-                                    var curent = inverter.SPM90Current.Split('|');
-                                    var activeEnergy = inverter.SPM90ActiveEnergy.Split('|');
-                                    var activePower = inverter.SPM90ActivePower.Split('|');
-
-                                    for (int k = 0; k < id.Count() - 1; k++)
+                                    if (!string.IsNullOrEmpty(inv))
                                     {
-                                        T1 += id[k] + ":[" + string.Format("{0:#,0.0}", volt[k]) + "] ";
-                                        T2 += id[k] + ":[" + string.Format("{0:#,0.0}", curent[k]) + "] ";
-                                        T3 += id[k] + ":[" + string.Format("{0:#,0.0}", Convert.ToDouble(activePower[k]) / 1000.0) + "] ";
-                                        T4 += id[k] + ":[" + string.Format("{0:#,0.0}", activeEnergy[k]) + "] ";
+                                        Guid ID = Guid.Parse(inv);
+                                        Inverter inverter = InverterService.ReadByID(ID);
+                                        if (inverter!=null)
+                                        {                               
+                                            var SolarID = inverter.SPMid.Split('|');
+                                            var volt = inverter.SPM90Voltage.Split('|');
+                                            var curent = inverter.SPM90Current.Split('|');
+                                            var activeEnergy = inverter.SPM90ActiveEnergy.Split('|');
+                                            var activePower = inverter.SPM90ActivePower.Split('|');
+
+                                            for (int k = 0; k < SolarID.Count() - 1; k++)
+                                            {
+                                                string Timer = invs.UpdateDate.AddHours(8).ToString();
+                                                string SID = SolarID[k];
+                                                string T1 = string.Format("{0:#,0.0}", volt[k]);
+                                                string T2 = string.Format("{0:#,0.0}", curent[k]);
+                                                string T3 = string.Format("{0:#,0.0}", Convert.ToDouble(activePower[k]) / 1000.0);
+                                                string T4 = string.Format("{0:#,0.0}", activeEnergy[k]);
+
+                                                sheet.Cell(rowIdx, 1).Value = Timer;
+                                                sheet.Cell(rowIdx, 2).Value = SID;
+                                                sheet.Cell(rowIdx, 3).Value = T1;
+                                                sheet.Cell(rowIdx, 4).Value = T2;
+                                                sheet.Cell(rowIdx, 5).Value = T3;
+                                                sheet.Cell(rowIdx, 6).Value = T4;
+                                                conlumnIndex++;
+                                                rowIdx++;
+                                            }
+                                        }
                                     }
                                 }
-                            }
-                            sheet.Cell(rowIdx, 1).Value = Timer.Trim();
-                            sheet.Cell(rowIdx, 2).Value = string.Format("{0:#,0.0}", T1);
-                            sheet.Cell(rowIdx, 3).Value = string.Format("{0:#,0.0}", T2);
-                            sheet.Cell(rowIdx, 4).Value = string.Format("{0:#,0.0}", T3);
-                            sheet.Cell(rowIdx, 5).Value = string.Format("{0:#,0.0}", T4);
-                            conlumnIndex++;
-                            rowIdx++;
+                            }                           
                         }
                     }
                     break;
                 case "Battery":
                     colIdx = 1;
-                    sheet.Cell(1, colIdx++).Value = "資料時間(UTC)";
+                    sheet.Cell(1, colIdx++).Value = "資料時間(UTC+8)";
+                    sheet.Cell(1, colIdx++).Value = "電池編號";
                     sheet.Cell(1, colIdx++).Value = "電池電壓(V)";
                     sheet.Cell(1, colIdx++).Value = "充電電流(A)";
                     sheet.Cell(1, colIdx++).Value = "放電電流(A)";
                     sheet.Cell(1, colIdx++).Value = "電池容量(%)";
                     sheet.Cell(1, colIdx++).Value = "充電次數(次)";
                     sheet.Cell(1, colIdx++).Value = "充電方向";
+                    sheet.Cell(1, colIdx++).Value = "Cell_Index1_Voltage";
+                    sheet.Cell(1, colIdx++).Value = "Cell_Index2_Voltage";
+                    sheet.Cell(1, colIdx++).Value = "Cell_Index3_Voltage";
+                    sheet.Cell(1, colIdx++).Value = "Cell_Index4_Voltage";
+                    sheet.Cell(1, colIdx++).Value = "Cell_Index5_Voltage";
+                    sheet.Cell(1, colIdx++).Value = "Cell_Index6_Voltage";
+                    sheet.Cell(1, colIdx++).Value = "Cell_Index7_Voltage";
+                    sheet.Cell(1, colIdx++).Value = "Cell_Index8_Voltage";
+                    sheet.Cell(1, colIdx++).Value = "Cell_Index9_Voltage";
+                    sheet.Cell(1, colIdx++).Value = "Cell_Index10_Voltage";
+                    sheet.Cell(1, colIdx++).Value = "Cell_Index11_Voltage";
+                    sheet.Cell(1, colIdx++).Value = "Cell_Index12_Voltage";
+                    sheet.Cell(1, colIdx++).Value = "Cell_Index13_Voltage";
+                    sheet.Cell(1, colIdx++).Value = "Cell_Index14_Voltage";
                     rowIdx = 2;
                     conlumnIndex = 1;
-
                     List<string> IDList = new List<string>();
-                    int y = 0, c = 0;
-
                     foreach (var bas in data)
                     {
-                        var time = bas.UpdateDate.AddHours(8).ToString();
                         if (!string.IsNullOrEmpty(bas.BatteryIDs))
                         {
-                            string T1 = null, T2 = null, T3 = null, T4 = null, T5 = null, T6 = null, Timer = null;
-                            string[] IDs = bas.BatteryIDs.Trim().Split('|');
-                            List<string> BtnGroup = new List<string>();
-                            foreach (var ba in IDs)
+                            string[] IDs = bas.BatteryIDs?.Trim().Split('|');
+                            if (IDs != null)
                             {
-                                if (!string.IsNullOrEmpty(ba.Trim()))
+                                foreach (var ba in IDs)
                                 {
-                                    Guid ID = Guid.Parse(ba);
-                                    Battery battery = BatteryService.ReadByID(ID);
-                                    int cd = Convert.ToInt32(battery.charge_direction);
-                                    string direct = (cd == 0) ? "離線" : (cd == 1) ? "充電" : "放電";
-                                    IDList.Add(ba.Trim());
-                                    Timer = time;
-                                    T1 += battery.index.ToString() + ":[" + string.Format("{0:#,0.0}", battery.voltage) + "] ";
-                                    T2 += battery.index.ToString() + ":[" + string.Format("{0:#,0.0}", battery.charging_current) + "] ";
-                                    T3 += battery.index.ToString() + ":[" + string.Format("{0:#,0.0}", battery.discharging_current) + "] ";
-                                    T4 += battery.index.ToString() + ":[" + string.Format("{0:#,0.0}", BatteryService.EachSOC(battery.voltage)) + "] ";
-                                    T5 += battery.index.ToString() + ":[" + Math.Round(battery.Cycle,0) + "] ";
-                                    T6 += battery.index.ToString() + ":[" + direct + "] ";
-                                }
-                            }
-                            sheet.Cell(rowIdx, 1).Value = Timer.Trim();
-                            sheet.Cell(rowIdx, 2).Value = string.Format("{0:#,0.0}", T1);
-                            sheet.Cell(rowIdx, 3).Value = string.Format("{0:#,0.0}", T2);
-                            sheet.Cell(rowIdx, 4).Value = string.Format("{0:#,0.0}", T3);
-                            sheet.Cell(rowIdx, 5).Value = string.Format("{0:#,0.0}", T4);
-                            sheet.Cell(rowIdx, 6).Value = T5;
-                            sheet.Cell(rowIdx, 7).Value = T6;
-                            conlumnIndex++;
-                            rowIdx++;
+                                    if (!string.IsNullOrEmpty(ba.Trim()))
+                                    {
+                                        Guid ID = Guid.Parse(ba);
+                                        Battery battery = BatteryService.ReadByID(ID);
+                                        if (battery!=null)
+                                        {
+                                            int cd = Convert.ToInt32(battery.charge_direction);
+                                            IDList.Add(ba.Trim());
+                                            string Timer = bas.UpdateDate.AddHours(8).ToString();
+                                            string Item = battery.index.ToString();
+                                            string T1 = string.Format("{0:#,0.0}", battery.voltage);
+                                            string T2 = string.Format("{0:#,0.0}", battery.charging_current);
+                                            string T3 = string.Format("{0:#,0.0}", battery.discharging_current);
+                                            string T4 = string.Format("{0:#,0.0}", BatteryService.EachSOC(battery.voltage));
+                                            string T5 = Math.Round(battery.Cycle, 0).ToString();
+                                            string T6 = (cd == 1) ? "充電" : (cd == 2) ? "放電" : "離線";
+                                            var volta = battery.cells_voltage.Split('|').ToList();
+
+                                            sheet.Cell(rowIdx, 1).Value = Timer;
+                                            sheet.Cell(rowIdx, 2).Value = Item;
+                                            sheet.Cell(rowIdx, 3).Value = T1;
+                                            sheet.Cell(rowIdx, 4).Value = T2;
+                                            sheet.Cell(rowIdx, 5).Value = T3;
+                                            sheet.Cell(rowIdx, 6).Value = T4;
+                                            sheet.Cell(rowIdx, 7).Value = T5;
+                                            sheet.Cell(rowIdx, 8).Value = T6;
+                                            int v = 9;
+                                            foreach (var c in volta)
+                                            {
+                                                if (!c.IsEmpty())
+                                                {
+                                                    sheet.Cell(rowIdx, v).Value = c;
+                                                    v++;
+                                                }
+                                            }
+                                            conlumnIndex++;
+                                            rowIdx++;
+                                        }                                 
+                                    }
+                                }  
+                            }   
                         }
                     }
                     break;
                 case "Load":
                     colIdx = 1;
-                    sheet.Cell(1, colIdx++).Value = "資料時間(UTC)";
+                    sheet.Cell(1, colIdx++).Value = "資料時間(UTC+8)";
+                    sheet.Cell(1, colIdx++).Value = "負載編號";
                     sheet.Cell(1, colIdx++).Value = "電壓(V)";
                     sheet.Cell(1, colIdx++).Value = "電流(A)";
                     sheet.Cell(1, colIdx++).Value = "實功率(kW)";
@@ -1081,27 +1124,51 @@ namespace Web.Controllers
                     conlumnIndex = 1;
                     foreach (var los in data)
                     {
-                        string[] IDs = los.GridPowerIDs.Trim().Split('|');
-                        foreach (var lo in IDs)
+                        string Timer = null,Loadname =null;
+                        double T1 = 0, T2 = 0, T3 = 0, T4 = 0, T5 = 0, T6 = 0, T7 = 0, T8 = 0;
+                        string[] IDs = los.LoadPowerIDs?.Trim().Split('|');
+                        if (IDs != null)
                         {
-                            Guid ID = Guid.Parse(lo);
-                            LoadPower loadPower = LoadPowerService.ReadByID(ID);
-                            sheet.Cell(rowIdx, 1).Value = loadPower.date_Time.ToString();
-                            sheet.Cell(rowIdx, 2).Value = string.Format("{0:#,0.0}", loadPower.Vavg);
-                            sheet.Cell(rowIdx, 3).Value = string.Format("{0:#,0.0}", loadPower.Isum);
-                            sheet.Cell(rowIdx, 4).Value = string.Format("{0:#,0.0}", loadPower.Watt_t / 1000.0);
-                            sheet.Cell(rowIdx, 5).Value = string.Format("{0:#,0.00}", loadPower.Var_t / 1000.00);
-                            sheet.Cell(rowIdx, 6).Value = string.Format("{0:#,0.0}", loadPower.PF_t);
-                            sheet.Cell(rowIdx, 7).Value = string.Format("{0:#,0.0}", loadPower.Frequency);
-                            sheet.Cell(rowIdx, 8).Value = string.Format("{0:#,0.0}", loadPower.kWHt);
-                            conlumnIndex++;
-                            rowIdx++;
+                            foreach (var lo in IDs)
+                            {
+                                if (!string.IsNullOrEmpty(lo.Trim()))
+                                {
+                                    Guid ID = Guid.Parse(lo);
+                                    LoadPower loadPower = LoadPowerService.ReadByID(ID);
+                                    if (loadPower!=null)
+                                    {
+                                        Timer = loadPower.date_Time.AddHours(8).ToString();
+                                        Loadname = loadPower.name;
+                                        T1 = loadPower.Vavg;
+                                        T2 = loadPower.Isum;
+                                        T3 = loadPower.Watt_t / 1000.0;
+                                        T4 = loadPower.Var_t / 1000.00;
+                                        T5 = loadPower.VA_t / 1000.00;
+                                        T6 = loadPower.PF_t;
+                                        T7 = loadPower.Frequency;
+                                        T8 = loadPower.kWHt;
+
+                                        sheet.Cell(rowIdx, 1).Value = Timer;
+                                        sheet.Cell(rowIdx, 2).Value = Loadname;
+                                        sheet.Cell(rowIdx, 3).Value = T1;
+                                        sheet.Cell(rowIdx, 4).Value = T2;
+                                        sheet.Cell(rowIdx, 5).Value = T3;
+                                        sheet.Cell(rowIdx, 6).Value = T4;
+                                        sheet.Cell(rowIdx, 7).Value = T5;
+                                        sheet.Cell(rowIdx, 8).Value = T6;
+                                        sheet.Cell(rowIdx, 9).Value = T7;
+                                        sheet.Cell(rowIdx, 10).Value = T8;
+                                        conlumnIndex++;
+                                        rowIdx++;
+                                    }                             
+                                }
+                            }
                         }
                     }
                     break;
                 case "Generator":
                     colIdx = 1;
-                    sheet.Cell(1, colIdx++).Value = "資料時間(UTC)";
+                    sheet.Cell(1, colIdx++).Value = "資料時間(UTC+8)";
                     sheet.Cell(1, colIdx++).Value = "發電機油位(%)";
                     sheet.Cell(1, colIdx++).Value = "L1-N相電壓(V)";
                     sheet.Cell(1, colIdx++).Value = "L2-N相電壓(V)";
@@ -1120,29 +1187,38 @@ namespace Web.Controllers
                     conlumnIndex = 1;
                     foreach (var gens in data)
                     {
-                        string[] IDs = gens.GridPowerIDs.Trim().Split('|');
-                        foreach (var lo in IDs)
+                        string[] IDs = gens.GeneratorIDs?.Trim().Split('|');
+                        if (IDs!=null)
                         {
-                            Guid ID = Guid.Parse(lo);
-                            Generator generator = GeneratorService.ReadByID(ID);
-                            sheet.Cell(rowIdx, 1).Value = generator.UpdateTime.ToString().Trim();
-                            sheet.Cell(rowIdx, 2).Value = string.Format("{0:#,0.0}", generator.FuleLevel);
-                            sheet.Cell(rowIdx, 3).Value = string.Format("{0:#,0.0}", generator.L1Nvoltage);
-                            sheet.Cell(rowIdx, 4).Value = string.Format("{0:#,0.0}", generator.L2Nvoltage);
-                            sheet.Cell(rowIdx, 5).Value = string.Format("{0:#,0.0}", generator.L3Nvoltage);
-                            sheet.Cell(rowIdx, 6).Value = string.Format("{0:#,0.0}", generator.L1current);
-                            sheet.Cell(rowIdx, 7).Value = string.Format("{0:#,0.0}", generator.L2current);
-                            sheet.Cell(rowIdx, 8).Value = string.Format("{0:#,0.0}", generator.L3current);
-                            sheet.Cell(rowIdx, 9).Value = string.Format("{0:#,0.0}", generator.totalwatts / 1000.0);
-                            sheet.Cell(rowIdx, 10).Value = string.Format("{0:#,0.00}", generator.averagepowerfactor);
-                            sheet.Cell(rowIdx, 11).Value = string.Format("{0:#,0.0}", generator.positiveKWhours);
-                            sheet.Cell(rowIdx, 12).Value = string.Format("{0:#,0.0}", generator.negativeKWhours);
-                            sheet.Cell(rowIdx, 13).Value = generator.ControlStatus.Equals("true") ? "啟動" : "關閉";
-                            sheet.Cell(rowIdx, 14).Value = string.Format("{0:#,0.0}", generator.AvailabilityEnergy);
-                            sheet.Cell(rowIdx, 15).Value = string.Format("{0:#,0.0}", generator.AvailabilityHour);
-                            conlumnIndex++;
-                            rowIdx++;
-                        }                       
+                            foreach (var gen in IDs)
+                            {
+                                if (!string.IsNullOrEmpty(gen.Trim()))
+                                {
+                                    Guid ID = Guid.Parse(gen);
+                                    Generator generator = GeneratorService.ReadByID(ID);
+                                    if (generator != null)
+                                    {
+                                        sheet.Cell(rowIdx, 1).Value = generator.UpdateTime.AddHours(8);
+                                        sheet.Cell(rowIdx, 2).Value = string.Format("{0:#,0.0}", generator.FuleLevel);
+                                        sheet.Cell(rowIdx, 3).Value = string.Format("{0:#,0.0}", generator.L1Nvoltage);
+                                        sheet.Cell(rowIdx, 4).Value = string.Format("{0:#,0.0}", generator.L2Nvoltage);
+                                        sheet.Cell(rowIdx, 5).Value = string.Format("{0:#,0.0}", generator.L3Nvoltage);
+                                        sheet.Cell(rowIdx, 6).Value = string.Format("{0:#,0.0}", generator.L1current);
+                                        sheet.Cell(rowIdx, 7).Value = string.Format("{0:#,0.0}", generator.L2current);
+                                        sheet.Cell(rowIdx, 8).Value = string.Format("{0:#,0.0}", generator.L3current);
+                                        sheet.Cell(rowIdx, 9).Value = string.Format("{0:#,0.0}", generator.totalwatts / 1000.0);
+                                        sheet.Cell(rowIdx, 10).Value = string.Format("{0:#,0.00}", generator.averagepowerfactor);
+                                        sheet.Cell(rowIdx, 11).Value = string.Format("{0:#,0.0}", generator.positiveKWhours);
+                                        sheet.Cell(rowIdx, 12).Value = string.Format("{0:#,0.0}", generator.negativeKWhours);
+                                        sheet.Cell(rowIdx, 13).Value = generator.ControlStatus.Equals("true") ? "啟動" : "關閉";
+                                        sheet.Cell(rowIdx, 14).Value = string.Format("{0:#,0.0}", generator.AvailabilityEnergy);
+                                        sheet.Cell(rowIdx, 15).Value = string.Format("{0:#,0.0}", generator.AvailabilityHour);
+                                        conlumnIndex++;
+                                        rowIdx++;
+                                    }
+                                }
+                            }
+                        }             
                     }
                     break;
                 default:

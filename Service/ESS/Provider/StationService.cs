@@ -56,5 +56,11 @@ namespace Service.ESS.Provider
             return domainStation.Id;
         }
 
+        public Model.Station ReadUUID(Guid ID)
+        {
+            Domain.Station UI = stationRepository.ReadBy(x => x.UUID == ID);
+            return this.mapper.Map<Model.Station>(UI);
+        }
+
     }
 }

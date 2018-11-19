@@ -34,6 +34,8 @@ namespace Repository.ESS
 
         public DbSet<Inverter> Inverters { get; set; }
 
+        public DbSet<ErrorCodes> ErrorCodes { get; set; }
+
     }
 
 

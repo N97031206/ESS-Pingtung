@@ -42,5 +42,11 @@ namespace Service.ESS.Provider
             return this.mapper.Map<Model.AlartType>(RI);
         }
 
+        public Model.AlartType ID(int i)
+        {
+            Domain.AlartType RI = alarttypeRepository.ReadBy(x => x.AlartTypeCode == i);
+            return this.mapper.Map<Model.AlartType>(RI);
+        }
+
     }
 }
