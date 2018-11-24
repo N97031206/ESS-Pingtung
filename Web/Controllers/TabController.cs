@@ -340,8 +340,8 @@ namespace Web.Controllers
                     break;
                 case "Battery":
                     #region BatteryChart
-                    var batterynow = InverterService.ReadNow();
-                    endTime = (batterynow == null) ? DateTime.Now : batterynow.CreateTime;
+                    var batterynow = BatteryService.ReadNow();
+                    endTime = (batterynow == null) ? DateTime.Now : batterynow.updateTime;
                     start = endTime.AddMinutes(-1440);
                     min = Math.Abs(start.Minute / 15);
                     if (min.Equals(0)) { min = 0; } else if (min.Equals(1)) { min = 15; } else if (min.Equals(2)) { min = 30; } else if (min.Equals(3)) { min = 45; } else { min = 0; }
@@ -387,8 +387,8 @@ namespace Web.Controllers
                     break;
                 case "Load":
                     #region LoadChart
-                    var loadnow = InverterService.ReadNow();
-                    endTime = (loadnow == null) ? DateTime.Now : loadnow.CreateTime;
+                    var loadnow = LoadPowerService.ReadNow();
+                    endTime = (loadnow == null) ? DateTime.Now : loadnow.date_Time;
                     start = endTime.AddMinutes(-1440);
                     min = Math.Abs(start.Minute / 15);
                     if (min.Equals(0)) { min = 0; } else if (min.Equals(1)) { min = 15; } else if (min.Equals(2)) { min = 30; } else if (min.Equals(3)) { min = 45; } else { min = 0; }
@@ -423,8 +423,8 @@ namespace Web.Controllers
                     break;
                 case "Generator":
                     #region GeneratorChart
-                    var gennow = InverterService.ReadNow();
-                    endTime = (gennow == null) ? DateTime.Now : gennow.CreateTime;
+                    var gennow = GeneratorService.ReadNow();
+                    endTime = (gennow == null) ? DateTime.Now : gennow.UpdateTime;
                     start = endTime.AddMinutes(-1440);
                     min = Math.Abs(start.Minute / 15);
                     if (min.Equals(0)) { min = 0; } else if (min.Equals(1)) { min = 15; } else if (min.Equals(2)) { min = 30; } else if (min.Equals(3)) { min = 45; } else { min = 0; }
@@ -602,7 +602,7 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult History(FormCollection From, string tabType, int? page)
         {
-            var date= Request.Form["datetimes"];
+            string date = Request.Form["datetimes"];
             var station =  Request.Form["Statons"];
             string[] data = date.ToString().Trim().Split('-');
             DateTime startday = Convert.ToDateTime(data[0]);

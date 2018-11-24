@@ -1,0 +1,24 @@
+2018-11-20 12:58:27.4834 | TRACE | Web.Controllers.DataInputController | Json Get 
+
+2018-11-20 13:00:05.6005 | TRACE | Web.Controllers.DataInputController | Json Get 
+
+2018-11-20 13:03:05.8977 | TRACE | Web.Controllers.DataInputController | Json Get 
+
+2018-11-20 13:04:21.4408 | TRACE | Web.Controllers.DataInputController | Json Get 
+
+2018-11-20 13:07:42.8991 | TRACE | Web.Controllers.DataInputController | Json Get 
+
+2018-11-20 13:08:40.1231 | INFO | Web.Controllers.DataInputController | 17f4a653-82ec-e811-be2a-0c9d925e499c 
+
+2018-11-20 13:08:43.7984 | TRACE | Web.Controllers.DataInputController | Json Get 
+
+2018-11-20 13:08:49.8230 | INFO | Web.Controllers.DataInputController | 78dcdd5b-82ec-e811-be2a-0c9d925e499c 
+
+2018-11-20 13:08:50.3090 | TRACE | Web.Controllers.DataInputController | Json Get 
+
+2018-11-20 13:08:53.2540 | INFO | Web.Controllers.DataInputController | 91dcdd5b-82ec-e811-be2a-0c9d925e499c 
+
+2018-11-20 13:26:59.8478 | TRACE | Web.Controllers.DataInputController | Json Get 
+
+2018-11-20 13:27:04.0785 | INFO | Web.Controllers.DataInputController | 0e8edbe7-84ec-e811-be2a-0c9d925e499c 
+

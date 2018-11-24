@@ -211,13 +211,9 @@ namespace Web.Controllers
                             gridPowerID = GridPowerService.Create(gridPower);
                             
                             gridPowerIDs += gridPowerID.ToString() + "|";
-                        }
-
+                        }               
                     }
-                    else
-                    {
-                      //  gridPowerID = Guid.NewGuid();
-                    }
+ 
 
                     #endregion
 
@@ -641,116 +637,135 @@ namespace Web.Controllers
 
         private void BatteryAlart(Guid BarrryID, Guid Uid, Models.Json.Battery BJ)
         {
-            StationService stationService = new StationService();
-            AlartTypeService alartType = new AlartTypeService();
-            ErrorCodesService errorCodesService = new ErrorCodesService();
+            try {
+                StationService stationService = new StationService();
+                AlartTypeService alartType = new AlartTypeService();
+                ErrorCodesService errorCodesService = new ErrorCodesService();
 
-            if (BJ.AlarmState.OV_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("OV_DIS") + ",BarrryID:" + BarrryID.ToString(); AlartID(SID, ATID, context); }
-            if (BJ.AlarmState.OV_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("OV_DIS") + ",BarrryID:" + BarrryID.ToString(); AlartID(SID, ATID, context); }
-            if (BJ.AlarmState.UV_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("UV_DIS") + ",BarrryID:" + BarrryID.ToString(); AlartID(SID, ATID, context); }
-            if (BJ.AlarmState.OC_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("OC_DIS") + ",BarrryID:" + BarrryID.ToString(); AlartID(SID, ATID, context); }
-            if (BJ.AlarmState.SC_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("SC_DIS") + ",BarrryID:" + BarrryID.ToString(); AlartID(SID, ATID, context); }
-            if (BJ.AlarmState.OT_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("OT_DIS") + ",BarrryID:" + BarrryID.ToString(); AlartID(SID, ATID, context); }
-            if (BJ.AlarmState.UT_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("UT_DIS") + ",BarrryID:" + BarrryID.ToString(); AlartID(SID, ATID, context); }
-            if (BJ.AlarmState.RV_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("RV_DIS") + ",BarrryID:" + BarrryID.ToString(); AlartID(SID, ATID, context); }
-            if (BJ.AlarmState.OC0_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("OC0_DIS") + ",BarrryID:" + BarrryID.ToString(); AlartID(SID, ATID, context); }
+                if (BJ.AlarmState.OV_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("OV_DIS"); AlartID(SID, ATID, BarrryID,context); }
+                if (BJ.AlarmState.OV_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("OV_DIS"); AlartID(SID, ATID, BarrryID,context); }
+                if (BJ.AlarmState.UV_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("UV_DIS"); AlartID(SID, ATID, BarrryID,context); }
+                if (BJ.AlarmState.OC_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("OC_DIS"); AlartID(SID, ATID, BarrryID,context); }
+                if (BJ.AlarmState.SC_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("SC_DIS"); AlartID(SID, ATID, BarrryID,context); }
+                if (BJ.AlarmState.OT_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("OT_DIS"); AlartID(SID, ATID, BarrryID,context); }
+                if (BJ.AlarmState.UT_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("UT_DIS"); AlartID(SID, ATID, BarrryID,context); }
+                if (BJ.AlarmState.RV_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("RV_DIS"); AlartID(SID, ATID, BarrryID,context); }
+                if (BJ.AlarmState.OC0_DIS){Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(3).Id; string context = "Index:" + BJ.index.ToString() + ", Error:" + errorCodesService.ReadContext("OC0_DIS"); AlartID(SID, ATID, BarrryID,context); }
+            } catch (Exception ex)
+            {
+                logger.Fatal(ex);
+            }        
         }
 
         private void GeneratorAlart(Guid GeneratorID, Guid Uid, Generators GenJ)
         {
-            StationService stationService = new StationService();
-            AlartTypeService alartType = new AlartTypeService();
-            ErrorCodesService errorCodesService = new ErrorCodesService();
-
-            if (Convert.ToInt16(GenJ.Alarm.NumberOfNamedAlarms)>0)
+            try
             {
-                if (GenJ.Alarm.EmergencyStop > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	EmergencyStop	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.LowOilPressure > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	LowOilPressure	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.HighCoolantTemperature > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	HighCoolantTemperature	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.LowCoolantTemperature > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	LowCoolantTemperature	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.UnderSpeed > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	UnderSpeed	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.OverSpeed > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	OverSpeed	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.GeneratorUnderFrequency > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	GeneratorUnderFrequency	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.GeneratorOverFrequency > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	GeneratorOverFrequency	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.GeneratorLowVoltage > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	GeneratorLowVoltage	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.GeneratorHighVoltage > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	GeneratorHighVoltage	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.BatteryLowVoltage > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	BatteryLowVoltage	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.BatteryHighVoltage > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	BatteryHighVoltage	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.ChargeAlternatorFailure > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	ChargeAlternatorFailure	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.FailToStart > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	FailToStart	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.FailToStop > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	FailToStop	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.GeneratorFailToClose > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	GeneratorFailToClose	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.MainsFailToClose > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	MainsFailToClose	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.OilPressureSenderFault > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	OilPressureSenderFault	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.LossOfMagneticPickUp > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	LossOfMagneticPickUp	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.MagneticPickUpOpenCircuit > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	MagneticPickUpOpenCircuit	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.GeneratorHighCurrent > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	GeneratorHighCurrent	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.NoneA > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	NoneA	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.LowFuelLevel > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	LowFuelLevel	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.CANECUWarning > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	CANECUWarning	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.CANECUShutdown > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	CANECUShutdown	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.CANECUDataFail > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	CANECUDataFail	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.LowOillevelSwitch > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	LowOillevelSwitch	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.HighTemperatureSwitch > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	HighTemperatureSwitch	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.LowFuelLevelSwitch > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	LowFuelLevelSwitch	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.ExpansionUnitWatchdogAlarm > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	ExpansionUnitWatchdogAlarm	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.kWOverloadAlarm > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	kWOverloadAlarm	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.NegativePhaseSequenceCurrentAlarm > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	NegativePhaseSequenceCurrentAlarm	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.EarthFaultTripAlarm > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	EarthFaultTripAlarm	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.GeneratorPhaseRotationAlarm > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	GeneratorPhaseRotationAlarm	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.AutoVoltageSenseFail > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	AutoVoltageSenseFail	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.MaintenanceAlarm > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	MaintenanceAlarm	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.LoadingFrequencyAlarm > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	LoadingFrequencyAlarm	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.LoadingVoltageAlarm > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	LoadingVoltageAlarm	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.NoneB > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	NoneB	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.NoneC > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	NoneC	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.NoneD > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	NoneD	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.NoneE > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	NoneE	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.GeneratorShortCircuit > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	GeneratorShortCircuit	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.MainsHighCurrent > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	MainsHighCurrent	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.MainsEarthFault > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	MainsEarthFault	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.MainsShortCircuit > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	MainsShortCircuit	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.ECUProtect > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	ECUProtect	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.NoneF > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	NoneF	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
-                if (GenJ.Alarm.Message!=null) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	Message	") + ",GeneratorID:" + GeneratorID.ToString(); AlartID(SID, ATID, context);}
+                StationService stationService = new StationService();
+                AlartTypeService alartType = new AlartTypeService();
+                ErrorCodesService errorCodesService = new ErrorCodesService();
 
+                if (Convert.ToInt16(GenJ.Alarm.NumberOfNamedAlarms) > 0)
+                {
+                    if (GenJ.Alarm.EmergencyStop > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	EmergencyStop	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.LowOilPressure > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	LowOilPressure	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.HighCoolantTemperature > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	HighCoolantTemperature	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.LowCoolantTemperature > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	LowCoolantTemperature	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.UnderSpeed > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	UnderSpeed	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.OverSpeed > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	OverSpeed	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.GeneratorUnderFrequency > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	GeneratorUnderFrequency	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.GeneratorOverFrequency > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	GeneratorOverFrequency	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.GeneratorLowVoltage > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	GeneratorLowVoltage	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.GeneratorHighVoltage > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	GeneratorHighVoltage	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.BatteryLowVoltage > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	BatteryLowVoltage	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.BatteryHighVoltage > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	BatteryHighVoltage	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.ChargeAlternatorFailure > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	ChargeAlternatorFailure	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.FailToStart > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	FailToStart	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.FailToStop > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	FailToStop	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.GeneratorFailToClose > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	GeneratorFailToClose	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.MainsFailToClose > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	MainsFailToClose	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.OilPressureSenderFault > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	OilPressureSenderFault	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.LossOfMagneticPickUp > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	LossOfMagneticPickUp	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.MagneticPickUpOpenCircuit > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	MagneticPickUpOpenCircuit	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.GeneratorHighCurrent > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	GeneratorHighCurrent	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.NoneA > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	NoneA	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.LowFuelLevel > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	LowFuelLevel	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.CANECUWarning > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	CANECUWarning	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.CANECUShutdown > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	CANECUShutdown	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.CANECUDataFail > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	CANECUDataFail	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.LowOillevelSwitch > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	LowOillevelSwitch	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.HighTemperatureSwitch > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	HighTemperatureSwitch	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.LowFuelLevelSwitch > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	LowFuelLevelSwitch	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.ExpansionUnitWatchdogAlarm > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	ExpansionUnitWatchdogAlarm	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.kWOverloadAlarm > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	kWOverloadAlarm	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.NegativePhaseSequenceCurrentAlarm > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	NegativePhaseSequenceCurrentAlarm	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.EarthFaultTripAlarm > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	EarthFaultTripAlarm	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.GeneratorPhaseRotationAlarm > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	GeneratorPhaseRotationAlarm	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.AutoVoltageSenseFail > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	AutoVoltageSenseFail	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.MaintenanceAlarm > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	MaintenanceAlarm	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.LoadingFrequencyAlarm > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	LoadingFrequencyAlarm	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.LoadingVoltageAlarm > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	LoadingVoltageAlarm	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.NoneB > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	NoneB	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.NoneC > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	NoneC	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.NoneD > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	NoneD	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.NoneE > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	NoneE	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.GeneratorShortCircuit > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	GeneratorShortCircuit	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.MainsHighCurrent > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	MainsHighCurrent	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.MainsEarthFault > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	MainsEarthFault	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.MainsShortCircuit > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	MainsShortCircuit	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.ECUProtect > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	ECUProtect	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.NoneF > 1) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	NoneF	"); AlartID(SID, ATID, GeneratorID, context); }
+                    if (GenJ.Alarm.Message != null) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(6).Id; string context = "Index:" + GenJ.index.ToString() + ":" + errorCodesService.ReadContext("	Message	"); AlartID(SID, ATID, GeneratorID, context); }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex);
             }
         }
 
         private void InvertersAlart(Guid inverterID, Guid Uid, Inverters InvJ)
         {
-            StationService stationService = new StationService();
-            AlartTypeService alartType = new AlartTypeService();
-            ErrorCodesService errorCodesService = new ErrorCodesService();
+            try
+            {
+                StationService stationService = new StationService();
+                AlartTypeService alartType = new AlartTypeService();
+                ErrorCodesService errorCodesService = new ErrorCodesService();
 
-            if (InvJ.WarningStatus.InverterFault) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	InverterFault	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.BusOver) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BusOver	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.BusUnder) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BusUnder	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.BusSoftFail) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BusSoftFail	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.LINE_FAIL) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	LINE_FAIL	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.OPVShort) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	OPVShort	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.InverterVoltageTooLow) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	InverterVoltageTooLow	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.InverterVoltageTooHigh) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	InverterVoltageTooHigh	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.OverTemperature) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	OverTemperature	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.FanLocked) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	FanLocked	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.BatteryVoltageHigh) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BatteryVoltageHigh	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.BatteryLowAlarm) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BatteryLowAlarm	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.BatteryUnderShutdown) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BatteryUnderShutdown	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.OverLoad) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	OverLoad	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.EepromFault) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	EepromFault	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.InverterOverCurrent) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	InverterOverCurrent	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.InverterSoftFail) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	InverterSoftFail	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.SelfTestFail) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	SelfTestFail	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.OP_DC_VoltageOver) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	OP_DC_VoltageOver	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.BatOpen) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BatOpen	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.CurrentSensorFail) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	CurrentSensorFail	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.BatteryShort) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BatteryShort	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.PowerLimit) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	PowerLimit	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.PV_VoltageHigh) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	PV_VoltageHigh	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.MPPT_OverloadFault) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	MPPT_OverloadFault	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.MPPT_OverloadWarning) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	MPPT_OverloadWarning	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.BatteryTooLowToCharge) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BatteryTooLowToCharge	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
-            if (InvJ.WarningStatus.Message!=null) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	Message	") + ",inverterID:" + inverterID.ToString(); AlartID(SID, ATID, context);}
+                if (InvJ.WarningStatus.InverterFault) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	InverterFault	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.BusOver) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BusOver	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.BusUnder) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BusUnder	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.BusSoftFail) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BusSoftFail	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.LINE_FAIL) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	LINE_FAIL	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.OPVShort) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	OPVShort	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.InverterVoltageTooLow) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	InverterVoltageTooLow	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.InverterVoltageTooHigh) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	InverterVoltageTooHigh	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.OverTemperature) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	OverTemperature	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.FanLocked) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	FanLocked	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.BatteryVoltageHigh) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BatteryVoltageHigh	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.BatteryLowAlarm) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BatteryLowAlarm	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.BatteryUnderShutdown) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BatteryUnderShutdown	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.OverLoad) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	OverLoad	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.EepromFault) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	EepromFault	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.InverterOverCurrent) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	InverterOverCurrent	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.InverterSoftFail) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	InverterSoftFail	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.SelfTestFail) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	SelfTestFail	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.OP_DC_VoltageOver) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	OP_DC_VoltageOver	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.BatOpen) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BatOpen	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.CurrentSensorFail) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	CurrentSensorFail	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.BatteryShort) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BatteryShort	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.PowerLimit) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	PowerLimit	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.PV_VoltageHigh) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	PV_VoltageHigh	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.MPPT_OverloadFault) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	MPPT_OverloadFault	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.MPPT_OverloadWarning) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	MPPT_OverloadWarning	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.BatteryTooLowToCharge) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BatteryTooLowToCharge	"); AlartID(SID, ATID, inverterID, context); }
+                if (InvJ.WarningStatus.Message != null) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	Message	"); AlartID(SID, ATID, inverterID, context); }
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex);
+            }          
         }
 
         /// <summary>
@@ -760,19 +775,28 @@ namespace Web.Controllers
         /// <param name="ATID"></param>
         /// <param name="Context"></param>
         /// <returns></returns>
-        private Guid AlartID( Guid SID,Guid ATID,string Context)
+        private Guid AlartID( Guid SID,Guid ATID, Guid EquipmentID, string Context)
         {
-            AlartService alartService = new AlartService();
-            Alart alart = new Alart()
+            try
             {
-                StationID = SID,
-                AlartTypeID = ATID,
-                AlartContext = Context,
-                StartTimet = DateTime.Now,
-                EndTimet = DateTime.Now
-            };
-            var AID = alartService.Create(alart);
-            return AID;
+                AlartService alartService = new AlartService();
+                Alart alart = new Alart()
+                {
+                    StationID = SID,
+                    AlartTypeID = ATID,
+                    EquipmentID = EquipmentID,
+                    AlartContext = Context,
+                    StartTimet = DateTime.Now,
+                    EndTimet = DateTime.Now
+                };
+                var AID = alartService.Create(alart);
+                return AID;
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex);
+                return Guid.Empty;
+            }
         }
 
         /// <summary>

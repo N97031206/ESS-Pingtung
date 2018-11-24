@@ -1,20 +1,12 @@
-﻿using PagedList;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
+﻿using Newtonsoft.Json;
 using Service.ESS.Model;
 using Service.ESS.Provider;
-using Newtonsoft.Json;
-using NLog;
-using System.Threading.Tasks;
-using ClosedXML.Excel;
-using Web.Models.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
+using System.Web.WebPages;
 using Battery = Service.ESS.Model.Battery;
-using System.Net.Http.Formatting;
 
 namespace Web.Controllers.Api
 {
@@ -34,13 +26,15 @@ namespace Web.Controllers.Api
         private GeneratorService GeneratorService = new GeneratorService();
         private LoadPowerService LoadPowerService = new LoadPowerService();
         private InverterService inverterService = new InverterService();
+        private ErrorCodesService errorCodesService = new ErrorCodesService();
         #endregion
 
+        #region Tab
         [Route("api/Tab/Abnormal/List")]
         [HttpGet]
         public IHttpActionResult AbnormalList(int page = 1)
         {
-            var alartList = alartService.ReadAll().ToList();    
+            var alartList = alartService.ReadAll().ToList();
             return Ok(alartList);
         }
 
@@ -76,12 +70,12 @@ namespace Web.Controllers.Api
             var Bulletun = bulletinService.ReadAll().ToList();
 
             Data += "{";
-            Bulletun.ForEach(x=> {
+            Bulletun.ForEach(x => {
                 Data += "{";
-                Data += "'發佈日期':'" + x.CreateDate.ToString()+ "'" +",";
-                Data += "'標題':'"+x.title+"'" + ",";
-                Data += "'單位':'"+ orginService.ReadID(x.OrginID).OrginName.ToString().Trim() + "'" + ",";
-                Data += "'內文':'"+x.context+"'";
+                Data += "'發佈日期':'" + x.CreateDate.ToString() + "'" + ",";
+                Data += "'標題':'" + x.title + "'" + ",";
+                Data += "'單位':'" + orginService.ReadID(x.OrginID).OrginName.ToString().Trim() + "'" + ",";
+                Data += "'內文':'" + x.context + "'";
                 Data += "}";
             });
             Data += "}";
@@ -140,14 +134,14 @@ namespace Web.Controllers.Api
             Data += "'功率因數(PF)" + "':'" + string.Format("{0:#,0.0}", gridPowers.PF_t) + "',";
             Data += "'頻率(Hz)" + "':'" + string.Format("{0:#,0.0}", gridPowers.Frequency) + "',";
             Data += "'用電量(kWh)" + "':'" + string.Format("{0:#,0.0}", gridPowers.kWHt) + "'";
-            Data += "},";    
+            Data += "},";
 
             Data += "chart:{";
             for (int i = 0; i < 6; i++)
             {
                 Data += "'" + starttime.Hour + ":00" + "':";
                 Data += string.Format("'{0:N2}'", GridPowerService.ReadByInfoList(starttime, starttime.AddHours(1)).Average(x => x.Vavg)).Trim();
-                if (i < 5) {Data += ","; }
+                if (i < 5) { Data += ","; }
                 starttime = starttime.AddHours(1);
             }
             Data += "}}";
@@ -182,7 +176,7 @@ namespace Web.Controllers.Api
             Data += "'電池容量(Capacity)" + "':'" + string.Format("{0:#,0.00}", battery.SOC) + "',";
             Data += "'充電次數(Cycles)" + "':'" + string.Format("{0:#,0.0}", battery.Cycle) + "',";
             Data += "'充電方向(Charging Direction)" + "':'" + str + "',";
-            Data += "'溫度(Temperature)" + "':'" + string.Format("{0:#,0.0}", battery.charge_direction)+"°C" + "'";
+            Data += "'溫度(Temperature)" + "':'" + string.Format("{0:#,0.0}", battery.charge_direction) + "°C" + "'";
             Data += "},";
 
             Data += "chart:{";
@@ -224,7 +218,7 @@ namespace Web.Controllers.Api
             //資料
             Data += "{'info':{";
             Data += "'資料時間(UTC)" + "':'" + inverter.CreateTime + "',";
-            Data += "'工作模式" + "':'" +mod +"',";
+            Data += "'工作模式" + "':'" + mod + "',";
             Data += "'市電電壓(V)" + "':'" + string.Format("{0:#,0.0}", inverter.GridVoltage) + "',";
             Data += "'市電頻率  (Hz)" + "':'" + string.Format("{0:#,0.0}", inverter.GridVoltage) + "',";
             Data += "'輸出電壓  (V)" + "':'" + string.Format("{0:#,0.00}", inverter.AC_OutputVoltage) + "',";
@@ -247,6 +241,7 @@ namespace Web.Controllers.Api
             Data += "}}";
             return Ok(Data);
         }
+
 
         /// <summary>
         /// 負載
@@ -298,7 +293,7 @@ namespace Web.Controllers.Api
         public IHttpActionResult Generator()
         {
             Generator generator = GeneratorService.ReadNow();
-            string status = generator.ControlStatus.Equals("true") ? "已啟動": "關閉中";
+            string status = generator.ControlStatus.Equals("true") ? "已啟動" : "關閉中";
             DateTime start = new DateTime();
             DateTime starttime = new DateTime();
             DateTime endTime = new DateTime();
@@ -376,673 +371,409 @@ namespace Web.Controllers.Api
         }
 
 
-        [Route("api/Android")]
-        [HttpGet]
-        public IHttpActionResult Android()
+        #endregion
+
+        [Route("api/Charts")]
+        [HttpPost]
+        public IHttpActionResult Charts()
         {
-            string jsonStr = JsonConvert.SerializeObject(JsonString);
-            Console.Write(jsonStr);
+            DateTime start = new DateTime();
+            DateTime starttime = new DateTime();
+            DateTime endTime = new DateTime();
+            List<double> sum = new List<double>();
+
+            #region GridPower
+            var gridNow = GridPowerService.ReadNow();
+            endTime = (gridNow == null) ? DateTime.Now : gridNow.date_time;
+            start = endTime.AddHours(-25);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, 00, 00, 00);
+            //資料       
+            List<Chart> gridCharts = new List<Chart>();
+            sum.Clear();
+            for (int i = 0; i < 25; i++)
+            {
+                var count = GridPowerService.ReadByInfoList(starttime, starttime.AddHours(1));
+                if (i > 0)
+                {
+                    double num = (count.Count == 0 )?0:count.Average(x => x.kWHt);
+                    double miner = num - sum.Last();
+                    sum.Add(num);
+                    gridCharts.Add(new Chart() { hour = starttime.Hour, data = (miner < 0 )?0:Math.Round(miner,2) });
+                }
+                else
+                {
+                    double num = count.Count == 0 ? 0 : count.Average(x => x.kWHt);
+                    sum.Add(num);
+                }
+                starttime = starttime.AddHours(1);
+            }
+            #endregion
+
+            #region Generator
+            var gennow = GeneratorService.ReadNow();
+            endTime = (gennow == null) ? DateTime.Now : gennow.UpdateTime;
+            start = endTime.AddHours(-24);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, 00, 00, 00);
+            //資料       
+            List<Chart> GeneratorCharts = new List<Chart>();
+            for (int i = 0; i < 24; i++)
+            {
+                var count = GeneratorService.ReadByInfoList(starttime, starttime.AddHours(1));
+                GeneratorCharts.Add(new Chart() { hour = starttime.Hour, data = count.Count == 0 ? 0 :  Math.Round(count.Average(x => x.positiveKWhours) / 1000.00,2) });
+                starttime = starttime.AddHours(1);
+            }
+            #endregion
+
+            #region Battery
+            var batterynow = BatteryService.ReadNow();
+            endTime = (batterynow == null) ? DateTime.Now : batterynow.updateTime;
+            start = endTime.AddHours(-24);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, 00, 00, 00);
+            //資料       
+            List<Chart> BatteryCharts = new List<Chart>();
+            for (int i = 0; i < 24; i++)
+            {
+                var count = BatteryService.ReadByInfoList(starttime, starttime.AddHours(1));
+                List<double> batteryVolt = new List<double>();
+                List<double> batteryTotalVolt = new List<double>();
+                if (count.Count() > 0)
+                {
+                    int c = 0;
+                    foreach (var B in count)
+                    {
+                        if (c < 4)
+                        {
+                            batteryVolt.Add(B.voltage);
+                            c++;
+                            if (c == 4)
+                            {
+                                batteryTotalVolt.Add((batteryVolt.Average() - 42) / (58 - 42));
+                                c = 0;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    batteryTotalVolt.Add(0);
+                }
+                BatteryCharts.Add(new Chart() { hour = starttime.Hour, data = batteryTotalVolt.Average() == 0 ? 0 : Math.Round(batteryTotalVolt.Average() * 100.00, 2) });       
+                starttime = starttime.AddHours(1);
+            }
+            #endregion
+
+            #region Solar
+            var solarnow = inverterService.ReadNow();
+            endTime = (solarnow == null) ? DateTime.Now : solarnow.CreateTime;
+            start = endTime.AddHours(-24);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, 00, 00, 00);
+            //資料       
+            List<Chart> SolatCharts = new List<Chart>();
+            for (int i = 0; i < 24; i++)
+            {
+                var count = inverterService.ReadByInfoList(starttime, starttime.AddHours(1));
+                SolatCharts.Add(new Chart() { hour = starttime.Hour, data = Math.Round((count.Count == 0) ? 0 : (count.Average(x => x.SPM90ActivePower.Split('|').ToList().Sum(y => y.IsEmpty() ? 0 : Convert.ToDouble(y) / 1000.00))),2)});
+                starttime = starttime.AddHours(1);
+            }
+            #endregion
+
+            #region LoadPower
+            var loadnow = LoadPowerService.ReadNow();
+            endTime = (loadnow == null) ? DateTime.Now : loadnow.date_Time;
+            start = endTime.AddHours(-25);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, 00, 00, 00);
+            //資料       
+            List<Chart> loadCharts = new List<Chart>();
+            sum.Clear();
+            for (int i = 0; i < 25; i++)
+            {
+                var count = LoadPowerService.ReadByInfoList(starttime, starttime.AddHours(1));
+                if (i > 0)
+                {
+                    double num = count.Count == 0 ? 0 : count.Average(x => x.kWHt);
+                    double miner = num - sum.Last();
+                    sum.Add(num);
+                    loadCharts.Add(new Chart() { hour = starttime.Hour, data = miner < 0 ? 0 :Math.Round(miner,2) });
+                }
+                else
+                {
+                    double num = count.Count == 0 ? 0 : count.Average(x => x.kWHt);
+                    sum.Add(num);
+                }
+                starttime = starttime.AddHours(1);
+            }
+            #endregion
+
+            List<TotalChart> totalCharts = new List<TotalChart>()
+            {
+                new TotalChart()
+                {
+                   // creatTime=start,
+                    gridChart=gridCharts,
+                    generatorChart=GeneratorCharts,
+                    batteryChart=BatteryCharts,
+                    solarChart=SolatCharts,
+                    loadChart=loadCharts                 
+                }
+            };
+            var jsonStr = JsonConvert.SerializeObject(totalCharts, Formatting.Indented);     
+            //Console.Write(jsonStr);
             return Json(jsonStr);
         }
 
-        private readonly string JsonString =
-         @"{
-                  'updateTime': '2018-11-08T02:43:37.205Z',
-                  'stationName': '大武社區',
-                  'stationUUID': 'd4788824-ba3e-11e8-96f8-529269fb1459',
-                  'GridPowers': [],
-                  'LoadPowers': [
+        [Route("api/BatteryChart")]
+        [HttpPost]
+        public IHttpActionResult BatteryChart()
+        {
+            DateTime start = new DateTime();
+            DateTime starttime = new DateTime();
+            DateTime endTime = new DateTime();
+            List<double> sum = new List<double>();
+
+            #region Battery
+            var batterynow = BatteryService.ReadNow();
+            endTime = (batterynow == null) ? DateTime.Now : batterynow.updateTime;
+            start = endTime.AddHours(-24);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, 00, 00, 00);
+            //資料       
+            List<Chart> BatteryCharts = new List<Chart>();
+            for (int i = 0; i < 24; i++)
+            {
+                var count = BatteryService.ReadByInfoList(starttime, starttime.AddHours(1));
+                List<double> batteryVolt = new List<double>();
+                List<double> batteryTotalVolt = new List<double>();
+                if (count.Count() > 0)
+                {
+                    int c = 0;
+                    foreach (var B in count)
                     {
-                      'version': 1,
-                      'index': 2,
-                      'modelSerial': '0000111122223333',
-                      'serialNO': 'SCB-SC01',
-                      'name': '負載迴路1',
-                      'connected': true,
-                      'date_time': '2018-11-08T02:43:30.288Z',
-                      'va': 220.1,
-                      'vb': 0,
-                      'vc': 0,
-                      'vavg': 220.1,
-                      'ia': 0,
-                      'ib': 0,
-                      'ic': 0,
-                      'in': 0,
-                      'isum': 0,
-                      'watt_a': 0,
-                      'watt_b': 0,
-                      'watt_c': 0,
-                      'watt_t': 0,
-                      'var_a': 0,
-                      'var_b': 0,
-                      'var_c': 0,
-                      'var_t': 0,
-                      'va_a': 0,
-                      'va_b': 0,
-                      'va_c': 0,
-                      'va_t': 0,
-                      'pf_a': 0,
-                      'pf_b': 0,
-                      'pf_c': 0,
-                      'pf_t': 0,
-                      'angle_va': 0,
-                      'angle_vb': 247.8,
-                      'angle_vc': 180.4,
-                      'angle_ia': 47.5,
-                      'angle_ib': 253.5,
-                      'angle_ic': 18.1,
-                      'frequency': 60,
-                      'vab': 220.1,
-                      'vbc': 220.1,
-                      'vca': 220.1,
-                      'vii_avg': 0,
-                      'kwht': 0.4,
-                      'kwha': 0.4,
-                      'kwhb': 0,
-                      'kwhc': 0,
-                      'kvarht': 0,
-                      'kvarha': 0,
-                      'kvarhb': 0,
-                      'kvarhc': 0,
-                      'kvaht': 0.4,
-                      'kvaha': 0.4,
-                      'kvahb': 0,
-                      'kvahc': 0,
-                      'demand': 0,
-                      'prev_demand': 0,
-                      'prev_demand2': 0,
-                      'prev_demand3': 0,
-                      'maxdemand_currnetmonth': 0,
-                      'maxdemand_lastmonth': 0,
-                      'remain_time': 812,
-                      'events': []
-                    },
-                    {
-                      'version': 1,
-                      'index': 3,
-                      'modelSerial': '0000111122223333',
-                      'serialNO': 'SCB-SC01',
-                      'name': '負載迴路2',
-                      'connected': true,
-                      'date_time': '2018-11-08T02:43:33.646Z',
-                      'va': 220,
-                      'vb': 0,
-                      'vc': 0,
-                      'vavg': 220,
-                      'ia': 0,
-                      'ib': 0,
-                      'ic': 0,
-                      'in': 0,
-                      'isum': 0,
-                      'watt_a': 0,
-                      'watt_b': 0,
-                      'watt_c': 0,
-                      'watt_t': 0,
-                      'var_a': 0,
-                      'var_b': 0,
-                      'var_c': 0,
-                      'var_t': 0,
-                      'va_a': 0,
-                      'va_b': 0,
-                      'va_c': 0,
-                      'va_t': 0,
-                      'pf_a': 0,
-                      'pf_b': 0,
-                      'pf_c': 0,
-                      'pf_t': 0,
-                      'angle_va': 0,
-                      'angle_vb': 200.9,
-                      'angle_vc': 211.5,
-                      'angle_ia': 250.3,
-                      'angle_ib': 261.6,
-                      'angle_ic': 181.7,
-                      'frequency': 59.96,
-                      'vab': 220,
-                      'vbc': 220,
-                      'vca': 220,
-                      'vii_avg': 0,
-                      'kwht': 60.4,
-                      'kwha': 60.4,
-                      'kwhb': 0,
-                      'kwhc': 0,
-                      'kvarht': 29.8,
-                      'kvarha': 28.7,
-                      'kvarhb': 0.5,
-                      'kvarhc': 0.4,
-                      'kvaht': 113.3,
-                      'kvaha': 75.1,
-                      'kvahb': 19.1,
-                      'kvahc': 19,
-                      'demand': 0,
-                      'prev_demand': 0,
-                      'prev_demand2': 0,
-                      'prev_demand3': 0,
-                      'maxdemand_currnetmonth': 0,
-                      'maxdemand_lastmonth': 0,
-                      'remain_time': 808,
-                      'events': []
+                        if (c < 4)
+                        {
+                            batteryVolt.Add(B.voltage);
+                            c++;
+                            if (c == 4)
+                            {
+                                batteryTotalVolt.Add((batteryVolt.Average() - 42) / (58 - 42));
+                                c = 0;
+                            }
+                        }
                     }
-                  ],
-                  'Generators': [],
-                  'Inverters': [
+                }
+                else
+                {
+                    batteryTotalVolt.Add(0);
+                }
+               BatteryCharts.Add(new Chart() { hour =starttime.Hour, data = batteryTotalVolt.Average() == 0 ? 0: Math.Round(batteryTotalVolt.Average() * 100.00, 2)});
+                starttime = starttime.AddHours(1);
+            }
+            #endregion
+            var jsonStr = JsonConvert.SerializeObject(BatteryCharts, Formatting.Indented);
+            //Console.Write(jsonStr);
+            return Json(jsonStr);
+        }
+
+        [Route("api/BatteryStr")]
+        [HttpPost]
+        public IHttpActionResult BatteryStr()
+        {
+            DateTime start = new DateTime();
+            DateTime starttime = new DateTime();
+            DateTime endTime = new DateTime();
+            List<double> sum = new List<double>();
+            #region Battery
+            var batterynow = BatteryService.ReadNow();
+            endTime = (batterynow == null) ? DateTime.Now : batterynow.updateTime;
+            start = endTime.AddHours(-24);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, 00, 00, 00);
+            //資料       
+            string BatteryStr = null;
+            BatteryStr = "[";
+            for (int i = 0; i < 24; i++)
+            {
+                var count = BatteryService.ReadByInfoList(starttime, starttime.AddHours(1));
+                List<double> batteryVolt = new List<double>();
+                List<double> batteryTotalVolt = new List<double>();
+                if (count.Count() > 0)
+                {
+                    int c = 0;
+                    foreach (var B in count)
                     {
-                      'version': 1,
-                      'index': 0,
-                      'modelSerial': 'OPTI-SP5000',
-                      'serialNO': '0000111122223333',
-                      'name': 'OPTI SP5000 Brilliant Ultra',
-                      'connected': true,
-                      'DeviceMode': 'B',
-                      'WarningStatus': {
-                        'InverterFault': false,
-                        'BusOver': false,
-                        'BusUnder': false,
-                        'BusSoftFail': false,
-                        'LINE_FAIL': true,
-                        'OPVShort': false,
-                        'InverterVoltageTooLow': false,
-                        'InverterVoltageTooHigh': false,
-                        'OverTemperature': false,
-                        'FanLocked': false,
-                        'BatteryVoltageHigh': false,
-                        'BatteryLowAlarm': false,
-                        'BatteryUnderShutdown': false,
-                        'OverLoad': false,
-                        'EepromFault': false,
-                        'InverterOverCurrent': false,
-                        'InverterSoftFail': false,
-                        'SelfTestFail': false,
-                        'OP_DC_VoltageOver': false,
-                        'BatOpen': false,
-                        'CurrentSensorFail': false,
-                        'BatteryShort': false,
-                        'PowerLimit': false,
-                        'PV_VoltageHigh': false,
-                        'MPPT_OverloadFault': false,
-                        'MPPT_OverloadWarning': false,
-                        'BatteryTooLowToCharge': false,
-                        'Message': '[LINE_FAIL]'
-                      },
-                      'ParallelInformation': [
+                        if (c < 4)
                         {
-                          'IsExist': true,
-                          'SerialNumber': '92931807102938',
-                          'WorkMode': 'B',
-                          'FaultCode': '00',
-                          'GridVoltage': 0,
-                          'GridFrequency': 0,
-                          'ACOutputVoltage': 220,
-                          'ACOutputFrequency': 59.99,
-                          'ACOutputApparentPower': 44,
-                          'ACOutputActivePower': 8,
-                          'LoadPercentage': 0,
-                          'BatteryVoltage': 52.4,
-                          'BatteryChargingCurrent': 0,
-                          'BatteryCapacity': 100,
-                          'PV_InputVoltage': 54.3,
-                          'TotalChargingCurrent': 0,
-                          'Total_AC_OutputApparentPower': 87,
-                          'TotalOutputActivePower': 41,
-                          'Total_AC_OutputPercentage': 0,
-                          'InverterStatus': {
-                            'SCC_OK': false,
-                            'AC_Charging': false,
-                            'SCC_Charging': false,
-                            'Battery': '00',
-                            'Line_OK': false,
-                            'loadOn': true,
-                            'ConfigurationChange': false
-                          },
-                          'OutputMode': '1',
-                          'ChargerSourcePriority': '3',
-                          'MaxChargerCurrent': 20,
-                          'MaxChargerRange': 80,
-                          'Max_AC_ChargerCurrent': 20,
-                          'PV_InputCurrentForBattery': 0,
-                          'BatteryDischargeCurrent': 0
-                        },
-                        {
-                          'IsExist': true,
-                          'SerialNumber': '92931807102904',
-                          'WorkMode': 'B',
-                          'FaultCode': '00',
-                          'GridVoltage': 0,
-                          'GridFrequency': 0,
-                          'ACOutputVoltage': 219.9,
-                          'ACOutputFrequency': 59.97,
-                          'ACOutputApparentPower': 43,
-                          'ACOutputActivePower': 35,
-                          'LoadPercentage': 0,
-                          'BatteryVoltage': 52.4,
-                          'BatteryChargingCurrent': 0,
-                          'BatteryCapacity': 100,
-                          'PV_InputVoltage': 54.4,
-                          'TotalChargingCurrent': 0,
-                          'Total_AC_OutputApparentPower': 87,
-                          'TotalOutputActivePower': 35,
-                          'Total_AC_OutputPercentage': 0,
-                          'InverterStatus': {
-                            'SCC_OK': false,
-                            'AC_Charging': false,
-                            'SCC_Charging': false,
-                            'Battery': '00',
-                            'Line_OK': false,
-                            'loadOn': true,
-                            'ConfigurationChange': false
-                          },
-                          'OutputMode': '1',
-                          'ChargerSourcePriority': '2',
-                          'MaxChargerCurrent': 20,
-                          'MaxChargerRange': 80,
-                          'Max_AC_ChargerCurrent': 20,
-                          'PV_InputCurrentForBattery': 0,
-                          'BatteryDischargeCurrent': 1
+                            batteryVolt.Add(B.voltage);
+                            c++;
+                            if (c == 4)
+                            {
+                                batteryTotalVolt.Add((batteryVolt.Average() - 42) / (58 - 42));
+                                c = 0;
+                            }
                         }
-                      ],
-                      'GridVoltage': 0,
-                      'GridFrequency': 0,
-                      'AC_OutputVoltage': 219.9,
-                      'AC_OutputFrequency': 59.9,
-                      'AC_OutputApparentPower': 43,
-                      'AC_OutputActivePower': 4,
-                      'OutputLoadPercent': 0,
-                      'BUSVoltage': 367,
-                      'BatteryVoltage': 52.4,
-                      'BatteryChargingCurrent': 0,
-                      'BatteryCapacity': 100,
-                      'InverterHeatSinkTemperature': 35,
-                      'PV_InputCurrentForBattery': 0,
-                      'PV_InputVoltage': 0,
-                      'BatteryVoltageFrom_SCC': 0,
-                      'BatteryDischargeCurrent': 0,
-                      'DeviceStatus': {
-                        'Has_SBU_PriorityVersion': false,
-                        'ConfigurationStatus_Change': false,
-                        'SCC_FirmwareVersion_Updated': false,
-                        'LoadStatus_On': true,
-                        'BatteryVoltageTOSteadyWhileCharging': false,
-                        'ChargingStatus_On': false,
-                        'ChargingSstatus_SCC_Charging_On': false,
-                        'ChargingStatus_AC_Charging_On': false,
-                        'ChargingStatusCharging': '000',
-                        'ChargingToFloatingMode': false,
-                        'SwitchOn': true
-                      },
-                      'BatteryVoltageOffsetForFansOn': 0,
-                      'EEPROM_Version': 0,
-                      'PV_ChargingPower': 8,
-                      'SPM90s': [
-                        {
-                          'id': 1,
-                          'connected': true,
-                          'Voltage': 0,
-                          'Current': 0,
-                          'ActivePower': 0,
-                          'ActiveEnergy': 0.14,
-                          'VoltageDirection': 0
-                        },
-                        {
-                          'id': 4,
-                          'connected': true,
-                          'Voltage': 0,
-                          'Current': 0,
-                          'ActivePower': 0,
-                          'ActiveEnergy': 0,
-                          'VoltageDirection': 0
-                        }
-                      ],
-                      'SPM90Voltage': 0,
-                      'SPM90Current': 0,
-                      'SPM90ActivePower': 0,
-                      'SPM90ActiveEnergy': 0.14,
-                      'SPM90VoltageDirection': 0
                     }
-                  ],
-                  'Battery': [
-                    {
-                      'version': 1,
-                      'index': 0,
-                      'modelSerial': 'FSP-BS4866',
-                      'serialNO': '0000000000010000',
-                      'name': 'FSP-BS4866',
-                      'connected': true,
-                      'updateTime': '2018-11-08T02:43:27.791Z',
-                      'voltage': 52,
-                      'charging_current': 0,
-                      'discharging_current': 0,
-                      'charging_watt': 0,
-                      'discharging_watt': 0,
-                      'SOC': 15,
-                      'Cycle': 1,
-                      'charge_direction': 0,
-                      'temperature': 28,
-                      'Cells': [
-                        {
-                          'index': 1,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 2,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 3,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 4,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 5,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 6,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 7,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 8,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 9,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 10,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 11,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 12,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 13,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 14,
-                          'voltage': 3.2861000000000002
-                        }
-                      ],
-                      'AlarmState': {
-                        'OV_DIS': false,
-                        'UV_DIS': false,
-                        'OC_DIS': false,
-                        'SC_DIS': false,
-                        'OT_DIS': false,
-                        'UT_DIS': false,
-                        'RV_DIS': false,
-                        'OC0_DIS': false
-                      }
-                    },
-                    {
-                      'version': 1,
-                      'index': 1,
-                      'modelSerial': 'FSP-BS4866',
-                      'serialNO': '0000000000020000',
-                      'name': 'FSP-BS4866',
-                      'connected': false,
-                      'voltage': 0,
-                      'charging_current': 0,
-                      'discharging_current': 0,
-                      'charging_watt': 0,
-                      'discharging_watt': 0,
-                      'SOC': 0,
-                      'Cycle': 1,
-                      'charge_direction': 0,
-                      'temperature': 0,
-                      'Cells': [
-                        {
-                          'index': 1,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 2,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 3,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 4,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 5,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 6,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 7,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 8,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 9,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 10,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 11,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 12,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 13,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 14,
-                          'voltage': 0
-                        }
-                      ],
-                      'AlarmState': {
-                        'OV_DIS': false,
-                        'UV_DIS': false,
-                        'OC_DIS': false,
-                        'SC_DIS': false,
-                        'OT_DIS': false,
-                        'UT_DIS': false,
-                        'RV_DIS': false,
-                        'OC0_DIS': false
-                      }
-                    },
-                    {
-                      'version': 1,
-                      'index': 2,
-                      'modelSerial': 'FSP-BS4866',
-                      'serialNO': '0000000000030000',
-                      'name': 'FSP-BS4866',
-                      'connected': false,
-                      'voltage': 0,
-                      'charging_current': 0,
-                      'discharging_current': 0,
-                      'charging_watt': 0,
-                      'discharging_watt': 0,
-                      'SOC': 0,
-                      'Cycle': 1,
-                      'charge_direction': 0,
-                      'temperature': 0,
-                      'Cells': [
-                        {
-                          'index': 1,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 2,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 3,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 4,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 5,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 6,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 7,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 8,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 9,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 10,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 11,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 12,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 13,
-                          'voltage': 0
-                        },
-                        {
-                          'index': 14,
-                          'voltage': 0
-                        }
-                      ],
-                      'AlarmState': {
-                        'OV_DIS': false,
-                        'UV_DIS': false,
-                        'OC_DIS': false,
-                        'SC_DIS': false,
-                        'OT_DIS': false,
-                        'UT_DIS': false,
-                        'RV_DIS': false,
-                        'OC0_DIS': false
-                      }
-                    },
-                    {
-                      'version': 1,
-                      'index': 3,
-                      'modelSerial': 'FSP-BS4866',
-                      'serialNO': '0000000000040000',
-                      'name': 'FSP-BS4866',
-                      'connected': true,
-                      'updateTime': '2018-11-08T02:43:14.457Z',
-                      'voltage': 52,
-                      'charging_current': 0,
-                      'discharging_current': 0.9390000000000001,
-                      'charging_watt': 0,
-                      'discharging_watt': 48.828,
-                      'SOC': 10,
-                      'Cycle': 1,
-                      'charge_direction': 2,
-                      'temperature': 30,
-                      'Cells': [
-                        {
-                          'index': 1,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 2,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 3,
-                          'voltage': 3.291
-                        },
-                        {
-                          'index': 4,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 5,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 6,
-                          'voltage': 3.2836000000000003
-                        },
-                        {
-                          'index': 7,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 8,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 9,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 10,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 11,
-                          'voltage': 3.291
-                        },
-                        {
-                          'index': 12,
-                          'voltage': 3.2885
-                        },
-                        {
-                          'index': 13,
-                          'voltage': 3.2861000000000002
-                        },
-                        {
-                          'index': 14,
-                          'voltage': 3.2836000000000003
-                        }
-                      ],
-                      'AlarmState': {
-                        'OV_DIS': false,
-                        'UV_DIS': false,
-                        'OC_DIS': false,
-                        'SC_DIS': false,
-                        'OT_DIS': false,
-                        'UT_DIS': false,
-                        'RV_DIS': false,
-                        'OC0_DIS': false
-                      }
-                    }
-                  ]
-                }";
+                }
+                else
+                {
+                    batteryTotalVolt.Add(0);
+                }
+
+                double data = batteryTotalVolt.Average() == 0 ? 0 : Math.Round(batteryTotalVolt.Average() * 100.00, 2);
+                BatteryStr += (i > 22) ? "{'hour':" + starttime.AddHours(8).Hour + ",'data':" + data + "}" : "{'hour':" + starttime.AddHours(8).Hour + ",'data':"+ data +" },";
+                starttime = starttime.AddHours(1);
+            }
+            BatteryStr += "]";
+            #endregion
+            return Ok(BatteryStr);
+        }
+
+        [Route("api/GridPowerStr")]
+        [HttpPost]
+        public IHttpActionResult GridPowerStr()
+        {
+            DateTime start = new DateTime();
+            DateTime starttime = new DateTime();
+            DateTime endTime = new DateTime();
+            List<double> sum = new List<double>();
+            #region GridPower
+            var gridNow = GridPowerService.ReadNow();
+            endTime = (gridNow == null) ? DateTime.Now : gridNow.date_time;
+            start = endTime.AddHours(-25);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, 00, 00, 00);
+            //資料       
+            string GridPowerStr="[";
+            sum.Clear();
+            for (int i = 0; i < 25; i++)
+            {
+                var count = GridPowerService.ReadByInfoList(starttime, starttime.AddHours(1));
+                if (i > 0)
+                {
+                    double num = (count.Count == 0) ? 0 : count.Average(x => x.kWHt);
+                    double miner = num - sum.Last();
+                    sum.Add(num);
+
+                    double data = data = (miner < 0) ? 0 : Math.Round(miner, 2);
+                    GridPowerStr += (i > 23) ? "{'hour':" + starttime.AddHours(8).Hour + ",'data':" + data + "}" : "{'hour':" + starttime.AddHours(8).Hour + ",'data':" + data + " },";
+                }
+                else
+                {
+                    double num = count.Count == 0 ? 0 : count.Average(x => x.kWHt);
+                    sum.Add(num);
+                }
+              
+                starttime = starttime.AddHours(1);
+            }
+            GridPowerStr += "]";
+            #endregion
+            return Ok(GridPowerStr);
+        }
+
+        [Route("api/GeneratorStr")]
+        [HttpPost]
+        public IHttpActionResult GeneratorStr()
+        {
+            DateTime start = new DateTime();
+            DateTime starttime = new DateTime();
+            DateTime endTime = new DateTime();
+            #region Generator
+            var gennow = GeneratorService.ReadNow();
+            endTime = (gennow == null) ? DateTime.Now : gennow.UpdateTime;
+            start = endTime.AddHours(-24);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, 00, 00, 00);
+            //資料       
+            string GeneratorStr = "[";
+            for (int i = 0; i < 24; i++)
+            {
+                var count = GeneratorService.ReadByInfoList(starttime, starttime.AddHours(1));
+                double data  =count.Count == 0 ? 0 : Math.Round(count.Average(x => x.positiveKWhours) / 1000.00, 2);
+                GeneratorStr += (i > 22) ? "{'hour':" + starttime.AddHours(8).Hour + ",'data':" + data + "}" : "{'hour':" + starttime.AddHours(8).Hour + ",'data':" + data + " },";
+                starttime = starttime.AddHours(1);
+            }
+            GeneratorStr += "]";
+            #endregion
+            return Ok(GeneratorStr);
+        }
+
+        [Route("api/SolarStr")]
+        [HttpPost]
+        public IHttpActionResult SolarStr()
+        {
+            DateTime start = new DateTime();
+            DateTime starttime = new DateTime();
+            DateTime endTime = new DateTime();
+            #region Solar
+            var solarnow = inverterService.ReadNow();
+            endTime = (solarnow == null) ? DateTime.Now : solarnow.CreateTime;
+            start = endTime.AddHours(-24);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, 00, 00, 00);
+            //資料       
+            string SolarStr = "[";
+            for (int i = 0; i < 24; i++)
+            {
+                var count = inverterService.ReadByInfoList(starttime, starttime.AddHours(1));
+                double data = Math.Round((count.Count == 0) ? 0 : (count.Average(x => x.SPM90ActivePower.Split('|').ToList().Sum(y => y.IsEmpty() ? 0 : Convert.ToDouble(y) / 1000.00))), 2);
+                SolarStr += (i > 22) ? "{'hour':" + starttime.AddHours(8).Hour + ",'data':" + data + "}" : "{'hour':" + starttime.AddHours(8).Hour + ",'data':" + data + " },";
+                starttime = starttime.AddHours(1);
+            }
+            SolarStr += "]";
+            #endregion
+            return Ok(SolarStr);
+        }
+
+        [Route("api/LoadPowerStr")]
+        [HttpPost]
+        public IHttpActionResult LoadPowerStr()
+        {
+            DateTime start = new DateTime();
+            DateTime starttime = new DateTime();
+            DateTime endTime = new DateTime();
+            List<double> sum = new List<double>();
+
+            #region LoadPower
+            var loadnow = LoadPowerService.ReadNow();
+            endTime = (loadnow == null) ? DateTime.Now : loadnow.date_Time;
+            start = endTime.AddHours(-25);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, 00, 00, 00);
+            //資料       
+            string LoadPowerStr = "[";
+            sum.Clear();
+            for (int i = 0; i < 25; i++)
+            {
+                var count = LoadPowerService.ReadByInfoList(starttime, starttime.AddHours(1));
+                if (i > 0)
+                {
+                    double num = count.Count == 0 ? 0 : count.Average(x => x.kWHt);
+                    double miner = num - sum.Last();
+                    sum.Add(num);
+
+                    double data = data = (miner < 0) ? 0 : Math.Round(miner, 2);
+                    LoadPowerStr += (i > 23) ? "{'hour':" + starttime.AddHours(8).Hour + ",'data':" + data + "}" : "{'hour':" + starttime.AddHours(8).Hour + ",'data':" + data + " },";
+                }
+                else
+                {
+                    double num = count.Count == 0 ? 0 : count.Average(x => x.kWHt);
+                    sum.Add(num);
+                }
+                starttime = starttime.AddHours(1);
+            }
+            LoadPowerStr += "]";
+            #endregion
+
+            return Ok(LoadPowerStr);
+        }
+
+        public class TotalChart
+        {
+          //  public DateTime creatTime { get; set; }
+            public IList<Chart> gridChart { get; set; }
+            public IList<Chart> generatorChart { get; set; }
+            public IList<Chart> batteryChart { get; set; }
+            public IList<Chart> solarChart { get; set; }
+            public IList<Chart> loadChart { get; set; }
+        }
+
+        public class Chart
+        {
+            public int hour { get; set; }
+            public double data { get; set; }
+        }
 
     }
 }

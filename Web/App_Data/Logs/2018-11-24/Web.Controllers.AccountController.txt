@@ -1,0 +1,10 @@
+2018-11-24 12:47:39.9631 | INFO | Web.Controllers.AccountController | user:ADMIN;IP:172.27.217.241 
+
+2018-11-24 12:53:15.0828 | INFO | Web.Controllers.AccountController | user:admin;IP:172.27.217.241 
+
+2018-11-24 12:58:30.4538 | INFO | Web.Controllers.AccountController | user:admin;IP:172.27.217.241 
+
+2018-11-24 13:01:22.9036 | INFO | Web.Controllers.AccountController | user:admin;IP:172.27.217.241 
+
+2018-11-24 13:25:59.3286 | INFO | Web.Controllers.AccountController | user:admin;IP:172.27.217.241 
+

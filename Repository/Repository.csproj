@@ -109,6 +109,10 @@
     <Compile Include="Migrations\201811150653559_AddErrorCodes1.Designer.cs">
       <DependentUpon>201811150653559_AddErrorCodes1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811200427316_ADDEquipmentID.cs" />
+    <Compile Include="Migrations\201811200427316_ADDEquipmentID.Designer.cs">
+      <DependentUpon>201811200427316_ADDEquipmentID.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -140,6 +144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811150653559_AddErrorCodes1.resx">
       <DependentUpon>201811150653559_AddErrorCodes1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811200427316_ADDEquipmentID.resx">
+      <DependentUpon>201811200427316_ADDEquipmentID.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

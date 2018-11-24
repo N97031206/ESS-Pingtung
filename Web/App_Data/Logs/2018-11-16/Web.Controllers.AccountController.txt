@@ -1,0 +1,16 @@
+2018-11-16 11:51:28.3503 | INFO | Web.Controllers.AccountController | user:admin;IP:172.27.217.241 
+
+2018-11-16 12:00:16.6234 | INFO | Web.Controllers.AccountController | user:admin;IP:172.27.217.241 
+
+2018-11-16 15:02:01.2926 | INFO | Web.Controllers.AccountController | user:admin;IP:172.27.217.241 
+
+2018-11-16 15:09:29.3863 | INFO | Web.Controllers.AccountController | user:admin;IP:172.27.217.241 
+
+2018-11-16 19:33:50.3334 | INFO | Web.Controllers.AccountController | user:admin;IP:172.27.217.241 
+
+2018-11-16 19:33:50.3334 | INFO | Web.Controllers.AccountController | user:admin;IP:172.27.217.241 
+
+2018-11-16 22:52:06.4982 | INFO | Web.Controllers.AccountController | user:admin;IP:172.27.217.241 
+
+2018-11-16 23:33:10.4400 | INFO | Web.Controllers.AccountController | user:admin;IP:172.27.217.241 
+

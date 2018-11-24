@@ -31,5 +31,7 @@ namespace Service.ESS.Model
         [Display(Name = "開啟是否")]
         public bool Disabled { get; set; }
 
+        public Guid EquipmentID { get; set; }
+
     }
 }

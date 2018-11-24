@@ -100,15 +100,17 @@
                 @foreach (var invs in Model)
                 {
                     var time = invs.UpdateDate.AddHours(8).ToString();
+                    Double count = 0;
                     if (!string.IsNullOrEmpty(invs.InvertersIDs))
                     {
-                        string T1 = null, T2 = null, T3 = null, T4 = null, T5 = null;
+                        string timer = null;
+                        double T1 = 0, T2 = 0, T3 = 0, T4 = 0, T5 = 0;
                         string[] IDs = invs.InvertersIDs.Trim().Split('|');
                         foreach (var inv in IDs)
                         {
                             if (!string.IsNullOrEmpty(inv))
                             {
-                                T1 = time;
+                                timer = time;
                                 Guid ID = Guid.Parse(inv);
                                 Inverter inverter = inverterService.ReadByID(ID);
                                 var id = inverter.SPMid.Split('|');
@@ -116,22 +118,22 @@
                                 var curent = inverter.SPM90Current.Split('|');
                                 var activeEnergy = inverter.SPM90ActiveEnergy.Split('|');
                                 var activePower = inverter.SPM90ActivePower.Split('|');
-
+                                count = id.Count();
                                 for (int k = 0; k < id.Count()-1; k++)
                                 {
-                                    T2 += id[k] + ":[" + string.Format("{0:#,0.0}", volt[k]) + "] ";
-                                    T3 += id[k] + ":[" + string.Format("{0:#,0.0}", curent[k]) + "] ";
-                                    T4 += id[k] + ":[" + string.Format("{0:#,0.0}", Convert.ToDouble(activePower[k]) / 1000.0) + "] ";
-                                    T5 += id[k] + ":[" + string.Format("{0:#,0.0}", activeEnergy[k]) + "] ";
+                                    T2 += Convert.ToDouble(volt[k]);
+                                    T3 += Convert.ToDouble(curent[k]);
+                                    T4 += Convert.ToDouble(activePower[k]) / 1000.0;
+                                    T5 += Convert.ToDouble(activeEnergy[k]);
                                 }
                             }
                         }
                         <tr>
-                            <th scope="row">@T1</th>
-                            <td>@T2</td>
-                            <td>@T3</td>
-                            <td>@T4</td>
-                            <td>@T5</td>
+                            <th scope="row">@timer</th>
+                            <td>@Math.Round(T2/count,2)</td>
+                            <td>@Math.Round(T3,2)</td>
+                            <td>@Math.Round(T4,2)</td>
+                            <td>@Math.Round(T5,2)</td>
                         </tr>
                     }
                 }

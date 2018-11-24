@@ -1,0 +1,28 @@
+﻿以Entity Framework Code First新增資料表
+
+新增類別 系統使用紀錄
+Repository.ESK.Domain.UseLog
+
+在類別Repository.ESK.ESKContext
+新增屬性
+public DbSet<UseLog> UseLogs { get; set; }
+
+開啟檢視 => 其他視窗 => 套件管理器主控台
+
+預設專案選擇 Repository
+(Repository有 ESKContext)
+
+下命令
+Enable-Migrations 
+ (曾經下過就不用再下了)
+
+Add-Migration CreateTable_UseLog
+(此命令會自動產生類別 Repository.Migrations.CreateTable_UseLog)
+
+先確認方案中.config檔案中的資料庫連線正確
+
+Update-Database -Verbose
+(UseLog資料表產生)
+(Specify the '-Verbose' flag to view the SQL statements being applied to the target database.)
+
+**************************************************************

@@ -24,6 +24,8 @@ namespace Repository.ESS.Domain
         [Column(Order = 2)]
         public virtual AlartType AlartType { get; set; }
 
+        public Guid EquipmentID { get; set; }
+
         public string AlartContext { get; set; }
 
         public DateTime StartTimet { get; set; }

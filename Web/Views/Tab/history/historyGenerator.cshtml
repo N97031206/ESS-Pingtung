@@ -113,9 +113,9 @@
             <tbody>
                 @foreach (var gens in Model)
                 {
+                    string T1 = "0", T2 = "0", T3 = "0", T4 = "0", T5 = "0", T6 = "0", T7 = "0", T8 = "0", T9 = "0", T10 = "0", T11 = "0", T12 = "離線", T13 = "0", T14 = "0", Timer = "0";
                     if (!string.IsNullOrEmpty(gens.GeneratorIDs))
                     {
-                        string T1 = null, T2 = null, T3 = null, T4 = null, T5 = null, T6 = null, T7 = null, T8 = null, T9 = null, T10 = null, T11 = null, T12 = null, T13 = null, T14 = null, Timer = null;
                         string[] IDs = gens.GeneratorIDs.Trim().Split('|');
                         foreach (var lo in IDs)
                         {
@@ -135,7 +135,7 @@
                                 T9 = string.Format("{0:#,0.0}", generator.averagepowerfactor);
                                 T10 = string.Format("{0:#,0.0}", generator.positiveKWhours);
                                 T11 = string.Format("{0:#,0.0}", generator.negativeKWhours);
-                                T12 = generator.ControlStatus.Equals("true")?"啟動" : "關閉";
+                                T12 = generator.ControlStatus.Equals("true") ? "啟動" : "關閉";
                                 T13 = string.Format("{0:#,0.0}", generator.AvailabilityEnergy);
                                 T14 = string.Format("{0:#,0.0}", generator.AvailabilityHour);
                             }
@@ -158,15 +158,30 @@
                             <td>@T14</td>
                         </tr>
                     }
+                    else
+                    {
+                        Timer = gens.UpdateDate.AddHours(8).ToString();
+                        <tr>
+                            <th scope="row">@Timer</th>
+                            <td>@T1</td>
+                            <td>@T2</td>
+                            <td>@T3</td>
+                            <td>@T4</td>
+                            <td>@T5</td>
+                            <td>@T6</td>
+                            <td>@T7</td>
+                            <td>@T8</td>
+                            <td>@T9</td>
+                            <td>@T10</td>
+                            <td>@T11</td>
+                            <td>@T12</td>
+                            <td>@T13</td>
+                            <td>@T14</td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
-        @if (Model.Count > 0)
-        {
-            if (!string.IsNullOrEmpty(Model.FirstOrDefault().GeneratorIDs))
-            {
-                <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historyGenerator", new { connStr, Page }))</div>
-            }
-        }
-        </div>
+        <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historyGenerator", new { connStr, Page }))</div>
+    </div>
 </div>

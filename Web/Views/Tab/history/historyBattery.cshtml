@@ -89,12 +89,12 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col" style="width:15%">資料時間(UTC+8)</th>
-                    <th scope="col" style="width:12%">電池電壓(V)</th>
-                    <th scope="col" style="width:12%">充電電流(A)</th>
-                    <th scope="col" style="width:12%">放電電流(A)</th>
-                    <th scope="col" style="width:12%">電池容量(%)</th>
-                    <th scope="col" style="width:12%">充電次數(次)</th>
+                    <th scope="col" style="width:10%">資料時間(UTC+8)</th>
+                    <th scope="col" style="width:8%">電池電壓(V)</th>
+                    <th scope="col" style="width:8%">充電電流(A)</th>
+                    <th scope="col" style="width:8%">放電電流(A)</th>
+                    <th scope="col" style="width:8%">電池容量(%)</th>
+                    <th scope="col" style="width:8%">充電次數(次)</th>
                     <th scope="col" style="width:15%">充電方向</th>
                     <th scope="col" style="width:15%">電池單元</th>
                 </tr>
@@ -103,10 +103,12 @@
                 @foreach (var bas in Model)
                 {
                     var time = bas.UpdateDate.AddHours(8).ToString();
+                    int countBa = 0;
                     if (!string.IsNullOrEmpty(bas.BatteryIDs))
                     {
                         int c = 0;
-                        string T1 = null, T2 = null, T3 = null, T4 = null, T5 = null, T6 = null, Timer = null;
+                        string T6 = null, Timer = null;
+                        double T1 = 0, T2 = 0, T3 = 0, T4 = 0, T5 = 0;
                         string[] IDs = bas.BatteryIDs.Trim().Split('|');
                         List<string> BtnGroup = new List<string>();
                         foreach (var ba in IDs)
@@ -119,22 +121,23 @@
                                 string direct = (cd == 0) ? "離線" : (cd == 1) ? "充電" : "放電";
                                 IDList.Add(ba.Trim());
                                 Timer = time;
-                                T1 += battery.index.ToString() + ":[" + string.Format("{0:#,0.0}", battery.voltage) + "] ";
-                                T2 += battery.index.ToString() + ":[" + string.Format("{0:#,0.0}", battery.charging_current) + "] ";
-                                T3 += battery.index.ToString() + ":[" + string.Format("{0:#,0.0}", battery.discharging_current) + "] ";
-                                T4 += battery.index.ToString() + ":[" + string.Format("{0:#,0.0}", batteryService.EachSOC(battery.voltage)) + "] ";
-                                T5 += battery.index.ToString() + ":[" + Math.Round(battery.Cycle, 0) + "] ";
+                                T1 += battery.voltage;
+                                T2 += battery.charging_current;
+                                T3 += battery.discharging_current;
+                                T4 += batteryService.EachSOC(battery.voltage);
+                                T5 += battery.Cycle;
                                 T6 += battery.index.ToString() + ":[" + direct + "] ";
                                 BtnGroup.Add("cellmodal" + Convert.ToString(battery.index.ToString()));
+                                countBa++;
                             }
                         }
                         <tr>
                             <th scope="row">@Timer</th>
-                            <td>@T1</td>
-                            <td>@T2</td>
-                            <td>@T3</td>
-                            <td>@T4</td>
-                            <td>@T5</td>
+                            <td>@Math.Round(T1/countBa,2)</td>
+                            <td>@Math.Round(T2,2) </td>
+                            <td>@Math.Round(T3,2) </td>
+                            <td>@Math.Round(T4 /countBa,0)</td>
+                            <td>@Math.Round(T5,0) </td>
                             <td>@T6</td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
@@ -143,22 +146,22 @@
                                         string cellName = "Cell" +c ;
                                         <button type='button' class='btn btn-info' data-toggle='modal' data-target='#@btn.Trim()'>@cellName</button>
                                         c++;
-                                    }
+                                }
                                 </div>
                             </td>
                         </tr>
-                        T1 = null; T2 = null; T3 = null; T4 = null; T5 = null; T6 = null; Timer = null; BtnGroup.Clear(); c = 0;
+                        T1 = 0; T2 = 0; T3 = 0; T4 = 0; T5 = 0; T6 = null; Timer = null; BtnGroup.Clear(); c = 0;
                     }
                 }
             </tbody>
         </table>
         @if (Model.Count > 0)
-        {
-            if (!string.IsNullOrEmpty(Model.FirstOrDefault().BatteryIDs))
-            {
+                            {
+                                if (!string.IsNullOrEmpty(Model.FirstOrDefault().BatteryIDs))
+                                {
                 <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historyBattery", new { connStr, Page }))</div>
-            }
-        }
+                                }
+                            }
         </div>
 </div>
 
@@ -167,9 +170,9 @@
     @foreach (string id in IDList)
     {
         var Cells = batteryService.ReadByID(Guid.Parse(id.Trim()));
-        var cellIndex = Cells.cells_index.Split('|');
-        var cellvolta = Cells.cells_voltage.Split('|');
-        string modal = "cellmodal" + Convert.ToString(y);
+                            var cellIndex = Cells.cells_index.Split('|');
+                            var cellvolta = Cells.cells_voltage.Split('|');
+                            string modal = "cellmodal" + Convert.ToString(y);
         <div class="modal fade" id="@modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
