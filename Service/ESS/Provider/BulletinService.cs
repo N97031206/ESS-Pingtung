@@ -52,5 +52,43 @@ namespace Service.ESS.Provider
         }
 
 
+        public Model.Bulletin ReadByID(Guid ID)
+        {
+            Domain.Bulletin bulletin = bulletinRepository.ReadBy(x => x.Id == ID);
+            return this.mapper.Map<Model.Bulletin>(bulletin);
+        }
+
+        public Guid UpdateDisable(Model.Bulletin bulletin)
+        {
+            Domain.Bulletin domainbulletins = bulletinRepository.ReadBy(x => x.Id ==bulletin.Id);
+            domainbulletins.Disabled = bulletin.Disabled;
+            domainbulletins.UpdateDate = bulletin.UpdateDate;
+            bulletinRepository.Update(domainbulletins);
+            bulletinRepository.SaveChanges();
+            return domainbulletins.Id;
+        }
+
+        public Guid Update(Model.Bulletin bulletin)
+        {
+            Domain.Bulletin domainbulletins = bulletinRepository.ReadBy(x => x.Id == bulletin.Id);
+
+            if (domainbulletins.title != null)
+            {
+                domainbulletins.title = bulletin.title;
+                domainbulletins.context = bulletin.context;
+                domainbulletins.Disabled = bulletin.Disabled;
+                domainbulletins.UpdateDate = bulletin.UpdateDate;
+                bulletinRepository.Update(domainbulletins);
+                bulletinRepository.SaveChanges();
+                return domainbulletins.Id;
+            }
+            else
+            {
+                return Guid.Empty;
+            }
+
+        }
+
+
     }
 }

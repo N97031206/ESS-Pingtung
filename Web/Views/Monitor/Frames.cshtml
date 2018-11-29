@@ -171,6 +171,9 @@
                             <div ng-if="GirdPower>0">
                                 <div class="ArrowRight"></div>
                             </div>
+                            <div ng-if="GirdPower==0">
+                                <div class=" ArrowBreak"></div>
+                            </div>
                         </div>
                         <div class="w-100"></div>
                         <div class="col-8 " style="height:150px; margin: auto;">
@@ -185,8 +188,11 @@
                         <div class="col-4">
                             <div ng-if="GeneratorPower>0">
                                 <div class="ArrowRight"></div>
-                            </div>                       
                             </div>
+                            <div ng-if="GeneratorPower==0">
+                                <div class=" ArrowBreak"></div>
+                            </div>
+                        </div>
                             <div class="w-100"></div>
                             <div class="col-8"></div>
                             <div class="col-4"></div>
@@ -209,9 +215,9 @@
                         <div ng-if="Solar>0">
                             <div class="ArrowDown"></div>
                         </div>
-                        @*<div ng-if="Solar<=0">
+                        <div ng-if="Solar<=0">
                             <div class="ArrowdownBreak" ></div>
-                        </div>*@
+                        </div>
                     </div>
                     <div class="w-100"></div>
                     <div class="col pictureMain"></div>
@@ -230,6 +236,9 @@
                         <div class="col">
                             <div ng-if="Load>0">
                                 <div class=" ArrowLeft"></div>
+                            </div>
+                            <div ng-if="Load==0">
+                                <div class=" ArrowBreak"></div>
                             </div>
                         </div>
                         <div class="col-7 pictureLoad"></div>
@@ -251,9 +260,9 @@
                             <div ng-if="Direction==2">
                                 <div class=" ArrowLeft"></div>
                             </div>
-                            @*<div ng-if="Direction==0">
+                            <div ng-if="Direction==0">
                                 <div class=" ArrowBreak"></div>
-                            </div>*@
+                            </div>
                         </div>
                         <div class="col-7 pictureBattery"></div>
                         <div class="w-100"></div>

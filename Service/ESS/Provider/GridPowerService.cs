@@ -65,8 +65,7 @@ namespace Service.ESS.Provider
 
         public List<Model.GridPower> ReadByInfoList(DateTime StartTime,DateTime endTime)
         {
-            List<Domain.GridPower> gridPowersList=
-                gridPowerRepository.ReadListBy(x => x.date_time >= StartTime && x.date_time < endTime).ToList();
+            List<Domain.GridPower> gridPowersList= gridPowerRepository.ReadListBy(x => x.date_time >= StartTime && x.date_time < endTime) .ToList();
             return this.mapper.Map<List<Model.GridPower>>(gridPowersList);
         }
 

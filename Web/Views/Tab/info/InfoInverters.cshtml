@@ -36,8 +36,8 @@
         @if (inverters != null)
         {
             <div class="row " id="pc0">
-                <div class="col font-weight-bold small">資料時間(UTC+8)</div>
-                <div class="col font-italic">@EssTime</div>
+                <div class="col font-weight-bold ">資料時間:@EssTime</div>
+                @*<div class="col font-italic"></div>*@
                 @foreach (var inv in inverters)
                 {
                     string Info1 = inv.index.ToString();
@@ -59,8 +59,8 @@
                     string Info10 = string.Format("{0:#,0.00}", inv.PV_InputVoltage);
                     string Info11 = string.Format("{0:#,0.00}", inv.ParallelInformation_TotalChargingCurrent.Split('|').ToList().Sum(x => x.IsEmpty() ? 0 : Convert.ToDouble(x)) / 1000.0);
                     <div class="w-100 line"></div>
-                    <div class="col font-weight-bold small">逆變器</div>
-                    <div class="col font-italic">@Info1</div>
+                    <div class="col font-weight-bold">逆變器</div>
+                    @*<div class="col font-italic"></div>*@
                     <div class="w-100"></div>
                     <div class="col font-weight-bold small">工作模式</div>
                     <div class="col font-italic">@Info2</div>
@@ -138,7 +138,7 @@
                                 hh = hh - 24;
                             }
                         }
-                        xData.push("'" + paddingLeft(hh.toString(), 2) + "時" + paddingLeft(mm.toString(), 2) + "分'");
+                        xData.push( paddingLeft(hh.toString(), 2) + ":" + paddingLeft(mm.toString(), 2));
                     }
                 }
                 //Y軸座標
@@ -155,17 +155,31 @@
                         x: "center"
                     },
                     tooltip: {
+                        trigger: 'axis',
                         show: true
+                    },
+                    grid: {
+                        left: '2%',
+                        right: '4%',
+                        bottom: '1%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {
+                                title: '圖檔'
+                            }
+                        }
                     },
                     xAxis: [
                         {
-                            name: '時間軸',
+                            name: '時間',
                             type: 'category',
                             data: xData,
                             axisLine: {
                                 lineStyle: {
-                                    color: 'white',
-                                    width: 10
+                                    color: 'gray',
+                                    width: 2
                                 }
                             },
                             axisLabel: {
@@ -175,16 +189,16 @@
                     ],
                     yAxis: [
                         {
-                            name: '用電單位',
+                            name: '總輸出實功率(kW)',
                             type: 'value',
                             axisLine: {
                                 lineStyle: {
-                                    color: 'white',
+                                    color: 'gray',
                                     width: 2
                                 }
                             },
                             axisLabel: {
-                                formatter: '{value} kW'
+                                formatter: '{value}'
                             }
                         }
                     ],
@@ -193,6 +207,7 @@
                             "name": "總輸出實功率",
                             "type": "line",
                             "data": InverterData,
+                            areaStyle: {}
                         }
                     ]
                 };

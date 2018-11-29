@@ -11,7 +11,7 @@
         @using (Html.BeginForm("History", "Tab", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
-            <label>時間區間(UTC+8)</label>
+            <label>時間區間</label>
             <input class="col-4" type="text" name="datetimes" id="datetimes" />
             @Html.Label("站別 : ");
             @Html.DropDownList("Statons", (IEnumerable<SelectListItem>)ViewBag.station, new { onchange = "this.form.submit();" })

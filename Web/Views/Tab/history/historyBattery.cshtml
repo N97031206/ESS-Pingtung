@@ -89,14 +89,14 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col" style="width:10%">資料時間(UTC+8)</th>
+                    <th scope="col" style="width:10%">資料時間</th>
                     <th scope="col" style="width:8%">電池電壓(V)</th>
                     <th scope="col" style="width:8%">充電電流(A)</th>
                     <th scope="col" style="width:8%">放電電流(A)</th>
                     <th scope="col" style="width:8%">電池容量(%)</th>
                     <th scope="col" style="width:8%">充電次數(次)</th>
                     <th scope="col" style="width:15%">充電方向</th>
-                    <th scope="col" style="width:15%">電池單元</th>
+                    <th scope="col" style="width:15%">電池組</th>
                 </tr>
             </thead>
             <tbody>
@@ -143,7 +143,7 @@
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     @foreach (string btn in BtnGroup)
                                     {
-                                        string cellName = "Cell" +c ;
+                                        string cellName = "Pack" +c ;
                                         <button type='button' class='btn btn-info' data-toggle='modal' data-target='#@btn.Trim()'>@cellName</button>
                                         c++;
                                 }
@@ -186,8 +186,8 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th scope="col">Index</th>
-                                    <th scope="col">Volta</th>
+                                    <th scope="col">Cell</th>
+                                    <th scope="col">電壓(V)</th>
                                 </tr>
                             </thead>
                             <tbody>

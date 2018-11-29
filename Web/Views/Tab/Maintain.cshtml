@@ -25,25 +25,25 @@
         {
             <div class="col">
                 <div class="card">
-                    <h5 class="card-header">新增管理</h5>
+                    <h5 class="card-header">公佈管理</h5>
                     <div class="card-body">
-                        <button type="button" class="btn btn-outline-info btn-lg btn-block" onclick="location.href='@Url.Action("CreateAbnormal", "Tab")'">新增異常</button>
-                        <button type="button" class="btn btn-outline-info btn-lg  btn-block" onclick="location.href='@Url.Action("CreateOrgin", "Tab")'">新增單位</button>
-                        <button type="button" class="btn btn-outline-info btn-lg btn-block" onclick="location.href='@Url.Action("CreateBulletin", "Tab")'">新增公佈</button>
-                        <button type="button" class="btn btn-outline-info btn-lg  btn-block" onclick="location.href='@Url.Action("CreateStation", "Tab")'">新增站別</button>
+                        <button type="button" class="btn btn-outline-info btn-lg btn-block" onclick="location.href='@Url.Action("ListBulletin", "Tab")'">公佈列表</button>
+                        <button type="button" class="btn btn-outline-primary btn-lg btn-block" onclick="location.href='@Url.Action("CreateBulletin", "Tab")'">新增公佈</button>
                     </div>
                 </div>
             </div>
-        }
-        <div class="col">
-            <div class="card">
-                <h5 class="card-header">其他管理</h5>
-                <button type="button" class="btn btn-outline-info btn-lg btn-block" onclick="location.href='@Url.Action("DisableBulletin", "Tab")'">公布管理</button>
-                <div class="card-body">
+                <div class="col">
+                    <div class="card">
+                        <h5 class="card-header">新增管理</h5>
+                        <div class="card-body">
+                            <button type="button" class="btn btn-outline-info btn-lg btn-block" onclick="location.href='@Url.Action("CreateAbnormal", "Tab")'">新增異常</button>
+                            <button type="button" class="btn btn-outline-info btn-lg  btn-block" onclick="location.href='@Url.Action("CreateOrgin", "Tab")'">新增單位</button>
+                            <button type="button" class="btn btn-outline-info btn-lg  btn-block" onclick="location.href='@Url.Action("CreateStation", "Tab")'">新增站別</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
-    </div>
 </div>
 
 

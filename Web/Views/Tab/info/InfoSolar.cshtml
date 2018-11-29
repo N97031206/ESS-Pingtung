@@ -37,43 +37,43 @@
     <div class="col-2 h6">
         @if (inverters != null)
         {
-            <div class="row " id="pc0">
-                <div class="col font-weight-bold small">資料時間(UTC+8)</div>
-                <div class="col font-italic">@EssTime</div>
-                @foreach (var inv in inverters)
-                {
-                    var index = inv.SPMid.Split('|');
-                    var voltage = inv.SPM90Voltage.Split('|');
-                    var current = inv.SPM90Current.Split('|');
-                    var energy = inv.SPM90ActiveEnergy.Split('|');
-                    var power = inv.SPM90ActivePower.Split('|');
+        <div class="row " id="pc0">
+            <div class="col font-weight-bold ">資料時間:@EssTime</div>
+            @*<div class="col font-italic"></div>*@
+            @foreach (var inv in inverters)
+            {
+                var index = inv.SPMid.Split('|');
+                var voltage = inv.SPM90Voltage.Split('|');
+                var current = inv.SPM90Current.Split('|');
+                var energy = inv.SPM90ActiveEnergy.Split('|');
+                var power = inv.SPM90ActivePower.Split('|');
 
-                    for (int i = 0; i < index.Length - 1; i++)
-                    {
-                        string Info1 = index[i];
-                        string Info2 = string.Format("{0:#,0.00}", Convert.ToDouble(voltage[i]));
-                        string Info3 = string.Format("{0:#,0.00}", Convert.ToDouble(current[i]));
-                        string Info4 = string.Format("{0:#,0.00}", Convert.ToDouble(power[i]) / 1000.0);
-                        string Info5 = string.Format("{0:#,0.00}", Convert.ToDouble(energy[i]));
-                        <div class="w-100 line"></div>
-                        <div class="col font-weight-bold small">太陽能</div>
-                        <div class="col font-italic">@Info1</div>
-                        <div class="w-100"></div>
-                        <div class="col font-weight-bold small">電壓(V)</div>
-                        <div class="col font-italic">@Info2</div>
-                        <div class="w-100"></div>
-                        <div class="col font-weight-bold small">電流(A)</div>
-                        <div class="col font-italic">@Info3</div>
-                        <div class="w-100"></div>
-                        <div class="col font-weight-bold small">功率(kW)</div>
-                        <div class="col font-italic">@Info4</div>
-                        <div class="w-100"></div>
-                        <div class="col font-weight-bold small">發電量(kWh)</div>
-                        <div class="col font-italic">@Info5</div>
-                        <div class="w-100"></div>
-                    }
+                for (int i = 0; i < index.Length - 1; i++)
+                {
+                    string Info1 = "太陽能" + (i + 1).ToString();
+                    string Info2 = string.Format("{0:#,0.00}", Convert.ToDouble(voltage[i]));
+                    string Info3 = string.Format("{0:#,0.00}", Convert.ToDouble(current[i]));
+                    string Info4 = string.Format("{0:#,0.00}", Convert.ToDouble(power[i]) / 1000.0);
+                    string Info5 = string.Format("{0:#,0.00}", Convert.ToDouble(energy[i]));
+                    <div class="w-100 line"></div>
+                    <div class="col font-weight-bold ">@Info1</div>
+                    @*<div class="col font-italic"></div>*@
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">電壓(V)</div>
+                    <div class="col font-italic">@Info2</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">電流(A)</div>
+                    <div class="col font-italic">@Info3</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">功率(kW)</div>
+                    <div class="col font-italic">@Info4</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">發電量(度)</div>
+                    <div class="col font-italic">@Info5</div>
+                    <div class="w-100"></div>
                 }
-            </div>
+            }
+        </div>
         }
     </div>
     <!--middle-->
@@ -119,34 +119,54 @@
                                 hh = hh - 24;
                             }
                         }
-                        xData.push("'" + paddingLeft(hh.toString(), 2) + "時" + paddingLeft(mm.toString(), 2) + "分'");
+                        xData.push(paddingLeft(hh.toString(), 2) + ":" + paddingLeft(mm.toString(), 2));
                     }
                 }
             //Y軸座標
-                 var SolarData = [];
-                SolarData.push(@TempData["SolarData"] );
+                var sun0 = [];
+                var sun1 = [];
+                sun0.push(@TempData["Sun0"] );
+                sun1.push(@TempData["Sun1"] );
                 option = null;
                 option = {
                     title: {
-                        text: '發電瓦數',
+                        text: '太陽能',
                         textStyle: {
-                            fontWeight: 'normal',
+                            fontWeight: 'small',
                             color: 'white'
                         },
-                        x: "center"
+                        x: "left"
                     },
                     tooltip: {
+                        trigger: 'axis',
                         show: true
+                    },
+                    grid: {
+                        left: '2%',
+                        right: '4%',
+                        bottom: '1%',
+                        containLabel: true
+                    },
+                    legend: {
+                        data: ['第一組發電功率', '第二組發電功率']
+                    },    
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {
+                                title: '圖檔'
+                            }
+                        }
                     },
                     xAxis: [
                         {
-                            name: '時間軸',
-                            type: 'category',
+                            name: '時間',
+                            type: 'category',    
+                            boundaryGap: false,
                             data: xData,
                             axisLine: {
                                 lineStyle: {
-                                    color: 'white',
-                                    width: 10
+                                    color: 'gray',
+                                    width: 2
                                 }
                             },
                             axisLabel: {
@@ -156,24 +176,33 @@
                     ],
                     yAxis: [
                         {
-                            name: '用電單位',
+                            name: 'kW',
                             type: 'value',
                             axisLine: {
                                 lineStyle: {
-                                    color: 'white',
+                                    color: 'gray',
                                     width: 2
                                 }
                             },
                             axisLabel: {
-                                formatter: '{value}kW'
+                                formatter: '{value}'
                             }
                         }
                     ],
                     series: [
                         {
-                            "name": "發電瓦數",
-                            "type": "line",
-                            "data": SolarData,
+                            name: "第一組發電功率",
+                            type: "line",
+                            data: sun0,
+                            stack: '累加',
+                            areaStyle: {}
+                        },
+                        {
+                            name: "第二組發電功率",
+                            type: "line",
+                            data: sun1,
+                            stack: '累加',
+                            areaStyle: {}
                         }
                     ]
                 };

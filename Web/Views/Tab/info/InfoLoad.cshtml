@@ -31,49 +31,49 @@
     <div class="col-2 h6">
         @if (loadPowers != null)
         {
-            <div class="row " id="pc0">
-                <div class="col font-weight-bold small">資料時間(UTC+8)</div>
-                <div class="col font-italic">@EssTime</div>
-                @foreach (var lo in loadPowers)
-                {
-                    string Info1 = lo.name;
-                    string Info2 = string.Format("{0:#,0.00}", lo.Vavg);
-                    string Info3 = string.Format("{0:#,0.00}", lo.Isum);
-                    string Info4 = string.Format("{0:#,0.00}", lo.Watt_t / 1000.0);
-                    string Info5 = string.Format("{0:#,0.00}", lo.Var_t / 1000.00);
-                    string Info6 = string.Format("{0:#,0.00}", lo.VA_t / 1000.0);
-                    string Info7 = string.Format("{0:#,0.00}", lo.PF_t);
-                    string Info8 = string.Format("{0:#,0.00}", lo.Frequency);
-                    string Info9 = string.Format("{0:#,0.00}", lo.kWHt);
-                    <div class="w-100 line"></div>
-                    <div class="col font-weight-bold small">負載</div>
-                    <div class="col font-italic">@Info1</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">電壓(V)</div>
-                    <div class="col font-italic">@Info2</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">電流(A)</div>
-                    <div class="col font-italic">@Info3</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">實功率(kW)</div>
-                    <div class="col font-italic">@Info4</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">虛功率(kVAR)</div>
-                    <div class="col font-italic">@Info5</div>
-                    <div class="w-100"></div>
-                    <div class="col  font-weight-bold small">視在功率(kVA)</div>
-                    <div class="col font-italic">@Info6</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">功率因數(PF)</div>
-                    <div class="col font-italic">@Info7</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">頻率(Hz)</div>
-                    <div class="col font-italic">@Info8</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">用電量(kWh)</div>
-                    <div class="col font-italic">@Info9</div>
-                }
-            </div>
+        <div class="row " id="pc0">
+            <div class="col font-weight-bold ">資料時間:@EssTime</div>
+            @*<div class="col font-italic"></div>*@
+            @foreach (var lo in loadPowers)
+            {
+                string Info1 = lo.name;
+                string Info2 = string.Format("{0:#,0.00}", lo.Vavg);
+                string Info3 = string.Format("{0:#,0.00}", lo.Isum);
+                string Info4 = string.Format("{0:#,0.00}", lo.Watt_t / 1000.0);
+                string Info5 = string.Format("{0:#,0.00}", lo.Var_t / 1000.00);
+                string Info6 = string.Format("{0:#,0.00}", lo.VA_t / 1000.0);
+                string Info7 = string.Format("{0:#,0.00}", lo.PF_t);
+                string Info8 = string.Format("{0:#,0.00}", lo.Frequency);
+                string Info9 = string.Format("{0:#,0.00}", lo.kWHt);
+                <div class="w-100 line"></div>
+                <div class="col font-weight-bold ">@Info1</div>
+                @*<div class="col font-italic"></div>*@
+                <div class="w-100"></div>
+                <div class="col font-weight-bold small">電壓(V)</div>
+                <div class="col font-italic">@Info2</div>
+                <div class="w-100"></div>
+                <div class="col font-weight-bold small">電流(A)</div>
+                <div class="col font-italic">@Info3</div>
+                <div class="w-100"></div>
+                <div class="col font-weight-bold small">實功率(kW)</div>
+                <div class="col font-italic">@Info4</div>
+                <div class="w-100"></div>
+                <div class="col font-weight-bold small">虛功率(kVAR)</div>
+                <div class="col font-italic">@Info5</div>
+                <div class="w-100"></div>
+                <div class="col  font-weight-bold small">視在功率(kVA)</div>
+                <div class="col font-italic">@Info6</div>
+                <div class="w-100"></div>
+                <div class="col font-weight-bold small">功率因數(PF)</div>
+                <div class="col font-italic">@Info7</div>
+                <div class="w-100"></div>
+                <div class="col font-weight-bold small">頻率(Hz)</div>
+                <div class="col font-italic">@Info8</div>
+                <div class="w-100"></div>
+                <div class="col font-weight-bold small">用電量(度)</div>
+                <div class="col font-italic">@Info9</div>
+            }
+        </div>
         }
     </div>
     <!--middle-->
@@ -119,34 +119,53 @@
                                 hh = hh - 24;
                             }
                         }
-                        xData.push("'" + paddingLeft(hh.toString(), 2) + "時" + paddingLeft(mm.toString(), 2) + "分'");
+                        xData.push(paddingLeft(hh.toString(), 2) + ":" + paddingLeft(mm.toString(), 2));
                     }
                 }
             //Y軸座標
-                 var LoadPoweData = [];
-                LoadPoweData.push(@TempData["LoadData"]);
+                var Load1 = [];
+                var Load2 = [];
+                Load1.push(@TempData["Load1"]);
+                Load2.push(@TempData["Load2"]);
                 option = null;
                 option = {
                     title: {
-                        text: '用電瓦數',
+                        text: '負載用電瓦數',
                         textStyle: {
                             fontWeight: 'normal',
                             color: 'white'
                         },
-                        x: "center"
+                        x: "left"
                     },
                     tooltip: {
+                        trigger: 'axis',
                         show: true
+                    },
+                    grid: {
+                        left: '2%',
+                        right: '4%',
+                        bottom: '1%',
+                        containLabel: true
+                    },
+                    legend: {
+                        data: ['第一組負載', '第二組負載']
+                    },    
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {
+                                title: '圖檔'
+                            }
+                        }
                     },
                     xAxis: [
                         {
-                            name: '時間軸',
+                            name: '時間',
                             type: 'category',
                             data: xData,
                             axisLine: {
                                 lineStyle: {
-                                    color: 'white',
-                                    width: 10
+                                    color: 'gray',
+                                    width: 2
                                 }
                             },
                             axisLabel: {
@@ -156,24 +175,33 @@
                     ],
                     yAxis: [
                         {
-                            name: '用電單位',
+                            name: '度',
                             type: 'value',
                             axisLine: {
                                 lineStyle: {
-                                    color: 'white',
+                                    color: 'gray',
                                     width: 2
                                 }
                             },
                             axisLabel: {
-                                formatter: '{value} kW'
+                                formatter: '{value}'
                             }
                         }
                     ],
                     series: [
                         {
-                            "name": "用電瓦數",
+                            "name": "第一組負載",
                             "type": "line",
-                            "data": LoadPoweData,
+                            "data": Load1,
+                            stack: '累加',
+                            areaStyle: {}
+                        },
+                        {
+                            "name": "第二組負載",
+                            "type": "line",
+                            "data": Load2,
+                            stack: '累加',
+                            areaStyle: {}
                         }
                     ]
                 };

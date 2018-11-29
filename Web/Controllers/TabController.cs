@@ -7,9 +7,12 @@ using Service.ESS.Model;
 using Service.ESS.Provider;
 using PagedList;
 using NLog;
-using System.Threading.Tasks;
 using ClosedXML.Excel;
+using ClosedXML.Extensions;
 using System.Web.WebPages;
+using System.IO;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace Web.Controllers
 {
@@ -128,27 +131,67 @@ namespace Web.Controllers
             return RedirectToAction("Maintain", "Tab");
         }
 
-
         [Authorize]
-        public ActionResult DisableBulletin()
+        public ActionResult ListBulletin(int page = 1)
         {
-            TagTitle();
-            StationList();
-            AlartTypeList();
-            OrginTypeList();
-
-            return View();
+            List<Bulletin> bulletins = bulletinService.ReadAll();
+            int currentPage = page < 1 ? 1 : page;
+            var result = bulletins.ToPagedList(currentPage, PageSizes());
+            return View(result);
         }
 
-        [HttpPost]
         [Authorize]
+        public ActionResult EditBulletin(Guid id)
+        {
+            Bulletin bulletin = bulletinService.ReadByID(id);
+            return View(bulletin);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditBulletin(FormCollection From)
+        {
+            var id = Guid.Parse(From["id"].Trim());
+            var title = From["title"].Trim();
+            var context = From["context"].Trim();
+            string[] Disabled = From["Disabled"].Trim().Split(',');
+
+            Bulletin bulletin = new Bulletin()
+            {
+                Id = id,
+                title = title,
+                context = context,
+                Disabled=(Disabled.Length==2)?true : false ,
+                UpdateDate =DateTime.Now
+            };
+
+            Guid bulletinID = bulletinService.Update(bulletin);
+            return RedirectToAction("ListBulletin", "Tab");
+        }
+
+        [Authorize]
+
+        public ActionResult DisableBulletin(Guid id)
+        {
+            Bulletin bulletin = bulletinService.ReadByID(id);
+            return View(bulletin);
+        }
+
+        [Authorize]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DisableBulletin(FormCollection From)
         {
-            return View();
+            Bulletin bulletin = new Bulletin()
+            {
+                Id = Guid.Parse(From["id"].Trim()),
+                Disabled = (From["Disabled"].Trim().Split(',').Length == 2) ? true : false,
+                UpdateDate =DateTime.Now
+            };
+            Guid BulletinID = bulletinService.UpdateDisable(bulletin);
+            return RedirectToAction("ListBulletin","Tab");
         }
-
-
 
         #endregion
 
@@ -255,39 +298,63 @@ namespace Web.Controllers
             string Data = null;
             int min = 0;
             List<double> sum = new List<double>();
-
+            List<double> sum1 = new List<double>();
+            List<double> sum2 = new List<double>();
             switch (tabType.Trim())
             {
                 case "GridPower":
                     #region GridPowerChart
                     var gridNow = GridPowerService.ReadNow();
                     endTime = (gridNow == null) ? DateTime.Now : gridNow.date_time;
-                    start = endTime.AddMinutes(-1440);
-                    min = Math.Abs(start.Minute / 15);
+                    start = endTime.AddMinutes(-1455);//算前減後所以多取一組15分鐘資料
+                    min = Math.Abs(start.Minute/15)+2;
                     if (min.Equals(0)) { min = 0; } else if (min.Equals(1)) { min = 15; } else if (min.Equals(2)) { min = 30; } else if (min.Equals(3)) { min = 45; } else { min = 0; }
                     starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, min, 00, 00);
                     //資料       
                     Data = null;
-                    sum.Clear();
-                    for (int i = 0; i < 96; i++)
+                    string Grid1 = null, Grid2 = null;
+                    sum1.Clear();
+                    sum2.Clear();
+                    for (int i = 0; i <= 96; i++)
                     {
                         var count = GridPowerService.ReadByInfoList(starttime, starttime.AddMinutes(15));
                         if (i > 0)
                         {
-                            double num = count.Count == 0 ? 0 : count.Average(x => x.kWHt);
-                            double miner =  num-sum.Last();
-                            sum.Add(num);
-                            Data += string.Format("{0:N2},", miner<0?0:miner).Trim();
+                            if (count.Count > 0)
+                            {
+                                double g1 = count.Count(x => x.index == 0) == 0 ? 0 : count.Where(x => x.index == 0).Average(x => x.kWHt);
+                                double g2 = count.Count(x => x.index == 1) == 0 ? 0 : count.Where(x => x.index == 1).Average(x => x.kWHt);
+                                Grid1 += Math.Round((g1) - sum1.Last(), 2) + ",";
+                                Grid2 += Math.Round((g2) - sum2.Last(), 2) + ",";
+                                sum1.Add(g1);
+                                sum2.Add(g2);
+                            }
+                            else
+                            {
+                                Grid1 += 0 + ",";
+                                Grid2 += 0 + ",";
+                            }
                         }
                         else
                         {
-                            double num = count.Count == 0 ? 0 : count.Average(x => x.kWHt);
-                            sum.Add(num);
+                            if (count.Count > 0)
+                            {
+                                double g1 = count.Count(x => x.index == 0) == 0 ? 0 : count.Where(x => x.index == 0).Average(x => x.kWHt);
+                                double g2 = count.Count(x => x.index == 1) == 0 ? 0 : count.Where(x => x.index == 1).Average(x => x.kWHt);
+                                sum1.Add(g1);
+                                sum2.Add(g2);
+                            }
+                            else
+                            {
+                                sum1.Add(0);
+                                sum2.Add(0);
+                            }
                         }
                         starttime = starttime.AddMinutes(15);
                     }
                     //組圖表資料
-                    TempData["GridPowerData"] = Data;
+                    TempData["Grid1"] = Grid1;
+                    TempData["Grid2"] = Grid2;
                     TempData["GridPowerhh"] = start.Hour+8;
                     TempData["GridPowermm"] = min;
                     #endregion GridPowerChart
@@ -297,7 +364,7 @@ namespace Web.Controllers
                     var Invnow = InverterService.ReadNow();
                     endTime = (Invnow == null) ? DateTime.Now : Invnow.CreateTime;
                     start = endTime.AddMinutes(-1440);
-                    min = Math.Abs(start.Minute / 15);
+                    min = Math.Abs(start.Minute / 15)+1;
                     if (min.Equals(0)) { min = 0; } else if (min.Equals(1)) { min = 15; } else if (min.Equals(2)) { min = 30; } else if (min.Equals(3)) { min = 45; } else { min = 0; }
                     starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, min, 00, 00);
                     //資料
@@ -320,20 +387,39 @@ namespace Web.Controllers
                     var solarnow = InverterService.ReadNow();
                     endTime = (solarnow == null) ? DateTime.Now : solarnow.CreateTime;
                     start = endTime.AddMinutes(-1440);
-                    min = Math.Abs(start.Minute / 15);
+                    min = Math.Abs(start.Minute / 15)+1;
                     if (min.Equals(0)) { min = 0; } else if (min.Equals(1)) { min = 15; } else if (min.Equals(2)) { min = 30; } else if (min.Equals(3)) { min = 45; } else { min = 0; }
                     starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, min, 00, 00);
                     //資料
                     Data = null;
+                    string sun0 = null, sun1 = null;
                     sum.Clear();
                     for (int i = 0; i < 96; i++)
                     {
                         var count = InverterService.ReadByInfoList(starttime, starttime.AddMinutes(15));
-                        Data+= string.Format("{0:N2},", (count.Count == 0) ? 0 : (count.Average(x => x.SPM90ActivePower.Split('|').ToList().Sum(y => y.IsEmpty() ? 0 : Convert.ToDouble(y)/1000.00)))).Trim();
+                        List<double> S0 = new List<double>();
+                        List<double> S1 = new List<double>();
+                        if (count.Count > 0)
+                        {
+                            foreach (var sun in count)
+                            {
+                                string[] sunPower = sun.SPM90ActivePower.Split('|');
+                                S0.Add(sunPower[0].IsEmpty() ? 0.0 : (Convert.ToDouble(sunPower[0])));
+                                S1.Add(sunPower[1].IsEmpty() ? 0.0 : (Convert.ToDouble(sunPower[1])));
+                            }
+                            sun0 += Math.Round(S0.Average() / 1000.0, 2) + ",";
+                            sun1 += Math.Round(S1.Average() / 1000.0, 2) + ",";
+                        }
+                        else
+                        {
+                            sun0 += 0 + ",";
+                            sun1 += 0 + ",";
+                        }
                         starttime = starttime.AddMinutes(15);
                     }
                     //組圖表資料
-                    TempData["SolarData"] = Data;
+                    TempData["Sun0"] = sun0;
+                    TempData["Sun1"] = sun1;
                     TempData["Solarhh"] = start.Hour + 8;
                     TempData["Solarmm"] = min;
                     #endregion  SolarChart
@@ -343,7 +429,7 @@ namespace Web.Controllers
                     var batterynow = BatteryService.ReadNow();
                     endTime = (batterynow == null) ? DateTime.Now : batterynow.updateTime;
                     start = endTime.AddMinutes(-1440);
-                    min = Math.Abs(start.Minute / 15);
+                    min = Math.Abs(start.Minute / 15)+1;
                     if (min.Equals(0)) { min = 0; } else if (min.Equals(1)) { min = 15; } else if (min.Equals(2)) { min = 30; } else if (min.Equals(3)) { min = 45; } else { min = 0; }
                     starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, min, 00, 00);
                     //資料
@@ -389,34 +475,55 @@ namespace Web.Controllers
                     #region LoadChart
                     var loadnow = LoadPowerService.ReadNow();
                     endTime = (loadnow == null) ? DateTime.Now : loadnow.date_Time;
-                    start = endTime.AddMinutes(-1440);
-                    min = Math.Abs(start.Minute / 15);
+                    start = endTime.AddMinutes(-1455);//算前減後所以多取一組15分鐘資料
+                    min = Math.Abs(start.Minute / 15)+2;
                     if (min.Equals(0)) { min = 0; } else if (min.Equals(1)) { min = 15; } else if (min.Equals(2)) { min = 30; } else if (min.Equals(3)) { min = 45; } else { min = 0; }
                     starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, min, 00, 00);
-                    //資料
+                    //資料       
                     Data = null;
-                    sum.Clear();
-                    for (int i = 0; i < 96; i++)
+                    string Load1 = null, Load2 = null;
+                    sum1.Clear();
+                    sum2.Clear();
+                    for (int i = 0; i <= 96; i++)
                     {
                         var count = LoadPowerService.ReadByInfoList(starttime, starttime.AddMinutes(15));
-
                         if (i > 0)
                         {
-                            double num = count.Count == 0 ? 0 : count.Average(x => x.kWHt);
-                            double miner = num - sum.Last();
-                            Data += string.Format("{0:N2},", miner < 0 ? 0 : miner).Trim();
-                            sum.Add(num);
+                            if (count.Count > 0)
+                            {
+                                double g1 = count.Count(x => x.index == 0) == 0 ? 0 : count.Where(x => x.index == 0).Average(x => x.kWHt);
+                                double g2 = count.Count(x => x.index == 1) == 0 ? 0 : count.Where(x => x.index == 1).Average(x => x.kWHt);
+                                Load1 += Math.Round((g1) - sum1.Last(), 2) + ",";     
+                                Load2 += Math.Round((g2) - sum2.Last(), 2) + ",";
+                                sum1.Add(g1);
+                                sum2.Add(g2);
+                            }
+                            else
+                            {
+                                Load1 += 0 + ",";
+                                Load2 += 0 + ",";
+                            }
                         }
                         else
                         {
-                            double num = count.Count == 0 ? 0 : count.Average(x => x.kWHt);
-                            sum.Add(num);
+                            if (count.Count > 0)
+                            {
+                                double g1 = count.Count(x => x.index == 0) == 0 ? 0 : count.Where(x => x.index == 0).Average(x => x.kWHt);
+                                double g2 = count.Count(x => x.index == 1) == 0 ? 0 : count.Where(x => x.index == 1).Average(x => x.kWHt);
+                                sum1.Add(g1);
+                                sum2.Add(g2);
+                            }
+                            else
+                            {
+                                sum1.Add(0);
+                                sum2.Add(0);
+                            }
                         }
-
                         starttime = starttime.AddMinutes(15);
                     }
                     //組圖表資料
-                    TempData["LoadData"] = Data;
+                    TempData["Load1"] = Load1;
+                    TempData["Load2"] = Load2;
                     TempData["Loadhh"] = start.Hour+8;
                     TempData["Loadmm"] = min;
                     #endregion LoadChart
@@ -618,7 +725,7 @@ namespace Web.Controllers
             Pills();
             TabAction(tabType);
 
-            List<ESSObject> List = ESSObjecterService.ReadTimeInterval(startday, endday).ToList();
+            List<ESSObject> List = ESSObjecterService.ReadTimeInterval(startday.AddHours(-8), endday.AddHours(-8)).ToList();
             ViewBag.Count = List.Count();
 
             int currentPage = page ?? 1;
@@ -740,6 +847,10 @@ namespace Web.Controllers
             return RedirectToAction("Maintain", "Tab");
         }
 
+
+
+
+
         #endregion
 
         #region Excel   
@@ -773,34 +884,102 @@ namespace Web.Controllers
                 }
 
                 string connStr = tabType + "+" + startDay + "+" + endDay;
-
-                string reportPath = "C:\\DownLoads\\";
+                string reportPath = System.Web.HttpContext.Current.Request.MapPath("~/");
                 string reportName = tabType + String.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + ".xlsx";
                 //查資料夾有無建立
                 bool exists = System.IO.Directory.Exists(reportPath);
                 if (!exists) { System.IO.Directory.CreateDirectory(reportPath); }
 
                 List<ESSObject> ESSList = ESSObjecterService.ReadTimeInterval(startDay, endDay);
-                if (ESSList.Count!=0)
+                if (ESSList.Count != 0)
                 {
-                    Task.Run(() => {                     
-                        //xlsx
-                        var xlsx = Export(ESSList, tabType);
-                        //存檔至指定位置
-                        xlsx.SaveAs(reportPath + reportName);
-                    });
-                    TempData["message"] = "匯出"+ reportName+"中";
-                    return RedirectToAction("History", "Tab", new { connStr });
+                    Task.Run(() =>
+                    {
+                        ////xlsx
+                        XLWorkbook xlsx = Export(ESSList, tabType);
 
+                        ////存檔至指定位置
+                        //xlsx.SaveAs(reportPath + reportName);
+                        //Download(xlsx,reportName);
+                        //OnGet(xlsx, reportName);
+                        //XLSX(xlsx, reportName);
+
+                        // Prepare the response
+                        HttpResponseBase httpResponse = Response;
+                        httpResponse.Clear();
+                        httpResponse.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        httpResponse.AddHeader("content-disposition", "attachment;filename=\""+ reportName + "\"");
+
+                        // Flush the workbook to the Response.OutputStream
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            xlsx.SaveAs(memoryStream);
+                            memoryStream.WriteTo(httpResponse.OutputStream);
+                            memoryStream.Close();
+                        }
+                        httpResponse.End();
+
+
+                        xlsx.Dispose();
+                    });
+                    TempData["message"] = "匯出" + reportName + "中";
+                    return RedirectToAction("History", "Tab", new { connStr });
                 }
-                TempData["message"] = "無資料可供匯出";
-                return RedirectToAction("History", "Tab", new { connStr });
+                else
+                {
+                    TempData["message"] = "無資料可供匯出";
+                    return RedirectToAction("History", "Tab", new { connStr });
+                }
             }
             catch (Exception ex)
             {
                 logger.Fatal(ex.ToString());
                 return RedirectToAction("History","Tab");
             }
+        }
+
+
+
+
+        public FileResult XLSX(XLWorkbook xlsx, string reportName)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {            
+                xlsx.SaveAs(stream, false);
+                return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", reportName);
+            }
+        }
+
+        public ActionResult Download(XLWorkbook xlsx, string reportName)
+        {
+            using (xlsx)
+            {
+                return xlsx.Deliver(reportName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            }
+        }
+
+        public ActionResult OnGet(XLWorkbook xlsx, string reportName)
+        {
+            MemoryStream memoryStream = new MemoryStream();
+            xlsx.SaveAs(memoryStream);
+            memoryStream.Position = 0;
+            return File(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", reportName);
+        }
+
+        public ActionResult Lager(List<ESSObject> ESSList, string tabType, string reportName)
+        {
+
+            FileInfo fl = new FileInfo(reportName);
+            var cd = new System.Net.Mime.ContentDisposition
+            {
+                FileName = fl.Name,
+                Inline = false,
+            };
+            Response.AppendHeader("Content-Disposition", cd.ToString());
+            Response.BufferOutput = false;
+            var readStream = new FileStream(fl.FullName, FileMode.Open, FileAccess.Read);
+            string contentType = MimeMapping.GetMimeMapping(fl.FullName);
+            return File(readStream, contentType);
         }
 
         //使用 C# 將資料匯出成 Excel (.xlsx)//https://blog.yowko.com/2018/04/list-to-excel.html
