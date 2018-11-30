@@ -97,15 +97,16 @@
                     <th scope="col" style="width:10%">視在功率(kVA)</th>
                     <th scope="col" style="width:10%">功率因數(PF)</th>
                     <th scope="col" style="width:10%">頻率(Hz)</th>
-                    <th scope="col" style="width:10%">用電量(kWh)</th>
+                    <th scope="col" style="width:10%">用電量(度)</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var los in Model)
                 {
-                    var time = los.UpdateDate.AddHours(8).ToString();
                     if (!string.IsNullOrEmpty(los.LoadPowerIDs))
                     {
+                        DateTime time = los.UpdateDate.AddHours(8);
+                        DateTime BaseTime = new DateTime(time.Year, time.Month, time.Day);
                         string Timer = null;
                         double T1 = 0, T2 = 0, T3 = 0, T4 = 0, T5 = 0, T6 = 0, T7 = 0, T8 = 0;
                         string[] IDs = los.LoadPowerIDs.Trim().Split('|');
@@ -116,7 +117,8 @@
                             {
                                 Guid ID = Guid.Parse(lo);
                                 LoadPower loadPower = loadPowerService.ReadByID(ID);
-                                Timer = time;
+                                var minus = loadPowerService.historykWHt(BaseTime.AddHours(-8), time.AddHours(-8), loadPower.name);
+                                Timer = time.ToString();
                                 T1 += loadPower.Vavg ;
                                 T2 += loadPower.Isum ;
                                 T3 += loadPower.Watt_t / 1000.0 ;
@@ -124,7 +126,7 @@
                                 T5 += loadPower.VA_t / 1000.0;
                                 T6 += loadPower.PF_t;
                                 T7 +=  loadPower.Frequency;
-                                T8 +=  loadPower.kWHt;
+                                T8 += minus;
                                 x++;
                             }
                         }

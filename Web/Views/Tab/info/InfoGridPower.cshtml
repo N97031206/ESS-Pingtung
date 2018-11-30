@@ -5,11 +5,12 @@
     ESSObjecterService eSSObjecterService = new ESSObjecterService();
     string EssTime = eSSObjecterService.ReadNow().CreateTime.ToString();
     //取相關資料
-
+    int i = 0;
     GridPowerService gridPowerService = new GridPowerService();
     List<GridPower> gridPowers = new List<GridPower>();
     var ReadNow = eSSObjecterService.ReadNow().GridPowerIDs;
-    if (ReadNow != null)
+    var totalkWHt = eSSObjecterService.ReadTodayGridPowerkWHT();
+    if (ReadNow != null )
     {
         var gridID = ReadNow.Split('|');
         foreach (var x in gridID)
@@ -49,7 +50,8 @@
                 string Info6 = string.Format("{0:#,0.00}", gp.VA_t / 1000.0);
                 string Info7 = string.Format("{0:#,0.00}", gp.PF_t);
                 string Info8 = string.Format("{0:#,0.00}", gp.Frequency);
-                string Info9 = string.Format("{0:#,0.00}", gp.kWHt);
+                string Info9 = string.Format("{0:#,0.00}", totalkWHt[i]);
+                i++;
                 <div class="w-100 line"></div>
                 <div class="col font-weight-bold  ">@Info1</div>
                 @*<div class="col font-italic">@Info1</div>*@
@@ -75,7 +77,7 @@
                 <div class="col font-weight-bold small">頻率(Hz)</div>
                 <div class="col font-italic">@Info8</div>
                 <div class="w-100"></div>
-                <div class="col font-weight-bold small">用電量(度)</div>
+                <div class="col font-weight-bold small">當日用電量(度)</div>
                 <div class="col font-italic">@Info9</div>
                 <div class="w-100"></div>
             }
@@ -154,7 +156,7 @@
                         containLabel: true
                     },
                     legend: {
-                        data: ['第一組市電迴路', '第二組市電迴路']
+                        data: ['市電迴路1', '市電迴路2']
                     },      
                     toolbox: {
                         feature: {
@@ -196,14 +198,14 @@
                     ],
                     series: [
                         {
-                            "name": "第一組市電迴路",
+                            "name": "市電迴路1",
                             "type": "line",
                             "data": Grid1,
                             "areaStyle": {},
                             stack: '累加'
                         },
                         {
-                            "name": "第二組市電迴路",
+                            "name": "市電迴路2",
                             "type": "line",
                             "data": Grid2,
                             "areaStyle": {},

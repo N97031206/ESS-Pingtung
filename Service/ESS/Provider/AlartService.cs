@@ -37,8 +37,8 @@ namespace Service.ESS.Provider
 
         public List<Model.Alart> ReadListBy(DateTime SD, DateTime ED,Guid alarttypeID, Guid stationID)
         {
-            string AlartTypeAll = "所有異常";//所有異常
-            string StationAll = "所有站別";//所有站別
+            string AlartTypeAll = "所有異常";//所有異常，以資料庫名稱為主
+            string StationAll = "所有站別";//所有站別，以資料庫名稱為主
             bool alartAll = alarttypeRepository.ReadBy(x => x.Id == alarttypeID).AlartTypeName.Equals(AlartTypeAll);
             bool sationAll = stationRepository.ReadBy(x => x.Id == stationID).StationName.Equals(StationAll);
 

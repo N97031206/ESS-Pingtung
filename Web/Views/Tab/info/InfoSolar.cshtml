@@ -9,6 +9,8 @@
     InverterService InverterService = new InverterService();
     List<Inverter> inverters = new List<Inverter>();
     var ReadNow = eSSObjecterService.ReadNow().InvertersIDs;
+    var totalEnergy = eSSObjecterService.ReadTodaySolarkPower();
+
     if (ReadNow != null)
     {
         var invID = ReadNow.Split('|');
@@ -54,7 +56,7 @@
                     string Info2 = string.Format("{0:#,0.00}", Convert.ToDouble(voltage[i]));
                     string Info3 = string.Format("{0:#,0.00}", Convert.ToDouble(current[i]));
                     string Info4 = string.Format("{0:#,0.00}", Convert.ToDouble(power[i]) / 1000.0);
-                    string Info5 = string.Format("{0:#,0.00}", Convert.ToDouble(energy[i]));
+                    string Info5 = string.Format("{0:#,0.00}", Convert.ToDouble(totalEnergy[i]));
                     <div class="w-100 line"></div>
                     <div class="col font-weight-bold ">@Info1</div>
                     @*<div class="col font-italic"></div>*@
@@ -68,7 +70,7 @@
                     <div class="col font-weight-bold small">功率(kW)</div>
                     <div class="col font-italic">@Info4</div>
                     <div class="w-100"></div>
-                    <div class="col font-weight-bold small">發電量(度)</div>
+                    <div class="col font-weight-bold small">當日發電量(度)</div>
                     <div class="col font-italic">@Info5</div>
                     <div class="w-100"></div>
                 }
@@ -148,7 +150,7 @@
                         containLabel: true
                     },
                     legend: {
-                        data: ['第一組發電功率', '第二組發電功率']
+                        data: ['太陽能1發電功率', '太陽能2發電功率']
                     },    
                     toolbox: {
                         feature: {
@@ -191,14 +193,14 @@
                     ],
                     series: [
                         {
-                            name: "第一組發電功率",
+                            name: "太陽能1發電功率",
                             type: "line",
                             data: sun0,
                             stack: '累加',
                             areaStyle: {}
                         },
                         {
-                            name: "第二組發電功率",
+                            name: "太陽能2發電功率",
                             type: "line",
                             data: sun1,
                             stack: '累加',

@@ -30,6 +30,12 @@ namespace Service.ESS.Provider
         private GridPowerRepository gridPowerRepository = new GridPowerRepository();
         private LoadPowerRepository loadRepository = new LoadPowerRepository();
 
+
+        private GridPowerService gridPowerService = new GridPowerService();
+        private LoadPowerService LoadPowerService = new LoadPowerService();
+        private InverterService InverterService = new InverterService();
+
+
         private static Logger logger = NLog.LogManager.GetCurrentClassLogger();//Log檔
 
         public ESSObjecterService()
@@ -52,6 +58,8 @@ namespace Service.ESS.Provider
             List<Domain.ESSObject> domainEss = objectRepository.ReadAll().ToList();
             return this.mapper.Map<List<Model.ESSObject>>(domainEss);
         }
+
+
 
         public List<Model.ESSObject> ReadTimeInterval(DateTime Start, DateTime End)
         {
@@ -78,7 +86,112 @@ namespace Service.ESS.Provider
             Domain.ESSObject ReadNow = objectRepository.ReadAll().OrderByDescending(x => x.CreateTime).FirstOrDefault();
             return this.mapper.Map<Model.ESSObject>(ReadNow);
         }
+        
 
 
-    }
+        public List<float> ReadTodayGridPowerkWHT()
+        {
+            List<float> ZerokWHt = new List<float>();
+            List<float> totalkWHt = new List<float>();
+            Domain.ESSObject Readnow = objectRepository.ReadAll().OrderByDescending(x => x.CreateTime).FirstOrDefault();
+            Domain.ESSObject Readzero = objectRepository.ReadAll().Where(x => x.CreateTime > DateTime.Today ).OrderBy(x => x.CreateTime).FirstOrDefault(); 
+            var ZerogridID = Readzero.GridPowerIDs.Split('|');
+            var NowgridID = Readnow.GridPowerIDs.Split('|');
+            foreach (var x in ZerogridID)
+            {
+                if (!string.IsNullOrEmpty(x))
+                {
+                    Guid id = Guid.Parse(x.Trim());
+                    ZerokWHt.Add (gridPowerService.ReadByID(id).kWHt);
+                }
+            }
+            int i = 0;
+            foreach (var y in NowgridID)
+            {
+                if (!string.IsNullOrEmpty(y))
+                {
+                    Guid id = Guid.Parse(y.Trim());
+                    totalkWHt.Add(gridPowerService.ReadByID(id).kWHt- ZerokWHt[i]);
+                    i++;
+                }
+            }
+            return totalkWHt;
+        }
+
+
+        public List<float> ReadTodayLoadkWHt()
+        {
+            List<float> ZerokWHt = new List<float>();
+            List<float> totalkWHt = new List<float>();
+            Domain.ESSObject Readnow = objectRepository.ReadAll().OrderByDescending(x => x.CreateTime).FirstOrDefault();
+            Domain.ESSObject Readzero = objectRepository.ReadAll().Where(x => x.CreateTime > DateTime.Today).OrderBy(x => x.CreateTime).FirstOrDefault();
+            var ZerogridID = Readzero.LoadPowerIDs.Split('|');
+            var NowgridID = Readnow.LoadPowerIDs.Split('|');
+            foreach (var x in ZerogridID)
+            {
+                if (!string.IsNullOrEmpty(x))
+                {
+                    Guid id = Guid.Parse(x.Trim());
+                    ZerokWHt.Add(LoadPowerService.ReadByID(id).kWHt);
+                }
+            }
+            int i = 0;
+            foreach (var y in NowgridID)
+            {
+                if (!string.IsNullOrEmpty(y))
+                {
+                    Guid id = Guid.Parse(y.Trim());
+                    totalkWHt.Add(LoadPowerService.ReadByID(id).kWHt - ZerokWHt[i]);
+                    i++;
+                }
+            }
+            return totalkWHt;
+        }
+
+
+        public List<double> ReadTodaySolarkPower()
+        {
+            List<double> ZerokWHt = new List<double>();
+            List<double> totalkWHt = new List<double>();
+            Domain.ESSObject Readnow = objectRepository.ReadAll().OrderByDescending(x => x.CreateTime).FirstOrDefault();
+            Domain.ESSObject Readzero = objectRepository.ReadAll().Where(x => x.CreateTime >= DateTime.Today).OrderBy(x => x.CreateTime).FirstOrDefault();
+            var ZerogridID = Readzero.InvertersIDs .Split('|');
+            var NowgridID = Readnow.InvertersIDs.Split('|');
+            foreach (var x in ZerogridID)
+            {
+                if (!string.IsNullOrEmpty(x))
+                {
+                    Guid id = Guid.Parse(x.Trim());
+                    var Energy = InverterService.ReadByID(id).SPM90ActiveEnergy.Split('|');
+                    foreach (var e in Energy)
+                    {
+                        if (!string.IsNullOrEmpty(e))
+                        {
+                            ZerokWHt.Add(Convert.ToDouble(e));
+                        }
+                    }                                     
+                }
+            }
+            int i = 0;
+            foreach (var y in NowgridID)
+            {
+                if (!string.IsNullOrEmpty(y))
+                {
+                    Guid id = Guid.Parse(y.Trim());
+                    var Energy = InverterService.ReadByID(id).SPM90ActiveEnergy.Split('|');
+                    foreach (var e in Energy)
+                    {
+                        if (!string.IsNullOrEmpty(e))
+                        {
+                            totalkWHt.Add(Convert.ToDouble(e)- ZerokWHt[i]);
+                            i++;
+                        }
+                    }
+                }
+            }
+            return totalkWHt;
+        }
+
+
+    }  
 }

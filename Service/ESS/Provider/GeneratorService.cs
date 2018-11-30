@@ -58,5 +58,14 @@ namespace Service.ESS.Provider
         {
             return generatorRepository.ReadListBy(x => x.UpdateTime >= StartTime && x.UpdateTime < endTime).Count();
         }
+
+
+        public double historykWHt(DateTime baseTime, DateTime nowTime, string name)
+        {
+            var nowt = generatorRepository.ReadListBy(x => x.UpdateTime < nowTime && x.name == name).OrderByDescending(x => x.UpdateTime).FirstOrDefault().totalwatts;
+            var baset = generatorRepository.ReadListBy(x => x.UpdateTime < baseTime && x.name == name).OrderByDescending(x => x.UpdateTime).FirstOrDefault().totalwatts;
+            return baset - nowt;
+        }
+
     }
 }

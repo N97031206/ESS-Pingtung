@@ -13,6 +13,10 @@ using System.Web.WebPages;
 using System.IO;
 using System.Threading.Tasks;
 using System.Web;
+using System.Net.Http;
+using System.Net;
+using System.Net.Http.Headers;
+using OfficeOpenXml;
 
 namespace Web.Controllers
 {
@@ -65,7 +69,7 @@ namespace Web.Controllers
             TagTitle();
             NavButtom("Bulletin");
             //一開始抓取全部資料
-            List<Bulletin> bulletins = bulletinService.ReadAll().ToList();
+            List<Bulletin> bulletins = bulletinService.ReadAllView().ToList();
             //分頁
             int currentPage = page < 1 ? 1 : page;
             var result = bulletins.ToPagedList(currentPage, PageSizes());
@@ -125,16 +129,14 @@ namespace Web.Controllers
                 OrginID = OrginID,
                 AccountID = AccountID
             };
-
             Guid BulletinID=bulletinService.Create(bulletins);
-
             return RedirectToAction("Maintain", "Tab");
         }
 
         [Authorize]
         public ActionResult ListBulletin(int page = 1)
         {
-            List<Bulletin> bulletins = bulletinService.ReadAll();
+            List<Bulletin> bulletins = bulletinService.ReadAll();         
             int currentPage = page < 1 ? 1 : page;
             var result = bulletins.ToPagedList(currentPage, PageSizes());
             return View(result);
@@ -532,21 +534,55 @@ namespace Web.Controllers
                     #region GeneratorChart
                     var gennow = GeneratorService.ReadNow();
                     endTime = (gennow == null) ? DateTime.Now : gennow.UpdateTime;
-                    start = endTime.AddMinutes(-1440);
+                    start = endTime.AddMinutes(-1455);
                     min = Math.Abs(start.Minute / 15);
                     if (min.Equals(0)) { min = 0; } else if (min.Equals(1)) { min = 15; } else if (min.Equals(2)) { min = 30; } else if (min.Equals(3)) { min = 45; } else { min = 0; }
                     starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, min, 00, 00);
                     //資料
                     Data = null;
-                    sum.Clear();
-                    for (int i = 0; i < 96; i++)
+                    string Generqtor1 = null, Generator2 = null;
+                    sum1.Clear();
+                    sum2.Clear();
+                    for (int i = 0; i <= 96; i++)
                     {
                         var count = GeneratorService.ReadByInfoList(starttime, starttime.AddMinutes(15));
-                        Data += string.Format("{0:N2},", count.Count == 0 ? 0 : count.Average(x => x.positiveKWhours)/1000.00).Trim();
+                        if (i > 0)
+                        {
+                            if (count.Count > 0)
+                            {
+                                double g1 = count.Count(x => x.index == 0) == 0 ? 0 : count.Where(x => x.index == 0).Average(x => x.positiveKWhours) / 1000.00;
+                                double g2 = count.Count(x => x.index == 1) == 0 ? 0 : count.Where(x => x.index == 1).Average(x => x.positiveKWhours) / 1000.00;
+                                Generqtor1 += Math.Round((g1) - sum1.Last(), 2) + ",";
+                                Generator2 += Math.Round((g2) - sum2.Last(), 2) + ",";
+                                sum1.Add(g1);
+                                sum2.Add(g2);
+                            }
+                            else
+                            {
+                                Generqtor1 += 0 + ",";
+                                Generator2 += 0 + ",";
+                            }
+                        }
+                        else
+                        {
+                            if (count.Count > 0)
+                            {
+                                double g1 = count.Count(x => x.index == 0) == 0 ? 0 : count.Where(x => x.index == 0).Average(x => x.positiveKWhours) / 1000.00;
+                                double g2 = count.Count(x => x.index == 1) == 0 ? 0 : count.Where(x => x.index == 1).Average(x =>x.positiveKWhours)/ 1000.00;
+                                sum1.Add(g1);
+                                sum2.Add(g2);
+                            }
+                            else
+                            {
+                                sum1.Add(0);
+                                sum2.Add(0);
+                            }
+                        }
                         starttime = starttime.AddMinutes(15);
                     }
                     //組圖表資料
-                    TempData["GeneratorData"] = Data;
+                    TempData["Generator1"] = Generqtor1;
+                    TempData["Generator2"] = Generator2;
                     TempData["Generatorhh"] = start.Hour+8;
                     TempData["Generatormm"] = min;
                     #endregion GeneratorChart
@@ -688,6 +724,7 @@ namespace Web.Controllers
                 ViewBag.endDay = DateTime.Now;
                 //取得此時間點後1日的資料
                 List = ESSObjecterService.ReadTimeInterval(DateTime.Now.AddDays(-1).AddHours(-8), DateTime.Now.AddHours(-8)).ToList();
+
                 ViewBag.Count = List.Count();
             }
             else
@@ -847,10 +884,6 @@ namespace Web.Controllers
             return RedirectToAction("Maintain", "Tab");
         }
 
-
-
-
-
         #endregion
 
         #region Excel   
@@ -885,12 +918,13 @@ namespace Web.Controllers
 
                 string connStr = tabType + "+" + startDay + "+" + endDay;
                 string reportPath = System.Web.HttpContext.Current.Request.MapPath("~/");
-                string reportName = tabType + String.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + ".xlsx";
+                string reportName = tabType + String.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + ".xls";
                 //查資料夾有無建立
                 bool exists = System.IO.Directory.Exists(reportPath);
                 if (!exists) { System.IO.Directory.CreateDirectory(reportPath); }
 
                 List<ESSObject> ESSList = ESSObjecterService.ReadTimeInterval(startDay, endDay);
+
                 if (ESSList.Count != 0)
                 {
                     Task.Run(() =>
@@ -900,24 +934,21 @@ namespace Web.Controllers
 
                         ////存檔至指定位置
                         //xlsx.SaveAs(reportPath + reportName);
-                        //Download(xlsx,reportName);
+                        //Download(xlsx, reportName);
                         //OnGet(xlsx, reportName);
                         //XLSX(xlsx, reportName);
 
-                        // Prepare the response
-                        HttpResponseBase httpResponse = Response;
-                        httpResponse.Clear();
-                        httpResponse.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                        httpResponse.AddHeader("content-disposition", "attachment;filename=\""+ reportName + "\"");
-
-                        // Flush the workbook to the Response.OutputStream
-                        using (MemoryStream memoryStream = new MemoryStream())
-                        {
-                            xlsx.SaveAs(memoryStream);
-                            memoryStream.WriteTo(httpResponse.OutputStream);
-                            memoryStream.Close();
-                        }
-                        httpResponse.End();
+                        //using (MemoryStream memoryStream = new MemoryStream())
+                        //{
+                        //    xlsx.SaveAs(memoryStream); //把做完的excel放到memoryStream裡
+                        //    var response = new HttpResponseMessage(HttpStatusCode.OK);
+                        //    response.Content = new ByteArrayContent(memoryStream.ToArray());
+                        //    response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.ms-excel");
+                        //    response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                        //    response.Content.Headers.ContentDisposition.FileName = $"test{ DateTime.Now}.xlsx";
+                        //    response.Content.Headers.ContentLength = memoryStream.Length; //這行會告知瀏覽器我們檔案的大小
+                        //    return response;
+                        //}
 
 
                         xlsx.Dispose();
@@ -938,8 +969,13 @@ namespace Web.Controllers
             }
         }
 
-
-
+        public Stream GetStream(XLWorkbook excelWorkbook)
+        {
+            Stream fs = new MemoryStream();
+            excelWorkbook.SaveAs(fs);
+            fs.Position = 0;
+            return fs;
+        }
 
         public FileResult XLSX(XLWorkbook xlsx, string reportName)
         {
@@ -1032,7 +1068,7 @@ namespace Web.Controllers
                                     {
                                         Guid ID = Guid.Parse(gp);
                                         GridPower gridPowers = GridPowerService.ReadByID(ID);
-                                        if (gridPowers != null)
+                                        if (gridPowers != null) 
                                         {
                                             Timer = gps.UpdateDate.AddHours(8).ToString();
                                             T1 += gridPowers.Vavg;
@@ -1483,14 +1519,11 @@ namespace Web.Controllers
             List<SelectListItem> items = new List<SelectListItem>();
             List<Station> stations = stationService.ReadAll().OrderBy(x => x.StationCode).ToList();
             stations.ForEach(x=> {
-                if (x.StationCode!=1)
+                items.Add(new SelectListItem()
                 {
-                    items.Add(new SelectListItem()
-                    {
-                        Text = x.StationName,
-                        Value = x.Id.ToString()
-                    });
-                }
+                    Text = x.StationName,
+                    Value = x.Id.ToString()
+                });            
             });         
             ViewBag.station = items;
         }

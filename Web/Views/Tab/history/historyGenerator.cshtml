@@ -113,7 +113,10 @@
             <tbody>
                 @foreach (var gens in Model)
                 {
-                    string T1 = "0", T2 = "0", T3 = "0", T4 = "0", T5 = "0", T6 = "0", T7 = "0", T8 = "0", T9 = "0", T10 = "0", T11 = "0", T12 = "離線", T13 = "0", T14 = "0", Timer = "0";
+                    DateTime time = gens.UpdateDate.AddHours(8);
+                    DateTime BaseTime = new DateTime(time.Year, time.Month, time.Day);
+                    string Timer = null;
+                    string T1 = "0", T2 = "0", T3 = "0", T4 = "0", T5 = "0", T6 = "0", T7 = "0", T8 = "0", T9 = "0", T10 = "0", T11 = "0", T12 = "離線", T13 = "0", T14 = "0";
                     if (!string.IsNullOrEmpty(gens.GeneratorIDs))
                     {
                         string[] IDs = gens.GeneratorIDs.Trim().Split('|');
@@ -123,7 +126,7 @@
                             {
                                 Guid ID = Guid.Parse(lo);
                                 Generator generator = generatorService.ReadByID(ID);
-                                Timer = gens.UpdateDate.AddHours(8).ToString();
+                                Timer = time.ToString();
                                 T1 = string.Format("{0:#,0.0}", generator.FuleLevel);
                                 T2 = string.Format("{0:#,0.0}", generator.L1Nvoltage);
                                 T3 = string.Format("{0:#,0.0}", generator.L2Nvoltage);

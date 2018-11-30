@@ -92,16 +92,16 @@
             <div class="col font-weight-bold small">平均功率因數</div>
             <div class="col font-italic">@Info10</div>
             <div class="w-100"></div>
-            <div class="col font-weight-bold small">正的千瓦時(kWh)</div>
+            <div class="col font-weight-bold small">正的千瓦時(度)</div>
             <div class="col font-italic">@Info11</div>
             <div class="w-100"></div>
-            <div class="col font-weight-bold small">負的千瓦時(kWh)</div>
+            <div class="col font-weight-bold small">負的千瓦時(度)</div>
             <div class="col font-italic">@Info12</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">發電機狀態</div>
             <div class="col font-italic">@Info13</div>
             <div class="w-100"></div>
-            <div class="col font-weight-bold small">可用總電量(kWh)</div>
+            <div class="col font-weight-bold small">可用總電量(度)</div>
             <div class="col font-italic">@Info14</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">可用電時數(H)</div>
@@ -210,8 +210,10 @@
                     }
                 }
                 //Y軸座標
-                 var GeneratorData = [];
-                GeneratorData.push(@TempData["GeneratorData"] );
+                var Generator1 = [];
+                var Generator2 = [];
+                Generator1.push(@TempData["Generator1"] );
+                Generator2.push(@TempData["Generator2"] );
                 option = null;
                 option = {
                     title: {
@@ -239,6 +241,9 @@
                             }
                         }
                     },
+                    legend: {
+                        data: ['發電機1', '發電機2']
+                    },      
                     xAxis: [
                         {
                             name: '時間',
@@ -272,9 +277,16 @@
                     ],
                     series: [
                         {
-                            "name": "發電瓦數",
+                            "name": "發電機1",
                             "type": "line",
-                            "data": GeneratorData,
+                            "data": Generator1,
+                            stack: '累加'
+                        },
+                        {
+                            "name": "發電機2",
+                            "type": "line",
+                            "data": Generator2,
+                            stack: '累加'
                         }
                     ]
                 };

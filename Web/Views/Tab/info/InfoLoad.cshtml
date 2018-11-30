@@ -4,19 +4,25 @@
     //取最新時間
     ESSObjecterService eSSObjecterService = new ESSObjecterService();
     string EssTime = eSSObjecterService.ReadNow().CreateTime.ToString();
-    var LoadID = eSSObjecterService.ReadNow().LoadPowerIDs.Split('|');
     //取相關資料
+    int i = 0;
     LoadPowerService LoadPowerService = new LoadPowerService();
-    List <LoadPower> loadPowers = new List<LoadPower>();
-    foreach (var x in LoadID)
+    List<LoadPower> loadPowers = new List<LoadPower>();
+    var ReadNow = eSSObjecterService.ReadNow().LoadPowerIDs;
+    var totalkWHt = eSSObjecterService.ReadTodayLoadkWHt();
+    if (ReadNow != null)
     {
-        if (!string.IsNullOrEmpty(x))
+        var LoadID = ReadNow.Split('|');
+        foreach (var x in LoadID)
         {
-            Guid id = Guid.Parse(x.Trim());
-            loadPowers.Add(LoadPowerService.ReadByID(id));
+            if (!string.IsNullOrEmpty(x))
+            {
+                Guid id = Guid.Parse(x.Trim());
+                loadPowers.Add(LoadPowerService.ReadByID(id));
+            }
         }
+    } 
     }
-}
 
 <style>
     .line {
@@ -44,7 +50,8 @@
                 string Info6 = string.Format("{0:#,0.00}", lo.VA_t / 1000.0);
                 string Info7 = string.Format("{0:#,0.00}", lo.PF_t);
                 string Info8 = string.Format("{0:#,0.00}", lo.Frequency);
-                string Info9 = string.Format("{0:#,0.00}", lo.kWHt);
+                string Info9 = string.Format("{0:#,0.00}", totalkWHt[i]);
+                i++;
                 <div class="w-100 line"></div>
                 <div class="col font-weight-bold ">@Info1</div>
                 @*<div class="col font-italic"></div>*@
@@ -70,7 +77,7 @@
                 <div class="col font-weight-bold small">頻率(Hz)</div>
                 <div class="col font-italic">@Info8</div>
                 <div class="w-100"></div>
-                <div class="col font-weight-bold small">用電量(度)</div>
+                <div class="col font-weight-bold small">當日用電量(度)</div>
                 <div class="col font-italic">@Info9</div>
             }
         </div>
@@ -148,7 +155,7 @@
                         containLabel: true
                     },
                     legend: {
-                        data: ['第一組負載', '第二組負載']
+                        data: ['負載迴路1', '負載迴路2']
                     },    
                     toolbox: {
                         feature: {
@@ -190,14 +197,14 @@
                     ],
                     series: [
                         {
-                            "name": "第一組負載",
+                            "name": "負載迴路1",
                             "type": "line",
                             "data": Load1,
                             stack: '累加',
                             areaStyle: {}
                         },
                         {
-                            "name": "第二組負載",
+                            "name": "負載迴路2",
                             "type": "line",
                             "data": Load2,
                             stack: '累加',

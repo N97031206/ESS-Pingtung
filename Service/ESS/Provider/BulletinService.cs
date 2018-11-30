@@ -35,6 +35,13 @@ namespace Service.ESS.Provider
             return this.mapper.Map<List<Model.Bulletin>>(domainbulletins);
         }
 
+        public List<Model.Bulletin> ReadAllView()
+        {
+            List<Domain.Bulletin> domainbulletins = bulletinRepository.ReadAll().Where(x=>x.Disabled==false).OrderByDescending(x => x.CreateDate).ToList();
+            return this.mapper.Map<List<Model.Bulletin>>(domainbulletins);
+        }
+
+
         public List<Model.Bulletin> ReadListBy(DateTime SD, DateTime ED)
         {
             List<Domain.Bulletin> domainbulletins = bulletinRepository.ReadListBy(x => x.CreateDate >= SD && x.CreateDate <=ED).OrderByDescending(x => x.CreateDate).ToList();

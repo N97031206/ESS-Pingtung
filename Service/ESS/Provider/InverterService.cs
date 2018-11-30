@@ -58,5 +58,21 @@ namespace Service.ESS.Provider
         {
             return inverterRepository.ReadListBy(x => x.CreateTime >= StartTime && x.CreateTime < endTime).Count();
         }
+
+        public List<double> historySPM90ActivePower(DateTime baseTime, DateTime nowTime)
+        {
+            List<double> data = new List<double>();
+            var nowt = inverterRepository.ReadListBy(x => x.CreateTime < nowTime).OrderByDescending(x => x.CreateTime).FirstOrDefault().SPM90ActiveEnergy.Split('|');
+            var baset = inverterRepository.ReadListBy(x => x.CreateTime < baseTime).OrderByDescending(x => x.CreateTime).FirstOrDefault().SPM90ActiveEnergy.Split('|');
+            for (int i = 0; i < nowt.Length; i++)
+            {
+                if (nowt[i].Length>0 && baset[i].Length>0)
+                {
+                data.Add(Convert.ToDouble(nowt[i])-Convert.ToDouble(baset[i]));
+                }
+            }
+            return data;
+        }
+
     }
 }

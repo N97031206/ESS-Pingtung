@@ -75,5 +75,13 @@ namespace Service.ESS.Provider
         {
             return loadRepository.ReadListBy(x => x.date_Time >= StartTime && x.date_Time < endTime).Count();
         }
+
+        public double historykWHt(DateTime baseTime, DateTime nowTime, string name)
+        {
+            var nowt = loadRepository.ReadListBy(x => x.date_Time < nowTime && x.name == name).OrderByDescending(x => x.date_Time).FirstOrDefault().kWHt;
+            var baset = loadRepository.ReadListBy(x => x.date_Time < baseTime && x.name == name).OrderByDescending(x => x.date_Time).FirstOrDefault().kWHt;
+            return baset - nowt;
+        }
+
     }
 }

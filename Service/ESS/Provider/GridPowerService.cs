@@ -73,5 +73,13 @@ namespace Service.ESS.Provider
         {
             return gridPowerRepository.ReadListBy(x => x.date_time >= StartTime && x.date_time < endTime).Count(); 
         }
+
+
+        public double historykWHt(DateTime baseTime,DateTime nowTime,string name)
+        {
+            var nowt = gridPowerRepository.ReadListBy(x => x.date_time < nowTime && x.name == name).OrderByDescending(x => x.date_time).FirstOrDefault().kWHt;
+            var baset = gridPowerRepository.ReadListBy(x => x.date_time < baseTime && x.name == name).OrderByDescending(x => x.date_time).FirstOrDefault().kWHt;
+            return baset - nowt;
+        }
     }
 }

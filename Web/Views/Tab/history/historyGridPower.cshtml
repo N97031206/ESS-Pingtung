@@ -104,9 +104,11 @@
             <tbody>
                 @foreach (var gps in Model)
                 {
-                    var time = gps.UpdateDate.AddHours(8).ToString();
+
                     if (!string.IsNullOrEmpty(gps.GridPowerIDs))
                     {
+                        DateTime time = gps.UpdateDate.AddHours(8);
+                        DateTime BaseTime = new DateTime(time.Year, time.Month, time.Day);
                         string Timer = null;
                         double T1 = 0, T2 = 0, T3 = 0, T4 = 0, T5 = 0, T6 = 0, T7 = 0, T8 = 0;
                         string[] IDs = gps.GridPowerIDs.Trim().Split('|');
@@ -117,7 +119,8 @@
                             {
                                 Guid ID = Guid.Parse(gp);
                                 GridPower gridPowers = gridPowerService.ReadByID(ID);
-                                Timer = time;
+                                var minus = gridPowerService.historykWHt(BaseTime.AddHours(-8), time.AddHours(-8), gridPowers.name);
+                                Timer = time.ToString();
                                 T1 += gridPowers.Vavg;
                                 T2 += gridPowers.Isum;
                                 T3 += gridPowers.Watt_t / 1000.0;
@@ -125,7 +128,7 @@
                                 T5 += gridPowers.VA_t / 1000.00;
                                 T6 += gridPowers.PF_t;
                                 T7 += gridPowers.Frequency;
-                                T8 += gridPowers.kWHt;
+                                T8 += minus;
                                 x++;
                             }
                         }
