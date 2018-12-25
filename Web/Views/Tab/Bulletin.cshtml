@@ -27,14 +27,14 @@
 }
 <br>
 
-<div class="container">
+<div class="container-fluid">
     <table class="table table-striped">
         <thead>
             <tr class="text-left">
                 <th scope="col" style="width:20%">發佈日期</th>
-                <th scope="col" style="width:40%">標題</th>
                 <th scope="col" style="width:20%">單位</th>
-                <th scope="col" style="width:5%">內容</th>
+                <th scope="col" style="width:60%">標題</th>
+                @*//   <th scope="col" style="width:10%">內容</th>*@
             </tr>
         </thead>
         <tbody>
@@ -43,20 +43,21 @@
                 if (bl.Disabled == false)
                 {
                     str= "bl" + x;
-                <tr class="text-left">
-                    <th scope="row">@bl.CreateDate.ToString("yyyy/MM/dd tt hh:mm:ss") </th>
-                    <td>
-                        <button type="button" class="btn btn-link align-baseline " data-toggle="modal" data-target="#@bl.Id">@bl.title</button>
-                    </td>
-                    <td>
-                        @orginService.ReadID(bl.OrginID).OrginName.ToString().Trim()
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#@str">
-                            內容
-                        </button>
-                    </td>
-                </tr>
+            <tr class="text-left">
+                <th scope="row">@bl.CreateDate.ToString("yyyy/MM/dd tt hh:mm:ss") </th>
+                <td>
+                    @orginService.ReadID(bl.OrginID).OrginName.ToString().Trim()
+                </td>
+                <td>
+                    <button type="button" class="btn btn-link align-baseline " data-toggle="modal" data-target="#@str">@bl.title</button>
+                </td>
+
+                @*<td>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#@str">
+                內容
+            </button>
+        </td>*@
+            </tr>
                 x++;
             }
         }

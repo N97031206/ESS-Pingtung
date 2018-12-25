@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NLog;
+using Service.ESS.Model;
+using Service.ESS.Provider;
+using System;
 using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
-using Service.ESS.Model;
-using Service.ESS.Provider;
-using PagedList;
-using NLog;
-using System.Threading.Tasks;
-using ClosedXML.Excel;
 
 namespace Web.Controllers
 {
@@ -54,8 +50,14 @@ namespace Web.Controllers
             ViewBag.Title = ConfigurationManager.AppSettings["LogoInfo"];          
             return View();
         }
-  
-       [HttpPost]
+        
+        public ActionResult Web()
+        {
+            ViewBag.Title = ConfigurationManager.AppSettings["LogoInfo"];
+            return View();
+        }
+
+        [HttpPost]
         public JsonResult ReadframeList()
         {
             Battery battery = BatteryService.ReadNow();
@@ -65,8 +67,9 @@ namespace Web.Controllers
             FrameData frames = new FrameData()
             {
                 Solar = Math.Round(InverterService.ReadNow().SPM90ActivePower.Split('|').ToList().Sum(x => string.IsNullOrEmpty(x) ? 0 : Convert.ToDouble(x) / 1000.0), 2),
-                GirdPower = GridPowerService.ReadNow().Watt_t,
-                Load = LoadPowerService.ReadNow().Watt_t,
+                GirdPower = Math.Round( GridPowerService.ReadNow().Watt_t/1000.00,2),
+                Load = Math.Round(LoadPowerService.ReadNow().Watt_t/1000.00,2),
+                //GeneratorPower=Math.Round(GeneratorService.ReadNow().positiveKWhours/1000.00,2),
                 BatteyMode = (cd == 1)?"充電": (cd == 2) ? "放電": "離線",
                 BatteySOC =  BatteryService.EachSOC(battery.voltage),
                 BatteyPower = (cd == 1) ?  Math.Round(battery.charging_watt/1000.0,2): (cd == 2) ?Math.Round(battery.discharging_watt/1000.0,2) : 0,

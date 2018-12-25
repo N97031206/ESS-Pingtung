@@ -29,7 +29,7 @@
     <div class="col text-left">
         <p class="h6">開始時間:@startDay </p>
         <p class="h6">結束時間:@endDay</p>
-        <p class="h6">共 @ViewBag.Count 筆資料</p>
+        <p class="h6">@ViewBag.StationName ; 共 @ViewBag.Count 筆資料</p>
     </div>
     @*<div class="col h5">@ViewBag.Battery</div>*@
     <div class="col ">
@@ -90,11 +90,11 @@
             <thead>
                 <tr>
                     <th scope="col" style="width:10%">資料時間</th>
-                    <th scope="col" style="width:8%">電池電壓(V)</th>
-                    <th scope="col" style="width:8%">充電電流(A)</th>
-                    <th scope="col" style="width:8%">放電電流(A)</th>
-                    <th scope="col" style="width:8%">電池容量(%)</th>
-                    <th scope="col" style="width:8%">充電次數(次)</th>
+                    <th scope="col" style="width:8%">平均電池電壓(V)</th>
+                    <th scope="col" style="width:8%">總充電電流(A)</th>
+                    <th scope="col" style="width:8%">總放電電流(A)</th>
+                    <th scope="col" style="width:8%">平均電池容量(%)</th>
+                    <th scope="col" style="width:8%">總充電次數(次)</th>
                     <th scope="col" style="width:15%">充電方向</th>
                     <th scope="col" style="width:15%">電池組</th>
                 </tr>
@@ -133,20 +133,20 @@
                         }
                         <tr>
                             <th scope="row">@Timer</th>
-                            <td>@Math.Round(T1/countBa,2)</td>
-                            <td>@Math.Round(T2,2) </td>
-                            <td>@Math.Round(T3,2) </td>
-                            <td>@Math.Round(T4 /countBa,0)</td>
-                            <td>@Math.Round(T5,0) </td>
+                            <td>@Math.Round(T1 / countBa, 2)</td>
+                            <td>@Math.Round(T2, 2) </td>
+                            <td>@Math.Round(T3, 2) </td>
+                            <td>@Math.Round(T4 / countBa, 0)</td>
+                            <td>@Math.Round(T5, 0) </td>
                             <td>@T6</td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     @foreach (string btn in BtnGroup)
                                     {
-                                        string cellName = "Pack" +c ;
+                                        string cellName = "Pack" + c;
                                         <button type='button' class='btn btn-info' data-toggle='modal' data-target='#@btn.Trim()'>@cellName</button>
                                         c++;
-                                }
+                                    }
                                 </div>
                             </td>
                         </tr>
@@ -156,13 +156,13 @@
             </tbody>
         </table>
         @if (Model.Count > 0)
-                            {
-                                if (!string.IsNullOrEmpty(Model.FirstOrDefault().BatteryIDs))
-                                {
+        {
+            if (!string.IsNullOrEmpty(Model.FirstOrDefault().BatteryIDs))
+            {
                 <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historyBattery", new { connStr, Page }))</div>
-                                }
-                            }
-        </div>
+            }
+        }
+    </div>
 </div>
 
 <!-- Modal -->

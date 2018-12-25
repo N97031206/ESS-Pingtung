@@ -44,6 +44,13 @@ namespace Service.ESS.Provider
         }
 
 
+        public Model.GridPower ReadByIDIndex0(Guid ID)
+        {
+            Domain.GridPower account = gridPowerRepository.ReadBy(x => x.Id == ID && x.index==0);
+            return this.mapper.Map<Model.GridPower>(account);
+        }
+
+
         public List<Model.GridPower> ReadByListID(List<ESSObject> ESSList)
         {
             List<Domain.GridPower> gridPowersList = new List<Domain.GridPower>();
@@ -75,11 +82,14 @@ namespace Service.ESS.Provider
         }
 
 
-        public double historykWHt(DateTime baseTime,DateTime nowTime,string name)
+        public float minuskHWt(DateTime dateTime, float kWht, int index)
         {
-            var nowt = gridPowerRepository.ReadListBy(x => x.date_time < nowTime && x.name == name).OrderByDescending(x => x.date_time).FirstOrDefault().kWHt;
-            var baset = gridPowerRepository.ReadListBy(x => x.date_time < baseTime && x.name == name).OrderByDescending(x => x.date_time).FirstOrDefault().kWHt;
-            return baset - nowt;
+            DateTime utc8 = dateTime.AddHours(8);
+            DateTime basetime= new DateTime(utc8.Year, utc8.Month, utc8.Day).AddHours(-8);
+            var basekWht = gridPowerRepository.ReadListBy(x => x.date_time < basetime && x.index==index).OrderByDescending(x => x.date_time).FirstOrDefault().kWHt;
+            return kWht- basekWht;
         }
+
+
     }
 }

@@ -2,13 +2,14 @@
     ViewBag.Title = Resources.Resource.Info;
     Layout = "~/Views/Shared/_LayoutTab.cshtml";
     var check = TempData["nav"];
+    bool OnView = ViewBag.OnView;
 }
 @Html.Partial("Echart")
 
-@*10分鐘更新一次網站*@
-    <script>
-        setTimeout("location.href='@Url.Action("Info", "Tab")'", 600000)
-    </script>
+@*5分鐘更新一次網站*@
+<script>
+        setTimeout("location.href='@Url.Action("Info", "Tab")'", 300000)
+</script>
 
 <br />
 <div class="row h5 text-left">
@@ -25,49 +26,50 @@
 @if (!string.IsNullOrEmpty(ViewBag.viewstation))
 {
     <div class="row">
-        <div class="col-2"><h2>@ViewBag.viewstation </h2></div>
-        <div class="col"><h3>電力訊息</h3></div>
+        <div class="col-2"><h4>@ViewBag.viewstation </h4></div>
     </div>
 }
 
-<ul class="nav nav-pills  navtop h3">
-    <li class="nav-item">
-        <a class="@TempData["navGridPower"] " href="#InfoGridPower" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="GridPower"})'"> @ViewBag.GridPower</a>
-    </li>
-    <li class="nav-item">
-        <a class="@TempData["navBattery"]" href="#InfoBattery" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Battery"})'">@ViewBag.Battery</a>
-    </li>
-    <li class="nav-item">
-        <a class="@TempData["navSolar"]" href="#InfoSolar" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Solar"})'">@ViewBag.Solar</a>
-    </li>
-    <li class="nav-item">
-        <a class="@TempData["navLoad"]" href="#InfoLoad" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Load"})'">@ViewBag.Load</a>
-    </li>
-    <li class="nav-item">
-        <a class="@TempData["navGenerator"]" href="#InfoGenerator" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Generator"})'">@ViewBag.Generator</a>
-    </li>
-    <li class="nav-item">
-        <a class="@TempData["navInverters"]" href="#InfoInverters" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Inverters"})'">@ViewBag.Inverters</a>
-    </li>
-</ul>
-<div class="tab-content">
-    <div class="  @TempData["tabGridPower"] " role="tabpanel" id="InfoGridPower">
-        @*@ViewBag.GridPower*@
-        @if (check.Equals("GridPower")) { { Html.RenderPartial("info/InfoGridPower"); } }
+@if (OnView)
+{
+    <ul class="nav nav-pills  navtop h3">
+        <li class="nav-item">
+            <a class="@TempData["navGridPower"] " href="#InfoGridPower" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="GridPower"})'"> @ViewBag.GridPower</a>
+        </li>
+        <li class="nav-item">
+            <a class="@TempData["navBattery"]" href="#InfoBattery" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Battery"})'">@ViewBag.Battery</a>
+        </li>
+        <li class="nav-item">
+            <a class="@TempData["navSolar"]" href="#InfoSolar" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Solar"})'">@ViewBag.Solar</a>
+        </li>
+        <li class="nav-item">
+            <a class="@TempData["navLoad"]" href="#InfoLoad" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Load"})'">@ViewBag.Load</a>
+        </li>
+        <li class="nav-item">
+            <a class="@TempData["navGenerator"]" href="#InfoGenerator" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Generator"})'">@ViewBag.Generator</a>
+        </li>
+        <li class="nav-item">
+            <a class="@TempData["navInverters"]" href="#InfoInverters" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Inverters"})'">@ViewBag.Inverters</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="  @TempData["tabGridPower"] " role="tabpanel" id="InfoGridPower">
+            @if (check.Equals("GridPower")) { { Html.RenderPartial("info/InfoGridPower"); } }
+        </div>
+        <div class="@TempData["tabBattery"] " role="tabpanel" id="InfoBattery">
+            @if (check.Equals("Battery")) { Html.RenderPartial("info/InfoBattery"); }
+        </div>
+        <div class="@TempData["tabSolar"]" role="tabpanel" id="InfoSolar">
+            @if (check.Equals("Solar")) { Html.RenderPartial("info/InfoSolar"); }
+        </div>
+        <div class="@TempData["tabLoad"]" role="tabpanel" id="InfoLoad">
+            @if (check.Equals("Load")) { Html.RenderPartial("info/InfoLoad"); }
+        </div>
+        <div class="@TempData["tabGenerator"]" role="tabpanel" id="InfoGenerator">
+            @if (check.Equals("Generator")) { Html.RenderPartial("info/InfoGenerator"); }
+        </div>
+        <div class="@TempData["tabInverters"] " role="tabpanel" id="InfoInverters">
+            @if (check.Equals("Inverters")) { Html.RenderPartial("info/InfoInverters"); }
+        </div>
     </div>
-    <div class="@TempData["tabBattery"] " role="tabpanel" id="InfoBattery">
-        @if (check.Equals("Battery")) { Html.RenderPartial("info/InfoBattery"); }
-    </div>
-    <div class="@TempData["tabSolar"]" role="tabpanel" id="InfoSolar">
-        @if (check.Equals("Solar")) { Html.RenderPartial("info/InfoSolar"); }
-    </div>
-    <div class="@TempData["tabLoad"]" role="tabpanel" id="InfoLoad">
-        @if (check.Equals("Load")) { Html.RenderPartial("info/InfoLoad"); }
-    </div>
-    <div class="@TempData["tabGenerator"]" role="tabpanel" id="InfoGenerator">
-        @if (check.Equals("Generator")) { Html.RenderPartial("info/InfoGenerator"); }
-    </div>
-    <div class="@TempData["tabInverters"] " role="tabpanel" id="InfoInverters">
-        @if (check.Equals("Inverters")) { Html.RenderPartial("info/InfoInverters"); }
-    </div>
-</div>
+}

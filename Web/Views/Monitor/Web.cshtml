@@ -1,0 +1,276 @@
+﻿@Html.Partial("Scripts")
+@Html.Partial("Stylesheet")
+<script src="~/Scripts/angular.js"></script>
+<script src="~/Scripts/myAngularJS/Web.js"></script>
+
+<style>
+    div {
+        margin: 0px auto;
+    }
+
+        div.down {
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+            left: 0px;
+        }
+
+        div.pictureSolar {
+            width: 200px; /*width of your image*/
+            height: 200px; /*height of your image*/
+            background-image: url('../../Content/Image/太陽能.png');
+            margin: 0; /* If you want no margin */
+            padding: 0; /*if your want to padding */
+            background-size: 100% 100%;
+            margin: auto;
+        }
+
+        div.pictureGrid {
+            width: 200px; /*width of your image*/
+            height: 150px; /*height of your image*/
+            background-image: url('../../Content/Image/市電.png');
+            margin: 0; /* If you want no margin */
+            padding: 0; /*if your want to padding */
+            background-size: 100% 100%;
+        }
+
+        div.pictureMain {
+            width: 300px; /*width of your image*/
+            height: 500px; /*height of your image*/
+            background-image: url('../../Content/Image/防災儲能系統.png');
+            margin: 0; /* If you want no margin */
+            padding: 0; /*if your want to padding */
+            background-size: 100% 100%;
+            margin: auto;
+        }
+
+        div.pictureLoad {
+            width: 200px; /*width of your image*/
+            height: 150px; /*height of your image*/
+            background-image: url('../../Content/Image/負載.png');
+            margin: 0; /* If you want no margin */
+            padding: 0; /*if your want to padding */
+            background-size: 100% 100%;
+            margin: auto;
+        }
+
+        div.pictureGen {
+            width: 200px; /*width of your image*/
+            height: 150px; /*height of your image*/
+            background-image: url('../../Content/Image/發電機.png');
+            margin: 0; /* If you want no margin */
+            padding: 0; /*if your want to padding */
+            background-size: 100% 100%;
+            margin: auto;
+        }
+
+        div.pictureBattery {
+            width: 200px; /*width of your image*/
+            height: 150px; /*height of your image*/
+            background-image: url('../../Content/Image/電池.png');
+            margin: 0; /* If you want no margin */
+            padding: 0; /*if your want to padding */
+            background-size: 50% 100%;
+            margin: auto;
+        }
+
+        div.ArrowDown {
+            width: 100px; /*width of your image*/
+            height: 100px; /*height of your image*/
+            background-image: url('../../Content/Image/Arrow/arrow.gif');
+            margin: 0; /* If you want no margin */
+            padding: 0; /*if your want to padding */
+            background-size: 100% 100%;
+            transform: rotate(0deg);
+            margin: auto;
+        }
+
+        div.ArrowBreak {
+            width: 100px; /*width of your image*/
+            height: 100px; /*height of your image*/
+            background-image: url('../../Content/Image/Arrow/breakIN-icon.png');
+            margin: 0; /* If you want no margin */
+            padding: 0; /*if your want to padding */
+            background-size: 100% 100%;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            position: absolute;
+        }
+
+        div.ArrowdownBreak {
+            width: 100px; /*width of your image*/
+            height: 100px; /*height of your image*/
+            background-image: url('../../Content/Image/Arrow/breakIN-icon.png');
+            margin: 0; /* If you want no margin */
+            padding: 0; /*if your want to padding */
+            background-size: 100% 100%;
+            transform: rotate(90deg);
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+        }
+
+        div.ArrowRight {
+            width: 100px; /*width of your image*/
+            height: 100px; /*height of your image*/
+            background-image: url('../../Content/Image/Arrow/arrow.gif');
+            margin: 0; /* If you want no margin */
+            padding: 0; /*if your want to padding */
+            background-size: 100% 100%;
+            transform: rotate(270deg);
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            position: absolute;
+        }
+
+        div.ArrowLeft {
+            width: 100px; /*width of your image*/
+            height: 100px; /*height of your image*/
+            background-image: url('../../Content/Image/Arrow/arrow.gif');
+            margin: 0; /* If you want no margin */
+            padding: 0; /*if your want to padding */
+            background-size: 100% 100%;
+            transform: rotate(90deg);
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            position: absolute;
+        }
+</style>
+
+
+<div class="container">
+    <div ng-app="WebApp">
+        <div ng-controller="frameController">
+            <div class="row text-center">
+
+                @*col1*@
+                <div id=" col1" class="col-4 col-sm-4 col-md-4 col-lg-4  ">
+                    <div class="row">
+                        <div class="col-8 " style="height:350px; margin: auto;">
+                            <div class="down h5 ">
+                                <div>市電</div>
+                                <div>功率 : {{GirdPower}} kW</div>
+                            </div>
+                        </div>
+                        <div class="col-4"></div>
+                        <div class="w-100"></div>
+                        <div class="col-8 pictureGrid"></div>
+                        <div class="col-4">
+                            <div ng-if="GirdPower>0">
+                                <div class="ArrowRight"></div>
+                            </div>
+                            <div ng-if="GirdPower==0">
+                                <div class=" ArrowBreak"></div>
+                            </div>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col-8 " style="height:150px; margin: auto;">
+                            <div class="h5 down">
+                                <div>發電機</div>
+                                <div>功率 : {{GeneratorPower}} kW</div>
+                            </div>
+                        </div>
+                        <div class="col-4"></div>
+                        <div class="w-100"></div>
+                        <div class="col-8 pictureGen"></div>
+                        <div class="col-4">
+                            <div ng-if="GeneratorPower>0">
+                                <div class="ArrowRight"></div>
+                            </div>
+                            <div ng-if="GeneratorPower==0">
+                                <div class=" ArrowBreak"></div>
+                            </div>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col-8"></div>
+                        <div class="col-4"></div>
+                    </div>
+                </div>
+                @*col2*@
+                <div id=" col2" class="col-4 col-sm-4 col-md-4 col-lg-4  ">
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-6 pictureSolar"></div>
+                        <div class="col ">
+                            <div class="down h5">
+                                <div>太陽能</div>
+                                <p>功率 : {{Solar}} kW</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div style="height:100px">
+                        <div ng-if="Solar>0">
+                            <div class="ArrowDown"></div>
+                        </div>
+                        <div ng-if="Solar<=0">
+                            <div class="ArrowdownBreak"></div>
+                        </div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col pictureMain"></div>
+                </div>
+                @*col3*@
+                <div id=" col3" class=" col-4 col-sm-4 col-md-4 col-lg-4  ">
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col-7 " style="height:350px">
+                            <div class="down h5">
+                                <div>負載</div>
+                                <div>功率 :{{Load}} kW</div>
+                            </div>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">
+                            <div ng-if="Load>0">
+                                <div class=" ArrowRight"></div>
+                            </div>
+                            <div ng-if="Load==0">
+                                <div class=" ArrowBreak"></div>
+                            </div>
+                        </div>
+                        <div class="col-7 pictureLoad"></div>
+                        <div class="w-100"></div>
+                        <div class="col"></div>
+                        <div class="col-7" style="height:150px">
+                            <div class="h5 down">
+                                <div>儲能電池</div>
+                                <div>狀態 :  {{BatteyMode}} </div>
+                                <div>SOC :  {{BatteySOC}}% </div>
+                                <div>功率 :  約{{BatteyPower}}kW</div>
+                            </div>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">
+                            <div ng-if="Direction==1">
+                                <div class="ArrowRight"></div>
+                            </div>
+                            <div ng-if="Direction==2">
+                                <div class=" ArrowLeft"></div>
+                            </div>
+                            <div ng-if="Direction==0">
+                                <div class=" ArrowBreak"></div>
+                            </div>
+                        </div>
+                        <div class="col-7 pictureBattery"></div>
+                        <div class="w-100"></div>
+                        <div class="col"></div>
+                        <div class="col-7"></div>
+                        <div class="w-100"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

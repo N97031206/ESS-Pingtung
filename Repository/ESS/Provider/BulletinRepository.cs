@@ -31,5 +31,17 @@ namespace Repository.ESS.Provider
             base.Update(bulletin);
         }
 
+
+        public override void Delete(Bulletin bulletin)
+        {
+            if (bulletin == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            base.Delete(bulletin);
+        }
+
+
     }
 }

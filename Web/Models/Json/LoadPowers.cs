@@ -53,6 +53,11 @@ namespace Web.Models.Json
         public float Vca { get; set; }  //	CA線間電壓	V
         public float VIIavg { get; set; }   //	線間平均電壓	V
         public float kWHt { get; set; } //	總實功電能	kWh
+
+        //20181203新增
+        public float MinuskWHt { get; set; } //相差總實功電能(與前一筆)
+
+
         public float kWHa { get; set; } //	A相實功電能	kWh
         public float kWHb { get; set; } //	B相實功電能	kWh
         public float kWHc { get; set; } //	C相實功電能	kWh

@@ -13,6 +13,12 @@ namespace Web.Models.Json.Inverter
         public float Current { get; set; }
         public float ActivePower { get; set; }
         public float ActiveEnergy { get; set; }
+        //20181203新增
+        public float ActiveEnergyMinus { get; set; } //相差總實功電能(與前一筆)
+
+        public float SPM90ActiveEnergyMinus1 { get; set; } //相差總實功電能(與前一筆)
+        public float SPM90ActiveEnergyMinus2 { get; set; } //相差總實功電能(與前一筆)
+
         public float VoltageDirection { get; set; }
     }
 }

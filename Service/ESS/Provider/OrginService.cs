@@ -31,7 +31,7 @@ namespace Service.ESS.Provider
 
         public Model.Orgin ReadID(Guid ID)
         {
-            Domain.Orgin orginData = orginRepository.ReadBy(x => x.Id==ID );
+            Domain.Orgin orginData = orginRepository.ReadBy(x => x.Id == ID);
             return this.mapper.Map<Model.Orgin>(orginData);
         }
 
@@ -41,14 +41,49 @@ namespace Service.ESS.Provider
             return this.mapper.Map<List<Model.Orgin>>(domainOrgins);
         }
 
-        public Guid Create(Model.Orgin station)
+        public Guid Create(Model.Orgin orgin)
         {
-            Domain.Orgin domainOrgins = this.mapper.Map<Domain.Orgin>(station);
+            Domain.Orgin domainOrgins = this.mapper.Map<Domain.Orgin>(orgin);
 
             orginRepository.Create(domainOrgins);
             orginRepository.SaveChanges();
 
             return domainOrgins.Id;
         }
+
+
+        public Boolean Delete(Guid ID)
+        {
+            Domain.Orgin domainOrgin = orginRepository.ReadBy(x => x.Id == ID);
+
+            if (domainOrgin.OrginName != null)
+            {
+                orginRepository.Delete(domainOrgin);
+                orginRepository.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public Guid Update(Model.Orgin orgin)
+        {
+            Domain.Orgin domainOrgin = orginRepository.ReadBy(x => x.Id == orgin.Id);
+            if (domainOrgin.OrginName != null)
+            {
+                domainOrgin.OrginName = orgin.OrginName;
+                orginRepository.Update(domainOrgin);
+                orginRepository.SaveChanges();
+                return orgin.Id;
+            }
+            else
+            {
+                return Guid.Empty;
+            }
+        }
+
+
     }
 }

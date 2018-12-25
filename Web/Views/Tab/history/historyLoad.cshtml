@@ -26,7 +26,7 @@
     <div class="col text-left">
         <p class="h6">開始時間:@startDay </p>
         <p class="h6">結束時間:@endDay</p>
-        <p class="h6">共 @ViewBag.Count 筆資料</p>
+        <p class="h6">@ViewBag.StationName ; 共 @ViewBag.Count 筆資料</p>
     </div>
     @*<div class="col h5">@ViewBag.Load</div>*@
     <div class="col ">
@@ -90,14 +90,14 @@
             <thead>
                 <tr>
                     <th scope="col" style="width:20%">資料時間</th>
-                    <th scope="col" style="width:10%">電壓(V)</th>
-                    <th scope="col" style="width:10%">電流(A)</th>
-                    <th scope="col" style="width:10%">實功率(kW)</th>
-                    <th scope="col" style="width:10%">虛實功率(kVAR)</th>
-                    <th scope="col" style="width:10%">視在功率(kVA)</th>
-                    <th scope="col" style="width:10%">功率因數(PF)</th>
-                    <th scope="col" style="width:10%">頻率(Hz)</th>
-                    <th scope="col" style="width:10%">用電量(度)</th>
+                    <th scope="col" style="width:10%">平均電壓(V)</th>
+                    <th scope="col" style="width:10%">總電流(A)</th>
+                    <th scope="col" style="width:10%">總實功率(kW)</th>
+                    <th scope="col" style="width:10%">總虛實功率(kVAR)</th>
+                    <th scope="col" style="width:10%">總視在功率(kVA)</th>
+                    <th scope="col" style="width:10%">平均功率因數(PF)</th>
+                    <th scope="col" style="width:10%">平均頻率(Hz)</th>
+                    <th scope="col" style="width:10%">總用電量(度)</th>
                 </tr>
             </thead>
             <tbody>
@@ -117,7 +117,6 @@
                             {
                                 Guid ID = Guid.Parse(lo);
                                 LoadPower loadPower = loadPowerService.ReadByID(ID);
-                                var minus = loadPowerService.historykWHt(BaseTime.AddHours(-8), time.AddHours(-8), loadPower.name);
                                 Timer = time.ToString();
                                 T1 += loadPower.Vavg ;
                                 T2 += loadPower.Isum ;
@@ -126,20 +125,20 @@
                                 T5 += loadPower.VA_t / 1000.0;
                                 T6 += loadPower.PF_t;
                                 T7 +=  loadPower.Frequency;
-                                T8 += minus;
+                                T8 += loadPower.MinuskWHt;
                                 x++;
                             }
                         }
                 <tr>
                     <th scope="row">@Timer</th>
-                    <td>@string.Format("{0:#,0.0}", T1 / x)</td>
-                    <td>@string.Format("{0:#,0.0}", T2)</td>
-                    <td>@string.Format("{0:#,0.0}", T3)</td>
-                    <td>@string.Format("{0:#,0.0}", T4)</td>
-                    <td>@string.Format("{0:#,0.0}", T5)</td>
-                    <td>@string.Format("{0:#,0.0}", T6 / x)</td>
-                    <td>@string.Format("{0:#,0.0}", T7 / x)</td>
-                    <td>@string.Format("{0:#,0.0}", T8)</td>
+                    <td>@Math.Round(T1 / x, 2)</td>
+                    <td>@Math.Round(T2, 2)</td>
+                    <td>@Math.Round(T3, 2)</td>
+                    <td>@Math.Round(T4, 2)</td>
+                    <td>@Math.Round(T5, 2)</td>
+                    <td>@Math.Round(T6 / x, 2)</td>
+                    <td>@Math.Round(T7 / x, 2)</td>
+                    <td>@Math.Round(T8, 2)</td>
                 </tr>
                     }
                 }

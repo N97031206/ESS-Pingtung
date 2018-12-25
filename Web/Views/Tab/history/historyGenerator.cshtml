@@ -27,7 +27,7 @@
     <div class="col text-left">
         <p class="h6">開始時間:@startDay </p>
         <p class="h6">結束時間:@endDay</p>
-        <p class="h6">共 @ViewBag.Count 筆資料</p>
+        <p class="h6">@ViewBag.StationName ; 共 @ViewBag.Count 筆資料</p>
     </div>
     @*<div class="col h5">@ViewBag.Generator</div>*@
     <div class="col ">
@@ -116,7 +116,8 @@
                     DateTime time = gens.UpdateDate.AddHours(8);
                     DateTime BaseTime = new DateTime(time.Year, time.Month, time.Day);
                     string Timer = null;
-                    string T1 = "0", T2 = "0", T3 = "0", T4 = "0", T5 = "0", T6 = "0", T7 = "0", T8 = "0", T9 = "0", T10 = "0", T11 = "0", T12 = "離線", T13 = "0", T14 = "0";
+                    double T1 = 0, T2 = 0, T3 = 0, T4 = 0, T5 = 0, T6 = 0, T7 = 0, T8 = 0, T9 = 0, T10 = 0, T11 = 0, T13 = 0, T14 = 0;
+                    string T12 = "離線";
                     if (!string.IsNullOrEmpty(gens.GeneratorIDs))
                     {
                         string[] IDs = gens.GeneratorIDs.Trim().Split('|');
@@ -127,39 +128,39 @@
                                 Guid ID = Guid.Parse(lo);
                                 Generator generator = generatorService.ReadByID(ID);
                                 Timer = time.ToString();
-                                T1 = string.Format("{0:#,0.0}", generator.FuleLevel);
-                                T2 = string.Format("{0:#,0.0}", generator.L1Nvoltage);
-                                T3 = string.Format("{0:#,0.0}", generator.L2Nvoltage);
-                                T4 = string.Format("{0:#,0.0}", generator.L3Nvoltage);
-                                T5 = string.Format("{0:#,0.0}", generator.L1current);
-                                T6 = string.Format("{0:#,0.0}", generator.L2current);
-                                T7 = string.Format("{0:#,0.0}", generator.L3current);
-                                T8 = string.Format("{0:#,0.0}", generator.totalwatts / 1000.0);
-                                T9 = string.Format("{0:#,0.0}", generator.averagepowerfactor);
-                                T10 = string.Format("{0:#,0.0}", generator.positiveKWhours);
-                                T11 = string.Format("{0:#,0.0}", generator.negativeKWhours);
+                                T1 = Math.Round(generator.FuleLevel, 2);
+                                T2 = Math.Round(generator.L1Nvoltage, 2);
+                                T3 = Math.Round(generator.L2Nvoltage, 2);
+                                T4 = Math.Round(generator.L3Nvoltage, 2);
+                                T5 = Math.Round(generator.L1current, 2);
+                                T6 = Math.Round(generator.L2current, 2);
+                                T7 = Math.Round(generator.L3current, 2);
+                                T8 = Math.Round(generator.totalwatts / 1000.0, 2);
+                                T9 = Math.Round(generator.averagepowerfactor, 2);
+                                T10 = Math.Round(generator.positiveKWhours, 2);
+                                T11 = Math.Round(generator.negativeKWhours, 2);
                                 T12 = generator.ControlStatus.Equals("true") ? "啟動" : "關閉";
-                                T13 = string.Format("{0:#,0.0}", generator.AvailabilityEnergy);
-                                T14 = string.Format("{0:#,0.0}", generator.AvailabilityHour);
+                                T13 = Math.Round(generator.AvailabilityEnergy, 2);
+                                T14 = Math.Round(generator.AvailabilityHour, 2);
+                                <tr>
+                                    <th scope="row">@Timer</th>
+                                    <td>@T1</td>
+                                    <td>@T2</td>
+                                    <td>@T3</td>
+                                    <td>@T4</td>
+                                    <td>@T5</td>
+                                    <td>@T6</td>
+                                    <td>@T7</td>
+                                    <td>@T8</td>
+                                    <td>@T9</td>
+                                    <td>@T10</td>
+                                    <td>@T11</td>
+                                    <td>@T12</td>
+                                    <td>@T13</td>
+                                    <td>@T14</td>
+                                </tr>
                             }
                         }
-                        <tr>
-                            <th scope="row">@Timer</th>
-                            <td>@T1</td>
-                            <td>@T2</td>
-                            <td>@T3</td>
-                            <td>@T4</td>
-                            <td>@T5</td>
-                            <td>@T6</td>
-                            <td>@T7</td>
-                            <td>@T8</td>
-                            <td>@T9</td>
-                            <td>@T10</td>
-                            <td>@T11</td>
-                            <td>@T12</td>
-                            <td>@T13</td>
-                            <td>@T14</td>
-                        </tr>
                     }
                     else
                     {

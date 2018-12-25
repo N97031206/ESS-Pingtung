@@ -62,17 +62,34 @@ namespace Service.ESS.Provider
         public List<double> historySPM90ActivePower(DateTime baseTime, DateTime nowTime)
         {
             List<double> data = new List<double>();
-            var nowt = inverterRepository.ReadListBy(x => x.CreateTime < nowTime).OrderByDescending(x => x.CreateTime).FirstOrDefault().SPM90ActiveEnergy.Split('|');
-            var baset = inverterRepository.ReadListBy(x => x.CreateTime < baseTime).OrderByDescending(x => x.CreateTime).FirstOrDefault().SPM90ActiveEnergy.Split('|');
-            for (int i = 0; i < nowt.Length; i++)
+            var nowt = inverterRepository.ReadListBy(x => x.CreateTime < nowTime).OrderByDescending(x => x.CreateTime).FirstOrDefault().SPM90ActiveEnergy.Split('|').ToList();
+            var baset = inverterRepository.ReadListBy(x => x.CreateTime < baseTime).OrderByDescending(x => x.CreateTime).FirstOrDefault().SPM90ActiveEnergy.Split('|').ToList();
+            for (int i = 0; i < nowt.Count-1; i++)
             {
-                if (nowt[i].Length>0 && baset[i].Length>0)
-                {
-                data.Add(Convert.ToDouble(nowt[i])-Convert.ToDouble(baset[i]));
-                }
+                data.Add(Convert.ToDouble(nowt[i]) - Convert.ToDouble(baset[i]));
             }
             return data;
         }
 
+
+        public float minusEnergy1(DateTime dateTime, float ActiveEnergy, int id)
+        {
+            DateTime utc8 = dateTime.AddHours(8);
+            DateTime basetime = new DateTime(utc8.Year, utc8.Month, utc8.Day).AddHours(-8);
+            var baseActiveEnergy = inverterRepository.ReadListBy(x => x.CreateTime < basetime).OrderByDescending(x => x.CreateTime).FirstOrDefault().SPM90ActiveEnergy.Split('|').ToList();
+            float baseEnergy = 0;
+            baseEnergy = Convert.ToSingle(baseActiveEnergy[0]);
+            return ActiveEnergy - baseEnergy;
+        }
+
+        public float minusEnergy2(DateTime dateTime, float ActiveEnergy, int id)
+        {
+            DateTime utc8 = dateTime.AddHours(8);
+            DateTime basetime = new DateTime(utc8.Year, utc8.Month, utc8.Day).AddHours(-8);
+            var baseActiveEnergy = inverterRepository.ReadListBy(x => x.CreateTime < basetime).OrderByDescending(x => x.CreateTime).FirstOrDefault().SPM90ActiveEnergy.Split('|').ToList();
+            float baseEnergy = 0;
+            baseEnergy = Convert.ToSingle(baseActiveEnergy[1]);
+            return ActiveEnergy - baseEnergy;
+        }
     }
 }

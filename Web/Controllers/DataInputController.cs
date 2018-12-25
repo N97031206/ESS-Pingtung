@@ -166,6 +166,10 @@ namespace Web.Controllers
                             gridPower.Vca = Json.Vca;
                             gridPower.VIIavg = Json.VIIavg;
                             gridPower.kWHt = Json.kWHt;
+
+                            //gridPower.MinuskWHt = GridPowerService.minuskHWt(Json.date_time,Json.kWHt, Json.index);
+                            gridPower.MinuskWHt = GridPowerService.minuskHWt(JsonObject.updateTime, Json.kWHt, Json.index);
+
                             gridPower.kWHa = Json.kWHa;
                             gridPower.kWHb = Json.kWHb;
                             gridPower.kWHc = Json.kWHc;
@@ -198,7 +202,7 @@ namespace Web.Controllers
                             {
                                 foreach (var ev in Json.events.ToList())
                                 {
-                                    gridPower.ErrorMessage = ev.ErrorMessage == null ? "Not Message" : ev.ErrorMessage;
+                                    gridPower.ErrorMessage = ev.ErrorMessage ?? "Not Message";
                                     gridPower.event_info = ev.event_info;
                                     gridPower.event_date_time = ev.event_date_time;
                                     gridPower.Alarm = ev.info.Alarm;
@@ -267,6 +271,9 @@ namespace Web.Controllers
                             loadPower.Vca = Json.Vca;
                             loadPower.VIIavg = Json.VIIavg;
                             loadPower.kWHt = Json.kWHt;
+
+                            loadPower.MinuskWHt = LoadPowerService.minuskHWt(JsonObject.updateTime, Json.kWHt,Json.index);
+
                             loadPower.kWHa = Json.kWHa;
                             loadPower.kWHb = Json.kWHb;
                             loadPower.kWHc = Json.kWHc;
@@ -548,6 +555,17 @@ namespace Web.Controllers
                                 inverter.SPM90Current += s.Current + "|";
                                 inverter.SPM90ActivePower += s.ActivePower + "|";
                                 inverter.SPM90ActiveEnergy += s.ActiveEnergy + "|";
+
+                                if (s.id == 1)
+                                {
+                                    inverter.SPM90ActiveEnergyMinus1 = InverterService.minusEnergy1(JsonObject.updateTime, s.ActiveEnergy, Convert.ToInt32(s.id));
+                                }
+                                else if (s.id == 4)
+                                {
+                                    inverter.SPM90ActiveEnergyMinus2 = InverterService.minusEnergy2(JsonObject.updateTime, s.ActiveEnergy, Convert.ToInt32(s.id));
+                                }
+
+                               
                                 inverter.SPM90VoltageDirection += s.VoltageDirection + "|";
                             }
                             //時間
@@ -760,7 +778,7 @@ namespace Web.Controllers
                 if (InvJ.WarningStatus.MPPT_OverloadFault) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	MPPT_OverloadFault	"); AlartID(SID, ATID, inverterID, context); }
                 if (InvJ.WarningStatus.MPPT_OverloadWarning) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	MPPT_OverloadWarning	"); AlartID(SID, ATID, inverterID, context); }
                 if (InvJ.WarningStatus.BatteryTooLowToCharge) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	BatteryTooLowToCharge	"); AlartID(SID, ATID, inverterID, context); }
-                if (InvJ.WarningStatus.Message != null) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	Message	"); AlartID(SID, ATID, inverterID, context); }
+               // if (InvJ.WarningStatus.Message != null) { Guid SID = stationService.ReadUUID(Uid).Id; Guid ATID = alartType.ID(7).Id; string context = "Index:" + InvJ.index.ToString() + ":" + errorCodesService.ReadContext("	Message	"); AlartID(SID, ATID, inverterID, context); }
             }
             catch (Exception ex)
             {
@@ -1724,20 +1742,6 @@ namespace Web.Controllers
 }";
 
 
-        #endregion
-
-
-        #region Enum
-        public enum GeneratorAlartType
-        {
-            Disabled =0 ,
-            無警報 = 1,
-            普通警報 = 2,
-            停機警報 = 3,
-            電氣跳閘 = 4,
-            InactiveIndicationNoString = 8 ,
-            InactiveIndicationDisplayedString = 9
-        }
         #endregion
 
     }

@@ -17,7 +17,7 @@ namespace Service.ESS.Provider
             cfg.AddProfile<StationMapper>();
         });
 
-        private IMapper mapper = null;
+        private readonly IMapper mapper = null;
 
         private StationRepository stationRepository = new StationRepository();
 
@@ -32,14 +32,20 @@ namespace Service.ESS.Provider
             return this.mapper.Map<List<Model.Station>>(domainstations);
         }
 
-        public Model.Station ReadID(string StationName)
+        public Model.Station ReadName(string StationName)
         {
             Domain.Station ds = stationRepository.ReadBy(x => x.StationName == StationName);
             return this.mapper.Map<Model.Station>(ds);
         }
 
+        public Model.Station ReadID(Guid StationID)
+        {
+            Domain.Station ds = stationRepository.ReadBy(x => x.Id == StationID);
+            return this.mapper.Map<Model.Station>(ds);
+        }
 
-        public Model.Station ReadID(Guid ID)
+
+        public Model.Station ReadData(Guid ID)
         {
             Domain.Station RI = stationRepository.ReadBy(x => x.Id == ID);
             return this.mapper.Map<Model.Station>(RI);
@@ -60,6 +66,41 @@ namespace Service.ESS.Provider
         {
             Domain.Station UI = stationRepository.ReadBy(x => x.UUID == ID);
             return this.mapper.Map<Model.Station>(UI);
+        }
+
+        public Boolean Delete(Guid ID)
+        {
+            Domain.Station domainStation = stationRepository.ReadBy(x => x.Id == ID);
+
+            if (domainStation.StationName != null)
+            {
+                stationRepository.Delete(domainStation);
+                stationRepository.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public Guid Update(Model.Station station)
+        {
+
+            Domain.Station domainstation = stationRepository.ReadBy(c => c.Id == station.Id);
+            if (domainstation.StationName != null)
+            {
+                domainstation.StationName = station.StationName;
+                domainstation.UUID = station.UUID;
+                stationRepository.Update(domainstation);
+                stationRepository.SaveChanges();
+                return domainstation.Id;
+            }
+            else
+            {
+                return Guid.Empty;
+            }
+
         }
 
     }

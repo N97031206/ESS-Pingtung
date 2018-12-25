@@ -93,9 +93,25 @@ namespace Service.ESS.Provider
             {
                 return Guid.Empty;
             }
-
         }
 
+
+
+        public Boolean Delete(Guid ID)
+        {
+            Domain.Bulletin domainbulletins = bulletinRepository.ReadBy(x => x.Id == ID);
+
+            if (domainbulletins.title != null)
+            {
+                bulletinRepository.Delete(domainbulletins);
+                bulletinRepository.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
     }
 }

@@ -27,7 +27,7 @@
     <div class="col text-left">
         <p class="h6">開始時間:@startDay </p>
         <p class="h6">結束時間:@endDay</p>
-        <p class="h6">共 @ViewBag.Count 筆資料</p>
+        <p class="h6">@ViewBag.StationName ; 共 @ViewBag.Count 筆資料</p>
     </div>
     @*<div class="col h5">@ViewBag.GridPower</div>*@
     <div class="col ">
@@ -104,7 +104,6 @@
             <tbody>
                 @foreach (var gps in Model)
                 {
-
                     if (!string.IsNullOrEmpty(gps.GridPowerIDs))
                     {
                         DateTime time = gps.UpdateDate.AddHours(8);
@@ -119,7 +118,7 @@
                             {
                                 Guid ID = Guid.Parse(gp);
                                 GridPower gridPowers = gridPowerService.ReadByID(ID);
-                                var minus = gridPowerService.historykWHt(BaseTime.AddHours(-8), time.AddHours(-8), gridPowers.name);
+                              
                                 Timer = time.ToString();
                                 T1 += gridPowers.Vavg;
                                 T2 += gridPowers.Isum;
@@ -128,21 +127,21 @@
                                 T5 += gridPowers.VA_t / 1000.00;
                                 T6 += gridPowers.PF_t;
                                 T7 += gridPowers.Frequency;
-                                T8 += minus;
+                                T8 += gridPowers.MinuskWHt;
                                 x++;
                             }
                         }
-                        <tr>
-                            <th scope="row">@Timer</th>
-                            <td>@string.Format("{0:#,0.0}", T1 / x)</td>
-                            <td>@string.Format("{0:#,0.0}", T2)</td>
-                            <td>@string.Format("{0:#,0.0}", T3)</td>
-                            <td>@string.Format("{0:#,0.0}", T4)</td>
-                            <td>@string.Format("{0:#,0.0}", T5)</td>
-                            <td>@string.Format("{0:#,0.0}", T6 / x)</td>
-                            <td>@string.Format("{0:#,0.0}", T7 / x)</td>
-                            <td>@string.Format("{0:#,0.0}", T8)</td>
-                        </tr>
+                <tr>
+                    <th scope="row">@Timer</th>
+                    <td>@Math.Round(T1 / x, 2)</td>
+                    <td>@Math.Round(T2, 2)</td>
+                    <td>@Math.Round(T3, 2)</td>
+                    <td>@Math.Round(T4, 2)</td>
+                    <td>@Math.Round(T5, 2)</td>
+                    <td>@Math.Round(T6 / x, 2)</td>
+                    <td>@Math.Round(T7 / x, 2)</td>
+                    <td>@Math.Round(T8, 2)</td>
+                </tr>
                     }
                 }
             </tbody>

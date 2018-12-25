@@ -34,6 +34,7 @@ namespace Support.EntityFramework
             return this.db.Set<TEntity>().FirstOrDefault(predicate);
         }
 
+
         public virtual IQueryable<TEntity> ReadListBy(Expression<Func<TEntity, bool>> predicate)
         {
             return this.db.Set<TEntity>().Where(predicate);

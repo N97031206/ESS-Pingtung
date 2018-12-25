@@ -32,18 +32,35 @@
                     </div>
                 </div>
             </div>
-                <div class="col">
+            <div class="col">
+                <div class="card">
+                    <h5 class="card-header">單位管理</h5>
+                    <div class="card-body">
+                        <button type="button" class="btn btn-outline-info btn-lg btn-block" onclick="location.href='@Url.Action("ListOrgin", "Tab")'">單位列表</button>
+                        <button type="button" class="btn btn-outline-primary btn-lg  btn-block" onclick="location.href='@Url.Action("CreateOrgin", "Tab")'">新增單位</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card">
+                    <h5 class="card-header">站別管理</h5>
+                    <div class="card-body">
+                        <button type="button" class="btn btn-outline-info btn-lg btn-block" onclick="location.href='@Url.Action("ListStation", "Tab")'">站別列表</button>
+                        <button type="button" class="btn btn-outline-primary btn-lg  btn-block" onclick="location.href='@Url.Action("CreateStation", "Tab")'">新增站別</button>
+                    </div>
+                </div>
+            </div>
+            @*<div class="col">
                     <div class="card">
                         <h5 class="card-header">新增管理</h5>
                         <div class="card-body">
                             <button type="button" class="btn btn-outline-info btn-lg btn-block" onclick="location.href='@Url.Action("CreateAbnormal", "Tab")'">新增異常</button>
-                            <button type="button" class="btn btn-outline-info btn-lg  btn-block" onclick="location.href='@Url.Action("CreateOrgin", "Tab")'">新增單位</button>
-                            <button type="button" class="btn btn-outline-info btn-lg  btn-block" onclick="location.href='@Url.Action("CreateStation", "Tab")'">新增站別</button>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
+                </div>*@
+        }
+    </div>
 </div>
 
 

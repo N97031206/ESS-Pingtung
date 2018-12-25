@@ -14,7 +14,8 @@
             <label>時間區間</label>
             <input class="col-4" type="text" name="datetimes" id="datetimes" />
             @Html.Label("站別 : ");
-            @Html.DropDownList("Statons", (IEnumerable<SelectListItem>)ViewBag.station, new { onchange = "this.form.submit();" })
+          //  @Html.DropDownList("Statons", (IEnumerable<SelectListItem>)ViewBag.station, new { onchange = "this.form.submit();" })
+            @Html.DropDownList("Statons", (IEnumerable<SelectListItem>)ViewBag.station, new {})
             <i class="fa fa-calendar"></i>
             <input type="hidden" name="tabType" value=@ViewBag.onTab>
             <button type="submit" class="btn btn-success btn-sm" id="btnBulletin">查詢</button>

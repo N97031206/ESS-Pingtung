@@ -127,6 +127,11 @@ namespace Repository.ESS.Domain
         public string SPM90Current { get; set; }
         public string SPM90ActivePower { get; set; }
         public string SPM90ActiveEnergy { get; set; }
+        //20181203新增
+        public string SPM90ActiveEnergyMinus { get; set; } //相差總實功電能(與前一筆)
+        public float SPM90ActiveEnergyMinus1 { get; set; } //相差總實功電能(與前一筆)
+        public float SPM90ActiveEnergyMinus2 { get; set; } //相差總實功電能(與前一筆)
+
         public string SPM90VoltageDirection { get; set; }
         //end
         public DateTime CreateTime { get; set; }

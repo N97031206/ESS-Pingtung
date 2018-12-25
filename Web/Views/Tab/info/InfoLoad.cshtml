@@ -5,11 +5,9 @@
     ESSObjecterService eSSObjecterService = new ESSObjecterService();
     string EssTime = eSSObjecterService.ReadNow().CreateTime.ToString();
     //取相關資料
-    int i = 0;
     LoadPowerService LoadPowerService = new LoadPowerService();
     List<LoadPower> loadPowers = new List<LoadPower>();
     var ReadNow = eSSObjecterService.ReadNow().LoadPowerIDs;
-    var totalkWHt = eSSObjecterService.ReadTodayLoadkWHt();
     if (ReadNow != null)
     {
         var LoadID = ReadNow.Split('|');
@@ -21,8 +19,18 @@
                 loadPowers.Add(LoadPowerService.ReadByID(id));
             }
         }
-    } 
     }
+    LoadPower lo = loadPowers.Where(x => x.index == 2).FirstOrDefault();
+    string Info1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? "負載" : "負載(目前離線中)";
+    string Info2 = string.Format("{0:#,0.00}", lo.Vavg);
+    string Info3 = string.Format("{0:#,0.00}", lo.Isum);
+    string Info4 = string.Format("{0:#,0.00}", lo.Watt_t / 1000.0);
+    string Info5 = string.Format("{0:#,0.00}", lo.Var_t / 1000.00);
+    string Info6 = string.Format("{0:#,0.00}", lo.VA_t / 1000.0);
+    string Info7 = string.Format("{0:#,0.00}", lo.PF_t);
+    string Info8 = string.Format("{0:#,0.00}", lo.Frequency);
+    string Info9 = string.Format("{0:#,0.00}", lo.MinuskWHt);
+}
 
 <style>
     .line {
@@ -37,21 +45,9 @@
     <div class="col-2 h6">
         @if (loadPowers != null)
         {
-        <div class="row " id="pc0">
-            <div class="col font-weight-bold ">資料時間:@EssTime</div>
-            @*<div class="col font-italic"></div>*@
-            @foreach (var lo in loadPowers)
-            {
-                string Info1 = lo.name;
-                string Info2 = string.Format("{0:#,0.00}", lo.Vavg);
-                string Info3 = string.Format("{0:#,0.00}", lo.Isum);
-                string Info4 = string.Format("{0:#,0.00}", lo.Watt_t / 1000.0);
-                string Info5 = string.Format("{0:#,0.00}", lo.Var_t / 1000.00);
-                string Info6 = string.Format("{0:#,0.00}", lo.VA_t / 1000.0);
-                string Info7 = string.Format("{0:#,0.00}", lo.PF_t);
-                string Info8 = string.Format("{0:#,0.00}", lo.Frequency);
-                string Info9 = string.Format("{0:#,0.00}", totalkWHt[i]);
-                i++;
+            <div class="row " id="pc0">
+                <div class="col font-weight-bold ">資料時間:@EssTime</div>
+                @*<div class="col font-italic"></div>*@
                 <div class="w-100 line"></div>
                 <div class="col font-weight-bold ">@Info1</div>
                 @*<div class="col font-italic"></div>*@
@@ -79,8 +75,7 @@
                 <div class="w-100"></div>
                 <div class="col font-weight-bold small">當日用電量(度)</div>
                 <div class="col font-italic">@Info9</div>
-            }
-        </div>
+            </div>
         }
     </div>
     <!--middle-->
@@ -98,8 +93,8 @@
             }
             //X軸座標
                 var xData = [];
-                var h =@TempData["Loadhh"] ;
-                var m =@TempData["Loadmm"] ;
+                var h=0;
+                var m =0;
                 for (var i = 0; i < 24; i++) {
                     for (var j = 0; j < 60; j = j + 15) {
                         var hh = i;
@@ -131,9 +126,7 @@
                 }
             //Y軸座標
                 var Load1 = [];
-                var Load2 = [];
                 Load1.push(@TempData["Load1"]);
-                Load2.push(@TempData["Load2"]);
                 option = null;
                 option = {
                     title: {
@@ -155,8 +148,8 @@
                         containLabel: true
                     },
                     legend: {
-                        data: ['負載迴路1', '負載迴路2']
-                    },    
+                        data: ['負載迴路']
+                    },
                     toolbox: {
                         feature: {
                             saveAsImage: {
@@ -168,6 +161,7 @@
                         {
                             name: '時間',
                             type: 'category',
+                            boundaryGap: false,
                             data: xData,
                             axisLine: {
                                 lineStyle: {
@@ -197,18 +191,10 @@
                     ],
                     series: [
                         {
-                            "name": "負載迴路1",
+                            "name": "負載迴路",
                             "type": "line",
                             "data": Load1,
-                            stack: '累加',
-                            areaStyle: {}
-                        },
-                        {
-                            "name": "負載迴路2",
-                            "type": "line",
-                            "data": Load2,
-                            stack: '累加',
-                            areaStyle: {}
+                            "areaStyle": {}
                         }
                     ]
                 };

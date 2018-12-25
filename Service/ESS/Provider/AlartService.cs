@@ -22,7 +22,7 @@ namespace Service.ESS.Provider
         cfg.AddProfile<AlartMapper>();
     });
 
-        private IMapper mapper = null;
+        private readonly IMapper mapper = null;
 
         private AlartRepository alartRepository = new AlartRepository();
         private AlartTypeRepository alarttypeRepository = new AlartTypeRepository();
@@ -34,6 +34,13 @@ namespace Service.ESS.Provider
             List<Domain.Alart> domainalart = alartRepository.ReadAll().ToList();
             return this.mapper.Map<List<Model.Alart>>(domainalart);
         }
+
+        public List<Model.Alart> ReadListTime(DateTime SD, DateTime ED)
+        {
+            List<Domain.Alart> domainalart = alartRepository.ReadListBy(x => x.StartTimet >= SD && x.StartTimet < ED).ToList();
+            return this.mapper.Map<List<Model.Alart>>(domainalart);
+        }
+
 
         public List<Model.Alart> ReadListBy(DateTime SD, DateTime ED,Guid alarttypeID, Guid stationID)
         {

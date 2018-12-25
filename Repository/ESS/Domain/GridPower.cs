@@ -56,6 +56,10 @@ namespace Repository.ESS.Domain
         public float Vca { get; set; }  //	CA線間電壓
         public float VIIavg { get; set; }   //	線間平均電壓
         public float kWHt { get; set; } //	總實功電能
+
+        //20181203新增
+        public float MinuskWHt { get; set; } //相差總實功電能(與前一筆)
+
         public float kWHa { get; set; } //	A相實功電能
         public float kWHb { get; set; } //	B相實功電能
         public float kWHc { get; set; } //	C相實功電能

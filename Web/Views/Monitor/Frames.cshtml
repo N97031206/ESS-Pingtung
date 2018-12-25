@@ -7,17 +7,27 @@
     div {
         margin: 0px auto;
     }
-        
-    div.down {
+
+        div.down {
             position: absolute;
             bottom: 0px;
             right: 0px;
-            left:0px;
+            left: 0px;
         }
-       
+
+        div.pictureMain {
+            width: 300px; /*width of your image*/
+            height: 350px; /*height of your image*/
+            background-image: url('../../Content/Image/防災儲能系統.png');
+            margin: 0; /* If you want no margin */
+            padding: 0; /*if your want to padding */
+            background-size: 100% 100%;
+            margin: auto;
+        }
+
         div.pictureSolar {
-            width: 200px; /*width of your image*/
-            height: 200px; /*height of your image*/
+            width: 60px; /*width of your image*/
+            height: 110px; /*height of your image*/
             background-image: url('../../Content/Image/太陽能.png');
             margin: 0; /* If you want no margin */
             padding: 0; /*if your want to padding */
@@ -26,27 +36,18 @@
         }
 
         div.pictureGrid {
-            width: 200px; /*width of your image*/
-            height: 150px; /*height of your image*/
+            width: 60px; /*width of your image*/
+            height: 110px; /*height of your image*/
             background-image: url('../../Content/Image/市電.png');
             margin: 0; /* If you want no margin */
             padding: 0; /*if your want to padding */
             background-size: 100% 100%;
         }
 
-        div.pictureMain {
-            width: 200px; /*width of your image*/
-            height: 300px; /*height of your image*/
-            background-image: url('../../Content/Image/防災儲能系統.png');
-            margin: 0; /* If you want no margin */
-            padding: 0; /*if your want to padding */
-            background-size: 100% 100%;
-            margin: auto;
-        }
 
         div.pictureLoad {
-            width: 200px; /*width of your image*/
-            height: 150px; /*height of your image*/
+            width: 60px; /*width of your image*/
+            height: 110px; /*height of your image*/
             background-image: url('../../Content/Image/負載.png');
             margin: 0; /* If you want no margin */
             padding: 0; /*if your want to padding */
@@ -55,8 +56,8 @@
         }
 
         div.pictureGen {
-            width: 200px; /*width of your image*/
-            height: 150px; /*height of your image*/
+            width: 60px; /*width of your image*/
+            height: 110px; /*height of your image*/
             background-image: url('../../Content/Image/發電機.png');
             margin: 0; /* If you want no margin */
             padding: 0; /*if your want to padding */
@@ -65,12 +66,12 @@
         }
 
         div.pictureBattery {
-            width: 200px; /*width of your image*/
-            height: 150px; /*height of your image*/
+            width: 70px; /*width of your image*/
+            height: 110px; /*height of your image*/
             background-image: url('../../Content/Image/電池.png');
             margin: 0; /* If you want no margin */
             padding: 0; /*if your want to padding */
-            background-size: 100% 100%;
+            background-size: 50% 100%;
             margin: auto;
         }
 
@@ -146,7 +147,6 @@
             margin: auto;
             position: absolute;
         }
-
 </style>
 
 
@@ -158,7 +158,7 @@
                 @*col1*@
                 <div id=" col1" class="col-4 col-sm-4 col-md-4 col-lg-4  ">
                     <div class="row">
-                        <div class="col-8 " style="height:150px; margin: auto;">
+                        <div class="col-8 " style="height:200px; margin: auto;">
                             <div class="down h5 ">
                                 <div>市電</div>
                                 <div>功率 : {{GirdPower}} kW</div>
@@ -193,10 +193,10 @@
                                 <div class=" ArrowBreak"></div>
                             </div>
                         </div>
-                            <div class="w-100"></div>
-                            <div class="col-8"></div>
-                            <div class="col-4"></div>
-                        </div>
+                        <div class="w-100"></div>
+                        <div class="col-8"></div>
+                        <div class="col-4"></div>
+                    </div>
                 </div>
                 @*col2*@
                 <div id=" col2" class="col-4 col-sm-4 col-md-4 col-lg-4  ">
@@ -216,7 +216,7 @@
                             <div class="ArrowDown"></div>
                         </div>
                         <div ng-if="Solar<=0">
-                            <div class="ArrowdownBreak" ></div>
+                            <div class="ArrowdownBreak"></div>
                         </div>
                     </div>
                     <div class="w-100"></div>
@@ -226,7 +226,7 @@
                 <div id=" col3" class=" col-4 col-sm-4 col-md-4 col-lg-4  ">
                     <div class="row">
                         <div class="col"></div>
-                        <div class="col-7 " style="height:150px">
+                        <div class="col-7 " style="height:200px">
                             <div class="down h5">
                                 <div>負載</div>
                                 <div>功率 :{{Load}} kW</div>
@@ -235,7 +235,7 @@
                         <div class="w-100"></div>
                         <div class="col">
                             <div ng-if="Load>0">
-                                <div class=" ArrowLeft"></div>
+                                <div class=" ArrowRight"></div>
                             </div>
                             <div ng-if="Load==0">
                                 <div class=" ArrowBreak"></div>

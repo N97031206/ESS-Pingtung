@@ -1,0 +1,57 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using Service.ESS.Provider;
+@model IPagedList<Service.ESS.Model.Orgin>
+@{
+    ViewBag.Title = "單位列表";
+    Layout = "~/Views/Shared/_LayoutDetail.cshtml";
+    OrginService orginService = new OrginService();
+}
+
+<div class="row">
+    <div class="col text-left">
+        <button type="button" class="btn btn-outline-primary btn-lg " onclick="location.href='@Url.Action("CreatetOrgin", "Tab")'">新增單位</button>
+    </div>
+    <div class="col text-right">
+        <button type="button" class="btn btn-outline-warning btn-lg " onclick="location.href='@Url.Action("Maintain", "Tab")'">回到維護頁</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <table class="table table-striped">
+            <thead>
+                <tr class="text-center">
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().OrginCode)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().OrginName)
+                    </th>
+                    <th scope="col" class="text-center">
+                        <h4>功能選項</h4>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrginCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrginName)
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-info" onclick="location.href='@Url.Action("EditOrgin", "Tab" , new { id = item.Id })'">編輯</button>
+                            <button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("DeleteOrgin", "Tab" , new { id = item.Id })'">刪除</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div>@Html.PagedListPager(Model, Page => Url.Action("ListOrgin", new { Page }))</div>
+    </div>
+</div>
+

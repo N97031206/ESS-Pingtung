@@ -37,7 +37,7 @@
     <div class="col-2 h6">
         @if (generators != null)
         {
-            string Info1 = "發電機";
+            string Info1 = "發電機(目前離線中)";
             string Info13 = "離線";
             string Info2 = "0", Info3 = "0", Info4 = "0", Info5 = "0", Info6 = "0", Info7 = "0", Info8 = "0", Info9 = "0", Info10 = "0", Info11 = "0", Info12 = "0", Info14 = "0", Info15 = "0";
         <div class="row " id="pc0">
@@ -45,8 +45,7 @@
             @*<div class="col font-italic"></div>*@
             @foreach (var gen in generators)
             {
-                Info1 = "發電機" + gen.index.ToString();
-                Info2 = string.Format("{0:#,0.00}", gen.FuleLevel);
+                Info1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? "發電機" + gen.index.ToString() : "發電機" + gen.index.ToString() + "(目前離線中)";
                 Info3 = string.Format("{0:#,0.00}", gen.L1Nvoltage);
                 Info4 = string.Format("{0:#,0.00}", gen.L2Nvoltage);
                 Info5 = string.Format("{0:#,0.00}", gen.L3Nvoltage);
@@ -114,7 +113,7 @@
                 <div class="col font-weight-bold ">資料時間:@EssTime</div>
                 @*<div class="col font-italic"></div>*@
                 <div class="w-100"></div>
-                <div class="col font-weight-bold small">發電機</div>
+                <div class="col font-weight-bold small">發電機(目前離線中)"</div>
                 @*<div class="col font-italic"></div>*@
                 <div class="w-100"></div>
                 <div class="col font-weight-bold small">發電機油位 (%)</div>
@@ -178,8 +177,8 @@
 
                 //X軸座標
                 var xData = [];
-                var h =@TempData["Generatorhh"] ;
-                var m =@TempData["Generatormm"] ;
+                var h=0;
+                var m =0;
                 for (var i = 0; i < 24; i++) {
                     for (var j = 0; j < 60; j = j + 15) {
                         var hh = i;
@@ -213,7 +212,6 @@
                 var Generator1 = [];
                 var Generator2 = [];
                 Generator1.push(@TempData["Generator1"] );
-                Generator2.push(@TempData["Generator2"] );
                 option = null;
                 option = {
                     title: {
@@ -241,13 +239,11 @@
                             }
                         }
                     },
-                    legend: {
-                        data: ['發電機1', '發電機2']
-                    },      
                     xAxis: [
                         {
                             name: '時間',
                             type: 'category',
+                            boundaryGap: false,
                             data: xData,
                             axisLine: {
                                 lineStyle: {
@@ -277,17 +273,11 @@
                     ],
                     series: [
                         {
-                            "name": "發電機1",
+                            "name": "發電機",
                             "type": "line",
                             "data": Generator1,
                             stack: '累加'
                         },
-                        {
-                            "name": "發電機2",
-                            "type": "line",
-                            "data": Generator2,
-                            stack: '累加'
-                        }
                     ]
                 };
                 if (option && typeof option === "object") {

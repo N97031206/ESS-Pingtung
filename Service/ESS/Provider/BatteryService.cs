@@ -41,16 +41,14 @@ namespace Service.ESS.Provider
             return domain.Id;
         }
 
-        public Model.Battery ReadNow()
+        public Model.Battery ReadNow()   
         {
             Domain.Battery batteryPower = batteryRepository.ReadAll().OrderByDescending(x => x.updateTime).FirstOrDefault();
             return this.mapper.Map<Model.Battery>(batteryPower);
         }
-
         public List<Model.Battery> ReadByInfoList(DateTime StartTime, DateTime endTime)
         {
-            List<Domain.Battery> gridPowersList = 
-                batteryRepository.ReadListBy(x => x.updateTime >= StartTime && x.updateTime < endTime).ToList();
+            List<Domain.Battery> gridPowersList = batteryRepository.ReadListBy(x => x.updateTime >= StartTime && x.updateTime < endTime).ToList();
             return this.mapper.Map<List<Model.Battery>>(gridPowersList);
         }
 
@@ -61,8 +59,7 @@ namespace Service.ESS.Provider
 
         public double totalSOC()
         {
-            List<Domain.Battery> four = batteryRepository.ReadAll().OrderByDescending(x => x.updateTime).Take(4).ToList();  
-            return (((four.Average(x => x.voltage) -42) / (58 - 42))*100);
+            return ((batteryRepository.ReadAll().OrderByDescending(x => x.updateTime).Take(4).ToList().Average(x => x.voltage) - 42) / (58 - 42)) * 100.00;
         }
 
         public double EachSOC(float voltage)

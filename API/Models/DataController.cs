@@ -1,0 +1,823 @@
+﻿using Newtonsoft.Json;
+using Service.ESS.Model;
+using Service.ESS.Provider;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
+using Battery = Service.ESS.Model.Battery;
+
+namespace API.Models
+{
+    public class DataController : ApiController
+    {
+        #region private
+        //Tab
+        private BulletinService bulletinService = new BulletinService();
+        private StationService stationService = new StationService();
+        private AlartService alartService = new AlartService();
+        private AlartTypeService alarttypeService = new AlartTypeService();
+        private OrginService orginService = new OrginService();
+        //EMS
+        private ESSObjecterService essObjecterService = new ESSObjecterService();
+        private BatteryService BatteryService = new BatteryService();
+        private GridPowerService GridPowerService = new GridPowerService();
+        private GeneratorService GeneratorService = new GeneratorService();
+        private LoadPowerService LoadPowerService = new LoadPowerService();
+        private InverterService inverterService = new InverterService();
+        private ErrorCodesService errorCodesService = new ErrorCodesService();
+        #endregion
+
+        #region Tab
+        [Route("api/Tab/Abnormal/List")]
+        [HttpGet]
+        public IHttpActionResult AbnormalList(int page = 1)
+        {
+            var alartList = alartService.ReadAll().ToList();
+
+            return Ok(alartList);
+        }
+
+        /// <summary>
+        /// 站點
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/Tab/Station")]
+        [HttpGet]
+        public IHttpActionResult Station()
+        {
+            return Ok(JsonConvert.SerializeObject(stationService.ReadAll()));
+        }
+
+        /// <summary>
+        /// 佈告欄
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/Tab/Bulletin")]
+        [HttpPost]
+        public IHttpActionResult Bulletin()
+        {
+            var Bulletun = bulletinService.ReadAll().Where(x => x.Disabled == false).ToList();
+
+            int i = 0;
+            string Data = "[";
+            Bulletun.ForEach(x => {
+                Data += "{";
+                Data += "'year':" + x.CreateDate.Year + ",";
+                Data += "'month':" + x.CreateDate.Month + ",";
+                Data += "'day':" + x.CreateDate.Day + ",";
+                Data += "'hour':" + x.CreateDate.Hour + ",";
+                Data += "'minute':" + x.CreateDate.Minute + ",";
+                Data += "'title':'" + x.title.Trim() + "'" + ",";
+                Data += "'orgin':'" + orginService.ReadID(x.OrginID).OrginName.ToString().Trim() + "',";
+                Data += "'content':'" + x.context.Trim() + "'";
+                i++;
+                Data += i < Bulletun.Count() ? "}," : "}";
+            });
+            Data += "]";
+
+            return Ok(Data);
+        }
+
+        [Route("api/Tab/BullJSON")]
+        [HttpPost]
+        public IHttpActionResult BullJSON()
+        {
+            return Ok(bulletinService.ReadAll().ToList().Where(x => x.Disabled == false).OrderByDescending(x => x.CreateDate));
+        }
+
+        /// <summary>
+        ///  異常警示
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/Tab/Abnormal")]
+        [HttpGet]
+        public IHttpActionResult Abnormal()
+        {
+            List<Alart> alartList = alartService.ReadAll().ToList();
+
+            return Ok(JsonConvert.SerializeObject(alartList));
+
+        }
+
+        /// <summary>
+        /// 異常類型
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/Tab/AlartType")]
+        [HttpGet]
+        public IHttpActionResult AlartType()
+        {
+            return Ok(JsonConvert.SerializeObject(alarttypeService.ReadAll().ToList()));
+        }
+
+
+        /// <summary>
+        /// 市電資訊
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/Tab/GridPower")]
+        [HttpGet]
+        public IHttpActionResult GridPower()
+        {
+            GridPower gridPowers = GridPowerService.ReadNow();
+            DateTime start = new DateTime();
+            DateTime starttime = new DateTime();
+            DateTime endTime = new DateTime();
+            string Data = null;
+            endTime = GridPowerService.ReadNow().date_time;
+            start = endTime.AddMinutes(-360);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.AddHours(1).Hour, 00, 00, 00);
+            //資料
+            Data += "{'info':{";
+            Data += "'資料時間(UTC)" + "':'" + gridPowers.date_time + "',";
+            Data += "'電壓(V)" + "':'" + string.Format("{0:0.0}", gridPowers.Vavg) + "',";
+            Data += "'電流(A)" + "':'" + string.Format("{0:#,0.0}", gridPowers.Isum) + "',";
+            Data += "'實功率(W)" + "':'" + string.Format("{0:#,0.0}", gridPowers.Watt_t / 1000.0) + "',";
+            Data += "'虛功率(VAR)" + "':'" + string.Format("{0:#,0.00}", gridPowers.Var_t / 1000.00) + "',";
+            Data += "'視在功率(VA)" + "':'" + string.Format("{0:#,0.0}", gridPowers.VA_t / 1000.0) + "',";
+            Data += "'功率因數(PF)" + "':'" + string.Format("{0:#,0.0}", gridPowers.PF_t) + "',";
+            Data += "'頻率(Hz)" + "':'" + string.Format("{0:#,0.0}", gridPowers.Frequency) + "',";
+            Data += "'用電量(kWh)" + "':'" + string.Format("{0:#,0.0}", gridPowers.kWHt) + "'";
+            Data += "},";
+
+            Data += "chart:{";
+            for (int i = 0; i < 6; i++)
+            {
+                Data += "'" + starttime.Hour + ":00" + "':";
+                Data += string.Format("'{0:N2}'", GridPowerService.ReadByInfoList(starttime, starttime.AddHours(1)).Average(x => x.Vavg)).Trim();
+                if (i < 5) { Data += ","; }
+                starttime = starttime.AddHours(1);
+            }
+            Data += "}}";
+            return Ok(Data);
+        }
+
+        /// <summary>
+        /// 電池
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/Tab/Battery")]
+        [HttpGet]
+        public IHttpActionResult Battery()
+        {
+            Battery battery = BatteryService.ReadNow();
+            DateTime start = new DateTime();
+            DateTime starttime = new DateTime();
+            DateTime endTime = new DateTime();
+            string Data = null;
+            int cd = Convert.ToInt32(battery.charge_direction);
+            string str = null;
+            if (cd == 0) { str = "不充電"; } else if (cd == 1) { str = "充電"; } else if (cd == 2) { str = "放電"; }
+            endTime = BatteryService.ReadNow().updateTime;
+            start = endTime.AddHours(-6);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.AddHours(1).Hour, 00, 00, 00);
+            //資料
+            Data += "{'info':{";
+            Data += "'資料時間(UTC)" + "':'" + battery.updateTime + "',";
+            Data += "'電池電壓(Voltage)" + "':'" + string.Format("{0:0.0}", battery.voltage) + "',";
+            Data += "'充電電流(Charging)" + "':'" + string.Format("{0:#,0.0}", battery.charging_current) + "',";
+            Data += "'放電電流(Discharging)" + "':'" + string.Format("{0:#,0.0}", battery.discharging_current) + "',";
+            Data += "'電池容量(Capacity)" + "':'" + string.Format("{0:#,0.00}", battery.SOC) + "',";
+            Data += "'充電次數(Cycles)" + "':'" + string.Format("{0:#,0.0}", battery.Cycle) + "',";
+            Data += "'充電方向(Charging Direction)" + "':'" + str + "',";
+            Data += "'溫度(Temperature)" + "':'" + string.Format("{0:#,0.0}", battery.charge_direction) + "°C" + "'";
+            Data += "},";
+
+            Data += "chart:{";
+            for (int i = 0; i < 6; i++)
+            {
+                Data += "'" + starttime.Hour + ":00':";
+                Data += string.Format("'{0:N2}'", BatteryService.ReadByInfoList(starttime, starttime.AddHours(1)).Average(x => x.SOC)).Trim();
+                if (i < 5) { Data += ","; }
+                starttime = starttime.AddHours(1);
+            }
+            Data += "}}";
+            return Ok(Data);
+        }
+
+        /// <summary>
+        ///  逆變器
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/Tab/Inverters")]
+        [HttpGet]
+        public IHttpActionResult Inverters()
+        {
+            Inverter inverter = inverterService.ReadNow();
+            DateTime start = new DateTime();
+            DateTime starttime = new DateTime();
+            DateTime endTime = new DateTime();
+            string Data = null;
+            string mod = inverter.DeviceMode.Trim();
+            if (mod == "P") { mod = "Power On Mode"; }
+            else if (mod == "S") { mod = "Standby Mode"; }
+            else if (mod == "L") { mod = "Line Mode"; }
+            else if (mod == "B") { mod = "Battery Mode"; }
+            else if (mod == "F") { mod = "Fault Mode"; }
+            else if (mod == "H") { mod = "Power Saving Mode"; }
+            else { mod = "Unknown Mode"; }
+            endTime = inverterService.ReadNow().CreateTime;
+            start = endTime.AddMinutes(-360);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.AddHours(1).Hour, 00, 00, 00);
+            //資料
+            Data += "{'info':{";
+            Data += "'資料時間(UTC)" + "':'" + inverter.CreateTime + "',";
+            Data += "'工作模式" + "':'" + mod + "',";
+            Data += "'市電電壓(V)" + "':'" + string.Format("{0:#,0.0}", inverter.GridVoltage) + "',";
+            Data += "'市電頻率  (Hz)" + "':'" + string.Format("{0:#,0.0}", inverter.GridVoltage) + "',";
+            Data += "'輸出電壓  (V)" + "':'" + string.Format("{0:#,0.00}", inverter.AC_OutputVoltage) + "',";
+            Data += "'輸出頻率  (Hz)" + "':'" + string.Format("{0:#,0.0}", inverter.AC_OutputFrequency) + "',";
+            Data += "'總輸出實功率(kW)" + "':'" + string.Format("{0:#,0.0}", Convert.ToDouble(inverter.ParallelInformation_TotalOutputActivePower) / 1000.0) + "',";
+            Data += "'電池電壓  (V)" + "':'" + string.Format("{0:#,0.0}", inverter.BatteryVoltage) + "',";
+            Data += "'電池容量  (%)" + "':'" + string.Format("{0:#,0.0}", inverter.BatteryCapacity) + "',";
+            Data += "'太陽能電壓  (V)" + "':'" + string.Format("{0:#,0.0}", inverter.PV_InputVoltage) + "',";
+            Data += "'總充電電流  (A)" + "':'" + string.Format("{0:#,0.0}", inverter.ParallelInformation_TotalChargingCurrent) + "'";
+            Data += "},";
+
+            Data += "chart:{";
+            for (int i = 0; i < 6; i++)
+            {
+                Data += "'" + starttime.Hour + ":00':";
+                Data += string.Format("'{0:N2}'", inverterService.ReadByInfoList(starttime, starttime.AddHours(1)).Average(x => Convert.ToDouble(x.ParallelInformation_TotalOutputActivePower))).Trim();
+                if (i < 5) { Data += ","; }
+                starttime = starttime.AddHours(1);
+            }
+            Data += "}}";
+            return Ok(Data);
+        }
+
+
+        /// <summary>
+        /// 負載
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/Tab/Load")]
+        [HttpGet]
+        public IHttpActionResult Load()
+        {
+            LoadPower loadPower = LoadPowerService.ReadNow();
+            DateTime start = new DateTime();
+            DateTime starttime = new DateTime();
+            DateTime endTime = new DateTime();
+            string Data = null;
+            endTime = LoadPowerService.ReadNow().date_Time;
+            start = endTime.AddHours(-6);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.AddHours(1).Hour, 00, 00, 00);
+            //資料
+            Data += "{'info':{";
+            Data += "'資料時間(UTC)" + "':'" + loadPower.date_Time + "',";
+            Data += "'電壓(V)" + "':'" + string.Format("{0:0.0}", loadPower.Vavg) + "',";
+            Data += "'電流(A)" + "':'" + string.Format("{0:#,0.0}", loadPower.Isum) + "',";
+            Data += "'實功率(W)" + "':'" + string.Format("{0:#,0.0}", loadPower.Watt_t / 1000.0) + "',";
+            Data += "'虛功率(VAR)" + "':'" + string.Format("{0:#,0.00}", loadPower.Var_t / 1000.00) + "',";
+            Data += "'視在功率(VA)" + "':'" + string.Format("{0:#,0.0}", loadPower.VA_t / 1000.0) + "',";
+            Data += "'功率因數(PF)" + "':'" + string.Format("{0:#,0.0}", loadPower.PF_t) + "',";
+            Data += "'頻率(Hz)" + "':'" + string.Format("{0:#,0.0}", loadPower.Frequency) + "',";
+            Data += "'用電量(kWh)" + "':'" + string.Format("{0:#,0.0}", loadPower.kWHt) + "'";
+            Data += "},";
+
+            Data += "chart:{";
+            for (int i = 0; i < 6; i++)
+            {
+                Data += "'" + starttime.Hour + ":00':";
+                Data += string.Format("'{0:N2}'", LoadPowerService.ReadByInfoList(starttime, starttime.AddHours(1)).Average(x => x.Vavg)).Trim();
+                if (i < 5) { Data += ","; }
+                starttime = starttime.AddHours(1);
+            }
+            Data += "}}";
+            return Ok(Data);
+        }
+
+        /// <summary>
+        /// 發電機
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/Tab/Generator")]
+        [HttpGet]
+        public IHttpActionResult Generator()
+        {
+            Generator generator = GeneratorService.ReadNow();
+            string status = generator.ControlStatus.Equals("true") ? "已啟動" : "關閉中";
+            DateTime start = new DateTime();
+            DateTime starttime = new DateTime();
+            DateTime endTime = new DateTime();
+            string Data = null;
+            endTime = GeneratorService.ReadNow().UpdateTime;
+            start = endTime.AddMinutes(-360);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.AddHours(1).Hour, 00, 00, 00);
+            //資料
+            Data += "{'info':{";
+            Data += "'資料時間(UTC)" + "':'" + generator.UpdateTime + "',";
+            Data += "'發電機油位(%)" + "':'" + string.Format("{0:0.0}", generator.FuleLevel) + "',";
+            Data += "'L1-N相電壓(V)" + "':'" + string.Format("{0:#,0.0}", generator.L1Nvoltage) + "',";
+            Data += "'L2-N相電壓(V)" + "':'" + string.Format("{0:#,0.0}", generator.L2Nvoltage) + "',";
+            Data += "'L3-N相電壓(V)" + "':'" + string.Format("{0:#,0.00}", generator.L3Nvoltage) + "',";
+            Data += "'L1相電流(A)" + "':'" + string.Format("{0:#,0.0}", generator.L1current) + "',";
+            Data += "'L2相電流(A)" + "':'" + string.Format("{0:#,0.0}", generator.L2current) + "',";
+            Data += "'L3相電流(A)" + "':'" + string.Format("{0:#,0.0}", generator.L3current) + "',";
+            Data += "'總實功率(kW)" + "':'" + string.Format("{0:#,0.0}", generator.totalwatts / 1000) + "',";
+            Data += "'平均功率因數" + "':'" + string.Format("{0:#,0.0}", generator.averagepowerfactor) + "',";
+            Data += "'正的千瓦時(kWh)" + "':'" + string.Format("{0:#,0.0}", generator.positiveKWhours) + "',";
+            Data += "'負的千瓦時(kWh)" + "':'" + string.Format("{0:#,0.0}", generator.negativeKWhours) + "',";
+            Data += "'發電機狀態" + "':'" + status + "',";
+            Data += "'可用總電量(kWh)" + "':'" + string.Format("{0:#,0.0}", generator.AvailabilityEnergy) + "',";
+            Data += "'可用電時數(H)" + "':'" + string.Format("{0:#,0.0}", generator.AvailabilityEnergy) + "',";
+            Data += "'可用電時數(H)" + "':'" + string.Format("{0:#,0.0}", generator.AvailabilityHour) + "'";
+            Data += "},";
+
+            Data += "chart:{";
+            for (int i = 0; i < 6; i++)
+            {
+                Data += "'" + starttime.Hour + ":00':";
+                Data += string.Format("'{0:N2}'", GeneratorService.ReadByInfoList(starttime, starttime.AddHours(1)).Average(x => x.FuleLevel)).Trim();
+                if (i < 5) { Data += ","; }
+                starttime = starttime.AddHours(1);
+            }
+            Data += "}}";
+            return Ok(Data);
+        }
+
+        /// <summary>
+        /// 太陽能
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/Tab/Solar")]
+        [HttpGet]
+        public IHttpActionResult Solar()
+        {
+            Inverter inverter = inverterService.ReadNow();
+            DateTime start = new DateTime();
+            DateTime starttime = new DateTime();
+            DateTime endTime = new DateTime();
+            string Data = null;
+            endTime = inverterService.ReadNow().CreateTime;
+            start = endTime.AddMinutes(-360);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.AddHours(1).Hour, 00, 00, 00);
+            //資料
+            Data += "{'info':{";
+            Data += "'資料時間(UTC)" + "':'" + inverter.CreateTime + "',";
+            Data += "'電壓(V)" + "':'" + string.Format("{0:0.0}", inverter.SPM90Voltage) + "',";
+            Data += "'電流(A)" + "':'" + string.Format("{0:#,0.0}", inverter.SPM90Current) + "',";
+            Data += "'功率(W)" + "':'" + string.Format("{0:#,0.0}", Convert.ToDouble(inverter.SPM90ActiveEnergy) / 1000.0) + "',";
+            Data += "'發電量(kWh)" + "':'" + string.Format("{0:#,0.00}", inverter.SPM90ActivePower) + "'";
+            Data += "},";
+
+            Data += "chart:{";
+            for (int i = 0; i < 6; i++)
+            {
+                Data += "'" + starttime.Hour + ":00':";
+                Data += string.Format("'{0:N2}'", inverterService.ReadByInfoList(starttime, starttime.AddHours(1)).Average(x => Convert.ToDouble(x.SPM90ActiveEnergy))).Trim();
+                if (i < 5) { Data += ","; }
+                starttime = starttime.AddHours(1);
+            }
+            Data += "}}";
+            return Ok(Data);
+        }
+
+
+        #endregion
+
+        [Route("api/Charts")]
+        [HttpPost]
+        public IHttpActionResult Charts()
+        {
+            DateTime start = new DateTime();
+            DateTime starttime = new DateTime();
+            DateTime endTime = new DateTime();
+            List<double> sum = new List<double>();
+
+            #region GridPower
+            var gridNow = GridPowerService.ReadNow();
+            endTime = (gridNow == null) ? DateTime.Now : gridNow.date_time;
+            start = endTime.AddHours(-25);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, 00, 00, 00);
+            //資料       
+            List<Chart> gridCharts = new List<Chart>();
+            sum.Clear();
+            for (int i = 0; i < 25; i++)
+            {
+                var count = GridPowerService.ReadByInfoList(starttime, starttime.AddHours(1));
+                if (i > 0)
+                {
+                    double num = (count.Count == 0) ? 0 : count.Average(x => x.kWHt);
+                    double miner = num - sum.Last();
+                    sum.Add(num);
+                    gridCharts.Add(new Chart()
+                    {
+                        hour = starttime.Hour,
+                        data = (miner < 0) ? 0 : Math.Round(miner, 2)
+                    });
+                }
+                else
+                {
+                    double num = count.Count == 0 ? 0 : count.Average(x => x.kWHt);
+                    sum.Add(num);
+                }
+                starttime = starttime.AddHours(1);
+            }
+            #endregion
+
+            #region Generator
+            var gennow = GeneratorService.ReadNow();
+            endTime = (gennow == null) ? DateTime.Now : gennow.UpdateTime;
+            start = endTime.AddHours(-24);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, 00, 00, 00);
+            //資料       
+            List<genChart> GeneratorCharts = new List<genChart>();
+            for (int i = 0; i < 24; i++)
+            {
+                var count = GeneratorService.ReadByInfoList(starttime, starttime.AddHours(1));
+                GeneratorCharts.Add(new genChart()
+                {
+                    hour = starttime.Hour,
+                    data = count.Count == 0 ? 0 : Math.Round(count.Average(x => x.positiveKWhours) / 1000.00, 2),
+                    Oil = count.Count == 0 ? 0 : Math.Round(count.Average(x => x.FuleLevel), 2)
+                });
+                starttime = starttime.AddHours(1);
+            }
+            #endregion
+
+            #region Battery
+            var batterynow = BatteryService.ReadNow();
+            endTime = (batterynow == null) ? DateTime.Now : batterynow.updateTime;
+            start = endTime.AddHours(-24);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, 00, 00, 00);
+            //資料       
+            List<Chart> BatteryCharts = new List<Chart>();
+            for (int i = 0; i < 24; i++)
+            {
+                var count = BatteryService.ReadByInfoList(starttime, starttime.AddHours(1));
+                List<double> batteryVolt = new List<double>();
+                List<double> batteryTotalVolt = new List<double>();
+                if (count.Count() > 0)
+                {
+                    int c = 0;
+                    foreach (var B in count)
+                    {
+                        if (c < 4)
+                        {
+                            batteryVolt.Add(B.voltage);
+                            c++;
+                            if (c == 4)
+                            {
+                                batteryTotalVolt.Add((batteryVolt.Average() - 42) / (58 - 42));
+                                c = 0;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    batteryTotalVolt.Add(0);
+                }
+                BatteryCharts.Add(new Chart()
+                {
+                    hour = starttime.Hour,
+                    data = batteryTotalVolt.Average() == 0 ? 0 : Math.Round(batteryTotalVolt.Average() * 100.00, 2)
+                });
+                starttime = starttime.AddHours(1);
+            }
+            #endregion
+
+            #region Solar
+            var solarnow = inverterService.ReadNow();
+            endTime = (solarnow == null) ? DateTime.Now : solarnow.CreateTime;
+            start = endTime.AddHours(-24);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, 00, 00, 00);
+            //資料       
+            List<Chart> SolatCharts = new List<Chart>();
+            for (int i = 0; i < 24; i++)
+            {
+                var count = inverterService.ReadByInfoList(starttime, starttime.AddHours(1));
+                SolatCharts.Add(new Chart()
+                {
+                    hour = starttime.Hour,
+                    data = Math.Round((count.Count == 0) ? 0 : (count.Average(x => x.SPM90ActivePower.Split('|').ToList().Sum(y =>y.Equals(null) ? 0 : Convert.ToDouble(y) / 1000.00))), 2)
+                });
+                starttime = starttime.AddHours(1);
+            }
+            #endregion
+
+            #region LoadPower==null
+            var loadnow = LoadPowerService.ReadNow();
+            endTime = (loadnow == null) ? DateTime.Now : loadnow.date_Time;
+            start = endTime.AddHours(-25);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, 00, 00, 00);
+            //資料       
+            List<Chart> loadCharts = new List<Chart>();
+            sum.Clear();
+            for (int i = 0; i < 25; i++)
+            {
+                var count = LoadPowerService.ReadByInfoList(starttime, starttime.AddHours(1));
+                if (i > 0)
+                {
+                    double num = count.Count == 0 ? 0 : count.Average(x => x.kWHt);
+                    double miner = num - sum.Last();
+                    sum.Add(num);
+                    loadCharts.Add(new Chart()
+                    {
+                        hour = starttime.Hour,
+                        data = miner < 0 ? 0 : Math.Round(miner, 2)
+                    });
+                }
+                else
+                {
+                    double num = count.Count == 0 ? 0 : count.Average(x => x.kWHt);
+                    sum.Add(num);
+                }
+                starttime = starttime.AddHours(1);
+            }
+            #endregion
+
+            List<AllChart> totalCharts = new List<AllChart>()
+            {
+                new AllChart()
+                {
+                    gridChart=gridCharts,
+                    generatorChart=GeneratorCharts,
+                    batteryChart=BatteryCharts,
+                    solarChart=SolatCharts,
+                    loadChart=loadCharts
+                }
+            };
+            var jsonStr = JsonConvert.SerializeObject(totalCharts, Formatting.Indented);
+            //Console.Write(jsonStr);
+            return Json(jsonStr);
+        }
+
+        [Route("api/BatteryChart")]
+        [HttpPost]
+        public IHttpActionResult BatteryChart()
+        {
+            DateTime start = new DateTime();
+            DateTime starttime = new DateTime();
+            DateTime endTime = new DateTime();
+            List<double> sum = new List<double>();
+
+            #region Battery
+            var batterynow = BatteryService.ReadNow();
+            endTime = (batterynow == null) ? DateTime.Now : batterynow.updateTime;
+            start = endTime.AddHours(-24);
+            starttime = new DateTime(start.Year, start.Month, start.Day, start.Hour, 00, 00, 00);
+            //資料       
+            List<Chart> BatteryCharts = new List<Chart>();
+            for (int i = 0; i < 24; i++)
+            {
+                var count = BatteryService.ReadByInfoList(starttime, starttime.AddHours(1));
+                List<double> batteryVolt = new List<double>();
+                List<double> batteryTotalVolt = new List<double>();
+                if (count.Count() > 0)
+                {
+                    int c = 0;
+                    foreach (var B in count)
+                    {
+                        if (c < 4)
+                        {
+                            batteryVolt.Add(B.voltage);
+                            c++;
+                            if (c == 4)
+                            {
+                                batteryTotalVolt.Add((batteryVolt.Average() - 42) / (58 - 42));
+                                c = 0;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    batteryTotalVolt.Add(0);
+                }
+                BatteryCharts.Add(new Chart() { hour = starttime.Hour, data = batteryTotalVolt.Average() == 0 ? 0 : Math.Round(batteryTotalVolt.Average() * 100.00, 2) });
+                starttime = starttime.AddHours(1);
+            }
+            #endregion
+            var jsonStr = JsonConvert.SerializeObject(BatteryCharts, Formatting.Indented);
+            //Console.Write(jsonStr);
+            return Json(jsonStr);
+        }
+
+        [Route("api/BatteryStr")]
+        [HttpPost]
+        public IHttpActionResult BatteryStr()
+        {
+            DateTime starttime = DateTime.Today;
+            List<double> sum = new List<double>();
+            #region Battery
+            //資料       
+            string BatteryStr = null;
+            BatteryStr = "[";
+            for (int i = 0; i < 24; i++)
+            {
+                var count = BatteryService.ReadByInfoList(starttime.AddHours(-8), starttime.AddHours(-7));
+                List<double> batteryVolt = new List<double>();
+                List<double> batteryTotalVolt = new List<double>();
+                if (count.Count() > 0)
+                {
+                    int c = 0;
+                    foreach (var B in count)
+                    {
+                        if (c < 4)
+                        {
+                            batteryVolt.Add(B.voltage);
+                            c++;
+                            if (c == 4)
+                            {
+                                batteryTotalVolt.Add((batteryVolt.Average() - 42) / (58 - 42));
+                                c = 0;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    batteryTotalVolt.Add(0);
+                }
+
+                double data = batteryTotalVolt.Average() == 0 ? 0 : Math.Round(batteryTotalVolt.Average() * 100.00, 2);
+                BatteryStr += (i > 22) ? "{'hour':" + starttime.Hour + ",'data':" + data + "}" : "{'hour':" + starttime.Hour + ",'data':" + data + " },";
+                starttime = starttime.AddHours(1);
+            }
+            BatteryStr += "]";
+            #endregion
+            return Ok(BatteryStr);
+        }
+
+        [Route("api/GridPowerStr")]
+        [HttpPost]
+        public IHttpActionResult GridPowerStr()
+        {
+            DateTime starttime = DateTime.Today;
+            List<double> sum = new List<double>();
+            #region GridPower
+            //資料       
+            string GridPowerStr = "[";
+            sum.Clear();
+            for (int i = 0; i <= 24; i++)
+            {
+                if (i > 0)
+                {
+                    var count = GridPowerService.ReadByInfoList(starttime.AddHours(-9), starttime.AddHours(-8));
+                    int j = 0;
+                    while (count.Count < 1)
+                    {
+                        j++;
+                        int k = -9 - j;
+                        count.Clear();
+                        count = GridPowerService.ReadByInfoList(starttime.AddHours(k), starttime.AddHours(-8));
+                    }
+                    double num0 = count.Count(x => x.index == 0) == 0 ? 0 : count.Where(x => x.index == 0).Average(x => x.kWHt);
+                    double num1 = count.Count(x => x.index == 1) == 0 ? 0 : count.Where(x => x.index == 1).Average(x => x.kWHt);
+                    double num = num0 + num1;
+                    double miner = num - sum.Last();
+                    sum.Add(num);
+                    double data = (miner < 0) ? 0 : Math.Round(miner, 2);
+                    GridPowerStr += (i > 23) ? "{'hour':" + starttime.AddHours(-1).Hour + ",'data':" + data + "}" : "{'hour':" + starttime.AddHours(-1).Hour + ",'data':" + data + " },";
+                }
+                else
+                {
+                    var count = GridPowerService.ReadByInfoList(starttime.AddHours(-9), starttime.AddHours(-8));
+                    int j = 0;
+                    while (count.Count < 1)
+                    {
+                        j++;
+                        int k = -9 - j;
+                        count.Clear();
+                        count = GridPowerService.ReadByInfoList(starttime.AddHours(k), starttime.AddHours(-8));
+                    }
+                    double num0 = count.Count(x => x.index == 0) == 0 ? 0 : count.Where(x => x.index == 0).Average(x => x.kWHt);
+                    double num1 = count.Count(x => x.index == 1) == 0 ? 0 : count.Where(x => x.index == 1).Average(x => x.kWHt);
+                    double num = num0 + num1;
+                    sum.Add(num);
+                }
+                starttime = starttime.AddHours(1);
+            }
+            GridPowerStr += "]";
+            #endregion
+            return Ok(GridPowerStr);
+        }
+
+        [Route("api/GeneratorStr")]
+        [HttpPost]
+        public IHttpActionResult GeneratorStr()
+        {
+            DateTime starttime = DateTime.Today;
+            #region Generator
+            //資料       
+            string GeneratorStr = "[";
+            for (int i = 0; i < 24; i++)
+            {
+                var count = GeneratorService.ReadByInfoList(starttime.AddHours(-8), starttime.AddHours(-7));
+                double data = (count.Count == 0) ? 0 : Math.Round(count.Average(x => x.positiveKWhours) / 1000.00, 2);
+                double Oil = (count.Count == 0) ? 0 : Math.Round(count.Average(x => x.FuleLevel), 2);
+                GeneratorStr += (i > 22) ? "{'hour':" + starttime.Hour + ",'data':" + data + ",'Oil':" + Oil + "}" : "{'hour':" + starttime.Hour + ",'data':" + data + ",'Oil':" + Oil + "},";
+                starttime = starttime.AddHours(1);
+            }
+            GeneratorStr += "]";
+            #endregion
+            return Ok(GeneratorStr);
+        }
+
+        [Route("api/SolarStr")]
+        [HttpPost]
+        public IHttpActionResult SolarStr()
+        {
+            DateTime starttime = DateTime.Today;
+            #region Solar
+            //資料       
+            string SolarStr = "[";
+            for (int i = 0; i < 24; i++)
+            {
+                var count = inverterService.ReadByInfoList(starttime.AddHours(-8), starttime.AddHours(-7));
+                double data = Math.Round((count.Count == 0) ? 0 : (count.Average(x => x.SPM90ActivePower.Split('|').ToList().Sum(y => y.Equals(null) ? 0 : Convert.ToDouble(y) / 1000.00))), 2);
+                SolarStr += (i > 22) ? "{'hour':" + starttime.Hour + ",'data':" + data + "}" : "{'hour':" + starttime.Hour + ",'data':" + data + " },";
+                starttime = starttime.AddHours(1);
+            }
+            SolarStr += "]";
+            #endregion
+            return Ok(SolarStr);
+        }
+
+        [Route("api/LoadPowerStr")]
+        [HttpPost]
+        public IHttpActionResult LoadPowerStr()
+        {
+            DateTime starttime = DateTime.Today;
+            List<double> sum = new List<double>();
+            #region LoadPower
+            //資料       
+            string LoadPowerStr = "[";
+            sum.Clear();
+            for (int i = 0; i <= 24; i++)
+            {
+                if (i > 0)
+                {
+                    var count = LoadPowerService.ReadByInfoList(starttime.AddHours(-9), starttime.AddHours(-8));
+                    int j = 0;
+                    while (count.Count < 1)
+                    {
+                        j++;
+                        int k = -9 - j;
+                        count.Clear();
+                        count = LoadPowerService.ReadByInfoList(starttime.AddHours(k), starttime.AddHours(-8));
+                    }
+                    double num0 = count.Count(x => x.index == 2) == 0 ? 0 : count.Where(x => x.index == 2).Average(x => x.kWHt);
+                    double num1 = count.Count(x => x.index == 3) == 0 ? 0 : count.Where(x => x.index == 3).Average(x => x.kWHt);
+                    double num = num0 + num1;
+                    double miner = num - sum.Last();
+                    sum.Add(num);
+
+                    double data = (miner < 0) ? 0 : Math.Round(miner, 2);
+                    LoadPowerStr += (i > 23) ? "{'hour':" + starttime.AddHours(-1).Hour + ",'data':" + data + "}" : "{'hour':" + starttime.AddHours(-1).Hour + ",'data':" + data + "},";
+                }
+                else
+                {
+                    var count = LoadPowerService.ReadByInfoList(starttime.AddHours(-9), starttime.AddHours(-8));
+                    int j = 0;
+                    while (count.Count < 1)
+                    {
+                        j++;
+                        int k = -9 - j;
+                        count.Clear();
+                        count = LoadPowerService.ReadByInfoList(starttime.AddHours(k), starttime.AddHours(-8));
+                    }
+                    double num0 = count.Count(x => x.index == 2) == 0 ? 0 : count.Where(x => x.index == 2).Average(x => x.kWHt);
+                    double num1 = count.Count(x => x.index == 3) == 0 ? 0 : count.Where(x => x.index == 3).Average(x => x.kWHt);
+                    double num = num0 + num1;
+                    sum.Add(num);
+                }
+                starttime = starttime.AddHours(1);
+            }
+            LoadPowerStr += "]";
+            #endregion
+
+            return Ok(LoadPowerStr);
+        }
+
+        public class AllChart
+        {
+            //  public DateTime creatTime { get; set; }
+            public IList<Chart> gridChart { get; set; }
+            public IList<genChart> generatorChart { get; set; }
+            public IList<Chart> batteryChart { get; set; }
+            public IList<Chart> solarChart { get; set; }
+            public IList<Chart> loadChart { get; set; }
+        }
+
+        public class Chart
+        {
+            public int hour { get; set; }
+            public double data { get; set; }
+        }
+
+        public class genChart
+        {
+            public int hour { get; set; }
+            public double data { get; set; }
+            public double Oil { get; set; }
+        }
+
+
+
+    }
+}

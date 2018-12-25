@@ -1,7 +1,7 @@
 ﻿@using PagedList;
 @using PagedList.Mvc;
 @using Service.ESS.Provider;
-@using Service.ESS.Model;
+@using Repository.ESS.Domain;
 @model IPagedList<Service.ESS.Model.ESSObject>
 
 @{
@@ -14,6 +14,9 @@
     string endTime = endDay.ToString("HH:mm:ss");
     var tabType = "Solar";
     string connStr = tabType + "+" + sDay + "+" + eDay;
+
+    //ESSObjecterService eSSObjecterService = new ESSObjecterService();
+    //List<HistorySolarList> SolarData = eSSObjecterService.SolarHistoryViewList(Model);
 }
 
 <script type="text/javascript">
@@ -27,7 +30,7 @@
     <div class="col text-left">
         <p class="h6">開始時間:@startDay </p>
         <p class="h6">結束時間:@endDay</p>
-        <p class="h6">共 @ViewBag.Count 筆資料</p>
+        <p class="h6">@ViewBag.StationName ; 共 @ViewBag.Count 筆資料</p>
     </div>
     @*<div class="col h5">@ViewBag.Solar</div>*@
     <div class="col ">
@@ -90,18 +93,19 @@
             <thead>
                 <tr>
                     <th scope="col" style="width:20%">資料時間</th>
-                    <th scope="col" style="width:10%">電壓(V)</th>
-                    <th scope="col" style="width:10%">電流(A)</th>
-                    <th scope="col" style="width:10%">功率(kW)</th>
-                    <th scope="col" style="width:10%">發電量(度)</th>
+                    <th scope="col" style="width:10%">平均電壓(V)</th>
+                    <th scope="col" style="width:10%">總電流(A)</th>
+                    <th scope="col" style="width:10%">總功率(kW)</th>
+                    <th scope="col" style="width:10%">總發電量(度)</th>
                 </tr>
             </thead>
             <tbody>
+
                 @foreach (var invs in Model)
                 {
                     var time = invs.UpdateDate.AddHours(8);
                     DateTime BaseTime = new DateTime(time.Year, time.Month, time.Day);
-                    Double count = 0;
+                    int Length = 0;
                     if (!string.IsNullOrEmpty(invs.InvertersIDs))
                     {
                         string timer = null;
@@ -113,28 +117,27 @@
                             {
                                 timer = time.ToString();
                                 Guid ID = Guid.Parse(inv);
-                                Inverter inverter = inverterService.ReadByID(ID);
-                                var data = inverterService.historySPM90ActivePower(BaseTime.AddHours(-8), time.AddHours(-8));
+                                var inverter = inverterService.ReadByID(ID);
                                 var id = inverter.SPMid.Split('|');
                                 var volt = inverter.SPM90Voltage.Split('|');
                                 var curent = inverter.SPM90Current.Split('|');
                                 var activePower = inverter.SPM90ActivePower.Split('|');
-                                count = id.Count()-1;//有一個固定空值
-                                for (int k = 0; k < count; k++)
+                                T4 = inverter.SPM90ActiveEnergyMinus1 + inverter.SPM90ActiveEnergyMinus2;
+                                Length = id.Length - 1;//有一個固定空值
+                                for (int k = 0; k < Length; k++)
                                 {
                                     T1 += Convert.ToDouble(volt[k]);
                                     T2 += Convert.ToDouble(curent[k]);
                                     T3 += Convert.ToDouble(activePower[k]) / 1000.0;
-                                    T4 += Convert.ToDouble(data[k]);
                                 }
                             }
                         }
                         <tr>
                             <th scope="row">@timer</th>
-                            <td>@Math.Round(T1/count,2)</td>
-                            <td>@Math.Round(T2,2)</td>
-                            <td>@Math.Round(T3,2)</td>
-                            <td>@Math.Round(T4,2)</td>
+                            <td>@Math.Round(T1 / Length, 2)</td>
+                            <td>@Math.Round(T2, 2)</td>
+                            <td>@Math.Round(T3, 2)</td>
+                            <td>@Math.Round(T4, 2)</td>
                         </tr>
                     }
                 }

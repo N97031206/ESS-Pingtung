@@ -40,7 +40,7 @@
                 @*<div class="col font-italic"></div>*@
                 @foreach (var inv in inverters)
                 {
-                    string Info1 = inv.index.ToString();
+                    string Info1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? "逆變器" : "逆變器(目前離線中)";
                     string Info2 = inv.DeviceMode.Trim();
                     if (Info2 == "P") { Info2 = "Power On Mode"; }
                     else if (Info2 == "S") { Info2 = "Standby Mode"; }
@@ -59,7 +59,7 @@
                     string Info10 = string.Format("{0:#,0.00}", inv.PV_InputVoltage);
                     string Info11 = string.Format("{0:#,0.00}", inv.ParallelInformation_TotalChargingCurrent.Split('|').ToList().Sum(x => x.IsEmpty() ? 0 : Convert.ToDouble(x)) / 1000.0);
                     <div class="w-100 line"></div>
-                    <div class="col font-weight-bold">逆變器</div>
+                    <div class="col font-weight-bold">@Info1</div>
                     @*<div class="col font-italic"></div>*@
                     <div class="w-100"></div>
                     <div class="col font-weight-bold small">工作模式</div>
@@ -110,8 +110,8 @@
                 }
                 //X軸座標
                 var xData = [];
-                var h =@TempData["Inverterhh"] ;
-                var m =@TempData["Invertermm"] ;
+                var h=0;
+                var m =0;
                 for (var i = 0; i < 24; i++) {
                     for (var j = 0; j < 60; j = j + 15) {
                         var hh = i;
@@ -175,6 +175,7 @@
                         {
                             name: '時間',
                             type: 'category',
+                            boundaryGap: false,
                             data: xData,
                             axisLine: {
                                 lineStyle: {

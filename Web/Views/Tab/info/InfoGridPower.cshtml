@@ -5,11 +5,9 @@
     ESSObjecterService eSSObjecterService = new ESSObjecterService();
     string EssTime = eSSObjecterService.ReadNow().CreateTime.ToString();
     //取相關資料
-    int i = 0;
     GridPowerService gridPowerService = new GridPowerService();
     List<GridPower> gridPowers = new List<GridPower>();
     var ReadNow = eSSObjecterService.ReadNow().GridPowerIDs;
-    var totalkWHt = eSSObjecterService.ReadTodayGridPowerkWHT();
     if (ReadNow != null )
     {
         var gridID = ReadNow.Split('|');
@@ -22,6 +20,16 @@
             }
         }
     }
+    GridPower gp = gridPowers.Where(x => x.index == 0).FirstOrDefault();
+    string Info1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? "市電迴路" : "市電迴路(目前離線中)";
+    string Info2 = string.Format("{0:#,0.00}", gp.Vavg);
+    string Info3 = string.Format("{0:#,0.00}", gp.Isum);
+    string Info4 = string.Format("{0:#,0.00}", gp.Watt_t / 1000.0);
+    string Info5 = string.Format("{0:#,0.00}", gp.Var_t / 1000.00);
+    string Info6 = string.Format("{0:#,0.00}", gp.VA_t / 1000.0);
+    string Info7 = string.Format("{0:#,0.00}", gp.PF_t);
+    string Info8 = string.Format("{0:#,0.00}", gp.Frequency);
+    string Info9 = string.Format("{0:#,0.00}", gp.MinuskWHt);
 }
 
 <style>
@@ -40,47 +48,34 @@
         <div class="row " id="pc0">
             <div class="col font-weight-bold ">資料時間:@EssTime</div>
             @*<div class="col font-italic"></div>*@
-            @foreach (var gp in gridPowers)
-            {
-                string Info1 = gp.name;
-                string Info2 = string.Format("{0:#,0.00}", gp.Vavg);
-                string Info3 = string.Format("{0:#,0.00}", gp.Isum);
-                string Info4 = string.Format("{0:#,0.00}", gp.Watt_t / 1000.0);
-                string Info5 = string.Format("{0:#,0.00}", gp.Var_t / 1000.00);
-                string Info6 = string.Format("{0:#,0.00}", gp.VA_t / 1000.0);
-                string Info7 = string.Format("{0:#,0.00}", gp.PF_t);
-                string Info8 = string.Format("{0:#,0.00}", gp.Frequency);
-                string Info9 = string.Format("{0:#,0.00}", totalkWHt[i]);
-                i++;
-                <div class="w-100 line"></div>
-                <div class="col font-weight-bold  ">@Info1</div>
-                @*<div class="col font-italic">@Info1</div>*@
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">電壓(V)</div>
-                <div class="col font-italic">@Info2</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">電流(A)</div>
-                <div class="col font-italic">@Info3</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">實功率(kW)</div>
-                <div class="col font-italic">@Info4</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">虛功率(kVAR)</div>
-                <div class="col font-italic">@Info5</div>
-                <div class="w-100"></div>
-                <div class="col  font-weight-bold small">視在功率(kVA)</div>
-                <div class="col font-italic">@Info6</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">功率因數(PF)</div>
-                <div class="col font-italic">@Info7</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">頻率(Hz)</div>
-                <div class="col font-italic">@Info8</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">當日用電量(度)</div>
-                <div class="col font-italic">@Info9</div>
-                <div class="w-100"></div>
-            }
+            <div class="w-100 line"></div>
+            <div class="col font-weight-bold  ">@Info1</div>
+            @*<div class="col font-italic">@Info1</div>*@
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電壓(V)</div>
+            <div class="col font-italic">@Info2</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電流(A)</div>
+            <div class="col font-italic">@Info3</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">實功率(kW)</div>
+            <div class="col font-italic">@Info4</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">虛功率(kVAR)</div>
+            <div class="col font-italic">@Info5</div>
+            <div class="w-100"></div>
+            <div class="col  font-weight-bold small">視在功率(kVA)</div>
+            <div class="col font-italic">@Info6</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">功率因數(PF)</div>
+            <div class="col font-italic">@Info7</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">頻率(Hz)</div>
+            <div class="col font-italic">@Info8</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">當日用電量(度)</div>
+            <div class="col font-italic">@Info9</div>
+            <div class="w-100"></div>
         </div>
         }
     </div>
@@ -99,8 +94,8 @@
             }
                 //X軸座標
                 var xData = [];
-                var h=@TempData["GridPowerhh"];
-                var m =@TempData["GridPowermm"];
+                var h=0;
+                var m =0;
                 for (var i = 0; i < 24; i++) {
                     for (var j = 0; j < 60; j = j + 15) {
                         var hh = i;
@@ -132,9 +127,7 @@
                 }
             //Y軸座標
                 var Grid1 = [];
-                var Grid2 = [];
                 Grid1.push(@TempData["Grid1"] );
-                Grid2.push(@TempData["Grid2"] );
                 option = null;
                 option = {
                     title: {
@@ -156,7 +149,7 @@
                         containLabel: true
                     },
                     legend: {
-                        data: ['市電迴路1', '市電迴路2']
+                        data: ['市電迴路']
                     },      
                     toolbox: {
                         feature: {
@@ -169,6 +162,7 @@
                         {
                             name: '時間',
                             type: 'category',
+                            boundaryGap: false,
                             data: xData,
                             axisLine: {
                                 lineStyle: {
@@ -198,16 +192,9 @@
                     ],
                     series: [
                         {
-                            "name": "市電迴路1",
+                            "name": "市電迴路",
                             "type": "line",
                             "data": Grid1,
-                            "areaStyle": {},
-                            stack: '累加'
-                        },
-                        {
-                            "name": "市電迴路2",
-                            "type": "line",
-                            "data": Grid2,
                             "areaStyle": {},
                             stack: '累加'
                         }

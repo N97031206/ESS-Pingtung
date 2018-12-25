@@ -1,14 +1,17 @@
 ﻿@model Service.ESS.Model.Orgin
 @{
-    ViewBag.Title = Resources.Resource.CreateOrgin;
+    ViewBag.Title = "新增單位";
     Layout = "~/Views/Shared/_LayoutDetail.cshtml";
 }
 
-@*<h2>@ViewBag.Title</h2>*@
+
 <div class="container">
-    @*<div class="h3 text-right">
-        @Html.ActionLink("回到維護管理", "Maintain")
-    </div>*@
+    <div class="row">
+        <div class="col text-left">
+            <button type="button" class="btn btn-outline-primary btn-lg " onclick="location.href='@Url.Action("ListOrgin", "Tab")'">回到 @ViewBag.Title 列表</button>
+        </div>
+    </div>
+    <h2>@ViewBag.Title</h2>
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()

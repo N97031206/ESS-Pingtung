@@ -76,11 +76,13 @@ namespace Service.ESS.Provider
             return loadRepository.ReadListBy(x => x.date_Time >= StartTime && x.date_Time < endTime).Count();
         }
 
-        public double historykWHt(DateTime baseTime, DateTime nowTime, string name)
+
+        public float minuskHWt(DateTime dateTime, float kWht, int index)
         {
-            var nowt = loadRepository.ReadListBy(x => x.date_Time < nowTime && x.name == name).OrderByDescending(x => x.date_Time).FirstOrDefault().kWHt;
-            var baset = loadRepository.ReadListBy(x => x.date_Time < baseTime && x.name == name).OrderByDescending(x => x.date_Time).FirstOrDefault().kWHt;
-            return baset - nowt;
+            DateTime utc8 = dateTime.AddHours(8);
+            DateTime basetime = new DateTime(utc8.Year, utc8.Month, utc8.Day).AddHours(-8);
+            var basekWht = loadRepository.ReadListBy(x => x.date_Time < basetime && x.index==index).OrderByDescending(x => x.date_Time).FirstOrDefault().kWHt;
+            return kWht - basekWht;
         }
 
     }

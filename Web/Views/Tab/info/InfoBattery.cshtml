@@ -5,17 +5,15 @@
     ESSObjecterService eSSObjecterService = new ESSObjecterService();
     string EssTime = eSSObjecterService.ReadNow().CreateTime.ToString();
     //取相關資料
-    var batteryID = eSSObjecterService.ReadNow().BatteryIDs.Split('|');
+    var batteryID = eSSObjecterService.ReadNow().BatteryIDs.Split('|').ToList();
     BatteryService BatteryService = new BatteryService();
     List<Battery> batteries = new List<Battery>();
-    foreach (var x in batteryID)
-    {
+    batteryID.ForEach(x=>{
         if (!string.IsNullOrEmpty(x))
         {
-            Guid id = Guid.Parse(x.Trim());
-            batteries.Add(BatteryService.ReadByID(id));
+            batteries.Add(BatteryService.ReadByID(Guid.Parse(x.Trim())));
         }
-    }
+    });
 }
 
 <style>
@@ -36,7 +34,7 @@
             @*<div class="col font-italic"></div>*@
             @foreach (var ba in batteries)
             {
-                string Info1 = ba.index.ToString();
+                string Info1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? ba.index.ToString() : ba.index.ToString() + "(目前離線中)";
                 string Info2 = string.Format("{0:#,0.00}", ba.voltage);
                 string Info3 = string.Format("{0:#,0.00}", ba.charging_current);
                 string Info4 = string.Format("{0:#,0.00}", ba.discharging_current);
@@ -84,8 +82,8 @@
                 }
                 //X軸座標
                 var xData = [];
-                var h=@TempData["Batteryhh"];
-                var m =@TempData["Batterymm"];
+                var h=0;
+                var m =0;
                 for (var i = 0; i < 24; i++) {
                     for (var j = 0; j < 60; j = j + 15) {
                         var hh = i;
@@ -149,6 +147,7 @@
                         {
                             name: '時間',
                             type: 'category',
+                            boundaryGap: false,
                             data: xData,
                             axisLine: {
                                 lineStyle: {
