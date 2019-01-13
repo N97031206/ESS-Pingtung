@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.AppTitle = "異常警示";
+    Layout = "~/Areas/APP/Views/Shared/_LayoutAPPDetail .cshtml";
+    string start = ViewBag.RangeStart;
+    string end = ViewBag.RangeEnd;
+}
+@Html.Partial("DataPicket")
+
+<style type="text/css">
+    div.pad {
+        margin: 0;
+        padding: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-bottom: 0;
+        padding-top: 0;
+    }
+
+</style>
+
+<div class="row pad">
+    <div class="col text-center pad">
+        @using (Html.BeginForm("Abnormal", "APP", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="row">
+                <div class="col h5">
+                    <div class="daterange ">
+                        <label class="text-center">警示區間</label>
+                        <br />
+                        <input class="col-6 h6" name="range_date" type="text">
+                        <i class="fa fa-calendar"></i>
+                        <button type="submit" class="btn btn-success  btn-sm" id="btnBulletin" style="vertical-align:top">查詢</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="row  pad">
+    <div class="col text-center pad">
+        <h3>區間:@start - @end</h3>
+    </div>
+</div>
+
+<div class="row pad">
+    <div class="col-1 pad">
+    </div>
+    <div class="col-10 pad">
+        <button type='button' class="@ViewBag.AbLoadClass"
+                onclick="location.href='@Url.Action("AbList", "APP",new { type="Load",sday=@start,eday=@end})'">
+            <strong>負載:異常數量:@ViewBag.AbLoad </strong>
+        </button>
+        <button type="button" class="@ViewBag.AbSolarClass "
+                onclick="location.href='@Url.Action("AbList", "APP",new { type="Solar",sday=@start,eday=@end})'">
+            <strong>太陽能:異常數量:@ViewBag.AbSolar </strong>
+        </button>
+        <button type="button" class="@ViewBag.AbGridClass "
+                onclick="location.href='@Url.Action("AbList", "APP",new { type="Grid",sday=@start,eday=@end})'">
+            <strong>市電:異常數量:@ViewBag.AbGrid </strong>
+        </button>
+        <button type="button" class="@ViewBag.AbGenClass "
+                onclick="location.href='@Url.Action("AbList", "APP",new { type="Gen",sday=@start,eday=@end})'">
+            <strong>發電機:異常數量:@ViewBag.AbGen </strong>
+        </button>
+        <button type="button" class="@ViewBag.AbBatteryClass "
+                onclick="location.href='@Url.Action("AbList", "APP",new { type="Battery",sday=@start,eday=@end})'">
+            <strong>電池:異常數量:@ViewBag.AbBattery </strong>
+        </button>
+        <button type="button" class="@ViewBag.AbInvClass "
+                onclick="location.href='@Url.Action("AbList", "APP",new { type="Inv",sday=@start,eday=@end})'">
+            <strong>逆變器:異常數量:@ViewBag.AbInv </strong>
+        </button>
+    </div>
+    <div class="col-1 pad">
+    </div>
+</div>
+
+

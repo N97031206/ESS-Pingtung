@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Web.Models.GuanTsai.MonthlyReportData>
+@{
+    Layout = "~/Views/Shared/_LayoutGuanTsai.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-2">
+        </div>
+        <div class="col-10">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width:10%">
+                            日期
+                        </th>
+                        <th scope="col" style="width:10%">
+                            柴油60kW<br />總發電量
+                        </th>
+                        <th scope="col" style="width:10%">
+                            總PV<br />發電量
+                        </th>
+                        <th scope="col" style="width:10%">
+                            總負載<br />用電量
+                        </th>
+                        <th scope="col" style="width:10%">
+                            台電<br />總用電量
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Day)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TotalGenerator)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TotalPV)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TotalLoad)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TotalTPC)
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-2">
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+

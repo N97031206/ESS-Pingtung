@@ -1,36 +1,36 @@
 ﻿@using Service.ESS.Provider;
 @using Service.ESS.Model;
 @{
-    //取最新時間
-    ESSObjecterService eSSObjecterService = new ESSObjecterService();
-    string EssTime = eSSObjecterService.ReadNow().CreateTime.ToString();
-    //取相關資料
-    LoadPowerService LoadPowerService = new LoadPowerService();
-    List<LoadPower> loadPowers = new List<LoadPower>();
-    var ReadNow = eSSObjecterService.ReadNow().LoadPowerIDs;
-    if (ReadNow != null)
-    {
-        var LoadID = ReadNow.Split('|');
-        foreach (var x in LoadID)
-        {
-            if (!string.IsNullOrEmpty(x))
+            //取最新時間
+            ESSObjecterService eSSObjecterService = new ESSObjecterService();
+            string EssTime = eSSObjecterService.ReadNow().CreateTime.ToString();
+            //取相關資料
+            LoadPowerService LoadPowerService = new LoadPowerService();
+            List<LoadPower> loadPowers = new List<LoadPower>();
+            var ReadNow = eSSObjecterService.ReadNow().LoadPowerIDs;
+            if (ReadNow != null)
             {
-                Guid id = Guid.Parse(x.Trim());
-                loadPowers.Add(LoadPowerService.ReadByID(id));
+                var LoadID = ReadNow.Split('|');
+                foreach (var x in LoadID)
+                {
+                    if (!string.IsNullOrEmpty(x))
+                    {
+                        Guid id = Guid.Parse(x.Trim());
+                        loadPowers.Add(LoadPowerService.ReadByID(id));
+                    }
+                }
             }
+            LoadPower lo = loadPowers.Where(x => x.index == 2).FirstOrDefault();
+            string Info1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? "負載" : "負載(目前離線中)";
+            double Info2 = Math.Round(lo.Vavg, 2);
+            double Info3 = Math.Round(lo.Isum, 2);
+            double Info4 = Math.Round(lo.Watt_t / 1000.0, 2);
+            double Info5 = Math.Round(lo.Var_t / 1000.00, 2);
+            double Info6 = Math.Round(lo.VA_t / 1000.0, 2);
+            double Info7 = Math.Round(lo.PF_t, 2);
+            double Info8 = Math.Round(lo.Frequency, 2);
+            double Info9 = Math.Round(lo.MinuskWHt, 2);
         }
-    }
-    LoadPower lo = loadPowers.Where(x => x.index == 2).FirstOrDefault();
-    string Info1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? "負載" : "負載(目前離線中)";
-    string Info2 = string.Format("{0:#,0.00}", lo.Vavg);
-    string Info3 = string.Format("{0:#,0.00}", lo.Isum);
-    string Info4 = string.Format("{0:#,0.00}", lo.Watt_t / 1000.0);
-    string Info5 = string.Format("{0:#,0.00}", lo.Var_t / 1000.00);
-    string Info6 = string.Format("{0:#,0.00}", lo.VA_t / 1000.0);
-    string Info7 = string.Format("{0:#,0.00}", lo.PF_t);
-    string Info8 = string.Format("{0:#,0.00}", lo.Frequency);
-    string Info9 = string.Format("{0:#,0.00}", lo.MinuskWHt);
-}
 
 <style>
     .line {
@@ -44,7 +44,7 @@
     <!--lift-->
     <div class="col-2 h6">
         @if (loadPowers != null)
-        {
+    {
             <div class="row " id="pc0">
                 <div class="col font-weight-bold ">資料時間:@EssTime</div>
                 @*<div class="col font-italic"></div>*@

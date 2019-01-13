@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Web.Models.GuanTsai.MonthlyReportData>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutGuanTsai.cshtml";
+    bool ChkData = ViewBag.ChkData;
+    var years = ViewBag.MainItemBtn;
+    var months = ViewBag.SubItembtm;
+}
+
+<div class="row">
+    <div class="col">
+        @Html.Label("年度", new { @class="h3"})
+        <div class="btn-group" role="group" aria-label="Basic example">
+            @using (Html.BeginForm("Index", "GuanTsai", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                foreach (var year in years)
+                {
+                    <button type="submit" class="btn btn-success btn" style="vertical-align:top" name="@year" value="@year">@year</button>
+                }
+                <input type="hidden" value="N" name="monthly" />
+                <input type="hidden" value="Y" name="Yearly" />
+            }
+        </div>
+    </div>
+    <div class="w-100" style="height:1vh"></div>
+    <div class="col">
+        <div class="btn-group" role="group" aria-label="Basic example">
+                    @Html.Label("月份", new { @class="h3"})
+            @if (months != null)
+            {
+                using (Html.BeginForm("Index", "GuanTsai", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    foreach (var month in months)
+                    {
+                        <button type="submit" class="btn btn-info" id="monthly" style="vertical-align:top" name="monthly" value="@month">@month</button>
+                    }
+                    <input type="hidden" value="@ViewBag.hiddenYear" id="Yearly" name="Yearly" />
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@if (ChkData)
+{
+    <div class="row">
+        <div class="col-2">
+        </div>
+        <div class="col-8">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width:10%">
+                            @ViewBag.showMonthly<br>
+                            日期
+                        </th>
+                        <th scope="col" style="width:10%">
+                            柴油60kW<br />總發電量
+                        </th>
+                        <th scope="col" style="width:10%">
+                            總PV<br />發電量
+                        </th>
+                        <th scope="col" style="width:10%">
+                            總負載<br />用電量
+                        </th>
+                        <th scope="col" style="width:10%">
+                            台電<br />總用電量
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Day)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TotalGenerator)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TotalPV)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TotalLoad)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TotalTPC)
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-2">
+        </div>
+    </div>
+}
+
+
+

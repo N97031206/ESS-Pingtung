@@ -1,0 +1,150 @@
+﻿
+<div class="row">
+    <div class="col h3">
+        <p>發電機</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col h6">
+        <div class="row " id="AppGenData">
+            <div class="col font-weight-bold ">資料時間:@ViewBag.EssTime </div>
+            <div class="w-100 line"></div>
+            <div class="col font-weight-bold small">@ViewBag.GenInfo1</div>
+            @*<div class="col font-italic"></div>*@
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">發電機油位 (%)</div>
+            <div class="col font-italic">@ViewBag.GenInfo2</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">L1-N相電壓(V)</div>
+            <div class="col font-italic">@ViewBag.GenInfo3</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">L2-N相電壓(V)</div>
+            <div class="col font-italic">@ViewBag.GenInfo4</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">L3-N相電壓 (V)</div>
+            <div class="col font-italic">@ViewBag.GenInfo5</div>
+            <div class="w-100"></div>
+            <div class="col  font-weight-bold small">L1相電流(A)</div>
+            <div class="col font-italic">@ViewBag.GenInfo6</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">L2相電流(A)</div>
+            <div class="col font-italic">@ViewBag.GenInfo7</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">L3相電流(A)</div>
+            <div class="col font-italic">@ViewBag.GenInfo8</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">總實功率(kW)</div>
+            <div class="col font-italic">@ViewBag.GenInfo9</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">平均功率因數</div>
+            <div class="col font-italic">@ViewBag.GenInfo10</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">正的千瓦時(度)</div>
+            <div class="col font-italic">@ViewBag.GenInfo11</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">負的千瓦時(度)</div>
+            <div class="col font-italic">@ViewBag.GenInfo12</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">發電機狀態</div>
+            <div class="col font-italic">@ViewBag.GenInfo13</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">可用總電量(度)</div>
+            <div class="col font-italic">@ViewBag.GenInfo14</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">可用電時數(H)</div>
+            <div class="col font-italic">@ViewBag.GenInfo15</div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col text-center" id="mainGenerator" style="width: 320px;height:300px;vertical-align:middle">
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var dom = document.getElementById("mainGenerator");
+                var GeneratorChart = echarts.init(dom);
+                //時間兩位
+                function paddingLeft(str, lenght) {
+                    if (str.length >= lenght)
+                        return str;
+                    else
+                        return paddingLeft("0" + str, lenght);
+                }
+
+                //X軸座標
+                var xData = [];
+                for (var i = 0; i < 24; i++) {
+                    xData.push(paddingLeft(i.toString(), 2) + "時" );
+                }
+                //Y軸座標
+                var Generator1 = [];
+                Generator1.push(@ViewBag.Generator  );
+                option = null;
+                option = {
+                    title: {
+                        text: '發電瓦數',
+                        textStyle: {
+                            fontWeight: 'small',
+                            color: 'block'
+                        },
+                        x: "left"
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        show: true
+                    },
+                    grid: {
+                        left: '2%',
+                        right: '4%',
+                        bottom: '1%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                            name: '時間',
+                            type: 'category',
+                            boundaryGap: false,
+                            data: xData,
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        },
+                    ],
+                    yAxis: [
+                        {
+                            name: '度',
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            "name": "發電機",
+                            "type": "line",
+                            "data": Generator1,
+                            stack: '累加'
+                        },
+                    ]
+                };
+                if (option && typeof option === "object") {
+                    GeneratorChart.setOption(option, true);
+                }
+</script>
+
+

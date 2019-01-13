@@ -52,7 +52,7 @@ namespace Service.ESS.Provider
 
         public Model.LoadPower ReadNow()
         {
-            Domain.LoadPower loadPower = loadRepository.ReadAll().OrderByDescending(x => x.date_Time).FirstOrDefault();
+            Domain.LoadPower loadPower = loadRepository.ReadAll().Where(x=>x.index==2).OrderByDescending(x => x.date_Time).FirstOrDefault();
             return this.mapper.Map<Model.LoadPower>(loadPower);
         }
 

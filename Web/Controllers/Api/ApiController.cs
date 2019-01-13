@@ -17,18 +17,18 @@ namespace Web.Controllers.Api
         #region private
         //Tab
         private BulletinService bulletinService = new BulletinService();
-        private StationService stationService = new StationService();
+        private readonly StationService stationService = new StationService();
         private AlartService alartService = new AlartService();
         private AlartTypeService alarttypeService = new AlartTypeService();
         private OrginService orginService = new OrginService();
         //EMS
-        private ESSObjecterService essObjecterService = new ESSObjecterService();
+        private readonly ESSObjecterService essObjecterService = new ESSObjecterService();
         private BatteryService BatteryService = new BatteryService();
         private GridPowerService GridPowerService = new GridPowerService();
         private GeneratorService GeneratorService = new GeneratorService();
         private LoadPowerService LoadPowerService = new LoadPowerService();
         private InverterService inverterService = new InverterService();
-        private ErrorCodesService errorCodesService = new ErrorCodesService();
+        private readonly ErrorCodesService errorCodesService = new ErrorCodesService();
         #endregion
 
         [Route("api/Index")]

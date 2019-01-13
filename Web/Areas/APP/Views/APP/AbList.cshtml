@@ -1,0 +1,46 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using Service.ESS.Provider;
+@model IPagedList<Service.ESS.Model.Alart>
+@{
+    ViewBag.AppTitle = "警示清單";
+
+    string type = ViewBag.type;
+    string sday= ViewBag.RangeStart;
+    string eday = ViewBag.RangeEnd;
+
+    Layout = "~/Areas/APP/Views/Shared/_LayoutAPPDetail .cshtml";
+    StationService stationService = new StationService();
+    AlartTypeService alarttyprService = new AlartTypeService();
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>警示設備 @ViewBag.equip</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width:40%">警示啟始時間</th>
+                        <th scope="col" style="width:60%">異常描述</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var alart in Model)
+                    {
+                        <tr>
+                            <td>@alart.StartTimet</td>
+                            <td>@alart.AlartContext</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="text-center">@Html.PagedListPager(Model, Page => Url.Action("AbList", new { Page , type,  sday,  eday }))</div>
+        </div>
+    </div>
+</div>
+

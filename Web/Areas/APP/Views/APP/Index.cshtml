@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.AppTitle = "首頁";
+    Layout = "~/Areas/APP/Views/Shared/_LayoutAPPDetail .cshtml";
+}
+
+
+<style type="text/css">
+    .btmStyle {
+        margin: 0;
+        border: 5px solid hsla(0,0%,100%,.1);
+        background-clip: padding-box;
+    }
+
+</style>
+
+
+<button type="button" class="btn btn-info btn-lg btn-block btmStyle" onclick="location.href='@Url.Action("Info", "APP")'">
+        <div class="row" >
+            <div class="col-4 "   >
+                <p style="font-size:xx-large;margin:0">大武</p>
+            </div>
+            <div class="col-4 " >
+                <div class="font-italic" style="font-size:xx-small">可用總電量 </div>
+                <div class="font-italic" ><p style="font-size:medium;margin:0">@ViewBag.Demand</p></div>
+            </div>
+            <div class="col-4 " >
+                <div class="font-italic" style="font-size:xx-small">可用電時數</div>
+                <div class="font-italic"><p style="font-size:medium;margin:0">@ViewBag.RemainTime</p></div>
+            </div>
+        </div>
+</button>
+
+<button type="button" class="btn btn-info btn-lg btn-block btmStyle" onclick="location.href='@Url.Action("GuanTsai", "APP")'">
+    <div class="row">
+        <div class="col-4 ">
+            <p style="font-size:xx-large;margin:0">光采</p>
+        </div>
+        <div class="col-4 ">
+            <div class="font-italic" style="font-size:xx-small">可用總電量 </div>
+            <div class="font-italic"><p style="font-size:medium;margin:0"></p></div>
+        </div>
+        <div class="col-4 ">
+            <div class="font-italic" style="font-size:xx-small">可用電時數</div>
+            <div class="font-italic"><p style="font-size:medium;margin:0"></p></div>
+        </div>
+    </div>
+</button>
+
+<button type="button" class="btn btn-info btn-lg btn-block btmStyle">
+    <div class="row">
+        <div class="col-4 ">
+            <p style="font-size:xx-large;margin:0">佳興</p>
+        </div>
+        <div class="col-4 ">
+            <div class="font-italic" style="font-size:xx-small">可用總電量 </div>
+            <div class="font-italic"><p style="font-size:medium;margin:0"></p></div>
+        </div>
+        <div class="col-4 ">
+            <div class="font-italic" style="font-size:xx-small">可用電時數</div>
+            <div class="font-italic"><p style="font-size:medium;margin:0"></p></div>
+        </div>
+    </div>
+</button>

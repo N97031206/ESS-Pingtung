@@ -11,22 +11,12 @@ namespace Web.Controllers
     public class MonitorController : Controller
     {
         #region private
-        //Tab
-        private AccountService accountService = new AccountService();
-        private BulletinService bulletinService = new BulletinService();
-        private StationService stationService = new StationService();
-        private AlartService alartService = new AlartService();
-        private AlartTypeService alarttypeService = new AlartTypeService();
-        private OrginService orginService = new OrginService();
-        //EMS
         private ESSObjecterService ESSObjecterService = new ESSObjecterService();
         private BatteryService BatteryService = new BatteryService();
         private GridPowerService GridPowerService = new GridPowerService();
         private GeneratorService GeneratorService = new GeneratorService();
         private LoadPowerService LoadPowerService = new LoadPowerService();
         private InverterService InverterService = new InverterService();
-        //分頁
-        private int PageSizes() { if (!int.TryParse(ConfigurationManager.AppSettings["PageSize"], out int s)) { s = 10; } return s; }
         //Log檔
         private static Logger logger = NLog.LogManager.GetCurrentClassLogger();
         #endregion
@@ -69,7 +59,6 @@ namespace Web.Controllers
                 Solar = Math.Round(InverterService.ReadNow().SPM90ActivePower.Split('|').ToList().Sum(x => string.IsNullOrEmpty(x) ? 0 : Convert.ToDouble(x) / 1000.0), 2),
                 GirdPower = Math.Round( GridPowerService.ReadNow().Watt_t/1000.00,2),
                 Load = Math.Round(LoadPowerService.ReadNow().Watt_t/1000.00,2),
-                //GeneratorPower=Math.Round(GeneratorService.ReadNow().positiveKWhours/1000.00,2),
                 BatteyMode = (cd == 1)?"充電": (cd == 2) ? "放電": "離線",
                 BatteySOC =  BatteryService.EachSOC(battery.voltage),
                 BatteyPower = (cd == 1) ?  Math.Round(battery.charging_watt/1000.0,2): (cd == 2) ?Math.Round(battery.discharging_watt/1000.0,2) : 0,

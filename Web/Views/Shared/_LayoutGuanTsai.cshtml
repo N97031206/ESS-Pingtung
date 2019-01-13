@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width , initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    @Html.Partial("Stylesheet")
+    @Html.Partial("Scripts")
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="container-fluid  text-center" style="min-height:80px " width="100%">
+        <!---->
+        <div class="row">
+            <div class="col-4 align-bottom text-left" style="margin:auto">
+                <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Tab")'">
+                    霧台大武
+                </button>
+                <button type="button" class="btn btn-secondary btn-lg" onclick="location.href='@Url.Action("Index", "GuanTsai")'">
+                    林邊光采
+                </button>
+                <button type="button" class="btn btn-success">
+                    泰武佳興
+                </button>
+            </div>
+            <div class="col-4 " style="font-family:DFKai-sb;">
+                <img width="50" height="50" src="~/Content/Image/Emblem_of_Pingtung_County.png" />
+                <h4>@ViewBag.Logo</h4>
+            </div>
+            <div class="col-4  " style="margin:auto" >
+                <div class="align-bottom text-right">@ViewBag.User  @Html.ActionLink("登出", "Logout", "Account")</div>
+            </div>
+        </div>
+        <!---->
+        <div class="row bg-dark">
+            <div class="col-md-12">
+                @Html.Partial("_GuanTsaiButtom")
+            </div>
+        </div>
+        <!---->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mainBody">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+ @*Modal 
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img src="~/Content/Image/android.png" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-lg btn-bloc" onclick="location.href='@Url.Action("Download", "Tab")'">下載APP</button>
+            </div>
+        </div>
+    </div>
+</div>*@

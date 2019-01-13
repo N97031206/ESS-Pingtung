@@ -40,7 +40,7 @@ namespace Web.Controllers
         private static Logger logger = NLog.LogManager.GetCurrentClassLogger();
         #endregion
 
-        #region Index
+        #region Index首頁
         /// <summary>
         /// 首頁
         /// </summary>
@@ -54,25 +54,7 @@ namespace Web.Controllers
         }
         #endregion
 
-        #region QRCode
-        [Authorize]
-        public ActionResult QRCode()
-        {
-            TagTitle();
-            NavButtom("QRCode");
-            return View();
-        }
-
-        public ActionResult Download()
-        {
-            string file = Server.MapPath(@"~\Content\Aside\app-debug.apk");
-            string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            return File(file, contentType, Path.GetFileName(file));
-        }
-
-        #endregion
-
-        #region Bulletin
+        #region Bulletin公告資訊
         /// <summary>
         /// 公告資訊
         /// </summary>
@@ -229,7 +211,7 @@ namespace Web.Controllers
 
         #endregion
 
-        #region Info
+        #region Info 及時資訊
         /// <summary>
         /// 及時資訊
         /// </summary>
@@ -242,7 +224,7 @@ namespace Web.Controllers
             Pills();
             StationList();
 
-            tabType = string.IsNullOrEmpty(tabType) ? "GridPower" : tabType;
+            tabType = string.IsNullOrEmpty(tabType) ? "Load" : tabType;//預設
             InfoNav(tabType);
             ChartData(tabType);
             ViewBag.OnView = true;
@@ -592,7 +574,7 @@ namespace Web.Controllers
         }
         #endregion
 
-        #region Abnormal
+        #region Abnormal異常警示
         /// <summary>
         /// 異常警示
         /// </summary>
@@ -676,7 +658,7 @@ namespace Web.Controllers
         }
         #endregion
 
-        #region History
+        #region History歷史資訊
         /// <summary>
         /// 歷史資訊
         /// </summary>
@@ -831,7 +813,6 @@ namespace Web.Controllers
                                     conlumnIndex = 1;   //每筆資料欄位起始位置
                                     foreach (var gps in data)
                                     {
-                                        int count = 1;
                                         if (!string.IsNullOrEmpty(gps.GridPowerIDs))
                                         {
                                             DateTime time = gps.UpdateDate.AddHours(8);
@@ -849,27 +830,26 @@ namespace Web.Controllers
                                                         GridPower gridPowers = GridPowerService.ReadByID(ID);
                                                         if (gridPowers != null && gridPowers.index == 0)
                                                         {
-                                                            Timer = gps.UpdateDate.AddHours(8).ToString();
-                                                            T1 += gridPowers.Vavg;
-                                                            T2 += gridPowers.Isum;
-                                                            T3 += gridPowers.Watt_t / 1000.0;
-                                                            T4 += gridPowers.Var_t / 1000.00;
-                                                            T5 += gridPowers.VA_t / 1000.00;
-                                                            T6 += gridPowers.PF_t;
-                                                            T7 += gridPowers.Frequency;
-                                                            T8 += gridPowers.MinuskWHt;
-                                                            count++;
+                                                                Timer = gps.UpdateDate.AddHours(8).ToString();
+                                                                T1 = gridPowers.Vavg;
+                                                                T2 = gridPowers.Isum;
+                                                                T3 = gridPowers.Watt_t / 1000.0;
+                                                                T4 = gridPowers.Var_t / 1000.00;
+                                                                T5 = gridPowers.VA_t / 1000.00;
+                                                                T6 = gridPowers.PF_t;
+                                                                T7 = gridPowers.Frequency;
+                                                                T8 = gridPowers.MinuskWHt;                                                          
                                                         }
                                                     }
                                                 }
                                                 sheet.Cells[rowIdx, 1].Value = Timer.ToString();
-                                                sheet.Cells[rowIdx, 2].Value = Math.Round(T1 / count, 2);
+                                                sheet.Cells[rowIdx, 2].Value = Math.Round(T1 ,2);
                                                 sheet.Cells[rowIdx, 3].Value = Math.Round(T2, 2);
                                                 sheet.Cells[rowIdx, 4].Value = Math.Round(T3, 2);
                                                 sheet.Cells[rowIdx, 5].Value = Math.Round(T4, 2);
                                                 sheet.Cells[rowIdx, 6].Value = Math.Round(T5, 2);
-                                                sheet.Cells[rowIdx, 7].Value = Math.Round(T6 / count, 2);
-                                                sheet.Cells[rowIdx, 8].Value = Math.Round(T7 / count, 2);
+                                                sheet.Cells[rowIdx, 7].Value = Math.Round(T6, 2);
+                                                sheet.Cells[rowIdx, 8].Value = Math.Round(T7, 2);
                                                 sheet.Cells[rowIdx, 9].Value = Math.Round(T8, 2);
                                                 conlumnIndex++;
                                                 rowIdx++;
@@ -1293,7 +1273,6 @@ namespace Web.Controllers
                                 Response.End();
                             }
                         }
-
                         //TempData["message"] = "匯出" + reportName ;
                     }
                     catch (Exception ex)
@@ -1383,7 +1362,7 @@ namespace Web.Controllers
         }
         #endregion
 
-        #region  Maintain
+        #region  Maintain維護管理
         /// <summary>
         /// 維護管理
         /// </summary>
@@ -1530,6 +1509,24 @@ namespace Web.Controllers
             };
             Guid ID = orginService.Update(orgin);
             return RedirectToAction("ListOrgin", "Tab");
+        }
+
+        #endregion
+
+        #region QRCode下載
+        [Authorize]
+        public ActionResult QRCode()
+        {
+            TagTitle();
+            NavButtom("QRCode");
+            return View();
+        }
+
+        public ActionResult Download()
+        {
+            string file = Server.MapPath(@"~\Content\Aside\app-debug.apk");
+            string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            return File(file, contentType, Path.GetFileName(file));
         }
 
         #endregion

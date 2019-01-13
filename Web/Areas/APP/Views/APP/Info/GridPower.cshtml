@@ -1,0 +1,136 @@
+﻿
+<div class="row">
+    <div class="col h3">
+        <p> 市電</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col h6">
+        <div class="row " id="AppGridData">
+            <div class="col font-weight-bold ">資料時間:@ViewBag.EssTime</div>
+            @*<div class="col font-italic"></div>*@
+            <div class="w-100 line"></div>
+            <div class="col font-weight-bold  ">@ViewBag.gridInfo1</div>
+            @*<div class="col font-italic">@Info1</div>*@
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電壓(V)</div>
+            <div class="col font-italic">@ViewBag.gridInfo2</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電流(A)</div>
+            <div class="col font-italic">@ViewBag.gridInfo3</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">實功率(kW)</div>
+            <div class="col font-italic">@ViewBag.gridInfo4</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">虛功率(kVAR)</div>
+            <div class="col font-italic">@ViewBag.gridInfo5</div>
+            <div class="w-100"></div>
+            <div class="col  font-weight-bold small">視在功率(kVA)</div>
+            <div class="col font-italic">@ViewBag.gridInfo6</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">功率因數(PF)</div>
+            <div class="col font-italic">@ViewBag.gridInfo7</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">頻率(Hz)</div>
+            <div class="col font-italic">@ViewBag.gridInfo8</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">當日用電量(度)</div>
+            <div class="col font-italic">@ViewBag.gridInfo9</div>
+            <div class="w-100"></div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col text-center" id="mainGridPower" style="width: 320px;height:300px;vertical-align:middle">
+    </div>
+</div>
+
+<script type="text/javascript">
+    var dom = document.getElementById("mainGridPower");
+                var GridPowerChart = echarts.init(dom);
+                //時間兩位
+                function paddingLeft(str, lenght) {
+                if (str.length >= lenght)
+                    return str;
+                else
+                    return paddingLeft("0" + str, lenght);
+            }
+                //X軸座標
+            var xData = [];
+            for (var i = 0; i < 24; i++) {
+                xData.push(paddingLeft(i.toString(), 2) + "時" );
+            }
+            //Y軸座標
+                var Grid1 = [];
+                Grid1.push(@ViewBag.Grid );
+                option = null;
+                option = {
+                    title: {
+                        text: '市電',
+                        textStyle: {
+                            fontWeight: 'small',
+                            color: 'block'
+                        },
+                        x: "left"
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        show: true
+                    },
+                    grid: {
+                        left: '2%',
+                        right: '4%',
+                        bottom: '1%',
+                        containLabel: true
+                    },
+                    legend: {
+                        data: ['市電迴路']
+                    },                 
+                    xAxis: [
+                        {
+                            name: '時間',
+                            type: 'category',
+                            boundaryGap: false,
+                            data: xData,
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        },
+                    ],
+                    yAxis: [
+                        {
+                            name: '度',
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            "name": "市電迴路",
+                            "type": "line",
+                            "data": Grid1,
+                            "areaStyle": {},
+                            stack: '累加'
+                        }
+                    ]
+                };
+                if (option && typeof option === "object") {
+                    GridPowerChart.setOption(option, true);
+                }
+</script>
+
+

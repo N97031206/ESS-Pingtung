@@ -34,19 +34,19 @@
 {
     <ul class="nav nav-pills  navtop h3">
         <li class="nav-item">
-            <a class="@TempData["navGridPower"] " href="#InfoGridPower" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="GridPower"})'"> @ViewBag.GridPower</a>
-        </li>
-        <li class="nav-item">
-            <a class="@TempData["navBattery"]" href="#InfoBattery" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Battery"})'">@ViewBag.Battery</a>
+            <a class="@TempData["navLoad"]" href="#InfoLoad" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Load"})'">@ViewBag.Load</a>
         </li>
         <li class="nav-item">
             <a class="@TempData["navSolar"]" href="#InfoSolar" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Solar"})'">@ViewBag.Solar</a>
         </li>
         <li class="nav-item">
-            <a class="@TempData["navLoad"]" href="#InfoLoad" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Load"})'">@ViewBag.Load</a>
+            <a class="@TempData["navGridPower"] " href="#InfoGridPower" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="GridPower"})'"> @ViewBag.GridPower</a>
         </li>
         <li class="nav-item">
             <a class="@TempData["navGenerator"]" href="#InfoGenerator" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Generator"})'">@ViewBag.Generator</a>
+        </li>
+        <li class="nav-item">
+            <a class="@TempData["navBattery"]" href="#InfoBattery" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Battery"})'">@ViewBag.Battery</a>
         </li>
         <li class="nav-item">
             <a class="@TempData["navInverters"]" href="#InfoInverters" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Inverters"})'">@ViewBag.Inverters</a>

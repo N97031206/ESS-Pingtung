@@ -59,8 +59,8 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="EPPlus, Version=4.5.2.1, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
-      <HintPath>..\packages\EPPlus.4.5.2.1\lib\net40\EPPlus.dll</HintPath>
+    <Reference Include="EPPlus, Version=4.5.3.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.5.3\lib\net40\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="ExcelNumberFormat, Version=1.0.3.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
       <HintPath>..\packages\ExcelNumberFormat.1.0.3\lib\net20\ExcelNumberFormat.dll</HintPath>
@@ -68,8 +68,8 @@
     <Reference Include="FastMember.Signed, Version=1.4.1.0, Culture=neutral, PublicKeyToken=9e8f22703bef9a29, processorArchitecture=MSIL">
       <HintPath>..\packages\FastMember.Signed.1.4.1\lib\net461\FastMember.Signed.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.1.0.145, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.1.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -92,17 +92,17 @@
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.5.11\lib\net45\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI, Version=2.4.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NPOI.2.4.0\lib\net40\NPOI.dll</HintPath>
+    <Reference Include="NPOI, Version=2.4.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.4.1\lib\net45\NPOI.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.OOXML, Version=2.4.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NPOI.2.4.0\lib\net40\NPOI.OOXML.dll</HintPath>
+    <Reference Include="NPOI.OOXML, Version=2.4.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.4.1\lib\net45\NPOI.OOXML.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.OpenXml4Net, Version=2.4.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NPOI.2.4.0\lib\net40\NPOI.OpenXml4Net.dll</HintPath>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.4.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.4.1\lib\net45\NPOI.OpenXml4Net.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.OpenXmlFormats, Version=2.4.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NPOI.2.4.0\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.4.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.4.1\lib\net45\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -119,8 +119,8 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Collections.Immutable, Version=1.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.1.4.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+    <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.5.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.Specialized, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Collections.Specialized.4.3.0\lib\net46\System.Collections.Specialized.dll</HintPath>
@@ -199,8 +199,8 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net.Security, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Net.Security.4.3.0\lib\net46\System.Net.Security.dll</HintPath>
+    <Reference Include="System.Net.Security, Version=4.0.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Security.4.3.2\lib\net46\System.Net.Security.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
@@ -215,6 +215,7 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
@@ -328,15 +329,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\addons\jquery.mmenu.counters.css" />
+    <Content Include="Content\addons\jquery.mmenu.dragopen.css" />
+    <Content Include="Content\addons\jquery.mmenu.header.css" />
+    <Content Include="Content\addons\jquery.mmenu.labels.css" />
+    <Content Include="Content\addons\jquery.mmenu.searchfield.css" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\extensions\jquery.mmenu.effects.css" />
+    <Content Include="Content\extensions\jquery.mmenu.fullscreen.css" />
+    <Content Include="Content\extensions\jquery.mmenu.ie8.css" />
+    <Content Include="Content\extensions\jquery.mmenu.positioning.css" />
+    <Content Include="Content\extensions\jquery.mmenu.themes.css" />
+    <Content Include="Content\extensions\jquery.mmenu.widescreen.css" />
     <Content Include="Content\Image\android.png" />
+    <Content Include="Content\Image\APP\AC.png" />
+    <Content Include="Content\Image\APP\Battery.png" />
+    <Content Include="Content\Image\APP\Load.png" />
+    <Content Include="Content\Image\APP\Power.png" />
     <Content Include="Content\Image\Arrow\breakIN-icon.png" />
     <Content Include="Content\Image\Arrow\arrow.gif" />
+    <Content Include="Content\Image\BackupGroup.png" />
     <Content Include="Content\Image\Emblem_of_Pingtung_County.png" />
     <Content Include="Content\Image\favicon.ico" />
     <Content Include="Content\Image\太陽能.png" />
@@ -346,6 +363,8 @@
     <Content Include="Content\Image\allinone.png" />
     <Content Include="Content\Image\防災儲能系統.png" />
     <Content Include="Content\Image\電池.png" />
+    <Content Include="Content\jquery.mmenu.all.css" />
+    <Content Include="Content\jquery.mmenu.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -390,6 +409,16 @@
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\addons\jquery.mmenu.counters.js" />
+    <Content Include="Scripts\addons\jquery.mmenu.counters.min.js" />
+    <Content Include="Scripts\addons\jquery.mmenu.dragopen.js" />
+    <Content Include="Scripts\addons\jquery.mmenu.dragopen.min.js" />
+    <Content Include="Scripts\addons\jquery.mmenu.header.js" />
+    <Content Include="Scripts\addons\jquery.mmenu.header.min.js" />
+    <Content Include="Scripts\addons\jquery.mmenu.labels.js" />
+    <Content Include="Scripts\addons\jquery.mmenu.labels.min.js" />
+    <Content Include="Scripts\addons\jquery.mmenu.searchfield.js" />
+    <Content Include="Scripts\addons\jquery.mmenu.searchfield.min.js" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-aria.js" />
@@ -446,16 +475,6 @@
     <Content Include="Scripts\ECharts\chart\wordCloud.js" />
     <Content Include="Scripts\ECharts\echarts-all.js" />
     <Content Include="Scripts\ECharts\echarts.js" />
-    <Content Include="Scripts\bootstrap.min.js.map" />
-    <Content Include="Scripts\bootstrap.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.js.map" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-reboot.min.css.map" />
-    <Content Include="Content\bootstrap-reboot.css.map" />
-    <Content Include="Content\bootstrap-grid.min.css.map" />
-    <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="Scripts\ECharts\echarts.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
@@ -470,6 +489,54 @@
     </Content>
     <Content Include="Content\Aside\app-debug.apk" />
     <Content Include="Areas\APP\Views\web.config" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Areas\APP\Views\Account\Login.cshtml" />
+    <Content Include="Areas\APP\Views\Shared\_LayoutAPPDetail .cshtml" />
+    <Content Include="Areas\APP\Views\Shared\_LayoutAPPLogin.cshtml" />
+    <Content Include="Areas\APP\Views\APP\Index.cshtml" />
+    <Content Include="Areas\APP\Views\APP\Info\Load.cshtml" />
+    <Content Include="Areas\APP\Views\APP\Info\Inverters.cshtml" />
+    <Content Include="Areas\APP\Views\APP\Info\Battery.cshtml" />
+    <Content Include="Areas\APP\Views\APP\Info\Generator.cshtml" />
+    <Content Include="Areas\APP\Views\APP\Info\GridPower.cshtml" />
+    <Content Include="Areas\APP\Views\APP\Info\Solar.cshtml" />
+    <Content Include="Areas\APP\Views\APP\Bulletin.cshtml" />
+    <Content Include="Areas\APP\Views\APP\History.cshtml" />
+    <Content Include="Areas\APP\Views\APP\Abnormal.cshtml" />
+    <Content Include="Areas\APP\Views\APP\Info.cshtml" />
+    <Content Include="Areas\APP\Views\APP\AbList.cshtml" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181211.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181212.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181213.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181214.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181215.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181216.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181217.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181218.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181219.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181220.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181221.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181222.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181223.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181224.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181225.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181226.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181227.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181228.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181229.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181230.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181231.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20190101.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20190102.xlsx" />
+    <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20190103.xlsx" />
+    <Content Include="Content\GuanTsai\MonthlyReport\MONTHLYREPORT_SAMPLE_20181101.xlsx" />
+    <Content Include="Content\GuanTsai\MonthlyReport\MONTHLYREPORT_SAMPLE_20181201.xlsx" />
+    <Content Include="Areas\APP\Views\APP\GuanTsai.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -487,7 +554,22 @@
     <Content Include="Scripts\angular-cookies.min.js.map" />
     <Content Include="Scripts\angular-aria.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Scripts\flexslider\flexslider.less" />
+    <Content Include="Scripts\flexslider\fonts\flexslider-icon.eot" />
+    <Content Include="Scripts\flexslider\fonts\flexslider-icon.ttf" />
+    <Content Include="Scripts\flexslider\fonts\flexslider-icon.woff" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\flexslider\flexslider-rtl-min.css" />
+    <Content Include="Scripts\flexslider\flexslider-rtl.css" />
+    <Content Include="Scripts\flexslider\flexslider.css" />
+    <Content Include="Scripts\flexslider\fonts\flexslider-icon.svg" />
+    <Content Include="Scripts\flexslider\images\bg_play_pause.png" />
+    <Content Include="Scripts\flexslider\jquery.flexslider-min.js" />
+    <Content Include="Scripts\flexslider\jquery.flexslider.js" />
     <Content Include="Scripts\i18n\angular-locale_af-na.js" />
     <Content Include="Scripts\i18n\angular-locale_af-za.js" />
     <Content Include="Scripts\i18n\angular-locale_af.js" />
@@ -1232,6 +1314,9 @@
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\jquery.mmenu.js" />
+    <Content Include="Scripts\jquery.mmenu.min.all.js" />
+    <Content Include="Scripts\jquery.mmenu.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\myAngularJS\Web.js" />
     <Content Include="Scripts\myAngularJS\frame.js" />
@@ -1281,15 +1366,20 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\APP\APPAreaRegistration.cs" />
+    <Compile Include="Areas\APP\Controllers\AccountController.cs" />
+    <Compile Include="Areas\APP\Controllers\APPController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\ApiController.cs" />
     <Compile Include="Controllers\DataInputController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\GuanTsaiController.cs" />
     <Compile Include="Controllers\MonitorController.cs" />
     <Compile Include="Controllers\TabController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\GuanTsai\DailyReportData.cs" />
+    <Compile Include="Models\GuanTsai\MonthlyReportData.cs" />
     <Compile Include="Models\Json\Batterys\AlarmState.cs" />
     <Compile Include="Models\Json\Batterys\cells.cs" />
     <Compile Include="Models\Json\GridPower\info.cs" />
@@ -1347,7 +1437,6 @@
     <Content Include="Views\Tab\history\historyInverters.cshtml" />
     <Content Include="Views\Tab\history\historySolar.cshtml" />
     <Content Include="Views\DataInput\Alart.cshtml" />
-    <Content Include="Views\Shared\InfoChart.cshtml" />
     <Content Include="Views\Shared\_InfoButtom.cshtml" />
     <Content Include="Views\Tab\Index.cshtml" />
     <Content Include="Views\Monitor\Frames.cshtml" />
@@ -1364,6 +1453,15 @@
     <Content Include="Views\Tab\DeleteOrgin.cshtml" />
     <Content Include="Views\Tab\EditOrgin.cshtml" />
     <Content Include="Views\Tab\QRCode.cshtml" />
+    <Content Include="Views\Shared\mmenu.cshtml" />
+    <Content Include="Views\Shared\flexslider.cshtml" />
+    <Content Include="Views\GuanTsai\MonthlyReport.cshtml" />
+    <Content Include="Views\GuanTsai\DailyReport.cshtml" />
+    <Content Include="Views\Shared\_LayoutGuanTsai.cshtml" />
+    <Content Include="Views\GuanTsai\Index.cshtml" />
+    <Content Include="Views\Shared\_GuanTsaiButtom.cshtml" />
+    <Content Include="Views\GuanTsai\FileUpload.cshtml" />
+    <Content Include="Views\GuanTsai\DailyReport - 複製.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1374,9 +1472,7 @@
   <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\APP\Controllers\" />
     <Folder Include="Areas\APP\Models\" />
-    <Folder Include="Areas\APP\Views\Shared\" />
     <Folder Include="Models\Api\" />
   </ItemGroup>
   <ItemGroup>

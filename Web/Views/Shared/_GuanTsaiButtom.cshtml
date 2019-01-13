@@ -1,0 +1,12 @@
+﻿@using Support.Authorize;
+
+<div class="row text-center justify-content-center ">
+    <div class="col-sm col-md col-lg">
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+            <button type="button" class="@TempData["ButtomMonthlyReport"]" onclick="location.href='@Url.Action("Index", "GuanTsai")'">月報表</button>
+            <button type="button" class="@TempData["ButtomDailyReport"]" onclick="location.href='@Url.Action("DailyReport", "GuanTsai")'">日報表</button>
+            <button type="button" class="@TempData["ButtomFileUpload"]" onclick="location.href='@Url.Action("FileUpload", "GuanTsai")'">報表上傳</button>
+        </div>
+    </div>
+</div>
+

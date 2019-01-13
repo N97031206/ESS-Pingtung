@@ -1,0 +1,176 @@
+﻿@model IEnumerable<Web.Models.GuanTsai.DailyReportData>
+@{
+    ViewBag.Title = "光采日報表";
+    Layout = "~/Views/Shared/_LayoutGuanTsai.cshtml";
+    bool ChkDailyData = ViewBag.ChkData;
+    var yearsMonth = ViewBag.MainItemBtn;
+    var days = ViewBag.SubItembtm;
+}
+
+    @*<div class="row">
+            @using (Html.BeginForm("DailyReport", "GuanTsai", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="col h2" style="margin-top:20px">
+                    @Html.Label("日報表")
+                    @Html.DropDownList("DailyReport", (IEnumerable<SelectListItem>)ViewBag.filename)
+                    <button type="submit" class="btn btn-success btn-lg" id="btnBulletin" style="vertical-align:top">查詢</button>
+                </div>
+            }
+        </div>*@
+
+    <div class="row">
+        <div class="col">
+            @Html.Label("年月", new { @class = "h3" })
+            <div class="btn-group" role="group" aria-label="Basic example">
+                @using (Html.BeginForm("DailyReport", "GuanTsai", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    foreach (var year in yearsMonth)
+                    {
+                        <button type="submit" class="btn btn-success btn " style="vertical-align:top" name="@year" value="@year">@year</button>
+                    }
+                    <input type="hidden" value="N" name="daily" />
+                    <input type="hidden" value="Y" name="monthly" />
+                }
+            </div>
+        </div>
+        <div class="w-100" style="height:1vh"></div>
+        <div class="col">
+            @Html.Label("日期", new { @class = "h3" })
+            <div class="btn-group" role="group" aria-label="Basic example">
+                @if (days != null)
+                {
+                    using (Html.BeginForm("DailyReport", "GuanTsai", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        foreach (var day in days)
+                        {
+                            <button type="submit" class="btn btn-info" id="daily" style="vertical-align:top" name="daily" value="@day">@day</button>
+                        }
+                        <input type="hidden" value="@ViewBag.hiddenYear" id="monthly" name="monthly" />
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+
+    @if (ChkDailyData)
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col" style="width:10%">
+                        @ViewBag.showDaily<br>
+                        時間
+                    </th>
+                    <th scope="col" style="width:7%">
+                        柴油60kW<br>
+                        即時發電量
+                    </th>
+                    <th scope="col" style="width:7%">
+                        屋後(一)6kW<br>
+                        即時發電量
+                    </th>
+                    <th scope="col" style="width:7%">
+                        屋後(二)6kW<br>
+                        即時發電量
+                    </th>
+                    <th scope="col" style="width:7%">
+                        屋頂(三)12kW<br>
+                        即時發電量
+                    </th>
+                    <th scope="col" style="width:7%">
+                        屋頂(四)12kW<br>
+                        即時發電量
+                    </th>
+                    <th scope="col" style="width:7%">
+                        分電盤P7<br>
+                        即時用電量
+                    </th>
+                    <th scope="col" style="width:7%">
+                        分電盤P7(110V)<br>
+                        即時用電量
+                    </th>
+                    <th scope="col" style="width:7%">
+                        分電盤P7(220V)<br>
+                        即時用電量
+                    </th>
+                    <th scope="col" style="width:7%">
+                        分電盤P9<br>
+                        即時用電量
+                    </th>
+                    <th scope="col" style="width:7%">
+                        分電盤P9(110V)<br>
+                        即時用電量
+                    </th>
+                    <th scope="col" style="width:7%">
+                        總PV<br>
+                        即時發電量
+                    </th>
+                    <th scope="col" style="width:7%">
+                        總負載<br>
+                        即時用電量
+                    </th>
+                    <th scope="col" style="width:7%">
+                        台電<br>
+                        總用電量
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Time)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Generator)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HomeOnePower)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HomeTwoPower)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HomeThreePower)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HomeFourPower)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.P7TimelyPower)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.P7Timely110VPower)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.P7Timely220VPower)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.P9TimelyPower)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.P9Timely110VPower)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalPVTimelyPower)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalLoad)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalTPC)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+
+
+

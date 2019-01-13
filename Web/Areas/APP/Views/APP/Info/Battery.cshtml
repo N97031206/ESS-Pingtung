@@ -1,0 +1,137 @@
+﻿@using Service.ESS.Provider;
+@using Service.ESS.Model;
+@{
+    BatteryService BatteryService = new BatteryService();
+    List<Battery> batteries = new List<Battery>();
+    batteries = ViewBag.BatteryInfo;
+    string EssTime = ViewBag.EssTime;
+}
+
+<div class="row">
+    <div class="col h3">
+        <p> 電池</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col h6">
+        @if (batteries != null)
+        {
+            <div class="row " id="AppBatteryData">
+                <div class="col font-weight-bold ">資料時間:@EssTime</div>
+                @*<div class="col font-italic"></div>*@
+                @foreach (var ba in batteries)
+                {
+                    string Info1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? ba.index.ToString() : ba.index.ToString() + "(目前離線中)";
+                    string Info2 = string.Format("{0:#,0.00}", ba.voltage);
+                    string Info3 = string.Format("{0:#,0.00}", ba.charging_current);
+                    string Info4 = string.Format("{0:#,0.00}", ba.discharging_current);
+                    string Info5 = string.Format("{0:#,0.00}", BatteryService.EachSOC(ba.voltage));
+                    string Info6 = string.Format("{0:#,0}", ba.Cycle);
+                    int cd = Convert.ToInt32(ba.charge_direction);
+                    string Info7 = (cd == 1) ? "充電" : (cd == 2) ? "放電" : "離線";
+                    <div class="w-100 line"></div>
+                    <div class="col font-weight-bold ">電池組 @Info1</div>
+                    @*<div class="col font-italic"></div>*@
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">電池電壓(V)</div>
+                    <div class="col font-italic">@Info2</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">充電電流(A)</div>
+                    <div class="col font-italic">@Info3</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">放電電流(A)</div>
+                    <div class="col font-italic">@Info4</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">電池容量(%)</div>
+                    <div class="col font-italic">@Info5</div>
+                    <div class="w-100"></div>
+                    <div class="col  font-weight-bold small">充電次數(次)</div>
+                    <div class="col font-italic">@Info6</div>
+                    <div class="w-100"></div>
+                    <div class="col font-weight-bold small">充電方向</div>
+                    <div class="col font-italic">@Info7</div>
+                }
+            </div>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col text-center" id="mainBattery" style="width: 320px;height:300px;vertical-align:middle">
+    </div>
+</div>
+<script type="text/javascript">
+    var dom = document.getElementById("mainBattery");
+                var BatteryChart = echarts.init(dom);
+                //時間兩位
+                function paddingLeft(str, lenght) {
+                    if (str.length >= lenght)
+                        return str;
+                    else
+                        return paddingLeft("0" + str, lenght);
+                }
+                //X軸座標
+                var xData = [];
+                for (var i = 0; i < 24; i++) {
+                    xData.push(paddingLeft(i.toString(), 2) + "時");
+                }
+                //Y軸座標
+                var BatteryData = [];
+                BatteryData.push(@ViewBag.BatteryData);
+                option = null;
+                option = {       
+                    tooltip: {
+                        trigger: 'axis',
+                        show: true
+                    },
+                    grid: {
+                        left: '2%',
+                        right: '4%',
+                        bottom: '1%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                            nameLocation:'start',
+                            type: 'category',
+                            boundaryGap: false,
+                            data: xData,
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        },
+                    ],
+                    yAxis: [
+                        {
+                            name: '電池容量\n平均(%)',
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            "name": "電池容量平均(%)",
+                            "type": "line",
+                            "data": BatteryData,
+                            areaStyle: {}
+                        }
+                    ]
+                };
+                if (option && typeof option === "object") {
+                    BatteryChart.setOption(option, true);
+                }
+</script>
+

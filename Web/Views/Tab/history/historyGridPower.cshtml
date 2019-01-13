@@ -118,28 +118,30 @@
                             {
                                 Guid ID = Guid.Parse(gp);
                                 GridPower gridPowers = gridPowerService.ReadByID(ID);
-                              
                                 Timer = time.ToString();
-                                T1 += gridPowers.Vavg;
-                                T2 += gridPowers.Isum;
-                                T3 += gridPowers.Watt_t / 1000.0;
-                                T4 += gridPowers.Var_t / 1000.00;
-                                T5 += gridPowers.VA_t / 1000.00;
-                                T6 += gridPowers.PF_t;
-                                T7 += gridPowers.Frequency;
-                                T8 += gridPowers.MinuskWHt;
-                                x++;
+                                if (gridPowers.index==0)
+                                {
+                                    T1 = gridPowers.Vavg;
+                                    T2 = gridPowers.Isum;
+                                    T3 = gridPowers.Watt_t / 1000.0;
+                                    T4 = gridPowers.Var_t / 1000.00;
+                                    T5 = gridPowers.VA_t / 1000.00;
+                                    T6 = gridPowers.PF_t;
+                                    T7 = gridPowers.Frequency;
+                                    T8 = gridPowers.MinuskWHt;
+                                    x++;
+                                }
                             }
                         }
                 <tr>
                     <th scope="row">@Timer</th>
-                    <td>@Math.Round(T1 / x, 2)</td>
+                    <td>@Math.Round(T1, 2)</td>
                     <td>@Math.Round(T2, 2)</td>
                     <td>@Math.Round(T3, 2)</td>
                     <td>@Math.Round(T4, 2)</td>
                     <td>@Math.Round(T5, 2)</td>
-                    <td>@Math.Round(T6 / x, 2)</td>
-                    <td>@Math.Round(T7 / x, 2)</td>
+                    <td>@Math.Round(T6, 2)</td>
+                    <td>@Math.Round(T7, 2)</td>
                     <td>@Math.Round(T8, 2)</td>
                 </tr>
                     }
