@@ -1,8 +1,8 @@
 ﻿@*http://www.daterangepicker.com/*@
 @*https://blog.csdn.net/qing_gee/article/details/65629720*@
 
-<script type="text/javascript" src="~/Scripts/DataPicket/jquery.min.js"></script>
-<script type="text/javascript" src="~/Scripts/DataPicket/moment.min.js"></script>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/moment.min.js"></script>
 <script type="text/javascript" src="~/Scripts/DataPicket/daterangepicker.min.js"></script>
 <link type="text/css" href="~/Scripts/DataPicket/daterangepicker.css" rel="stylesheet" />
 
@@ -14,7 +14,7 @@
             endDate: moment().startOf('hour'),
             locale: {
                 format: 'YYYY/MM/DD hh:mm A',
-                 "separator": " - ",// 两个日期之间的分割线
+                "separator": " - ",// 两个日期之间的分割线
                 "applyLabel": "確定",
                 "cancelLabel": "取消",
                 "fromLabel": "開始日期",
@@ -22,7 +22,9 @@
                 "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
                 "monthNames": ["一月", "二月", "三月", "四月", "五月", "六", "七月", "八月", "九月", "十月", "十一月", "十二月"],
                 "firstDay": 1
-            }
+            },
+            startDate:'@ViewBag.RangeStart',
+             endDate: '@ViewBag.RangeEnd'
         });
     });
 </script>

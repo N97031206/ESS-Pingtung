@@ -31,14 +31,18 @@ namespace Service.ESS.Provider
 
         public List<Model.Alart> ReadAll()
         {
-            List<Domain.Alart> domainalart = alartRepository.ReadAll().ToList();
-            return this.mapper.Map<List<Model.Alart>>(domainalart);
+            return this.mapper.Map<List<Model.Alart>>(alartRepository.ReadAll().OrderByDescending(x => x.StartTimet).ToList());
         }
 
         public List<Model.Alart> ReadListTime(DateTime SD, DateTime ED)
         {
-            List<Domain.Alart> domainalart = alartRepository.ReadListBy(x => x.StartTimet >= SD && x.StartTimet < ED).ToList();
-            return this.mapper.Map<List<Model.Alart>>(domainalart);
+            return this.mapper.Map<List<Model.Alart>>(alartRepository.ReadListBy(x => x.StartTimet >= SD && x.StartTimet < ED).OrderByDescending(x => x.StartTimet).ToList());
+        }
+
+
+        public List<Model.Alart> ReadTimeList(DateTime SD, DateTime ED,Guid SID)
+        {
+            return this.mapper.Map<List<Model.Alart>>(alartRepository.ReadListBy(x => x.StartTimet >= SD && x.StartTimet < ED && x.StationID==SID ).OrderByDescending(x => x.StartTimet).ToList());
         }
 
 
@@ -102,7 +106,7 @@ namespace Service.ESS.Provider
                 }
             }
 
-            return this.mapper.Map<List<Model.Alart>>(domainalart);
+            return this.mapper.Map<List<Model.Alart>>(domainalart.OrderByDescending(x => x.StartTimet));
         }
 
 

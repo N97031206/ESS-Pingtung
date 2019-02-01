@@ -1,7 +1,8 @@
 ﻿
 @{
     ViewBag.Title = "QRCode";
-    Layout = "~/Views/Shared/_LayoutTab.cshtml";
+    int StationNum = ViewBag.StationNum;
+    Layout = StationNum == 6 ? "~/Views/Shared/_LayoutJiasing.cshtml" : "~/Views/Shared/_LayoutTab.cshtml";
 }
 
 <div class="container">

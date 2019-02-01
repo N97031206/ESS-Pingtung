@@ -110,6 +110,7 @@
     <Compile Include="ESS\Provider\OrginService.cs" />
     <Compile Include="ESS\Provider\RoleService.cs" />
     <Compile Include="ESS\Provider\StationService.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

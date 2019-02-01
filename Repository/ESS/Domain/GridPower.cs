@@ -12,6 +12,8 @@ namespace Repository.ESS.Domain
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         //start
+        public Guid uuid { get; set; } //1070118 站點ID
+
         public int version { get; set; }    //	model版本
         public int index { get; set; }  //	陣列編號
         public string modelSerial { get; set; } //	型號

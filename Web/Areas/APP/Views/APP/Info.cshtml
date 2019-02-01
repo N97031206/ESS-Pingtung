@@ -1,53 +1,38 @@
 ﻿@{
-    ViewBag.AppTitle = "即時資訊";
     Layout = "~/Areas/APP/Views/Shared/_LayoutAPPDetail .cshtml";
 }
 @Html.Partial("flexslider")
 
-<style type="text/css">
-    div.opacity {
-        background-color: transparent;
-        border: 0px
-    }
-
-    .flex-direction-nav a.flex-next,
-    .flex-direction-nav a.flex-prev {
-        display: none;
-    }
-
-</style>
-
-
 <div class="container">
-    <div class="flexslider opacity " style="width:auto; margin-left:auto;">
+    <div class="flexslider" style="width:auto; margin-left:auto; background-color: transparent;border: 0px;">
         <ul class="slides">
             <li id="fs1">
-                <div >
+                <div>
                     @Html.Partial("~/Areas/APP/Views/APP/Info/Load.cshtml")
                 </div>
             </li>
             <li id="fs2">
-                <div >
+                <div>
                     @Html.Partial("~/Areas/APP/Views/APP/Info/Solar.cshtml")
                 </div>
             </li>
             <li id="fs3">
-                <div >
+                <div>
                     @Html.Partial("~/Areas/APP/Views/APP/Info/GridPower.cshtml")
                 </div>
             </li>
             <li id="fs4">
-                <div >
+                <div>
                     @Html.Partial("~/Areas/APP/Views/APP/Info/Generator.cshtml")
                 </div>
             </li>
             <li id="fs5">
-                <div >
+                <div>
                     @Html.Partial("~/Areas/APP/Views/APP/Info/Battery.cshtml")
                 </div>
             </li>
             <li id="fs6">
-                <div >
+                <div>
                     @Html.Partial("~/Areas/APP/Views/APP/Info/Inverters.cshtml")
                 </div>
             </li>

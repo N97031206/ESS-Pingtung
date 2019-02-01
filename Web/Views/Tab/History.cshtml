@@ -1,6 +1,8 @@
 ﻿@{
     ViewBag.Title = Resources.Resource.History;
-    Layout = "~/Views/Shared/_LayoutTab.cshtml";
+    string stationID = ViewBag.stationID;
+    int StationNum = ViewBag.StationNum == null ? 2 : ViewBag.StationNum;
+    Layout = StationNum == 6 ? "~/Views/Shared/_LayoutJiasing.cshtml" : "~/Views/Shared/_LayoutTab.cshtml";
 }
 
 @Html.Partial("DataPicketTimer")
@@ -8,14 +10,12 @@
 <br />
 <div class="row h5">
     <div class="col text-left ">
-        @using (Html.BeginForm("History", "Tab", FormMethod.Post))
+        @using (Html.BeginForm("History", "Tab", FormMethod.Post  ))
         {
             @Html.AntiForgeryToken()
             <label>時間區間</label>
             <input class="col-4" type="text" name="datetimes" id="datetimes" />
-            @Html.Label("站別 : ");
-          //  @Html.DropDownList("Statons", (IEnumerable<SelectListItem>)ViewBag.station, new { onchange = "this.form.submit();" })
-            @Html.DropDownList("Statons", (IEnumerable<SelectListItem>)ViewBag.station, new {})
+            @Html.DropDownList("Statons", (IEnumerable<SelectListItem>)ViewBag.station, new { @style = "display:none" })
             <i class="fa fa-calendar"></i>
             <input type="hidden" name="tabType" value=@ViewBag.onTab>
             <button type="submit" class="btn btn-success btn-sm" id="btnBulletin" style="vertical-align:top">查詢</button>

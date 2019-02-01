@@ -5,9 +5,16 @@
 @model IPagedList<Service.ESS.Model.Alart>
 @{
     ViewBag.Title = Resources.Resource.Abnormal;
-    Layout = "~/Views/Shared/_LayoutTab.cshtml";
+
     StationService stationService = new StationService();
     AlartTypeService alarttyprService = new AlartTypeService();
+    string alarttypeID = ViewBag.alarttypeID;
+    string stationID = ViewBag.stationID;
+    string datarange = ViewBag.datarange;
+    string start = ViewBag.RangeStart;
+    string end = ViewBag.RangeEnd;
+    int StationNum = ViewBag.StationNum == null ? 2 : ViewBag.StationNum;
+    Layout = StationNum == 6 ? "~/Views/Shared/_LayoutJiasing.cshtml" : "~/Views/Shared/_LayoutTab.cshtml";
 }
 @Html.Partial("DataPicket")
 <br />
@@ -20,14 +27,13 @@
                 <div class="row">
                     <div class="col h5">
                         <div class="daterange ">
-                            @Html.Label("站別")
-                            @Html.DropDownList("Statons", (IEnumerable<SelectListItem>)ViewBag.station)
-                            <label>啟始時間區間</label>
+                            @Html.DropDownList("Statons", (IEnumerable<SelectListItem>)ViewBag.station, new { @style = "display:none" })
+                            <label>時間區間</label>
                             <input class="col-4 " name="range_date" type="text">
                             @Html.Label("異常設備")
                             @Html.DropDownList("AlartTypes", (IEnumerable<SelectListItem>)ViewBag.alartType)
                             <i class="fa fa-calendar"></i>
-                            <button type="submit" class="btn btn-success  btn-sm" id="btnBulletin"  style="vertical-align:top">查詢</button>
+                            <button type="submit" class="btn btn-success  btn-sm" id="btnBulletin" style="vertical-align:top">查詢</button>
                         </div>
                     </div>
                 </div>
@@ -57,7 +63,7 @@
                     }
                 </tbody>
             </table>
-            <div>@Html.PagedListPager(Model, Page => Url.Action("Abnormal", new { Page }))</div>
+            <div>@Html.PagedListPager(Model, Page => Url.Action("Abnormal", new { datarange,alarttypeID, stationID,Page }))</div>
         </div>
     </div>
 </div>

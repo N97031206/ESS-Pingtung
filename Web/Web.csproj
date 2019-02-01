@@ -50,8 +50,8 @@
     <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="DocumentFormat.OpenXml, Version=2.8.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
-      <HintPath>..\packages\DocumentFormat.OpenXml.2.8.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.9.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.9.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -75,11 +75,11 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.4.0.0\lib\net451\Microsoft.Owin.dll</HintPath>
+    <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.0\lib\net451\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
@@ -329,6 +329,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\APP\Views\APP\Info.cshtml" />
     <Content Include="Content\addons\jquery.mmenu.counters.css" />
     <Content Include="Content\addons\jquery.mmenu.dragopen.css" />
     <Content Include="Content\addons\jquery.mmenu.header.css" />
@@ -340,6 +341,7 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\chartSize.css" />
     <Content Include="Content\extensions\jquery.mmenu.effects.css" />
     <Content Include="Content\extensions\jquery.mmenu.fullscreen.css" />
     <Content Include="Content\extensions\jquery.mmenu.ie8.css" />
@@ -455,6 +457,10 @@
     <Content Include="Scripts\BS4\popper.min.js" />
     <Content Include="Scripts\DataPicket\daterangepicker.css" />
     <Content Include="Scripts\DataPicket\daterangepicker.min.js" />
+    <Content Include="Scripts\DataPicket\jquery-ui.css" />
+    <Content Include="Scripts\DataPicket\jquery-ui.js" />
+    <Content Include="Scripts\DataPicket\jquery-ui.min.js" />
+    <Content Include="Scripts\DataPicket\jquery.js" />
     <Content Include="Scripts\DataPicket\jquery.min.js" />
     <Content Include="Scripts\DataPicket\moment.min.js" />
     <Content Include="Scripts\ECharts\chart\bar.js" />
@@ -503,13 +509,11 @@
     <Content Include="Areas\APP\Views\APP\Info\Inverters.cshtml" />
     <Content Include="Areas\APP\Views\APP\Info\Battery.cshtml" />
     <Content Include="Areas\APP\Views\APP\Info\Generator.cshtml" />
-    <Content Include="Areas\APP\Views\APP\Info\GridPower.cshtml" />
     <Content Include="Areas\APP\Views\APP\Info\Solar.cshtml" />
     <Content Include="Areas\APP\Views\APP\Bulletin.cshtml" />
     <Content Include="Areas\APP\Views\APP\History.cshtml" />
     <Content Include="Areas\APP\Views\APP\Abnormal.cshtml" />
-    <Content Include="Areas\APP\Views\APP\Info.cshtml" />
-    <Content Include="Areas\APP\Views\APP\AbList.cshtml" />
+    <Content Include="Areas\APP\Views\APP\Info-owl.cshtml" />
     <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181211.xlsx" />
     <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181212.xlsx" />
     <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181213.xlsx" />
@@ -536,7 +540,11 @@
     <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20190103.xlsx" />
     <Content Include="Content\GuanTsai\MonthlyReport\MONTHLYREPORT_SAMPLE_20181101.xlsx" />
     <Content Include="Content\GuanTsai\MonthlyReport\MONTHLYREPORT_SAMPLE_20181201.xlsx" />
-    <Content Include="Areas\APP\Views\APP\GuanTsai.cshtml" />
+    <Content Include="Areas\APP\Views\APP\Info\GridPower.cshtml" />
+    <Content Include="Areas\APP\Views\APP\GTIndex.cshtml" />
+    <Content Include="Areas\APP\Views\APP\GTMonthlyReport.cshtml" />
+    <Content Include="Areas\APP\Views\APP\GTDailyReport.cshtml" />
+    <Content Include="Areas\APP\Views\APP\AbList.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1318,8 +1326,14 @@
     <Content Include="Scripts\jquery.mmenu.min.all.js" />
     <Content Include="Scripts\jquery.mmenu.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\myAngularJS\GuanTsai.js" />
+    <Content Include="Scripts\myAngularJS\JiaSing.js" />
     <Content Include="Scripts\myAngularJS\Web.js" />
-    <Content Include="Scripts\myAngularJS\frame.js" />
+    <Content Include="Scripts\myAngularJS\Frame.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
@@ -1334,7 +1348,6 @@
     </Content>
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Error\Error404.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\DataPicket.cshtml" />
@@ -1345,7 +1358,6 @@
     <Content Include="Views\Shared\_LayoutDetail.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Views\Shared\_LayoutTab.cshtml" />
-    <Content Include="Views\Shared\_TabButtom.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper-utils.min.js.map" />
@@ -1357,6 +1369,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_GlobalResources\Resource.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -1378,6 +1391,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Models\GuanTsai\DailyReportData.cs" />
     <Compile Include="Models\GuanTsai\MonthlyReportData.cs" />
     <Compile Include="Models\Json\Batterys\AlarmState.cs" />
@@ -1422,7 +1436,6 @@
     <Content Include="Views\Account\Disable.cshtml" />
     <Content Include="Views\Tab\CreateBulletin.cshtml" />
     <Content Include="Views\Tab\CreateAbnormal.cshtml" />
-    <Content Include="Views\Monitor\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutMonitor.cshtml" />
     <Content Include="Views\Tab\CreateStation.cshtml" />
     <Content Include="Views\Tab\CreateOrgin.cshtml" />
@@ -1436,10 +1449,7 @@
     <Content Include="Views\Tab\history\historyGridPower.cshtml" />
     <Content Include="Views\Tab\history\historyInverters.cshtml" />
     <Content Include="Views\Tab\history\historySolar.cshtml" />
-    <Content Include="Views\DataInput\Alart.cshtml" />
-    <Content Include="Views\Shared\_InfoButtom.cshtml" />
     <Content Include="Views\Tab\Index.cshtml" />
-    <Content Include="Views\Monitor\Frames.cshtml" />
     <Content Include="Views\Tab\EditBulletin.cshtml" />
     <Content Include="Views\Tab\ListBulletin.cshtml" />
     <Content Include="Views\Tab\DisableBulletin.cshtml" />
@@ -1453,15 +1463,15 @@
     <Content Include="Views\Tab\DeleteOrgin.cshtml" />
     <Content Include="Views\Tab\EditOrgin.cshtml" />
     <Content Include="Views\Tab\QRCode.cshtml" />
-    <Content Include="Views\Shared\mmenu.cshtml" />
-    <Content Include="Views\Shared\flexslider.cshtml" />
-    <Content Include="Views\GuanTsai\MonthlyReport.cshtml" />
+    <Content Include="Areas\APP\Views\Shared\mmenu.cshtml" />
+    <Content Include="Areas\APP\Views\Shared\flexslider.cshtml" />
     <Content Include="Views\GuanTsai\DailyReport.cshtml" />
     <Content Include="Views\Shared\_LayoutGuanTsai.cshtml" />
     <Content Include="Views\GuanTsai\Index.cshtml" />
-    <Content Include="Views\Shared\_GuanTsaiButtom.cshtml" />
     <Content Include="Views\GuanTsai\FileUpload.cshtml" />
-    <Content Include="Views\GuanTsai\DailyReport - 複製.cshtml" />
+    <Content Include="Views\Monitor\JiaSing.cshtml" />
+    <Content Include="Views\Shared\_LayoutJiasing.cshtml" />
+    <Content Include="Views\Tab\Jiasing.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1474,6 +1484,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\APP\Models\" />
     <Folder Include="Models\Api\" />
+    <Folder Include="obj\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

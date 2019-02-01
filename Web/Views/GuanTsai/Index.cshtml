@@ -1,105 +1,507 @@
 ﻿@model IEnumerable<Web.Models.GuanTsai.MonthlyReportData>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "光采月報表";
     Layout = "~/Views/Shared/_LayoutGuanTsai.cshtml";
     bool ChkData = ViewBag.ChkData;
-    var years = ViewBag.MainItemBtn;
-    var months = ViewBag.SubItembtm;
+    string label = ViewBag.hiddenYear + "月份";
+    string lastDay = ViewBag.lastDay;
+    string TotalTPCChart = ViewBag.TotalTPCChart;
+    string TotalGeneratorChart = ViewBag.TotalGeneratorChart;
+    string TotalPVChart = ViewBag.TotalPVChart;
+    string TotalLoadChart = ViewBag.TotalLoadChart;
+    string maxData = ViewBag.maxData;
+    string minData = ViewBag.minData;
+    string ReportData = ViewBag.searchData;
+    string ReportYearly = ReportData.Substring(0, 4);
+    string ReportMonthly = ReportData.Substring(4, 2);
 }
+@Html.Partial("Echart")
+<script type="text/javascript">
+    $(function () {
+        $('.webMonthYearPicker').datepicker({
+            monthNamesShort: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+            prevText: '上月',
+            nextText: '下月',
+            showButtonPanel: true,
+            showMonthAfterYear: true,
+            currentText: "本月",
+            closeText: "送出",
+            changeMonth: true,
+            changeYear: true,
+            regional: 'zh-TW',
+            maxDate: new Date('@maxData'),
+            minDate: new Date('@minData'),
+            dateFormat: 'yymm',
+            autoclose: true
+        }).focus(function () {
+            var thisCalendar = $(this);
+            $('.ui-datepicker-calendar').detach();
+            $('.ui-datepicker-close').click(function () {
+                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                thisCalendar.datepicker('setDate', new Date(year, month, 1));
+            })
+        });
+    });
+</script>
 
-<div class="row">
-    <div class="col">
-        @Html.Label("年度", new { @class="h3"})
-        <div class="btn-group" role="group" aria-label="Basic example">
-            @using (Html.BeginForm("Index", "GuanTsai", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
+<style type="text/css">
+    .ui-datepicker-calendar {
+        display: none;
+    }
 
-                foreach (var year in years)
-                {
-                    <button type="submit" class="btn btn-success btn" style="vertical-align:top" name="@year" value="@year">@year</button>
-                }
-                <input type="hidden" value="N" name="monthly" />
-                <input type="hidden" value="Y" name="Yearly" />
-            }
+    .pz {
+        margin: auto;
+        vertical-align: middle;
+        text-align: center;
+        padding: 0;
+    }
+</style>
+
+@using (Html.BeginForm("Index", "GuanTsai", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+<div class="row pz">
+    <div class="col-12 pz" style="height:1vh"></div>
+    <div class="col 12 pz">
+        <input name="startDate" id="startDate" class="webMonthYearPicker h3 text-center" readonly="readonly" value=@ViewBag.searchData />
+        <button type="submit" class="btn btn-success " style="vertical-align:top">報表資料查詢</button>
+    </div>
+    <div class="vw-100"></div>
+    @if (ChkData)
+    {
+    <div class="col-6 pz h6">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col" style="font-size:x-large;padding:0">
+                        @ReportYearly  年 @ReportMonthly 月
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="row " style="line-height:4vh">
+                            <div class="col"><strong>@Model.Last().Day</strong></div>
+                            <div class="w-100"></div>
+                            <div class="col">柴油60kW總發電量:@Model.Last().TotalGenerator kW</div>
+                            <div class="w-100"></div>
+                            <div class="col">總PV發電量:@Model.Last().TotalPV kW</div>
+                            <div class="w-100"></div>
+                            <div class="col">總負載用電量:@Model.Last().TotalLoad  kWh</div>
+                            <div class="w-100"></div>
+                            <div class="col">台電總用電量:@Model.Last().TotalTPC  kWh</div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-12 text-center " style="height:25vh;width:60vh;" id="GenCharts"></div>
+            <div class="col-12 text-center " style="height:25vh;width:60vh;" id="PVCharts"></div>
+            <div class="col-12 text-center " style="height:25vh;width:60vh;" id="LoadCharts"></div>
+            <div class="col-12 text-center " style="height:25vh;width:60vh;" id="TPPCharts"></div>
         </div>
     </div>
-    <div class="w-100" style="height:1vh"></div>
-    <div class="col">
-        <div class="btn-group" role="group" aria-label="Basic example">
-                    @Html.Label("月份", new { @class="h3"})
-            @if (months != null)
-            {
-                using (Html.BeginForm("Index", "GuanTsai", FormMethod.Post))
-                {
-                    @Html.AntiForgeryToken()
-                    foreach (var month in months)
-                    {
-                        <button type="submit" class="btn btn-info" id="monthly" style="vertical-align:top" name="monthly" value="@month">@month</button>
+    <div class="col-6 pz h6">
+        <div class="row">
+            <div class="col">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width:10%">
+                                @ViewBag.showMonthly<br>
+                                日期
+                            </th>
+                            <th scope="col" style="width:10%">
+                                柴油60kW<br />總發電量
+                            </th>
+                            <th scope="col" style="width:10%">
+                                總PV<br />發電量
+                            </th>
+                            <th scope="col" style="width:10%">
+                                總負載<br />用電量
+                            </th>
+                            <th scope="col" style="width:10%">
+                                台電<br />總用電量
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Day)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalGenerator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalPV)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalLoad)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalTPC)
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+        //柴油60kW總發電量
+        <script type="text/javascript">
+                    var dom = document.getElementById("GenCharts");
+                    var GenCharts = echarts.init(dom);
+                //時間兩位
+                function paddingLeft(str, lenght) {
+                    if (str.length >= lenght)
+                        return str;
+                    else
+                        return paddingLeft("0" + str, lenght);
+                    };
+                //X軸座標
+                    var xData = [];
+                    for (var i = 1; i <= @Convert.ToInt16(lastDay.Trim()); i++) {
+                            xData.push(paddingLeft(i.toString(), 2) + "日");
                     }
-                    <input type="hidden" value="@ViewBag.hiddenYear" id="Yearly" name="Yearly" />
-                }
-            }
-        </div>
-    </div>
+                //Y軸座標
+                    var MonthGenData = [];
+                    MonthGenData.push(@TotalGeneratorChart);
+                 //繪製圖表
+                option = null;
+                option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        show: true
+                    },
+                    legend: {
+                        data: ['柴油60kW每日發電量']
+                    },
+                    calculable: true,
+                    grid: {
+                        left: '2%',
+                        right: '4%',
+                        bottom: '1%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                            nameLocation:'start',
+                            type: 'category',
+
+                            data: xData,
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        },
+                    ],
+                    yAxis: [
+                        {
+                            name: 'kW',
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: "柴油60kW每日發電量",
+                            type: "bar",
+                            data: MonthGenData,
+                            itemStyle: { color: 'lightslategray' },
+                            areaStyle: { color: 'lightslategray' }
+                        }
+                    ]
+                };
+                if (option && typeof option === "object") {
+                    GenCharts.setOption(option, true);
+                    }
+        </script>
+
+        //總PV發電量
+        <script type="text/javascript">
+                    var dom = document.getElementById("PVCharts");
+                    var PVCharts = echarts.init(dom);
+                //時間兩位
+                function paddingLeft(str, lenght) {
+                    if (str.length >= lenght)
+                        return str;
+                    else
+                        return paddingLeft("0" + str, lenght);
+                    };
+                //X軸座標
+                    var xData = [];
+                    for (var i = 1; i <= @Convert.ToInt16(lastDay.Trim()); i++) {
+                            xData.push(paddingLeft(i.toString(), 2) + "日");
+                    }
+                //Y軸座標
+                    var PVData = [];
+                    PVData.push(@TotalPVChart);
+                 //繪製圖表
+                option = null;
+                option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        show: true
+                    },
+                    legend: {
+                        data: ['每日PV發電量']
+                    },
+
+                    calculable: true,
+                    grid: {
+                        left: '2%',
+                        right: '4%',
+                        bottom: '1%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                            nameLocation:'start',
+                            type: 'category',
+                            data: xData,
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        },
+                    ],
+                    yAxis: [
+                        {
+                            name: 'kW',
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: "每日PV發電量",
+                            type: "bar",
+                            data: PVData,
+                            itemStyle: { color: 'crimson' },
+                            areaStyle: { color: 'crimson' }
+                        }
+                    ]
+                };
+                if (option && typeof option === "object") {
+                    PVCharts.setOption(option, true);
+                    }
+        </script>
+
+        //總負載用電量
+        <script type="text/javascript">
+                    var dom = document.getElementById("LoadCharts");
+                    var LoadCharts = echarts.init(dom);
+                //時間兩位
+                function paddingLeft(str, lenght) {
+                    if (str.length >= lenght)
+                        return str;
+                    else
+                        return paddingLeft("0" + str, lenght);
+                    };
+                //X軸座標
+                    var xData = [];
+                    for (var i = 1; i <= @Convert.ToInt16(lastDay.Trim()); i++) {
+                            xData.push(paddingLeft(i.toString(), 2) + "日");
+                    }
+                //Y軸座標
+                    var LoadData = [];
+                    LoadData.push(@TotalLoadChart);
+                 //繪製圖表
+                option = null;
+                option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        show: true
+                    },
+                    legend: {
+                        data: ['每日負載用電量']
+                    },
+
+                    calculable: true,
+                    grid: {
+                        left: '2%',
+                        right: '4%',
+                        bottom: '1%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                            nameLocation:'start',
+                            type: 'category',
+                            data: xData,
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        },
+                    ],
+                    yAxis: [
+                        {
+                            name: 'kWh',
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: "每日負載用電量",
+                            type: "bar",
+                            data:  LoadData,
+                            itemStyle: { color: 'forestgreen' },
+                            areaStyle: { color: 'forestgreen' }
+                        }
+                    ]
+                };
+                if (option && typeof option === "object") {
+                    LoadCharts.setOption(option, true);
+                    }
+        </script>
+
+        //台電總用電量
+        <script type="text/javascript">
+                    var dom = document.getElementById("TPPCharts");
+                    var TPPCharts = echarts.init(dom);
+                //時間兩位
+                function paddingLeft(str, lenght) {
+                    if (str.length >= lenght)
+                        return str;
+                    else
+                        return paddingLeft("0" + str, lenght);
+                    };
+                //X軸座標
+                    var xData = [];
+                    for (var i = 1; i <= @Convert.ToInt16(lastDay.Trim()); i++) {
+                            xData.push(paddingLeft(i.toString(), 2) + "日");
+                    }
+                //Y軸座標
+                    var TPCData = [];
+                    TPCData.push(@TotalTPCChart);
+                 //繪製圖表
+                option = null;
+                option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        show: true
+                    },
+                    legend: {
+                        data: ['每日台電總用電量']
+                    },
+
+                    calculable: true,
+                    grid: {
+                        left: '2%',
+                        right: '4%',
+                        bottom: '1%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                            nameLocation:'start',
+                            type: 'category',
+                            boundaryGap: true,
+                            data: xData,
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        },
+                    ],
+                    yAxis: [
+                        {
+                            name: 'kWh',
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: "每日台電總用電量",
+                            type: "bar",
+                            data: TPCData,
+                            itemStyle: { color: 'royalblue' },
+                            areaStyle: { color: 'royalblue'}
+                        }
+                    ]
+                };
+                if (option && typeof option === "object") {
+                    TPPCharts.setOption(option, true);
+                    }
+        </script>
+
+
+
+
+    }
+
+
+
 </div>
 
-@if (ChkData)
-{
-    <div class="row">
-        <div class="col-2">
-        </div>
-        <div class="col-8">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col" style="width:10%">
-                            @ViewBag.showMonthly<br>
-                            日期
-                        </th>
-                        <th scope="col" style="width:10%">
-                            柴油60kW<br />總發電量
-                        </th>
-                        <th scope="col" style="width:10%">
-                            總PV<br />發電量
-                        </th>
-                        <th scope="col" style="width:10%">
-                            總負載<br />用電量
-                        </th>
-                        <th scope="col" style="width:10%">
-                            台電<br />總用電量
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Day)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TotalGenerator)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TotalPV)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TotalLoad)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TotalTPC)
-                            </td>
-
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div class="col-2">
-        </div>
-    </div>
 }
+
 
 
 

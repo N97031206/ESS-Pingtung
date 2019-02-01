@@ -2,174 +2,667 @@
 @{
     ViewBag.Title = "光采日報表";
     Layout = "~/Views/Shared/_LayoutGuanTsai.cshtml";
+
+    string label = ViewBag.hiddenYear + "日期";
+
     bool ChkDailyData = ViewBag.ChkData;
-    var yearsMonth = ViewBag.MainItemBtn;
-    var days = ViewBag.SubItembtm;
+    string maxData = ViewBag.maxData;
+    string minData = ViewBag.minData;
+    string search = ViewBag.search;
+    string searchData = ViewBag.searchData;
+    string Cal = searchData.Substring(0, 4) + "年" + searchData.Substring(4, 2) + "月" + searchData.Substring(6, 2) + "日";
+    string PVTotal = ViewBag.PVTotal;
+    string PV1 = ViewBag.PV1;
+    string PV2 = ViewBag.PV2;
+    string PV3 = ViewBag.PV3;
+    string PV4 = ViewBag.PV4;
+
+    string P7 = ViewBag.P7;
+    string P7110 = ViewBag.P7110;
+    string P7220 = ViewBag.P7220;
+    string P9 = ViewBag.P9;
+    string P9110 = ViewBag.P9110;
+
+    string Gen = ViewBag.Gen;
+    string Load = ViewBag.Load;
+    string TPC = ViewBag.TPC;
+}
+@Html.Partial("Echart")
+
+<script type="text/javascript">
+    function showdatepicker() {
+          $('.daymonthYearPicker').datepicker({
+            monthNamesShort: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"], 	// 区域化月名为中文
+            prevText: '上月',			// 前选按钮提示
+            nextText: '下月',			// 后选按钮提示
+            showMonthAfterYear: true, 	// 月份显示在年后面
+            currentText: "本月", 		// 当前日期按钮提示文字
+            changeMonth: true,
+            changeYear: true,
+            regional: 'zh-TW',
+            maxDate: new Date('@maxData'),
+            minDate: new Date('@minData'),
+            dateFormat: 'yymmdd',
+        });
+    }
+    function populateDefaultValues() {
+        $('#Day').val($.datepicker.formatDate('yymmdd', new Date('@search')));
+    }
+    $(function () {
+        populateDefaultValues();
+        showdatepicker();
+    });
+</script>
+<style type="text/css">
+    table.table-bordered {
+        border: 1px solid dimgray;
+    }
+
+        table.table-bordered > thead > tr > th {
+            border: 1px solid lightslategray;
+            padding: 5px;
+        }
+
+        table.table-bordered > thead > tr > td {
+            border: 1px solid lightslategray;
+            padding: 5px;
+        }
+
+        table.table-bordered > tbody > tr > td {
+            border: 1px solid lightslategray;
+            padding: 2px;
+        }
+
+        table.table-bordered > tbody > tr > th {
+            border: 1px solid lightslategray;
+            padding: 2px;
+        }
+
+    .pz {
+        margin: auto;
+        vertical-align:top;
+        text-align: center;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .Context {
+        text-align: center;
+        margin: 0;
+        vertical-align: middle;
+        padding-left: 0;
+        padding-right: 0;
+        font-size: small;
+        line-height: 3vh;
+    }
+</style>
+
+@using (Html.BeginForm("DailyReport", "GuanTsai", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="row Context">
+        <div class="col-12 Context " style="height:1vh"></div>
+        <div class="col-12 Context">
+            <input name="Day" id="Day" class="daymonthYearPicker h3 text-center" align="center" readonly="readonly" />
+            <button type="submit" class="btn btn-success " style="vertical-align:top">查詢</button>
+        </div>
+        <div class="col-12 h6 Context">
+            @if (ChkDailyData)
+            {
+            <div class="row text-center Context">
+                <div class="col-12" style="font-size:large;line-height:5vh">@Cal</div>
+                <div class="w-100" />
+                <div class="row">
+                    <div class="col-4 Context" style="border:1px solid blue;">
+                        <div class="row Context">
+                            <div class="col Context">柴油60kW即時發電量 @Html.DisplayFor(modelItem => Model.Last().Generator) kW</div>
+                        </div>
+                        <div class="row Context">
+                            <div class="col Context">台電總用電量 @Html.DisplayFor(modelItem => Model.Last().TotalTPC) kWh</div>
+                        </div>
+                        <div class="row Context">
+                            <div class="col Context">總負載即時用電量 @Html.DisplayFor(modelItem => Model.Last().TotalLoad) kWh</div>
+                        </div>
+                        <div class="col  text-center " style="height:30vh;width:100vh;" id="DailyData"></div>
+
+                    </div>
+                    <div class="col-4 Context" style="border:1px solid blue;">
+                        <div class="row Context">
+                            <div class="col Context">總PV即時發電量 @Html.DisplayFor(modelItem => Model.Last().TotalPVTimelyPower) kW</div>
+                        </div>
+                        <div class="row Context">
+                            <div class="col Context">屋後(一)6kW @Html.DisplayFor(modelItem => Model.Last().HomeOnePower) kW</div>
+                            <div class="col Context">屋頂(三)12kW @Html.DisplayFor(modelItem => Model.Last().HomeThreePower) kW</div>
+                        </div>
+                        <div class="row Context">
+                            <div class="col Context">屋後(二)6kW @Html.DisplayFor(modelItem => Model.Last().HomeTwoPower) kW</div>
+                            <div class="col Context">屋頂(四)12kW @Html.DisplayFor(modelItem => Model.Last().HomeFourPower) kW</div>
+                        </div>
+                        <div class="col text-center " style="height:30vh;width:100vh;" id="PVTotal"></div>
+
+                    </div>
+                    <div class="col-4 Context" style="border:1px solid blue;">
+                        <div class="row Context">
+                            <div class="col Context"> 分電盤即時用電量(kWh)</div>
+                        </div>
+                        <div class="row Context">
+                            <div class="col Context">P7 @Html.DisplayFor(modelItem => Model.Last().P7TimelyPower) kWh</div>
+                            <div class="col Context">P9 @Html.DisplayFor(modelItem => Model.Last().P9TimelyPower) kWh</div>
+                        </div>
+                        <div class="row Context">
+                            <div class="col Context">P7(110V) @Html.DisplayFor(modelItem => Model.Last().P7Timely110VPower) kWh</div>
+                            <div class="col Context">P9(110V) @Html.DisplayFor(modelItem => Model.Last().P9Timely110VPower) kWh</div>
+                        </div>
+                        <div class="row Context">
+                            <div class="col Context">P7(220V) @Html.DisplayFor(modelItem => Model.Last().P7Timely220VPower) kWh</div>
+                            <div class="col Context"></div>
+                        </div>
+
+                        <div class="col text-center " style="height:30vh;width:100vh;" id="DailyP79"></div>
+
+                    </div>
+                </div>
+
+                <div class="w-100" />
+
+            </div>
+
+
+
+                //當日總發電量kWh
+                <script type="text/javascript">
+                    var dom = document.getElementById("DailyData");
+                    var DataCharts = echarts.init(dom);
+                //時間兩位
+                function paddingLeft(str, lenght) {
+                    if (str.length >= lenght)
+                        return str;
+                    else
+                        return paddingLeft("0" + str, lenght);
+                    };
+                //X軸座標
+                    var xData = [];
+                    for (var i = 0; i < 24; i++) {
+                            xData.push(paddingLeft(i.toString(), 2) + "時");
+                    }
+                //Y軸座標
+                    var DailyGen = [];
+                    var DailyLoad= [];
+                    var DailyTPC= [];
+                    DailyGen.push(@Gen );
+                    DailyLoad.push(@Load );
+                    DailyTPC.push(@TPC );
+
+                 //繪製圖表
+                option = null;
+                option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        show: true
+                    },
+                    legend: {
+                        orient:'vertical',
+                        textStyle: { fontSize: 10 },
+                        itemWidth: 10,
+                        itemHight: 10,
+                        itemGap:1,
+                        x:'right',
+                        data: ["柴油60kW即時發電量(kW)", "總負載即時用電量(kWh)", "台電總用電量(kWh)"]
+                    },
+                    calculable: true,
+                    grid: {
+                        left: '2%',
+                        right: '4%',
+                        bottom: '1%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                            nameLocation:'start',
+                            type: 'category',
+
+                            data: xData,
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        },
+                    ],
+                    yAxis: [
+                        {
+                            name: '',
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: "柴油60kW即時發電量(kW)",
+                            type: "bar",
+                            data: DailyGen
+                        },
+                        {
+                            name: "總負載即時用電量(kWh)",
+                            type: "bar",
+                            data: DailyLoad
+
+                        },
+                        {
+                            name: "台電總用電量(kWh)",
+                            type: "bar",
+                            data: DailyTPC
+
+                        }
+
+                    ]
+                };
+                if (option && typeof option === "object") {
+                    DataCharts.setOption(option, true);
+                    }
+                </script>
+
+                //PV即時發電量
+                <script type="text/javascript">
+                    var dom = document.getElementById("PVTotal");
+                    var PVCharts = echarts.init(dom);
+                //時間兩位
+                function paddingLeft(str, lenght) {
+                    if (str.length >= lenght)
+                        return str;
+                    else
+                        return paddingLeft("0" + str, lenght);
+                    };
+                //X軸座標
+                    var xData = [];
+                    for (var i = 0; i < 24; i++) {
+                            xData.push(paddingLeft(i.toString(), 2) + "時");
+                    }
+                //Y軸座標
+                    var DailyPVTotal = [];
+                    var DailyPV1= [];
+                    var DailyPV2= [];
+                    var DailyPV3= [];
+                    var DailyPV4= []
+                    DailyPVTotal.push(@PVTotal );
+                    DailyPV1.push(@PV1 );
+                    DailyPV2.push(@PV2 );
+                    DailyPV3.push(@PV3 );
+                    DailyPV4.push(@PV4 );
+
+                 //繪製圖表
+                option = null;
+                option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        show: true
+                    },
+                    title: {
+                        show: true,
+                        text: '及時發電量',
+                        x: 'right',
+                        y: 'top',
+                        textStyle: {
+                            fontSize: 12
+                        }
+                    },
+                    legend: {
+                        textStyle: { fontSize: 10 },
+                        itemWidth: 10,
+                        itemHight: 10,
+                        x: 'left',
+                        data: ["屋後(一)6kW", "屋後(二)6kW", "屋頂(三)12kW", "屋頂(四)12kW",'總PV']
+                    },
+                    calculable: true,
+                    grid: {
+                        left: '2%',
+                        right: '4%',
+                        bottom: '1%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                            nameLocation:'start',
+                            type: 'category',
+                            data: xData,
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        },
+                    ],
+                    yAxis: [
+                        {
+                            name: 'kW',
+                            nameGap:2,
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: "總PV",
+                            type: "bar",
+                            data: DailyPVTotal,
+                            itemStyle: { color: 'lightslategray' },
+                            areaStyle: { color: 'lightslategray' }
+                        },
+                        {
+                            name: "屋後(一)6kW",
+                            type: "bar",
+                            stack: '即時發電量',
+                            data: DailyPV1
+
+                        },
+                        {
+                            name: "屋後(二)6kW",
+                            type: "bar",
+                            stack: '即時發電量',
+                            data: DailyPV2
+
+                        },
+                        {
+                            name: "屋頂(三)12kW",
+                            type: "bar",
+                            stack: '即時發電量',
+                            data: DailyPV3
+
+                        },
+                        {
+                            name: "屋頂(四)12kW",
+                            type: "bar",
+                            stack: '即時發電量',
+                            data: DailyPV4
+
+                        }
+                    ]
+                };
+                if (option && typeof option === "object") {
+                    PVCharts.setOption(option, true);
+                    }
+                </script>
+
+                //分電盤即時發電量
+                <script type="text/javascript">
+                    var dom = document.getElementById("DailyP79");
+                    var PCharts = echarts.init(dom);
+                //時間兩位
+                function paddingLeft(str, lenght) {
+                    if (str.length >= lenght)
+                        return str;
+                    else
+                        return paddingLeft("0" + str, lenght);
+                    };
+                //X軸座標
+                    var xData = [];
+                    for (var i = 0; i < 24; i++) {
+                            xData.push(paddingLeft(i.toString(), 2) + "時");
+                    }
+                //Y軸座標
+                    var DailyP7 = [];
+                    var DailyP7110= [];
+                    var DailyP7220= [];
+                    var DailyP9= [];
+                    var DailyP9110= []
+                    DailyP7.push(@P7 );
+                    DailyP7110.push(@P7110 );
+                    DailyP7220.push(@P7220 );
+                    DailyP9.push(@P9 );
+                    DailyP9110.push(@P9110 );
+
+                 //繪製圖表
+                option = null;
+                option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        show: true
+                    },
+                    title: {
+                        show: true,
+                        text: '分電盤',
+                        x: 'left',
+                        y: 'top',
+                        textStyle: {
+                            fontSize: 12
+                        }
+                    },
+                    legend: {
+                        textStyle: { fontSize: 10 },
+                        itemWidth: 10,
+                        itemHight: 10,
+                        x:'right',
+                        data: ["P7", "P7(110V)", "P7(220V)", "P9",'P9(110V)']
+                    },
+                    calculable: true,
+                    grid: {
+                        left: '2%',
+                        right: '4%',
+                        bottom: '1%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                            nameLocation:'start',
+                            type: 'category',
+
+                            data: xData,
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        },
+                    ],
+                    yAxis: [
+                        {
+                            name: 'kWh',
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'gray',
+                                    width: 2
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: "P7",
+                            type: "bar",
+                            stack: '分電盤7',
+                            data: DailyP7
+                        },
+                        {
+                            name: "P7(110V)",
+                            type: "bar",
+                            stack: '分電盤7',
+                            data: DailyP7110
+
+                        },
+                        {
+                            name: "P7(220V)",
+                            type: "bar",
+                            stack: '分電盤7',
+                            data: DailyP7220
+
+                        },
+                        {
+                            name: "P9",
+                            type: "bar",
+                            stack: '分電盤9',
+                            data: DailyP9
+
+                        },
+                        {
+                            name: "P9(110V)",
+                            type: "bar",
+                            stack: '分電盤9',
+                            data: DailyP9110
+
+                        }
+                    ]
+                };
+                if (option && typeof option === "object") {
+                    PCharts.setOption(option, true);
+                    }
+                </script>
+
+                }
+
+            </div>
+    </div>
 }
 
-    @*<div class="row">
-            @using (Html.BeginForm("DailyReport", "GuanTsai", FormMethod.Post))
+
+
+
+
+@if (ChkDailyData)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col" style="width:10%">
+                    @ViewBag.showDaily<br>
+                    時間
+                </th>
+                <th scope="col" style="width:7%">
+                    柴油60kW<br>
+                    即時發電量
+                </th>
+                <th scope="col" style="width:7%">
+                    屋後(一)6kW<br>
+                    即時發電量
+                </th>
+                <th scope="col" style="width:7%">
+                    屋後(二)6kW<br>
+                    即時發電量
+                </th>
+                <th scope="col" style="width:7%">
+                    屋頂(三)12kW<br>
+                    即時發電量
+                </th>
+                <th scope="col" style="width:7%">
+                    屋頂(四)12kW<br>
+                    即時發電量
+                </th>
+                <th scope="col" style="width:7%">
+                    分電盤P7<br>
+                    即時用電量
+                </th>
+                <th scope="col" style="width:7%">
+                    分電盤P7(110V)<br>
+                    即時用電量
+                </th>
+                <th scope="col" style="width:7%">
+                    分電盤P7(220V)<br>
+                    即時用電量
+                </th>
+                <th scope="col" style="width:7%">
+                    分電盤P9<br>
+                    即時用電量
+                </th>
+                <th scope="col" style="width:7%">
+                    分電盤P9(110V)<br>
+                    即時用電量
+                </th>
+                <th scope="col" style="width:7%">
+                    總PV<br>
+                    即時發電量
+                </th>
+                <th scope="col" style="width:7%">
+                    總負載<br>
+                    即時用電量
+                </th>
+                <th scope="col" style="width:7%">
+                    台電<br>
+                    總用電量
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
             {
-                @Html.AntiForgeryToken()
-                <div class="col h2" style="margin-top:20px">
-                    @Html.Label("日報表")
-                    @Html.DropDownList("DailyReport", (IEnumerable<SelectListItem>)ViewBag.filename)
-                    <button type="submit" class="btn btn-success btn-lg" id="btnBulletin" style="vertical-align:top">查詢</button>
-                </div>
-            }
-        </div>*@
-
-    <div class="row">
-        <div class="col">
-            @Html.Label("年月", new { @class = "h3" })
-            <div class="btn-group" role="group" aria-label="Basic example">
-                @using (Html.BeginForm("DailyReport", "GuanTsai", FormMethod.Post))
-                {
-                    @Html.AntiForgeryToken()
-                    foreach (var year in yearsMonth)
-                    {
-                        <button type="submit" class="btn btn-success btn " style="vertical-align:top" name="@year" value="@year">@year</button>
-                    }
-                    <input type="hidden" value="N" name="daily" />
-                    <input type="hidden" value="Y" name="monthly" />
-                }
-            </div>
-        </div>
-        <div class="w-100" style="height:1vh"></div>
-        <div class="col">
-            @Html.Label("日期", new { @class = "h3" })
-            <div class="btn-group" role="group" aria-label="Basic example">
-                @if (days != null)
-                {
-                    using (Html.BeginForm("DailyReport", "GuanTsai", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        foreach (var day in days)
-                        {
-                            <button type="submit" class="btn btn-info" id="daily" style="vertical-align:top" name="daily" value="@day">@day</button>
-                        }
-                        <input type="hidden" value="@ViewBag.hiddenYear" id="monthly" name="monthly" />
-                    }
-                }
-            </div>
-        </div>
-    </div>
-
-
-    @if (ChkDailyData)
-    {
-        <table class="table table-striped">
-            <thead>
                 <tr>
-                    <th scope="col" style="width:10%">
-                        @ViewBag.showDaily<br>
-                        時間
-                    </th>
-                    <th scope="col" style="width:7%">
-                        柴油60kW<br>
-                        即時發電量
-                    </th>
-                    <th scope="col" style="width:7%">
-                        屋後(一)6kW<br>
-                        即時發電量
-                    </th>
-                    <th scope="col" style="width:7%">
-                        屋後(二)6kW<br>
-                        即時發電量
-                    </th>
-                    <th scope="col" style="width:7%">
-                        屋頂(三)12kW<br>
-                        即時發電量
-                    </th>
-                    <th scope="col" style="width:7%">
-                        屋頂(四)12kW<br>
-                        即時發電量
-                    </th>
-                    <th scope="col" style="width:7%">
-                        分電盤P7<br>
-                        即時用電量
-                    </th>
-                    <th scope="col" style="width:7%">
-                        分電盤P7(110V)<br>
-                        即時用電量
-                    </th>
-                    <th scope="col" style="width:7%">
-                        分電盤P7(220V)<br>
-                        即時用電量
-                    </th>
-                    <th scope="col" style="width:7%">
-                        分電盤P9<br>
-                        即時用電量
-                    </th>
-                    <th scope="col" style="width:7%">
-                        分電盤P9(110V)<br>
-                        即時用電量
-                    </th>
-                    <th scope="col" style="width:7%">
-                        總PV<br>
-                        即時發電量
-                    </th>
-                    <th scope="col" style="width:7%">
-                        總負載<br>
-                        即時用電量
-                    </th>
-                    <th scope="col" style="width:7%">
-                        台電<br>
-                        總用電量
-                    </th>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Generator)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomeOnePower)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomeTwoPower)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomeThreePower)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomeFourPower)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.P7TimelyPower)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.P7Timely110VPower)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.P7Timely220VPower)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.P9TimelyPower)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.P9Timely110VPower)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalPVTimelyPower)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalLoad)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalTPC)
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Time)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Generator)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.HomeOnePower)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.HomeTwoPower)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.HomeThreePower)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.HomeFourPower)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.P7TimelyPower)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.P7Timely110VPower)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.P7Timely220VPower)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.P9TimelyPower)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.P9Timely110VPower)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TotalPVTimelyPower)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TotalLoad)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TotalTPC)
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
+            }
+        </tbody>
+    </table>
+}
 
 
 

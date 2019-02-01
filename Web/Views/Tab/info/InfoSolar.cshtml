@@ -1,31 +1,4 @@
-﻿@using Service.ESS.Provider;
-@using Service.ESS.Model;
-@using Web.Models.Json.Inverter;
-@{
-    //取最新時間
-    ESSObjecterService eSSObjecterService = new ESSObjecterService();
-    string EssTime = eSSObjecterService.ReadNow().CreateTime.ToString();
-    //取相關資料
-    InverterService InverterService = new InverterService();
-    List<Inverter> inverters = new List<Inverter>();
-    var ReadNow = eSSObjecterService.ReadNow().InvertersIDs;
-
-    if (ReadNow != null)
-    {
-        var invID = ReadNow.Split('|');
-        foreach (var x in invID)
-        {
-            if (!string.IsNullOrEmpty(x))
-            {
-                Guid id = Guid.Parse(x.Trim());
-                inverters.Add(InverterService.ReadByID(id));
-            }
-        }
-    }
-    }
-
-
-<style>
+﻿<style>
     .line {
         width: auto;
         height: auto;
@@ -37,46 +10,39 @@
 <div class="row">
     <!--lift-->
     <div class="col-2 h6">
-        @if (inverters != null)
-        {
         <div class="row " id="pc0">
-            <div class="col font-weight-bold ">資料時間:@EssTime</div>
-            @*<div class="col font-italic"></div>*@
-            @foreach (var inv in inverters)
-            {
-                var index = inv.SPMid.Split('|');
-                var voltage = inv.SPM90Voltage.Split('|');
-                var current = inv.SPM90Current.Split('|');
-                var energy = inv.SPM90ActiveEnergy.Split('|');
-                var power = inv.SPM90ActivePower.Split('|');
-
-                for (int i = 0; i < index.Length - 1; i++)
-                {
-                    string Info1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? "太陽能" + (i + 1).ToString() : "太陽能" + (i + 1).ToString() + "(目前離線中)";
-                    string Info2 = string.Format("{0:#,0.00}", Convert.ToDouble(voltage[i]));
-                    string Info3 = string.Format("{0:#,0.00}", Convert.ToDouble(current[i]));
-                    string Info4 = string.Format("{0:#,0.00}", Convert.ToDouble(power[i]) / 1000.0);
-                    string Info5 =string.Format("{0:#,0.00}", Convert.ToDouble(i==0?inv.SPM90ActiveEnergyMinus1:inv.SPM90ActiveEnergyMinus2));
-                    <div class="w-100 line"></div>
-                    <div class="col font-weight-bold ">@Info1</div>
-                    @*<div class="col font-italic"></div>*@
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">電壓(V)</div>
-                    <div class="col font-italic">@Info2</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">電流(A)</div>
-                    <div class="col font-italic">@Info3</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">功率(kW)</div>
-                    <div class="col font-italic">@Info4</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">當日發電量(度)</div>
-                    <div class="col font-italic">@Info5</div>
-                    <div class="w-100"></div>
-                }
-            }
+            <div class="col font-weight-bold ">資料時間:@ViewBag.EssTime</div>
+            <div class="w-100 line"></div>
+            <div class="col-4 font-weight-bold "></div>
+            <div class="col-4 font-weight-bold ">@ViewBag.solarInfo11</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電壓(V)</div>
+            <div class="col ">@ViewBag.solarInfo12</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電流(A)</div>
+            <div class="col ">@ViewBag.solarInfo13</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">功率(kW)</div>
+            <div class="col ">@ViewBag.solarInfo14</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">當日發電量(度)</div>
+            <div class="col ">@ViewBag.solarInfo15</div>
+            <div class="w-100 line"></div>
+            <div class="col-4 font-weight-bold "></div>
+            <div class="col-4 font-weight-bold ">@ViewBag.solarInfo21</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電壓(V)</div>
+            <div class="col ">@ViewBag.solarInfo22</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電流(A)</div>
+            <div class="col ">@ViewBag.solarInfo23</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">功率(kW)</div>
+            <div class="col ">@ViewBag.solarInfo24</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">當日發電量(度)</div>
+            <div class="col ">@ViewBag.solarInfo25</div>
         </div>
-        }
     </div>
     <!--middle-->
     <div class="col-8">
@@ -151,12 +117,15 @@
                     },
                     legend: {
                         data: ['太陽能1發電功率', '太陽能2發電功率']
-                    },    
+                    }, 
                     toolbox: {
+                        show: true,
                         feature: {
-                            saveAsImage: {
-                                title: '圖檔'
-                            }
+                            mark: { show: true },
+                            dataView: { show: true, readOnly: false, title: '資料' },
+                            magicType: { show: true, type: ['line', 'bar'], title: '圖格式' },
+                            restore: { show: true, title: '復原'},
+                            saveAsImage: { show: true ,title: '圖檔' }
                         }
                     },
                     xAxis: [

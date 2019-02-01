@@ -21,9 +21,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ionic", "Ionic", "{E6CF4BCC
 EndProject
 Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "mobile", "mobile\mobile.jsproj", "{01594C15-B011-41D7-B839-42B4B6817FF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{F561CDC5-7371-40FA-9D81-5E344BD259C6}"
-EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Android = Debug|Android
 		Debug|Any CPU = Debug|Any CPU
@@ -191,30 +192,6 @@ Global
 		{01594C15-B011-41D7-B839-42B4B6817FF8}.Release|Windows-x86.ActiveCfg = Release|Windows-x86
 		{01594C15-B011-41D7-B839-42B4B6817FF8}.Release|Windows-x86.Build.0 = Release|Windows-x86
 		{01594C15-B011-41D7-B839-42B4B6817FF8}.Release|Windows-x86.Deploy.0 = Release|Windows-x86
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Debug|Android.ActiveCfg = Debug|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Debug|Android.Build.0 = Debug|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Debug|iOS.ActiveCfg = Debug|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Debug|iOS.Build.0 = Debug|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Debug|Windows-ARM.ActiveCfg = Debug|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Debug|Windows-ARM.Build.0 = Debug|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Debug|Windows-x64.ActiveCfg = Debug|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Debug|Windows-x64.Build.0 = Debug|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Debug|Windows-x86.ActiveCfg = Debug|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Debug|Windows-x86.Build.0 = Debug|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Release|Android.ActiveCfg = Release|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Release|Android.Build.0 = Release|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Release|iOS.ActiveCfg = Release|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Release|iOS.Build.0 = Release|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Release|Windows-ARM.ActiveCfg = Release|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Release|Windows-ARM.Build.0 = Release|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Release|Windows-x64.ActiveCfg = Release|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Release|Windows-x64.Build.0 = Release|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Release|Windows-x86.ActiveCfg = Release|Any CPU
-		{F561CDC5-7371-40FA-9D81-5E344BD259C6}.Release|Windows-x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

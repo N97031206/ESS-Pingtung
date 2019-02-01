@@ -1,10 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@using Support.Authorize;
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width , initial-scale=1" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     @Html.Partial("Stylesheet")
     @Html.Partial("Scripts")
+
     <title>@ViewBag.Title</title>
 </head>
 <body>
@@ -18,7 +21,7 @@
                 <button type="button" class="btn btn-secondary " onclick="location.href='@Url.Action("Index", "GuanTsai")'">
                     林邊光采
                 </button>
-                <button type="button" class="btn btn-success ">
+                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("Jiasing", "Tab")'">
                     泰武佳興
                 </button>
             </div>
@@ -26,14 +29,73 @@
                 <img width="50" height="50" src="~/Content/Image/Emblem_of_Pingtung_County.png" />
                 <h4>@ViewBag.Logo</h4>
             </div>
-            <div class="col-4  " style="margin:auto" >
-                <div class="align-bottom text-right">@ViewBag.User  @Html.ActionLink("登出", "Logout", "Account")</div>
+            <div class="col-4  text-right" style="margin:auto">
+                @if (User.Identity.Name.Split(',')[2].ToString().Trim().Equals(RoleType.參觀帳號.ToString().Trim()))
+                {
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            使用者登入
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <div class="card rounded-0">
+                                <div class="card-body">
+                                    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Email address</label>
+                                            <input type="text" class="form-control" id="UserName" name="UserName" placeholder="UserName">
+                                        </div>
+                                        <p class='text-danger'>@ViewBag.name</p>
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1">Password</label>
+                                            <input type="password" class="form-control" id="Password" name="Password" placeholder="Password">
+                                        </div>
+                                        <p class='text-danger'>@ViewBag.password</p>
+                                        <div class="row">
+                                            <div class="col text-left">
+                                                <button type="button" class="btn btn-link " data-toggle="modal" data-target="#exampleModal">
+                                                    忘記密碼
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-sm  btn-block " id="btnLogin" hr>登入</button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="dropdown align-bottom">
+                        <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span> 歡迎 @ViewBag.User</span>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="@Url.Action("Maintain", "Tab")"> @Resources.Resource.Maintain</a>
+                            <a class="dropdown-item" href="@Url.Action("Logout", "Account")"><span>登出</span></a>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
         <!---->
         <div class="row bg-dark">
-            <div class="col-md-12">
-                @Html.Partial("_TabButtom")
+            <div class="col-12">
+                <div class="row text-center justify-content-center ">
+                    <div class="col-sm col-md col-lg">
+                        <div class="btn-group mr-2" role="group" aria-label="First group">
+                            <button type="button" class="@TempData["ButtomIndex"]" onclick="location.href='@Url.Action("Index", "Tab")'">@Resources.Resource.Index</button>
+                            <button type="button" class="@TempData["ButtomBulletin"]" onclick="location.href='@Url.Action("Bulletin", "Tab",new { StationNum=2})'">@Resources.Resource.Bulletin</button>
+                            <button type="button" class="@TempData["ButtomInfo"]" onclick="location.href='@Url.Action("Info", "Tab",new { StationNum=2})'">@Resources.Resource.Info</button>
+                            <button type="button" class="@TempData["ButtomAbnormal"] " onclick="location.href='@Url.Action("Abnormal", "Tab",new { StationNum=2})'">@Resources.Resource.Abnormal</button>
+                            <button type="button" class="@TempData["Buttomhistory"]" onclick="location.href='@Url.Action("History", "Tab",new { StationNum=2})'">@Resources.Resource.History</button>
+                            <button type="button" class="@TempData["ButtomQRCode"]" onclick="location.href='@Url.Action("QRCode", "Tab",new { StationNum=2})'">APP下載</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!---->
@@ -47,22 +109,3 @@
     </div>
 </body>
 </html>
- @*Modal 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <img src="~/Content/Image/android.png" />
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-lg btn-bloc" onclick="location.href='@Url.Action("Download", "Tab")'">下載APP</button>
-            </div>
-        </div>
-    </div>
-</div>*@

@@ -41,9 +41,9 @@ namespace Service.ESS.Provider
             return domain.Id;
         }
 
-        public Model.Generator ReadNow()
+        public Model.Generator ReadNow(Guid uid)
         {
-            Domain.Generator generatorPower = generatorRepository.ReadAll().OrderByDescending(x => x.UpdateTime).FirstOrDefault();
+            Domain.Generator generatorPower = generatorRepository.ReadAll().Where(x=>x.uuid==uid).OrderByDescending(x => x.UpdateTime).FirstOrDefault();
             return this.mapper.Map<Model.Generator>(generatorPower);
         }
 

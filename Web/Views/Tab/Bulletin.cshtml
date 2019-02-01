@@ -6,24 +6,28 @@
 
 @{
     ViewBag.Title = Resources.Resource.Bulletin;
-    Layout = "~/Views/Shared/_LayoutTab.cshtml";
+
     OrginService orginService = new OrginService();
-    int x = 1,y = 1;
+    int x = 1, y = 1;
     string str = null;
-    }
+    int StationNum = ViewBag.StationNum;
+    Layout = StationNum == 6 ? "~/Views/Shared/_LayoutJiasing.cshtml" : "~/Views/Shared/_LayoutTab.cshtml";
+    string num = StationNum.ToString();
+}
 
 @Html.Partial("DataPicket")
 
-<br/>
+<br />
 @using (Html.BeginForm("Bulletin", "Tab", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    <div class="daterange h5 text-center">
-        <label>發表時間</label>
-        <input class="col-3 h6" name="range_date" type="text">
-        <button type="submit" class="btn btn-success btn-sm" id="btnBulletin"  style="vertical-align:top">查詢</button>
-        <i class="fa fa-calendar"></i>
-    </div>
+<div class="daterange h4 text-center">
+    <label>發表時間</label>
+    <input class="col-3 h4" name="range_date" type="text">
+    @Html.DropDownList("Statons", (IEnumerable<SelectListItem>)ViewBag.station, new { @style = "display:none" })
+    <button type="submit" class="btn btn-success btn-sm" id="btnBulletin" style="vertical-align:top">查詢</button>
+    <i class="fa fa-calendar"></i>
+</div>
 }
 <br>
 
@@ -34,7 +38,6 @@
                 <th scope="col" style="width:20%">發佈日期</th>
                 <th scope="col" style="width:20%">單位</th>
                 <th scope="col" style="width:60%">標題</th>
-                @*//   <th scope="col" style="width:10%">內容</th>*@
             </tr>
         </thead>
         <tbody>
@@ -42,25 +45,19 @@
             {
                 if (bl.Disabled == false)
                 {
-                    str= "bl" + x;
-            <tr class="text-left">
-                <th scope="row">@bl.CreateDate.ToString("yyyy/MM/dd tt hh:mm:ss") </th>
-                <td>
-                    @orginService.ReadID(bl.OrginID).OrginName.ToString().Trim()
-                </td>
-                <td>
-                    <button type="button" class="btn btn-link align-baseline " data-toggle="modal" data-target="#@str">@bl.title</button>
-                </td>
-
-                @*<td>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#@str">
-                內容
-            </button>
-        </td>*@
-            </tr>
-                x++;
+                    str = "bl" + x;
+                    <tr class="text-left">
+                        <th scope="row">@bl.CreateDate.ToString("yyyy/MM/dd tt hh:mm:ss") </th>
+                        <td>
+                            @orginService.ReadID(bl.OrginID).OrginName.ToString().Trim()
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-link align-baseline " data-toggle="modal" data-target="#@str">@bl.title</button>
+                        </td>
+                    </tr>
+                    x++;
+                }
             }
-        }
         </tbody>
     </table>
     <div>
@@ -68,28 +65,28 @@
         {
             if (bl.Disabled == false)
             {
-               str= "bl" + y;
-            <div class="modal fade" id="@str" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">@bl.title</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            @bl.context
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                str = "bl" + y;
+                <div class="modal fade" id="@str" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">@bl.title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                @bl.context
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            y++;
+                y++;
+            }
         }
-    }
     </div>
     <div>@Html.PagedListPager(Model, Page => Url.Action("Bulletin", new { Page }))</div>
 </div>

@@ -3,15 +3,13 @@
 @using Service.ESS.Provider;
 @model IPagedList<Service.ESS.Model.Alart>
 @{
-    ViewBag.AppTitle = "警示清單";
-
-    string type = ViewBag.type;
-    string sday= ViewBag.RangeStart;
-    string eday = ViewBag.RangeEnd;
-
     Layout = "~/Areas/APP/Views/Shared/_LayoutAPPDetail .cshtml";
+    ViewBag.AppTitle = "警示清單";
     StationService stationService = new StationService();
     AlartTypeService alarttyprService = new AlartTypeService();
+    string name = ViewBag.name;
+    string sday= ViewBag.RangeStart;
+    string eday = ViewBag.RangeEnd;
 }
 
 <div class="container">
@@ -39,7 +37,7 @@
                     }
                 </tbody>
             </table>
-            <div class="text-center">@Html.PagedListPager(Model, Page => Url.Action("AbList", new { Page , type,  sday,  eday }))</div>
+            <div  style="font-size:small">@Html.PagedListPager(Model, Page => Url.Action("AbList", new { Page , name,  sday,  eday }), PagedListRenderOptions.OnlyShowFivePagesAtATime)</div>
         </div>
     </div>
 </div>

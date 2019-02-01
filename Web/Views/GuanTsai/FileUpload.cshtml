@@ -2,7 +2,68 @@
 @{
     ViewBag.Title = "報表上傳";
     Layout = "~/Views/Shared/_LayoutGuanTsai.cshtml";
+    string error = ViewBag.fileError;
+    string ok = ViewBag.fileContext;
+
 }
 
+<div class=" row">
+    <div class="col"></div>
+    <div class="col align-self-center">
+        <div class="card">
+            <h5 class="card-header">報表檔案</h5>
+            <div class="card-body">
+                <h5 class="card-title">報表檔案格式為.xlsx</h5>
+                <div>
 
+                    @if (!string.IsNullOrEmpty(error))
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>@error</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(ok))
+                    {
+                        <div class="alert alert-success  alert-dismissible fade show" role="alert">
+                            <strong>@ok</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    }
+                </div>
+                <p class="card-text">
+                    月報表檔案名稱為"MONTHLYREPORT_SAMPLE_yyyymm01"。
+                    <br />
+                    (如MONTHLYREPORT_SAMPLE_20181101.xlsx)
+                    <br />
+                    日報表檔案名稱為"DailyReport_sample_yyyymmdd"。              
+                    <br />
+                    (如DailyReport_sample_20181211.xlsx)
+                </p>
+                @using (Html.BeginForm("FileUpload", "GuanTsai", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal bg-warning">
+                        <div class="form-group">
+                            <label for="exampleFormControlFile1"></label>
+                            <div class="col-sm-10">
+                                <input type="file" name="file" class="form-control-file " id="exampleFormControlFile1">
+                            </div>
+                        </div>
+                        <div class="col-sm-offset-2 col-sm-10 " style="max-width:100%">
+                            <input type="submit" value="提交" class="btn btn-primary btn-lg btn-block " />
+                        </div>
+                        <div style="height:1vh"></div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col"></div>
+</div>
 

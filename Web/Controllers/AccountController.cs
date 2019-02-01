@@ -12,7 +12,6 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Web.Models;
 using NLog;
-using Support.Authorize;
 
 namespace Web.Controllers
 {
@@ -37,42 +36,60 @@ namespace Web.Controllers
         [AllowAnonymous]
         public ActionResult Login()
         {
-            HttpCookie Cookie = new HttpCookie("MyLang", "zh-TW");
-            try
-            {
-                ViewBag.Logo = ConfigurationManager.AppSettings["LogoInfo"];
-                ViewBag.Warning = null;
-
-                if (User.Identity.IsAuthenticated)
-                {
-                    //取得使用者名稱
-                    Char delimiter = ',';
-                    string[] x = User.Identity.Name.ToString().Split(delimiter);
-                    Session["UserName"] = x[0];
-                    return RedirectToAction("Index", "Tab");
-                }
-                return View();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                ViewBag.Warning = "請輸入正確格式";
-                return View();
-            }
+            ViewBag.Logo = ConfigurationManager.AppSettings["LogoInfo"];
+            string UserName = "Guest";
+            string Password = "Guest";
+            //驗證資料
+            Account account = accountService.ReadBy(UserName, Password);
+            LoginFormsAuthentication(account, UserName, Password);
+            //Log
+            string ClientIP = Support.Http.IP.GetClientIP(Request);
+            logger.Info("user:" + UserName + ";IP:" + ClientIP);
+            return RedirectToAction("Index", "Tab");
         }
+
+
+        /// <summary>
+        /// /1080128 
+        /// </summary>
+        /// <param name="LogInfo"></param>
+        /// <returns></returns>
+        //public ActionResult Login()
+        //{
+        //    HttpCookie Cookie = new HttpCookie("MyLang", "zh-TW");
+        //    try
+        //    {
+        //        ViewBag.Logo = ConfigurationManager.AppSettings["LogoInfo"];
+        //        ViewBag.Warning = null;
+
+        //        if (User.Identity.IsAuthenticated)
+        //        {
+        //            //取得使用者名稱
+        //            Char delimiter = ',';
+        //            string[] x = User.Identity.Name.ToString().Split(delimiter);
+        //            Session["UserName"] = x[0];
+        //            return RedirectToAction("Index", "Tab");
+        //        }
+        //        return View();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.ToString());
+        //        ViewBag.Warning = "請輸入正確格式";
+        //        return View();
+        //    }
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(FormCollection LogInfo)
         {
-            HttpCookie Cookie = new HttpCookie("MyLang", "zh-TW");
             try
-            {
+            {           
                 var UserName = LogInfo["UserName"].Trim();
                 var Password = LogInfo["Password"].Trim();
                 ViewBag.Logo = ConfigurationManager.AppSettings["LogoInfo"];
                 ViewBag.Warning = null;
-
                 //驗證資料
                 Account account = accountService.ReadBy(UserName, Password);
 
@@ -86,16 +103,19 @@ namespace Web.Controllers
                     {
                         ViewBag.password = "密碼輸入有誤";
                     }
-                    return View();
+
+                    return RedirectToAction("Index", "Tab");
                 }
                 else //有資料
                 {
+                    // 登入時清空所有 Session 資料
+                    Session.RemoveAll();
+                    FormsAuthentication.SignOut();
+                    System.Web.HttpContext.Current.Session.RemoveAll();
+                    //登入
                     LoginFormsAuthentication(account, UserName, Password);
-
                     string ClientIP = Support.Http.IP.GetClientIP(Request);
                     logger.Info("user:"+UserName+";IP:"+ ClientIP);
-
-                  
                     return RedirectToAction("Index", "Tab");
                 }
             }
@@ -114,11 +134,23 @@ namespace Web.Controllers
         [Authorize]
         public ActionResult Logout()
         {
-            // 登入時清空所有 Session 資料
+            // 登出時清空所有 Session 資料
             Session.RemoveAll();
             FormsAuthentication.SignOut();
             System.Web.HttpContext.Current.Session.RemoveAll();
-            return RedirectToAction("Login", "Account");
+            //
+            ViewBag.Logo = ConfigurationManager.AppSettings["LogoInfo"];
+            ViewBag.Warning = null;
+            string UserName = "Guest";
+            string Password = "Guest";
+            //驗證資料
+            Account account = accountService.ReadBy(UserName, Password);
+            LoginFormsAuthentication(account, UserName, Password);
+            string ClientIP = Support.Http.IP.GetClientIP(Request);
+            logger.Info("user:" + UserName + ";IP:" + ClientIP);
+            return RedirectToAction("Index", "Tab", new { SationNum = 2 });
+
+            //return RedirectToAction("Login", "Account");
         }
         /// <summary>
         /// 遺忘密碼
@@ -202,7 +234,7 @@ namespace Web.Controllers
             });
             #endregion
 
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Tab", new { SationNum = 2 });
         }
 
         #endregion
@@ -433,7 +465,12 @@ namespace Web.Controllers
             });
             ViewBag.Orgin = items;
         }
+
+
+
     }
+
+    
     #endregion
 
 }

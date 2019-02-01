@@ -10,7 +10,8 @@
     @Html.Partial("Stylesheet")
     @Html.Partial("Scripts")
     @Html.Partial("mmenu")
-
+    @Html.Partial("Echart")
+   
     <style type="text/css">
         div.pad {
             margin: 0;
@@ -23,59 +24,76 @@
 
         .pictureMainAPP {
             width: 100vw; /*width of your image*/
-            height: 100vh; /*height of your image*/
-            background-image: url('../../Content/Image/BackupGroup.png');
+            height: auto; /*height of your image*/
+            /*background-image: url('../../Content/Image/BackupGroup.png');*/
             margin: 0; /* If you want no margin */
             padding: 0; /*if your want to padding */
-            background-size: 100% 100%;
         }
 
         li {
             margin: 0;
         }
+
+        .fonstStyle {
+            text-decoration: none;
+            font-family: DFKai-sb;
+        }
+
+        .SubFontStyle {
+            font-size: x-large;
+            font-family: DFKai-sb;
+            vertical-align: middle;
+            text-align:center;
+            color: whitesmoke;
+            padding-top: 2vh;
+            padding-bottom: 2vh;
+        }
     </style>
 
 </head>
 <body>
-    <div class="container-fluid text-center pad"  id="top-bar">
+    <div class="container-fluid text-center pad" id="top-bar">
         <div class="row  pad">
             <div class="col-2  pad ">
                 <div class="page">
-                    <div class="header">
-                        <a href="#menu" data-icon="grid"></a>
-                        <nav id="menu">
+                    <div class="header" style="position:fixed;top:0px;z-index:1;">               
+                        <a href="#menu" data-icon="grid"></a>                     
+                        <content>@ViewBag.AppTitle</content>
+                        <nav id="menu" >
                             <ul>
-                                <li>
-                                    <table class="table text-center  align-middle ">
-                                        <tr>
-                                            <th scope="col" style="padding:0;vertical-align:middle;margin:0"><img src="~/Content/Image/Emblem_of_Pingtung_County.png" style="width:50px;height:50px;margin:auto" /></th>
-                                            <th scope="col" style="padding:0;vertical-align:middle;margin:0">
-                                                <h1><span>屏東防災微電網</span></h1>
-                                                <h2 class="text-right " style="padding-right:10px;vertical-align:middle;margin:0"><em>@ViewBag.User  </em></h2>
-                                            </th>
-                                        </tr>
-                                    </table>
+                                <li style="background-color:cadetblue" class="table text-center  align-middle ">
+                                    <row>
+                                        <div class="col" >
+                                            <div class="row">
+                                                <div class="col-3" style="padding-top:1vh;padding-bottom:1vh"><img src="~/Content/Image/Emblem_of_Pingtung_County.png" style="width:50px;height:50px;margin:auto" /></div>
+                                                <div class="col SubFontStyle" >屏東防災微電網</div>
+                                            </div>                                                           
+                                        </div>
+                                    </row>
                                 </li>
-                                <li><a href="@Url.Action("Index", "APP")"><h1>即時資訊</h1></a></li>
-                                <li><a href="@Url.Action("Bulletin", "APP")"><h1>公告資訊</h1></a></li>
-                                <li><a href="@Url.Action("Abnormal", "APP")"><h1>異常警示</h1></a></li>
-                                <li><a href="@Url.Action("APPout", "Account")"><h1>登出</h1> </a></li>
+                                <li><a href="@Url.Action("Index", "APP")" style="text-decoration:none;font-family: DFKai-sb;"><h1>首頁</h1></a></li>
+                                <li><a href="@Url.Action("GTIndex", "APP")" style="text-decoration:none;font-family: DFKai-sb;"><h1>光采資訊</h1></a></li>
+                                <li><a href="@Url.Action("Info", "APP", new { StationCode = 2 })" style="text-decoration:none;font-family: DFKai-sb;"><h1>大武資訊</h1></a></li>
+                                <li><a href="@Url.Action("Info", "APP", new { StationCode = 6 })" style="text-decoration:none;font-family: DFKai-sb;"><h1>佳興資訊</h1></a></li>
+                                <li><a href="@Url.Action("Bulletin", "APP")" style="text-decoration:none;font-family: DFKai-sb;"><h1>公告資訊</h1></a></li>
+                                <li><a href="@Url.Action("Abnormal", "APP")" style="text-decoration:none;font-family: DFKai-sb;"><h1>異常警示</h1></a></li>
+                                @*<li><a href="@Url.Action("APPout", "Account")" style="text-decoration:none;font-family: DFKai-sb;"><h1>登出</h1> </a></li>*@
                             </ul>
                         </nav>
-                    </div>
-
+                    </div>         
                 </div>
             </div>
-            <div class="col pad text-center text-light " style="font-size:x-large;vertical-align:middle">@ViewBag.AppTitle</div>
-            <div class="row pictureMainAPP pad">
-                <div class="col pad">
-                    <div class="mainBody pad">
-                        @RenderBody()
-                    </div>
+            <div class="col-10 pad text-center text-light " style="font-size:x-large;vertical-align:middle;height:40px">@ViewBag.AppTitle</div>
+        </div>
+        <div class="row pad   pictureMainAPP ">
+            <div class="col-12">
+                <div class="mainBody" id="mainBody">
+                    @RenderBody()
                 </div>
             </div>
         </div>
     </div>
+
 </body>
 </html>
 

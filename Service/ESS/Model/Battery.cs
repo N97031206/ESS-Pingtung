@@ -9,7 +9,7 @@ namespace Service.ESS.Model
     {
         [Display(Name = "電池編號")]
         public Guid Id { get; set; }
-
+        public Guid uuid { get; set; } //1070118 站點ID
         public float version { get; set; }
         public float index { get; set; }
         public string modelSerial { get; set; }

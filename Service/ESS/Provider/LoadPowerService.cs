@@ -50,19 +50,11 @@ namespace Service.ESS.Provider
                 return domain.Id;
         }
 
-        public Model.LoadPower ReadNow()
+        public Model.LoadPower ReadNow(Guid uid)
         {
-            Domain.LoadPower loadPower = loadRepository.ReadAll().Where(x=>x.index==2).OrderByDescending(x => x.date_Time).FirstOrDefault();
+            Domain.LoadPower loadPower = loadRepository.ReadAll().Where(x=>x.index==2 && x.uuid==uid).OrderByDescending(x => x.date_Time).FirstOrDefault();
             return this.mapper.Map<Model.LoadPower>(loadPower);
         }
-
-        public List<Model.LoadPower> ReadNowList()
-        {
-            List<Domain.LoadPower> LoadPowersList = new List<Domain.LoadPower>();
-            LoadPowersList.AddRange(loadRepository.ReadAll().OrderByDescending(x => x.date_Time).Take(2));
-            return this.mapper.Map<List<Model.LoadPower>>(LoadPowersList);
-        }
-
 
         public List<Model.LoadPower> ReadByInfoList(DateTime StartTime, DateTime endTime)
         {

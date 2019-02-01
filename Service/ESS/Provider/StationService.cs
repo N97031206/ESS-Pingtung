@@ -26,31 +26,6 @@ namespace Service.ESS.Provider
             this.mapper = mapperConfiguration.CreateMapper();
         }
 
-        public List<Model.Station> ReadAll()
-        {
-            List<Domain.Station> domainstations = stationRepository.ReadAll().ToList();
-            return this.mapper.Map<List<Model.Station>>(domainstations);
-        }
-
-        public Model.Station ReadName(string StationName)
-        {
-            Domain.Station ds = stationRepository.ReadBy(x => x.StationName == StationName);
-            return this.mapper.Map<Model.Station>(ds);
-        }
-
-        public Model.Station ReadID(Guid StationID)
-        {
-            Domain.Station ds = stationRepository.ReadBy(x => x.Id == StationID);
-            return this.mapper.Map<Model.Station>(ds);
-        }
-
-
-        public Model.Station ReadData(Guid ID)
-        {
-            Domain.Station RI = stationRepository.ReadBy(x => x.Id == ID);
-            return this.mapper.Map<Model.Station>(RI);
-        }
-
         public Guid Create(Model.Station station)
         {
 
@@ -60,12 +35,6 @@ namespace Service.ESS.Provider
             stationRepository.SaveChanges();
 
             return domainStation.Id;
-        }
-
-        public Model.Station ReadUUID(Guid ID)
-        {
-            Domain.Station UI = stationRepository.ReadBy(x => x.UUID == ID);
-            return this.mapper.Map<Model.Station>(UI);
         }
 
         public Boolean Delete(Guid ID)
@@ -103,5 +72,42 @@ namespace Service.ESS.Provider
 
         }
 
+
+
+        public List<Model.Station> ReadAll()
+        {
+            List<Domain.Station> domainstations = stationRepository.ReadAll().ToList();
+            return this.mapper.Map<List<Model.Station>>(domainstations);
+        }
+
+        public Model.Station ReadName(string StationName)
+        {
+            Domain.Station ds = stationRepository.ReadBy(x => x.StationName == StationName);
+            return this.mapper.Map<Model.Station>(ds);
+        }
+
+        public Model.Station ReadID(Guid StationID)
+        {
+            Domain.Station ds = stationRepository.ReadBy(x => x.Id == StationID);
+            return this.mapper.Map<Model.Station>(ds);
+        }
+
+        public Model.Station ReadUUID(Guid ID)
+        {
+            Domain.Station UI = stationRepository.ReadBy(x => x.UUID == ID);
+            return this.mapper.Map<Model.Station>(UI);
+        }
+
+        public Guid UUID(int code)
+        {
+            Guid uid = stationRepository.ReadBy(x => x.StationCode == code).UUID;
+            return uid;
+        }
+
+        public Guid StationID(int code)
+        {
+            Guid uid = stationRepository.ReadBy(x => x.StationCode == code).Id;
+            return uid;
+        }
     }
 }

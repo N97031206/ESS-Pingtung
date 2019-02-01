@@ -12,10 +12,19 @@ public DbSet<UseLog> UseLogs { get; set; }
 預設專案選擇 Repository
 (Repository有 ESKContext)
 
+
+https://docs.microsoft.com/zh-tw/aspnet/web-api/overview/data/using-web-api-with-entity-framework/part-3
 下命令
 Enable-Migrations 
  (曾經下過就不用再下了)
+ 
+ Add-Migration Initial
 
+Update-Database
+
+ (曾經下過Enable-Migrations )
+ 直接新增資料表
+***********************************************************
 Add-Migration CreateTable_UseLog
 (此命令會自動產生類別 Repository.Migrations.CreateTable_UseLog)
 
@@ -25,4 +34,11 @@ Update-Database -Verbose
 (UseLog資料表產生)
 (Specify the '-Verbose' flag to view the SQL statements being applied to the target database.)
 
-**************************************************************
+**XXX新增資料欄位************************************************************
+http://blog.sanc.idv.tw/2012/04/entity-framework-code-firstenabling.html
+
+Add-Migration AddXXX
+
+沒有錯誤後
+在下
+Update-Database

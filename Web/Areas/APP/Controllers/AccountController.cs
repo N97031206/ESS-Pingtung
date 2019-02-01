@@ -30,27 +30,25 @@ namespace Web.Areas.APP.Controllers
         [AllowAnonymous]
         public ActionResult Login()
         {
-            //HttpCookie Cookie = new HttpCookie("MyLang", "zh-TW");
             try
             {
                 ViewBag.Logo = ConfigurationManager.AppSettings["LogoInfo"];
                 ViewBag.Warning = null;
+                string UserName = "Guest";
+                string Password = "Guest";
+                //驗證資料
+                Account account = accountService.ReadBy(UserName, Password);
+                LoginFormsAuthentication(account, UserName, Password);
+                string ClientIP = Support.Http.IP.GetClientIP(Request);
+                logger.Info("user:" + UserName + ";IP:" + ClientIP);
 
-                if (User.Identity.IsAuthenticated)
-                {
-                    //取得使用者名稱
-                    Char delimiter = ',';
-                    string[] x = User.Identity.Name.ToString().Split(delimiter);
-                    Session["UserName"] = x[0];
-                    return RedirectToAction("Index", "APP");
-                }
-                return View();
+                return RedirectToAction("Index", "APP");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 ViewBag.Warning = "請輸入正確格式";
-                return View();
+                return RedirectToAction("Index", "APP");
             }
         }
 
@@ -99,6 +97,31 @@ namespace Web.Areas.APP.Controllers
             }
         }
 
+        public ActionResult LoginBackup()
+        {
+            try
+            {
+                ViewBag.Logo = ConfigurationManager.AppSettings["LogoInfo"];
+                ViewBag.Warning = null;
+                if (User.Identity.IsAuthenticated)
+                {
+                    //取得使用者名稱
+                    Char delimiter = ',';
+                    string[] x = User.Identity.Name.ToString().Split(delimiter);
+                    Session["UserName"] = x[0];
+                    return RedirectToAction("Index", "APP");
+                }
+                return View();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                ViewBag.Warning = "請輸入正確格式";
+                return View();
+            }
+        }
+
+
         /// <summary>
         /// 登出
         /// </summary>
@@ -106,8 +129,7 @@ namespace Web.Areas.APP.Controllers
         [Authorize]
         public ActionResult APPout()
         {
-            // 登入時清空所有 Session 資料
-            Session.RemoveAll();
+            Session.Abandon();
             FormsAuthentication.SignOut();
             System.Web.HttpContext.Current.Session.RemoveAll();
             return RedirectToAction("Login", "Account");

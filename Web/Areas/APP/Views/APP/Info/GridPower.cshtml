@@ -1,47 +1,57 @@
-﻿
-<div class="row">
-    <div class="col h3">
-        <p> 市電</p>
-    </div>
+﻿<style type="text/css">
+    .pz {
+        margin: auto;
+        vertical-align: middle;
+        text-align: center;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+</style>
+
+<div class="row pz">
+    <div class="col h3 pz">市電</div>
 </div>
+
+<div style="height:1vh"></div>
+<div class="row h6 pz">
+    <div class="col font-weight-bold pz">資料時間:@ViewBag.EssTime </div>
+</div>
+<div style="height:1vh"></div>
+
 <div class="row">
-    <div class="col h6">
+    <div class="col ">
         <div class="row " id="AppGridData">
-            <div class="col font-weight-bold ">資料時間:@ViewBag.EssTime</div>
-            @*<div class="col font-italic"></div>*@
-            <div class="w-100 line"></div>
-            <div class="col font-weight-bold  ">@ViewBag.gridInfo1</div>
-            @*<div class="col font-italic">@Info1</div>*@
-            <div class="w-100"></div>
             <div class="col font-weight-bold small">電壓(V)</div>
-            <div class="col font-italic">@ViewBag.gridInfo2</div>
+            <div class="col ">@ViewBag.gridInfo2</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">電流(A)</div>
-            <div class="col font-italic">@ViewBag.gridInfo3</div>
+            <div class="col ">@ViewBag.gridInfo3</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">實功率(kW)</div>
-            <div class="col font-italic">@ViewBag.gridInfo4</div>
+            <div class="col ">@ViewBag.gridInfo4</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">虛功率(kVAR)</div>
-            <div class="col font-italic">@ViewBag.gridInfo5</div>
+            <div class="col ">@ViewBag.gridInfo5</div>
             <div class="w-100"></div>
             <div class="col  font-weight-bold small">視在功率(kVA)</div>
-            <div class="col font-italic">@ViewBag.gridInfo6</div>
+            <div class="col ">@ViewBag.gridInfo6</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">功率因數(PF)</div>
-            <div class="col font-italic">@ViewBag.gridInfo7</div>
+            <div class="col ">@ViewBag.gridInfo7</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">頻率(Hz)</div>
-            <div class="col font-italic">@ViewBag.gridInfo8</div>
+            <div class="col ">@ViewBag.gridInfo8</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">當日用電量(度)</div>
-            <div class="col font-italic">@ViewBag.gridInfo9</div>
+            <div class="col ">@ViewBag.gridInfo9</div>
             <div class="w-100"></div>
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col text-center" id="mainGridPower" style="width: 320px;height:300px;vertical-align:middle">
+    <div class="col text-center ChartSize" id="mainGridPower">
     </div>
 </div>
 
@@ -56,10 +66,15 @@
                     return paddingLeft("0" + str, lenght);
             }
                 //X軸座標
-            var xData = [];
-            for (var i = 0; i < 24; i++) {
-                xData.push(paddingLeft(i.toString(), 2) + "時" );
-            }
+                var xData = [];
+                var h =@ViewBag.nowHour;
+                    for (var i = 0; i < 24; i++) {
+                        if (h > 0) {
+                            var hh = i + h;
+                            if (hh >= 24) { hh = hh - 24; }
+                            xData.push(paddingLeft(hh.toString(), 2) + "時");
+                        }
+                    }
             //Y軸座標
                 var Grid1 = [];
                 Grid1.push(@ViewBag.Grid );
@@ -85,7 +100,7 @@
                     },
                     legend: {
                         data: ['市電迴路']
-                    },                 
+                    },
                     xAxis: [
                         {
                             name: '時間',

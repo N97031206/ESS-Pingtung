@@ -14,6 +14,8 @@
     string endTime = endDay.ToString("HH:mm:ss");
     string tabType = "GridPower";
     string connStr = tabType + "+" + sDay + "+" + eDay;
+    string stationID = ViewBag.stationID;
+    int StationNum = ViewBag.StationNum;
 }
 
 <script type="text/javascript">
@@ -49,33 +51,33 @@
                         @using (Html.BeginForm("XLSX", "Tab", FormMethod.Post))
                         {
                             @Html.AntiForgeryToken()
-                            <div class="modal-body">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadio" id="inlineRadio1" value="option1">
-                                    <label class="form-check-label" for="inlineRadio1">當日(00:00起算)</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadio" id="inlineRadio2" value="option2">
-                                    <label class="form-check-label" for="inlineRadio2">當月(1日起算)</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadio" id="inlineRadio3" value="option3" checked>
-                                    <label class="form-check-label" for="inlineRadio4">區間</label>
-                                </div>
-                                <br>
-                                開始時間:@startDay
-                                <br>
-                                結束時間:@endDay
-                                <input type="hidden" name="startDay" value=@startDay>
-                                <input type="hidden" name="endDay" value=@endDay>
-                                <input type="hidden" name="startTime" value=@startTime>
-                                <input type="hidden" name="endTime" value=@endTime>
-                                <input type="hidden" name="tabType" value=@tabType>
+                        <div class="modal-body">
+                            <div class="form-check form-check-inline h5">
+                                <input class="form-check-input" type="radio" name="inlineRadio" id="inlineRadio1" value="option1">
+                                <label class="form-check-label" for="inlineRadio1">當日(00:00起算)</label>
                             </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary btn-sm" id="btnHGP" onclick="closeGridModel()">匯出EXCEL</button>
-                                <button type="button" class="btn btn-secondary  btn-sm" data-dismiss="modal">關閉</button>
+                            <div class="form-check form-check-inline h5">
+                                <input class="form-check-input" type="radio" name="inlineRadio" id="inlineRadio2" value="option2">
+                                <label class="form-check-label" for="inlineRadio2">當月(1日起算)</label>
                             </div>
+                            <br />
+                            <div class="form-check form-check-inline h5">
+                                <input class="form-check-input" type="radio" name="inlineRadio" id="inlineRadio3" value="option3" checked>
+                                <label class="form-check-label" for="inlineRadio4">時間區間</label>
+                            </div>
+                            <h6>開始時間:[ @startDay ]</h6>
+                            <h6>結束時間:[ @endDay ]</h6>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" name="startDay" value=@startDay>
+                            <input type="hidden" name="endDay" value=@endDay>
+                            <input type="hidden" name="startTime" value=@startTime>
+                            <input type="hidden" name="endTime" value=@endTime>
+                            <input type="hidden" name="tabType" value=@tabType>
+                            <input type="hidden" name="StationNum" value=@StationNum>
+                            <button type="submit" class="btn btn-primary btn-sm" id="btnHGP" onclick="closeGridModel()">匯出EXCEL</button>
+                            <button type="button" class="btn btn-secondary  btn-sm" data-dismiss="modal">關閉</button>
+                        </div>
                         }
                     </div>
                 </div>
@@ -152,7 +154,7 @@
         {
             if (!string.IsNullOrEmpty(Model.FirstOrDefault().GridPowerIDs))
             {
-                <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historyGridpower", new { connStr, Page }))</div>
+                <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historyGridpower", new { connStr, StationNum, stationID, Page }))</div>
             }
         }
     </div>

@@ -64,9 +64,9 @@ namespace Service.ESS.Provider
             return this.mapper.Map < List<Model.GridPower>>(gridPowersList);
         }
 
-        public Model.GridPower ReadNow()
+        public Model.GridPower ReadNow(Guid uid)
         {
-            Domain.GridPower gridPower = gridPowerRepository.ReadAll().OrderByDescending(x=>x.date_time).FirstOrDefault();
+            Domain.GridPower gridPower = gridPowerRepository.ReadAll().Where(x=>x.index==0 && x.uuid==uid).OrderByDescending(x=>x.date_time).FirstOrDefault();
             return this.mapper.Map<Model.GridPower>(gridPower);
         }
 

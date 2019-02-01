@@ -11,6 +11,7 @@ namespace Repository.ESS.Domain
         /// </summary>
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+        public Guid uuid { get; set; } //1070118 站點ID
         //start
         public float version { get; set; }
         public float index { get; set; }

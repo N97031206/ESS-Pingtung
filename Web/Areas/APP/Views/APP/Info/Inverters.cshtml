@@ -1,50 +1,83 @@
-﻿
-<div class="row">
-    <div class="col h3">
-        <p> 逆變器</p>
-    </div>
+﻿<style type="text/css">
+    .pz {
+        margin: auto;
+        vertical-align: middle;
+        text-align: center;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .pzl5 {
+        padding-right: 20px;
+        padding-left: 0px;
+    }
+
+    .borderStyle {
+        border: 1px solid #555555;
+        border-radius: 8px;
+    }
+</style>
+
+<div class="row pz">
+    <div class="col h3 pz">逆變器</div>
 </div>
-<div class="row">
-    <div class="col h6">
+
+<div style="height:1vh"></div>
+<div class="row h6 pz">
+    <div class="col font-weight-bold pz">資料時間:@ViewBag.EssTime </div>
+</div>
+<div style="height:1vh"></div>
+
+<div class="row " id="APPInvRow">
+    <div class="col-12 pz">
         <div class="row " id="AppInvData">
-            <div class="col font-weight-bold ">資料時間:@ViewBag.EssTime</div>
-            <div class="w-100 line"></div>
-            <div class="col font-weight-bold">@ViewBag.InvInfo1</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">工作模式</div>
-            <div class="col font-italic">@ViewBag.InvInfo2</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">市電電壓  (V)</div>
-            <div class="col font-italic">@ViewBag.InvInfo3</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">市電頻率  (Hz)</div>
-            <div class="col font-italic">@ViewBag.InvInfo4</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">輸出電壓  (V)</div>
-            <div class="col font-italic">@ViewBag.InvInfo5</div>
-            <div class="w-100"></div>
-            <div class="col  font-weight-bold small">輸出頻率  (Hz)</div>
-            <div class="col font-italic">@ViewBag.InvInfo6</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">總輸出實功率(kW)</div>
-            <div class="col font-italic">@ViewBag.InvInfo7</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">電池電壓  (V)</div>
-            <div class="col font-italic">@ViewBag.InvInfo8</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">電池容量  (%)</div>
-            <div class="col font-italic">@ViewBag.InvInfo9</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">太陽能電壓  (V)</div>
-            <div class="col font-italic">@ViewBag.InvInfo10</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">總充電電流  (A)</div>
-            <div class="col font-italic">@ViewBag.InvInfo11</div>
+            <div class="col font-weight-bold small pz  ">工作模式</div>
+            <div class="col ">@ViewBag.InvInfo2</div>
         </div>
     </div>
+    <div class="w-100"></div>
+    <div class="col-6 pz">
+        <div class="row " id="AppInvData">
+            <div class="col-8 font-weight-bold small pz  ">市電電壓(V)</div>
+            <div class="col pzl5">@ViewBag.InvInfo3</div>
+            <div class="w-100"></div>
+            <div class="col-8 font-weight-bold small pz  ">市電頻率(Hz)</div>
+            <div class="col pzl5">@ViewBag.InvInfo4</div>
+            <div class="w-100"></div>
+            <div class="col-8 font-weight-bold small pz  ">輸出電壓(V)</div>
+            <div class="col pzl5">@ViewBag.InvInfo5</div>
+            <div class="w-100"></div>
+            <div class="col-8 font-weight-bold small pz   ">輸出頻率(Hz)</div>
+            <div class="col pzl5">@ViewBag.InvInfo6</div>
+            <div class="w-100"></div>
+            <div class="col-8 font-weight-bold small pz ">總輸出實功率(kW)</div>
+            <div class="pzl5 pz">@ViewBag.InvInfo7</div>
+        </div>
+    </div>
+
+    <div class="col-6 pz">
+        <div class="row " id="AppInvData">
+            <div class="col-8 font-weight-bold small pz  ">電池電壓(V)</div>
+            <div class="col pzl5">@ViewBag.InvInfo8</div>
+            <div class="w-100"></div>
+            <div class="col-8 font-weight-bold small pz  ">電池容量(%)</div>
+            <div class="col pzl5">@ViewBag.InvInfo9</div>
+            <div class="w-100"></div>
+            <div class="col-8 font-weight-bold small pz  ">太陽能電壓(V)</div>
+            <div class="col pzl5">@ViewBag.InvInfo10</div>
+            <div class="w-100"></div>
+            <div class="col-8 font-weight-bold small pz  ">總充電電流(A)</div>
+            <div class="col pzl5">@ViewBag.InvInfo11</div>
+            <div class="w-100"></div>
+            <div class="col pzl5 " style="height:3vh"></div>
+        </div>
+
+    </div>
 </div>
 <div class="row">
-    <div class="col text-center" id="mainInverter" style="width: 320px;height:300px;vertical-align:middle">
+    <div class="col text-center ChartSize" id="mainInverter">
     </div>
 </div>
 
@@ -60,15 +93,19 @@
                 }
                 //X軸座標
                 var xData = [];
-                for (var i = 0; i < 24; i++) {
-                    xData.push(paddingLeft(i.toString(), 2) + "時" );
-                }
+                var h =@ViewBag.nowHour;
+                    for (var i = 0; i < 24; i++) {
+                        if (h > 0) {
+                            var hh = i + h;
+                            if (hh >= 24) { hh = hh - 24; }
+                            xData.push(paddingLeft(hh.toString(), 2) + "時");
+                        }
+                    }
                 //Y軸座標
                  var InverterData = [];
                 InverterData.push(@ViewBag.InverterData);
                 option = null;
                 option = {
-                   
                     tooltip: {
                         trigger: 'axis',
                         show: true
@@ -78,6 +115,9 @@
                         right: '4%',
                         bottom: '1%',
                         containLabel: true
+                    },
+                    legend: {
+                        data: ['總輸出實功率(kW)']
                     },
                     xAxis: [
                         {
@@ -120,7 +160,7 @@
                             "name": "總輸出實功率(kW)",
                             "type": "line",
                             "data": InverterData,
-                            areaStyle: {}
+                            "areaStyle": {}
                         }
                     ]
                 };

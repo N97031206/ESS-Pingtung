@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.WebPages;
+using Support.Authorize;
 using Battery = Service.ESS.Model.Battery;
 
 
@@ -15,6 +16,9 @@ namespace Web.Controllers.Api
     public class ApiController : System.Web.Http.ApiController
     {
         #region private
+        //Account
+        private AccountService accountService = new AccountService();
+        private RoleService roleService = new RoleService();
         //Tab
         private BulletinService bulletinService = new BulletinService();
         private readonly StationService stationService = new StationService();
@@ -31,12 +35,35 @@ namespace Web.Controllers.Api
         private readonly ErrorCodesService errorCodesService = new ErrorCodesService();
         #endregion
 
+        [Route("api/BatteryJson")]
+        [HttpGet]
+        public IHttpActionResult BatteryJson()
+        {
+            var BatteryJson = BatteryService.ReadByInfoList(DateTime.Today, DateTime.Now);
+            return Json(BatteryJson);
+        }
+
+
+        [Route("api/APPLogin")]
+        [HttpPost]
+        public IHttpActionResult APPLogin(string UserName, string Password)
+        {
+            Account account = accountService.ReadBy(UserName, Password);
+            chkLogin chklogin = new chkLogin();
+            chklogin.Check = (account != null)?true:false;
+            chklogin.Level = (account != null)?(int)Enum.Parse(typeof(RoleType), roleService.ReadByID(account.RoleId).Type.ToString()):999;
+            return Ok(chklogin);
+        }
+
+
+
         [Route("api/Index")]
         [HttpGet]
         public IHttpActionResult Index()
         {
-            double soc = BatteryService.totalSOC() * 20.0;
-            double LoadWatt = LoadPowerService.ReadNow().Watt_t;
+            Guid uuid = stationService.UUID(2);
+            double soc = BatteryService.totalSOC(uuid) * 20.0;
+            double LoadWatt = LoadPowerService.ReadNow(uuid).Watt_t;
             string Data = "[";
             Data += "{";
             Data += "'Location':" + "'大武社區'" + ",";
@@ -175,13 +202,15 @@ namespace Web.Controllers.Api
                 }
 
                 double data = batteryTotalVolt.Average() == 0 ? 0 : Math.Round(batteryTotalVolt.Average() * 100.00, 2);
-                BatteryStr += (i > 22) ? "{'hour':" + starttime.Hour + ",'data':" + data + "}" : "{'hour':" + starttime.Hour + ",'data':"+ data +" },";
+                BatteryStr += (i > 22) ? "{'hour':" + starttime.Hour + ",'data':" + data + "}" : "{'hour':" + starttime.Hour + ",'data':" + data + " },";
                 starttime = starttime.AddHours(1);
             }
             BatteryStr += "]";
             #endregion
             return Ok(BatteryStr);
         }
+
+
 
         [Route("api/GridPowerStr")]
         [HttpPost]
@@ -351,5 +380,11 @@ namespace Web.Controllers.Api
             public double Oil { get; set; }
         }
 
+
+        private class chkLogin
+        {
+            public bool Check { get; set; }
+            public int Level { get; set; }
+        }
     }
 }

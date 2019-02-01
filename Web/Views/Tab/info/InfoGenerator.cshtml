@@ -1,29 +1,4 @@
-﻿@using Service.ESS.Provider;
-@using Service.ESS.Model;
-@{
-    //取最新時間
-    ESSObjecterService eSSObjecterService = new ESSObjecterService();
-    string EssTime = eSSObjecterService.ReadNow().CreateTime.ToString();
-    //取相關資料
-
-    GeneratorService GeneratorService = new GeneratorService();
-    List<Generator> generators = new List<Generator>();
-    var ReadNow = eSSObjecterService.ReadNow().GeneratorIDs;
-    if (ReadNow != null)
-    {
-        var generID = ReadNow.Split('|');
-        foreach (var x in generID)
-        {
-            if (!string.IsNullOrEmpty(x))
-            {
-                Guid id = Guid.Parse(x.Trim());
-                generators.Add(GeneratorService.ReadByID(id));
-            }
-        }
-    }
-}
-
-<style>
+﻿<style>
     .line {
         width: auto;
         height: auto;
@@ -31,134 +6,56 @@
     }
 </style>
 
-
 <div class="row">
     <!--lift-->
     <div class="col-2 h6">
-        @if (generators != null)
-        {
-            string Info1 = "發電機(目前離線中)";
-            string Info13 = "離線";
-            string Info2 = "0", Info3 = "0", Info4 = "0", Info5 = "0", Info6 = "0", Info7 = "0", Info8 = "0", Info9 = "0", Info10 = "0", Info11 = "0", Info12 = "0", Info14 = "0", Info15 = "0";
         <div class="row " id="pc0">
-            <div class="col font-weight-bold ">資料時間:@EssTime</div>
-            @*<div class="col font-italic"></div>*@
-            @foreach (var gen in generators)
-            {
-                Info1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? "發電機" + gen.index.ToString() : "發電機" + gen.index.ToString() + "(目前離線中)";
-                Info3 = string.Format("{0:#,0.00}", gen.L1Nvoltage);
-                Info4 = string.Format("{0:#,0.00}", gen.L2Nvoltage);
-                Info5 = string.Format("{0:#,0.00}", gen.L3Nvoltage);
-                Info6 = string.Format("{0:#,0.00}", gen.L1current);
-                Info7 = string.Format("{0:#,0.00}", gen.L2current);
-                Info8 = string.Format("{0:#,0.00}", gen.L3current);
-                Info9 = string.Format("{0:#,0.00}", gen.totalwatts / 1000);
-                Info10 = string.Format("{0:#,0.00}", gen.averagepowerfactor);
-                Info11 = string.Format("{0:#,0.00}", gen.positiveKWhours);
-                Info12 = string.Format("{0:#,0.00}", gen.negativeKWhours);
-                Info13 = gen.ControlStatus.Equals("true") ? "啟動中" : "已關閉";
-                Info14 = string.Format("{0:#,0.00}", gen.AvailabilityEnergy);
-                Info15 = string.Format("{0:#,0.00}", gen.AvailabilityHour);
-            }
+            <div class="col font-weight-bold ">資料時間:@ViewBag.EssTime</div>
             <div class="w-100 line"></div>
-            <div class="col font-weight-bold small">@Info1</div>
-            @*<div class="col font-italic"></div>*@
+            <div class="col font-weight-bold small">@ViewBag.GenInfo1</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">發電機油位 (%)</div>
-            <div class="col font-italic">@Info2</div>
+            <div class="col font-italic">@ViewBag.GenInfo2</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">L1-N相電壓(V)</div>
-            <div class="col font-italic">@Info3</div>
+            <div class="col font-italic">@ViewBag.GenInfo3</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">L2-N相電壓(V)</div>
-            <div class="col font-italic">@Info4</div>
+            <div class="col font-italic">@ViewBag.GenInfo4</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">L3-N相電壓 (V)</div>
-            <div class="col font-italic">@Info5</div>
+            <div class="col font-italic">@ViewBag.GenInfo5</div>
             <div class="w-100"></div>
             <div class="col  font-weight-bold small">L1相電流(A)</div>
-            <div class="col font-italic">@Info6</div>
+            <div class="col font-italic">@ViewBag.GenInfo6</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">L2相電流(A)</div>
-            <div class="col font-italic">@Info7</div>
+            <div class="col font-italic">@ViewBag.GenInfo7</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">L3相電流(A)</div>
-            <div class="col font-italic">@Info8</div>
+            <div class="col font-italic">@ViewBag.GenInfo8</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">總實功率(kW)</div>
-            <div class="col font-italic">@Info9</div>
+            <div class="col font-italic">@ViewBag.GenInfo9</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">平均功率因數</div>
-            <div class="col font-italic">@Info10</div>
+            <div class="col font-italic">@ViewBag.GenInfo10</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">正的千瓦時(度)</div>
-            <div class="col font-italic">@Info11</div>
+            <div class="col font-italic">@ViewBag.GenInfo11</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">負的千瓦時(度)</div>
-            <div class="col font-italic">@Info12</div>
+            <div class="col font-italic">@ViewBag.GenInfo12</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">發電機狀態</div>
-            <div class="col font-italic">@Info13</div>
+            <div class="col font-italic">@ViewBag.GenInfo13</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">可用總電量(度)</div>
-            <div class="col font-italic">@Info14</div>
+            <div class="col font-italic">@ViewBag.GenInfo14</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">可用電時數(H)</div>
-            <div class="col font-italic">@Info15</div>
+            <div class="col font-italic">@ViewBag.GenInfo15</div>
         </div>
-        }
-        else
-        {
-            <div class="row " id="pc0">
-                <div class="col font-weight-bold ">資料時間:@EssTime</div>
-                @*<div class="col font-italic"></div>*@
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">發電機(目前離線中)"</div>
-                @*<div class="col font-italic"></div>*@
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">發電機油位 (%)</div>
-                <div class="col font-italic">0</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">L1-N相電壓(V)</div>
-                <div class="col font-italic">0</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">L2-N相電壓(V)</div>
-                <div class="col font-italic">0</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">L3-N相電壓 (V)</div>
-                <div class="col font-italic">0</div>
-                <div class="w-100"></div>
-                <div class="col  font-weight-bold small">L1相電流(A)</div>
-                <div class="col font-italic">0</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">L2相電流(A)</div>
-                <div class="col font-italic">0</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">L3相電流(A)</div>
-                <div class="col font-italic">0</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">總實功率(kW)</div>
-                <div class="col font-italic">0</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">平均功率因數</div>
-                <div class="col font-italic">0</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">正的千瓦時(度)</div>
-                <div class="col font-italic">0</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">負的千瓦時(度)</div>
-                <div class="col font-italic">0</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">發電機狀態</div>
-                <div class="col font-italic">離線</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">可用總電量(度)</div>
-                <div class="col font-italic">0</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">可用電時數(時)</div>
-                <div class="col font-italic">0</div>
-            </div>
-        }
     </div>
     <!--middle-->
     <div class="col-8">

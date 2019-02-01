@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Support.Authorize;
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width , initial-scale=1" />
@@ -10,20 +12,66 @@
 </head>
 <body onload="ShowTime()">
     <div class="container-fluid  text-center" style="min-height:80px " width="100%">
-        <!---->
         <div class="row">
             <div class="col-4">
-                <div class="h5 text-left" id="showbox"></div>
+                <div class="h6 text-left" id="showbox"></div>
             </div>
             <div class="col-4 " style="font-family:DFKai-sb;">
                 <img width="50" height="50" src="~/Content/Image/Emblem_of_Pingtung_County.png" />
                 <h4>@ViewBag.Logo</h4>
             </div>
-            <div class="col-4  ">
-                <div class="align-bottom text-right h3">@ViewBag.User  @Html.ActionLink("登出", "Logout", "Account")</div>         
-
+            <div class="col-4  text-right" style="margin:auto">
+                @if (User.Identity.Name.Split(',')[2].ToString().Trim().Equals(RoleType.參觀帳號.ToString().Trim()))
+                {
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            使用者登入
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <div class="card rounded-0">
+                                <div class="card-body">
+                                    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Email address</label>
+                                            <input type="text" class="form-control" id="UserName" name="UserName" placeholder="UserName">
+                                        </div>
+                                        <p class='text-danger'>@ViewBag.name</p>
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1">Password</label>
+                                            <input type="password" class="form-control" id="Password" name="Password" placeholder="Password">
+                                        </div>
+                                        <p class='text-danger'>@ViewBag.password</p>
+                                        <div class="row">
+                                            <div class="col text-left">
+                                                <button type="button" class="btn btn-link " data-toggle="modal" data-target="#exampleModal">
+                                                    忘記密碼
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-sm  btn-block " id="btnLogin" hr>登入</button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="dropdown align-bottom">
+                        <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span> 歡迎 @ViewBag.User</span>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="@Url.Action("Maintain", "Tab")"> @Resources.Resource.Maintain</a>
+                            <a class="dropdown-item" href="@Url.Action("Logout", "Account")"><span>登出</span></a>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
+        <!---->
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="mainBody">

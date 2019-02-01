@@ -9,6 +9,7 @@ namespace Service.ESS.Model
     {       
         [Display(Name = "帳戶編號")]
         public Guid Id { get; set; }
+        public Guid uuid { get; set; } //1070118 站點ID
         public int version { get; set; }    //	model版本	
         public int index { get; set; }  //	陣列編號	
         public string modelSerial { get; set; } //	型號	

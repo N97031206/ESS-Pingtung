@@ -1,7 +1,6 @@
 ﻿@using PagedList;
 @using PagedList.Mvc;
 @using Service.ESS.Provider;
-
 @model IPagedList<Service.ESS.Model.Bulletin>
 
 @{
@@ -14,70 +13,92 @@
 
 @Html.Partial("DataPicket")
 
-<br />
-@using (Html.BeginForm("Bulletin", "APP", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-    <div class="daterange h6 text-center ">
-        <label><span class="text-light">發表時間</span></label><br />
-        <input class="col-3  h6" name="range_date" type="text">
-        <button type="submit" class="btn btn-success btn-sm" id="btnBulletin" style="vertical-align:top">查詢</button>
-        <i class="fa fa-calendar"></i>
-    </div>
-}
-<br>
+<style type="text/css">
+    div.pad {
+        margin: 0;
+        padding: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-bottom: 0;
+        padding-top: 0;
+    }
+</style>
+<div style="height:1vh"></div>
 
-    <table class="table table-striped">
-        <tbody class="text-light">
-            @foreach (var bl in Model)
-            {
-                if (bl.Disabled == false)
-                {
-                    str = "bl" + x;
-                    <tr class="text-left">
-                        <th scope="row">
-                            <button type="button" class="btn btn-primary btn-sm btn-block align-baseline " data-toggle="modal" data-target="#@str">                    
-                                @orginService.ReadID(bl.OrginID).OrginName.ToString().Trim()
-                                @bl.CreateDate.ToString("yyyy/MM/dd tt hh:mm")
-                                <br />
-                                @bl.title
-                            </button>
-                        </th>
-                    </tr>
-                    x++;
-                }
-            }
-        </tbody>
-    </table>
-    <div class="text-dark">
+<div class="row pad ">
+    <div class="col text-center pad">
+        @using (Html.BeginForm("Bulletin", "APP", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="row pad">
+                <div class="col pad">
+                    <div class="daterange ">
+                        <input class="col h5 pad  text-center" name="range_date" readonly="readonly">
+                        <i class="fa fa-calendar"></i>
+                        <button type="submit" class="btn btn-success  btn-block" id="btnBulletin" style="vertical-align:top">發表區間查詢</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="row  pad">
+    <div class="col text-center pad ">
+        <h3> @ViewBag.Range</h3>
+    </div>
+</div>
+<table class="table table-striped">
+    <tbody class="text-light">
         @foreach (var bl in Model)
         {
             if (bl.Disabled == false)
             {
-                str = "bl" + y;
-                <div class="modal fade" id="@str" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">@bl.title</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body ">
-                                @bl.context
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
+                str = "bl" + x;
+                <tr class="text-left">
+                    <th scope="row">
+                        <button type="button" class="btn btn-primary btn-sm btn-block align-baseline " data-toggle="modal" data-target="#@str">
+                            @orginService.ReadID(bl.OrginID).OrginName.ToString().Trim()
+                            @bl.CreateDate.ToString("yyyy/MM/dd tt hh:mm")
+                            <br />
+                            @bl.title
+                        </button>
+                    </th>
+                </tr>
+                x++;
+            }
+        }
+    </tbody>
+</table>
+<div class="text-dark">
+    @foreach (var bl in Model)
+    {
+        if (bl.Disabled == false)
+        {
+            str = "bl" + y;
+            <div class="modal fade" id="@str" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">@bl.title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body ">
+                            @bl.context
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
-                y++;
-            }
+            </div>
+            y++;
         }
-    </div>
-    <div>@Html.PagedListPager(Model, Page => Url.Action("Bulletin", new { Page }))</div>
+    }
+</div>
+<div   style="font-size:small">@Html.PagedListPager(Model, Page => Url.Action("Bulletin", new { Page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)</div>
 
 
 

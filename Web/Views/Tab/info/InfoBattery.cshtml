@@ -1,21 +1,4 @@
-﻿@using Service.ESS.Provider;
-@using Service.ESS.Model;
-@{
-    //取最新時間
-    ESSObjecterService eSSObjecterService = new ESSObjecterService();
-    string EssTime = eSSObjecterService.ReadNow().CreateTime.ToString();
-    //取相關資料
-    var batteryID = eSSObjecterService.ReadNow().BatteryIDs.Split('|').ToList();
-    BatteryService BatteryService = new BatteryService();
-    List<Battery> batteries = new List<Battery>();
-    batteryID.ForEach(x=>{
-        if (!string.IsNullOrEmpty(x))
-        {
-            batteries.Add(BatteryService.ReadByID(Guid.Parse(x.Trim())));
-        }
-    });
-}
-
+﻿
 <style>
     .line {
         width: auto;
@@ -27,45 +10,89 @@
 <div class="row">
     <!--lift-->
     <div class="col-2 h6">
-        @if (batteries != null)
-        {
         <div class="row " id="pc0">
-            <div class="col font-weight-bold ">資料時間:@EssTime</div>
-            @*<div class="col font-italic"></div>*@
-            @foreach (var ba in batteries)
-            {
-                string Info1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? ba.index.ToString() : ba.index.ToString() + "(目前離線中)";
-                string Info2 = string.Format("{0:#,0.00}", ba.voltage);
-                string Info3 = string.Format("{0:#,0.00}", ba.charging_current);
-                string Info4 = string.Format("{0:#,0.00}", ba.discharging_current);
-                string Info5 = string.Format("{0:#,0.00}", BatteryService.EachSOC(ba.voltage));
-                string Info6 = string.Format("{0:#,0}", ba.Cycle);
-                int cd = Convert.ToInt32(ba.charge_direction);
-                string Info7 = (cd == 1) ? "充電" : (cd == 2) ? "放電" : "離線";
-                <div class="w-100 line"></div>
-                <div class="col font-weight-bold ">電池組 @Info1</div>
-                @*<div class="col font-italic"></div>*@
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">電池電壓(V)</div>
-                <div class="col font-italic">@Info2</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">充電電流(A)</div>
-                <div class="col font-italic">@Info3</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">放電電流(A)</div>
-                <div class="col font-italic">@Info4</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">電池容量(%)</div>
-                <div class="col font-italic">@Info5</div>
-                <div class="w-100"></div>
-                <div class="col  font-weight-bold small">充電次數(次)</div>
-                <div class="col font-italic">@Info6</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">充電方向</div>
-                <div class="col font-italic">@Info7</div>
-            }
+            <div class="col font-weight-bold ">資料時間:@ViewBag.EssTime</div>
+            <div class="w-100 line"></div>
+            <div class="col font-weight-bold ">電池組 @ViewBag.BatteryInfo11</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電池電壓(V)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo12</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">充電電流(A)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo13</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">放電電流(A)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo14</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電池容量(%)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo15</div>
+            <div class="w-100"></div>
+            <div class="col  font-weight-bold small">充電次數(次)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo16</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">充電方向</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo17</div>
+            <div class="w-100 line"></div>
+            <div class="col font-weight-bold ">電池組 @ViewBag.BatteryInfo21</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電池電壓(V)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo22</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">充電電流(A)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo23</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">放電電流(A)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo24</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電池容量(%)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo25</div>
+            <div class="w-100"></div>
+            <div class="col  font-weight-bold small">充電次數(次)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo26</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">充電方向</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo27</div>
+            <div class="w-100 line"></div>
+            <div class="col font-weight-bold ">電池組 @ViewBag.BatteryInfo31</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電池電壓(V)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo32</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">充電電流(A)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo33</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">放電電流(A)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo34</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電池容量(%)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo35</div>
+            <div class="w-100"></div>
+            <div class="col  font-weight-bold small">充電次數(次)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo36</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">充電方向</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo37</div>
+            <div class="w-100 line"></div>
+            <div class="col font-weight-bold ">電池組 @ViewBag.BatteryInfo41</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電池電壓(V)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo42</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">充電電流(A)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo43</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">放電電流(A)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo44</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電池容量(%)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo45</div>
+            <div class="w-100"></div>
+            <div class="col  font-weight-bold small">充電次數(次)</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo46</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">充電方向</div>
+            <div class="col font-italic">@ViewBag.BatteryInfo47</div>
         </div>
-        }
     </div>
     <!--middle-->
     <div class="col-8">
@@ -156,7 +183,7 @@
                                 }
                             },
                             axisLabel: {
-                                formatter: '{value}' 
+                                formatter: '{value}'
                             }
                         },
                     ],

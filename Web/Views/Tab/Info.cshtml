@@ -1,55 +1,34 @@
 ﻿@{
     ViewBag.Title = Resources.Resource.Info;
-    Layout = "~/Views/Shared/_LayoutTab.cshtml";
     var check = TempData["nav"];
-    bool OnView = ViewBag.OnView;
+    int Num = ViewBag.StationNum==null?2: ViewBag.StationNum;
+    Layout = Num == 6 ? "~/Views/Shared/_LayoutJiasing.cshtml" : "~/Views/Shared/_LayoutTab.cshtml";
 }
 @Html.Partial("Echart")
 
-@*5分鐘更新一次網站*@
-<script>
-        setTimeout("location.href='@Url.Action("Info", "Tab")'", 300000)
-</script>
-
-<br />
-<div class="row h5 text-left">
-    <div class="col-6">
-        @using (Html.BeginForm("Info", "Tab", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            @Html.Label("站別 : ");
-            @Html.DropDownList("Staton", (IEnumerable<SelectListItem>)ViewBag.station, new { onchange = "this.form.submit();" })
-        }
-    </div>
+<div style="height:2vh"></div>
+<div class="row">
+    <div class="col"><h2>@ViewBag.viewstation </h2></div>
 </div>
 
-@if (!string.IsNullOrEmpty(ViewBag.viewstation))
-{
-    <div class="row">
-        <div class="col-2"><h4>@ViewBag.viewstation </h4></div>
-    </div>
-}
-
-@if (OnView)
-{
     <ul class="nav nav-pills  navtop h3">
         <li class="nav-item">
-            <a class="@TempData["navLoad"]" href="#InfoLoad" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Load"})'">@ViewBag.Load</a>
+            <a class="@TempData["navLoad"]" href="#InfoLoad" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Load",  StationNum=Num})'">@ViewBag.Load</a>
         </li>
         <li class="nav-item">
-            <a class="@TempData["navSolar"]" href="#InfoSolar" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Solar"})'">@ViewBag.Solar</a>
+            <a class="@TempData["navSolar"]" href="#InfoSolar" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Solar",  StationNum=Num})'">@ViewBag.Solar</a>
         </li>
         <li class="nav-item">
-            <a class="@TempData["navGridPower"] " href="#InfoGridPower" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="GridPower"})'"> @ViewBag.GridPower</a>
+            <a class="@TempData["navGridPower"] " href="#InfoGridPower" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="GridPower",  StationNum=Num})'"> @ViewBag.GridPower</a>
         </li>
         <li class="nav-item">
-            <a class="@TempData["navGenerator"]" href="#InfoGenerator" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Generator"})'">@ViewBag.Generator</a>
+            <a class="@TempData["navGenerator"]" href="#InfoGenerator" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Generator",  StationNum=Num})'">@ViewBag.Generator</a>
         </li>
         <li class="nav-item">
-            <a class="@TempData["navBattery"]" href="#InfoBattery" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Battery"})'">@ViewBag.Battery</a>
+            <a class="@TempData["navBattery"]" href="#InfoBattery" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Battery",  StationNum=Num})'">@ViewBag.Battery</a>
         </li>
         <li class="nav-item">
-            <a class="@TempData["navInverters"]" href="#InfoInverters" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Inverters"})'">@ViewBag.Inverters</a>
+            <a class="@TempData["navInverters"]" href="#InfoInverters" data-toggle="tab" onclick="location.href='@Url.Action("Info", "Tab",new { tabType="Inverters",  StationNum=Num})'">@ViewBag.Inverters</a>
         </li>
     </ul>
     <div class="tab-content">
@@ -72,4 +51,4 @@
             @if (check.Equals("Inverters")) { Html.RenderPartial("info/InfoInverters"); }
         </div>
     </div>
-}
+

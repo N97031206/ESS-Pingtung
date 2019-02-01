@@ -41,9 +41,9 @@ namespace Service.ESS.Provider
             return domain.Id;
         }
 
-        public Model.Inverter ReadNow()
+        public Model.Inverter ReadNow(Guid uid)
         {
-            Domain.Inverter inverter = inverterRepository.ReadAll().OrderByDescending(x => x.CreateTime).FirstOrDefault();
+            Domain.Inverter inverter = inverterRepository.ReadAll().Where(x=>x.uuid==uid).OrderByDescending(x => x.CreateTime).FirstOrDefault();
             return this.mapper.Map<Model.Inverter>(inverter);
         }
 

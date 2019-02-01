@@ -1,28 +1,4 @@
-﻿@using Service.ESS.Provider;
-@using Service.ESS.Model;
-@{
-    //取最新時間
-    ESSObjecterService eSSObjecterService = new ESSObjecterService();
-    string EssTime = eSSObjecterService.ReadNow().CreateTime.ToString();
-    //取相關資料
-    InverterService InverterService = new InverterService();
-    List<Inverter> inverters = new List<Inverter>();
-    var ReadNow = eSSObjecterService.ReadNow().InvertersIDs;
-    var invID = ReadNow.Split('|');
-    if (ReadNow != null)
-    {
-        foreach (var x in invID)
-        {
-            if (!string.IsNullOrEmpty(x))
-            {
-                Guid id = Guid.Parse(x.Trim());
-                inverters.Add(InverterService.ReadByID(id));
-            }
-        }
-    }
-}
-
-<style>
+﻿<style>
     .line {
         width: auto;
         height: auto;
@@ -33,67 +9,41 @@
 <div class="row">
     <!--lift-->
     <div class="col-2 h6">
-        @if (inverters != null)
-        {
-            <div class="row " id="pc0">
-                <div class="col font-weight-bold ">資料時間:@EssTime</div>
-                @*<div class="col font-italic"></div>*@
-                @foreach (var inv in inverters)
-                {
-                    string Info1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? "逆變器" : "逆變器(目前離線中)";
-                    string Info2 = inv.DeviceMode.Trim();
-                    if (Info2 == "P") { Info2 = "Power On Mode"; }
-                    else if (Info2 == "S") { Info2 = "Standby Mode"; }
-                    else if (Info2 == "L") { Info2 = "Line Mode"; }
-                    else if (Info2 == "B") { Info2 = "Battery Mode"; }
-                    else if (Info2 == "F") { Info2 = "Fault Mode"; }
-                    else if (Info2 == "H") { Info2 = "Power Saving Mode"; }
-                    else { Info2 = "Unknown Mode"; }
-                    string Info3 = string.Format("{0:#,0.00}", inv.GridVoltage);
-                    string Info4 = string.Format("{0:#,0.00}", inv.GridFrequency);
-                    string Info5 = string.Format("{0:#,0.00}", inv.AC_OutputVoltage);
-                    string Info6 = string.Format("{0:#,0.00}", inv.AC_OutputFrequency);
-                    string Info7 = string.Format("{0:#,0.00}", inv.ParallelInformation_TotalOutputActivePower.Split('|').ToList().Sum(x => x.IsEmpty() ? 0 : Convert.ToDouble(x)) / 1000.0);
-                    string Info8 = string.Format("{0:#,0.00}", inv.BatteryVoltage);
-                    string Info9 = string.Format("{0:#,0.00}", inv.BatteryCapacity);
-                    string Info10 = string.Format("{0:#,0.00}", inv.PV_InputVoltage);
-                    string Info11 = string.Format("{0:#,0.00}", inv.ParallelInformation_TotalChargingCurrent.Split('|').ToList().Sum(x => x.IsEmpty() ? 0 : Convert.ToDouble(x)) / 1000.0);
-                    <div class="w-100 line"></div>
-                    <div class="col font-weight-bold">@Info1</div>
-                    @*<div class="col font-italic"></div>*@
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">工作模式</div>
-                    <div class="col font-italic">@Info2</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">市電電壓  (V)</div>
-                    <div class="col font-italic">@Info3</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">市電頻率  (Hz)</div>
-                    <div class="col font-italic">@Info4</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">輸出電壓  (V)</div>
-                    <div class="col font-italic">@Info5</div>
-                    <div class="w-100"></div>
-                    <div class="col  font-weight-bold small">輸出頻率  (Hz)</div>
-                    <div class="col font-italic">@Info6</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">總輸出實功率(kW)</div>
-                    <div class="col font-italic">@Info7</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">電池電壓  (V)</div>
-                    <div class="col font-italic">@Info8</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">電池容量  (%)</div>
-                    <div class="col font-italic">@Info9</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">太陽能電壓  (V)</div>
-                    <div class="col font-italic">@Info10</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">總充電電流  (A)</div>
-                    <div class="col font-italic">@Info11</div>
-                }
-            </div>
-        }
+        <div class="row " id="pc0">
+            <div class="col font-weight-bold ">資料時間:@ViewBag.EssTime</div>
+            <div class="w-100 line"></div>
+            <div class="col font-weight-bold">@ViewBag.InvInfo1</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">工作模式</div>
+            <div class="col font-italic">@ViewBag.InvInfo2</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">市電電壓  (V)</div>
+            <div class="col font-italic">@ViewBag.InvInfo3</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">市電頻率  (Hz)</div>
+            <div class="col font-italic">@ViewBag.InvInfo4</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">輸出電壓  (V)</div>
+            <div class="col font-italic">@ViewBag.InvInfo5</div>
+            <div class="w-100"></div>
+            <div class="col  font-weight-bold small">輸出頻率  (Hz)</div>
+            <div class="col font-italic">@ViewBag.InvInfo6</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">總輸出實功率(kW)</div>
+            <div class="col font-italic">@ViewBag.InvInfo7</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電池電壓  (V)</div>
+            <div class="col font-italic">@ViewBag.InvInfo8</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電池容量  (%)</div>
+            <div class="col font-italic">@ViewBag.InvInfo9</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">太陽能電壓  (V)</div>
+            <div class="col font-italic">@ViewBag.InvInfo10</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">總充電電流  (A)</div>
+            <div class="col font-italic">@ViewBag.InvInfo11</div>
+        </div>
     </div>
     <!--middle-->
     <div class="col-8">

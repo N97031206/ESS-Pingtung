@@ -1,37 +1,4 @@
-﻿@using Service.ESS.Provider;
-@using Service.ESS.Model;
-@{
-            //取最新時間
-            ESSObjecterService eSSObjecterService = new ESSObjecterService();
-            string EssTime = eSSObjecterService.ReadNow().CreateTime.ToString();
-            //取相關資料
-            LoadPowerService LoadPowerService = new LoadPowerService();
-            List<LoadPower> loadPowers = new List<LoadPower>();
-            var ReadNow = eSSObjecterService.ReadNow().LoadPowerIDs;
-            if (ReadNow != null)
-            {
-                var LoadID = ReadNow.Split('|');
-                foreach (var x in LoadID)
-                {
-                    if (!string.IsNullOrEmpty(x))
-                    {
-                        Guid id = Guid.Parse(x.Trim());
-                        loadPowers.Add(LoadPowerService.ReadByID(id));
-                    }
-                }
-            }
-            LoadPower lo = loadPowers.Where(x => x.index == 2).FirstOrDefault();
-            string Info1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? "負載" : "負載(目前離線中)";
-            double Info2 = Math.Round(lo.Vavg, 2);
-            double Info3 = Math.Round(lo.Isum, 2);
-            double Info4 = Math.Round(lo.Watt_t / 1000.0, 2);
-            double Info5 = Math.Round(lo.Var_t / 1000.00, 2);
-            double Info6 = Math.Round(lo.VA_t / 1000.0, 2);
-            double Info7 = Math.Round(lo.PF_t, 2);
-            double Info8 = Math.Round(lo.Frequency, 2);
-            double Info9 = Math.Round(lo.MinuskWHt, 2);
-        }
-
+﻿
 <style>
     .line {
         width: auto;
@@ -43,40 +10,35 @@
 <div class="row">
     <!--lift-->
     <div class="col-2 h6">
-        @if (loadPowers != null)
-    {
-            <div class="row " id="pc0">
-                <div class="col font-weight-bold ">資料時間:@EssTime</div>
-                @*<div class="col font-italic"></div>*@
-                <div class="w-100 line"></div>
-                <div class="col font-weight-bold ">@Info1</div>
-                @*<div class="col font-italic"></div>*@
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">電壓(V)</div>
-                <div class="col font-italic">@Info2</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">電流(A)</div>
-                <div class="col font-italic">@Info3</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">實功率(kW)</div>
-                <div class="col font-italic">@Info4</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">虛功率(kVAR)</div>
-                <div class="col font-italic">@Info5</div>
-                <div class="w-100"></div>
-                <div class="col  font-weight-bold small">視在功率(kVA)</div>
-                <div class="col font-italic">@Info6</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">功率因數(PF)</div>
-                <div class="col font-italic">@Info7</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">頻率(Hz)</div>
-                <div class="col font-italic">@Info8</div>
-                <div class="w-100"></div>
-                <div class="col font-weight-bold small">當日用電量(度)</div>
-                <div class="col font-italic">@Info9</div>
-            </div>
-        }
+        <div class="row " id="pc0">
+            <div class="col font-weight-bold ">資料時間:@ViewBag.EssTime</div>
+            <div class="w-100 line"></div>
+            <div class="col font-weight-bold ">@ViewBag.LoadInfo1</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電壓(V)</div>
+            <div class="col font-italic">@ViewBag.LoadInfo2</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">電流(A)</div>
+            <div class="col font-italic">@ViewBag.LoadInfo3</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">實功率(kW)</div>
+            <div class="col font-italic">@ViewBag.LoadInfo4</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">虛功率(kVAR)</div>
+            <div class="col font-italic">@ViewBag.LoadInfo5</div>
+            <div class="w-100"></div>
+            <div class="col  font-weight-bold small">視在功率(kVA)</div>
+            <div class="col font-italic">@ViewBag.LoadInfo6</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">功率因數(PF)</div>
+            <div class="col font-italic">@ViewBag.LoadInfo7</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">頻率(Hz)</div>
+            <div class="col font-italic">@ViewBag.LoadInfo8</div>
+            <div class="w-100"></div>
+            <div class="col font-weight-bold small">當日用電量(度)</div>
+            <div class="col font-italic">@ViewBag.LoadInfo9</div>
+        </div>
     </div>
     <!--middle-->
     <div class="col-8">
@@ -151,10 +113,13 @@
                         data: ['負載迴路']
                     },
                     toolbox: {
+                        show: true,
                         feature: {
-                            saveAsImage: {
-                                title: '圖檔'
-                            }
+                            mark: { show: true },
+                            dataView: { show: true, readOnly: false, title: '資料' },
+                            magicType: { show: true, type: ['line', 'bar'], title: '圖格式' },
+                            restore: { show: true, title: '復原' },
+                            saveAsImage: { show: true, title: '圖檔' }
                         }
                     },
                     xAxis: [

@@ -1,64 +1,87 @@
-﻿@using Service.ESS.Provider;
-@using Service.ESS.Model;
-@{
-    BatteryService BatteryService = new BatteryService();
-    List<Battery> batteries = new List<Battery>();
-    batteries = ViewBag.BatteryInfo;
-    string EssTime = ViewBag.EssTime;
-}
+﻿
+<style type="text/css">
+
+    .pad5 {
+        padding-right: 0;
+        padding-left: 5px;
+    }
+
+    .borderStyle {
+        border: 1px solid #555555;
+        border-radius: 8px;
+    }
+
+    .pz {
+        margin: auto;
+        vertical-align: middle;
+        text-align: center;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+</style>
+
+
+<div class="row pz">
+    <div class="col h3 pz">電池</div>
+</div>
+
+<div style="height:1vh"></div>
+<div class="row h6 pz">
+    <div class="col font-weight-bold pz">資料時間:@ViewBag.EssTime </div>
+</div>
+<div style="height:1vh"></div>
+
+<div class="row ">
+    <div class="col-4 font-weight-bold ">電池組 </div>
+    <div class="col-2 font-weight-bold "> @ViewBag.BatteryInfo11</div>
+    <div class="col-2 font-weight-bold "> @ViewBag.BatteryInfo21</div>
+    <div class="col-2 font-weight-bold "> @ViewBag.BatteryInfo31</div>
+    <div class="col-2 font-weight-bold "> @ViewBag.BatteryInfo41</div>
+    <div class="w-100"></div>
+    <div class="col-4 font-weight-bold small pad5">電池電壓(V)</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo12</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo22</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo32</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo42</div>
+    <div class="w-100"></div>
+    <div class="col-4 font-weight-bold small pad5">充電電流(A)</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo13</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo23</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo33</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo43</div>
+    <div class="w-100"></div>
+    <div class="col-4 font-weight-bold small pad5">放電電流(A)</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo14</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo24</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo34</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo44</div>
+    <div class="w-100"></div>
+    <div class="col-4 font-weight-bold small pad5">電池容量(%)</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo15</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo25</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo35</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo45</div>
+    <div class="w-100"></div>
+    <div class="col-4  font-weight-bold small">充電次數</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo16</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo26</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo36</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo46</div>
+    <div class="w-100"></div>
+    <div class="col-4 font-weight-bold small pad5">充電方向</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo17</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo27</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo37</div>
+    <div class="col-2  pad5">@ViewBag.BatteryInfo47</div>
+</div>
 
 <div class="row">
-    <div class="col h3">
-        <p> 電池</p>
+    <div class="col text-center ChartSize" id="mainBattery">
     </div>
 </div>
-<div class="row">
-    <div class="col h6">
-        @if (batteries != null)
-        {
-            <div class="row " id="AppBatteryData">
-                <div class="col font-weight-bold ">資料時間:@EssTime</div>
-                @*<div class="col font-italic"></div>*@
-                @foreach (var ba in batteries)
-                {
-                    string Info1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? ba.index.ToString() : ba.index.ToString() + "(目前離線中)";
-                    string Info2 = string.Format("{0:#,0.00}", ba.voltage);
-                    string Info3 = string.Format("{0:#,0.00}", ba.charging_current);
-                    string Info4 = string.Format("{0:#,0.00}", ba.discharging_current);
-                    string Info5 = string.Format("{0:#,0.00}", BatteryService.EachSOC(ba.voltage));
-                    string Info6 = string.Format("{0:#,0}", ba.Cycle);
-                    int cd = Convert.ToInt32(ba.charge_direction);
-                    string Info7 = (cd == 1) ? "充電" : (cd == 2) ? "放電" : "離線";
-                    <div class="w-100 line"></div>
-                    <div class="col font-weight-bold ">電池組 @Info1</div>
-                    @*<div class="col font-italic"></div>*@
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">電池電壓(V)</div>
-                    <div class="col font-italic">@Info2</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">充電電流(A)</div>
-                    <div class="col font-italic">@Info3</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">放電電流(A)</div>
-                    <div class="col font-italic">@Info4</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">電池容量(%)</div>
-                    <div class="col font-italic">@Info5</div>
-                    <div class="w-100"></div>
-                    <div class="col  font-weight-bold small">充電次數(次)</div>
-                    <div class="col font-italic">@Info6</div>
-                    <div class="w-100"></div>
-                    <div class="col font-weight-bold small">充電方向</div>
-                    <div class="col font-italic">@Info7</div>
-                }
-            </div>
-        }
-    </div>
-</div>
-<div class="row">
-    <div class="col text-center" id="mainBattery" style="width: 320px;height:300px;vertical-align:middle">
-    </div>
-</div>
+
 <script type="text/javascript">
     var dom = document.getElementById("mainBattery");
                 var BatteryChart = echarts.init(dom);
@@ -71,14 +94,19 @@
                 }
                 //X軸座標
                 var xData = [];
-                for (var i = 0; i < 24; i++) {
-                    xData.push(paddingLeft(i.toString(), 2) + "時");
-                }
+                var h =@ViewBag.nowHour;
+                    for (var i = 0; i < 24; i++) {
+                        if (h > 0) {
+                            var hh = i + h;
+                            if (hh >= 24) { hh = hh - 24; }
+                            xData.push(paddingLeft(hh.toString(), 2) + "時");
+                        }
+                    }
                 //Y軸座標
                 var BatteryData = [];
                 BatteryData.push(@ViewBag.BatteryData);
                 option = null;
-                option = {       
+                option = {
                     tooltip: {
                         trigger: 'axis',
                         show: true
@@ -88,6 +116,9 @@
                         right: '4%',
                         bottom: '1%',
                         containLabel: true
+                    },
+                    legend: {
+                        data: ['電池容量平均(%)']
                     },
                     xAxis: [
                         {
@@ -126,7 +157,7 @@
                             "name": "電池容量平均(%)",
                             "type": "line",
                             "data": BatteryData,
-                            areaStyle: {}
+                            "areaStyle": {}
                         }
                     ]
                 };

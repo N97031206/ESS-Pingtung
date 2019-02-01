@@ -1,10 +1,8 @@
-﻿using Microsoft.Owin;
-using Web;
-using Owin;
-using System.Diagnostics;
+﻿using Owin;
 using System;
+using System.Diagnostics;
 
-[assembly: OwinStartup(typeof(Startup))]
+//[assembly: OwinStartup(typeof(Startup))]
 
 namespace Web
 {
@@ -29,10 +27,10 @@ namespace Web
 
         }
 
-        public void WriteLog(string msg)
-        {
-            Debug.WriteLine($"Hangfire於{DateTime.Now}執行了任務[{msg}]");
-        }
+        //public void WriteLog(string msg)
+        //{
+        //    Debug.WriteLine($"Hangfire於{DateTime.Now}執行了任務[{msg}]");
+        //}
         #endregion
     }
 }

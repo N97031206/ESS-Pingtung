@@ -3,7 +3,7 @@
     Layout = "~/Areas/APP/Views/Shared/_LayoutAPPDetail .cshtml";
 }
 
-
+@Html.Partial("Echart")
 <style type="text/css">
     .btmStyle {
         margin: 0;
@@ -11,53 +11,104 @@
         background-clip: padding-box;
     }
 
+    .pz {
+        padding-right: 0;
+        padding-left: 0;
+        line-height: 22px;
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .pzCol {
+        padding-right: 5px;
+        padding-left: 5px;
+        vertical-align: middle;
+        text-align: center;
+    }
 </style>
 
-
-<button type="button" class="btn btn-info btn-lg btn-block btmStyle" onclick="location.href='@Url.Action("Info", "APP")'">
-        <div class="row" >
-            <div class="col-4 "   >
-                <p style="font-size:xx-large;margin:0">大武</p>
+<div class="row pz">
+    @* 光采 *@
+    <div class="col-12 pzCol">
+        <button type="button" class="btn btn-info btn-lg btn-block btmStyle" onclick="location.href='@Url.Action("GTIndex", "APP")'">
+            <div class="row pz">
+                <div class="col-4 pzCol" style="font-size:large">
+                    <span style="text-align:center">光采<br />濕地</span>
+                </div>
+                <div class="col-4 pzCol">
+                    <div class="" style="font-size:xx-small">最新月報表 </div>
+                    <div class=""><p style="font-size:medium;margin:0">@ViewBag.maxMonthly</p></div>
+                </div>
+                <div class="col-4 pzCol">
+                    <div class="" style="font-size:xx-small">最新日報表</div>
+                    <div class=""><p style="font-size:medium;margin:0">@ViewBag.maxDaily</p></div>
+                </div>
             </div>
-            <div class="col-4 " >
-                <div class="font-italic" style="font-size:xx-small">可用總電量 </div>
-                <div class="font-italic" ><p style="font-size:medium;margin:0">@ViewBag.Demand</p></div>
-            </div>
-            <div class="col-4 " >
-                <div class="font-italic" style="font-size:xx-small">可用電時數</div>
-                <div class="font-italic"><p style="font-size:medium;margin:0">@ViewBag.RemainTime</p></div>
-            </div>
-        </div>
-</button>
-
-<button type="button" class="btn btn-info btn-lg btn-block btmStyle" onclick="location.href='@Url.Action("GuanTsai", "APP")'">
-    <div class="row">
-        <div class="col-4 ">
-            <p style="font-size:xx-large;margin:0">光采</p>
-        </div>
-        <div class="col-4 ">
-            <div class="font-italic" style="font-size:xx-small">可用總電量 </div>
-            <div class="font-italic"><p style="font-size:medium;margin:0"></p></div>
-        </div>
-        <div class="col-4 ">
-            <div class="font-italic" style="font-size:xx-small">可用電時數</div>
-            <div class="font-italic"><p style="font-size:medium;margin:0"></p></div>
-        </div>
+        </button>
     </div>
-</button>
-
-<button type="button" class="btn btn-info btn-lg btn-block btmStyle">
-    <div class="row">
-        <div class="col-4 ">
-            <p style="font-size:xx-large;margin:0">佳興</p>
-        </div>
-        <div class="col-4 ">
-            <div class="font-italic" style="font-size:xx-small">可用總電量 </div>
-            <div class="font-italic"><p style="font-size:medium;margin:0"></p></div>
-        </div>
-        <div class="col-4 ">
-            <div class="font-italic" style="font-size:xx-small">可用電時數</div>
-            <div class="font-italic"><p style="font-size:medium;margin:0"></p></div>
-        </div>
+    @* 大武 *@
+    <div class="col-12 pzCol">
+        <button type="button" class="btn btn-info btn-lg btn-block btmStyle" onclick="location.href='@Url.Action("Info", "APP",new { StationCode=2} ) '">
+            <div class="row pz">
+                <div class="col-4 pzCol" style="font-size:large;padding-bottom:10px">
+                    <span>大武<br />社區</span>
+                </div>
+                <div class="col-4 pzCol">
+                    <div class="" style="font-size:xx-small">可用總電量 </div>
+                    <div class=""><p style="font-size:medium;margin:0">@ViewBag.Demand</p></div>
+                </div>
+                <div class="col-4 pzCol">
+                    <div class="" style="font-size:xx-small">可用電時數</div>
+                    <div class=""><p style="font-size:medium;margin:0">@ViewBag.RemainTime</p></div>
+                </div>
+            </div>
+            <div class="row pz h6">
+                <div class="@ViewBag.ColLoad">@ViewBag.NameLoad  @ViewBag.Load   kw</div>
+                <div class="@ViewBag.ColSolar">@ViewBag.NameSolar @ViewBag.Solar  kw</div>
+                <div class="w-100"></div>
+                <div class="@ViewBag.Colgrid">@ViewBag.Namegrid @ViewBag.grid kw</div>
+                <div class="@ViewBag.ColGenerator ">@ViewBag.NameGenerator @ViewBag.Generator  kw</div>
+                <div class="w-100"></div>
+                <div class="@ViewBag.ColBattery">
+                    @ViewBag.NameBattery @ViewBag.BatteryModel
+                    <div class="col">SOC:@ViewBag.BatterySOC  %  功率: @ViewBag.BatteryPower kW</div>
+                </div>
+            </div>
+        </button>
     </div>
-</button>
+    @* 佳興 *@
+    <div class="col-12 pzCol">
+        <button type="button" class="btn btn-info btn-lg btn-block btmStyle" onclick="location.href='@Url.Action("Info", "APP",new { StationCode=6} ) '">
+            <div class="row pz">
+                <div class="col-4 pzCol" style="font-size:large;padding-bottom:10px">
+                    <span>佳興<br />社區</span>
+                </div>
+                <div class="col-4 pzCol">
+                    <div class="" style="font-size:xx-small">可用總電量 </div>
+                    <div class=""><p style="font-size:medium;margin:0">@ViewBag.JSDemand</p></div>
+                </div>
+                <div class="col-4 pzCol">
+                    <div class="" style="font-size:xx-small">可用電時數</div>
+                    <div class=""><p style="font-size:medium;margin:0">@ViewBag.JSRemainTime</p></div>
+                </div>
+            </div>
+            <div class="row pz h6">
+                <div class="@ViewBag.JSColLoad">@ViewBag.JSNameLoad  @ViewBag.JSLoad   kw</div>
+                <div class="@ViewBag.JSColSolar">@ViewBag.JSNameSolar @ViewBag.JSSolar  kw</div>
+                <div class="w-100"></div>
+                <div class="@ViewBag.JSColgrid">@ViewBag.JSNamegrid @ViewBag.JSgrid kw</div>
+                <div class="@ViewBag.JSColGenerator ">@ViewBag.JSNameGenerator @ViewBag.JSGenerator  kw</div>
+                <div class="w-100"></div>
+                <div class="@ViewBag.JSColBattery">
+                    @ViewBag.JSNameBattery @ViewBag.JSBatteryModel
+                    <div class="col">SOC:@ViewBag.JSBatterySOC  %  功率: @ViewBag.JSBatteryPower kW</div>
+                </div>
+            </div>
+        </button>
+    </div>
+</div>
+
+
+
+
+

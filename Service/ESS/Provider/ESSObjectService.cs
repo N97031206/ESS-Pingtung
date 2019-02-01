@@ -64,7 +64,7 @@ namespace Service.ESS.Provider
         public List<Model.ESSObject> ReadTimeInterval(DateTime Start, DateTime End)
         {
             List<Domain.ESSObject> domainEss = 
-                objectRepository.ReadListBy(x => x.UpdateDate >= Start && x.UpdateDate <= End).
+                objectRepository.ReadListBy(x => x.UpdateDate >= Start && x.UpdateDate <= End ).
                 OrderByDescending(x => x.UpdateDate).ToList();
             return this.mapper.Map<List<Model.ESSObject>>(domainEss);
         }
@@ -81,8 +81,22 @@ namespace Service.ESS.Provider
         {
             Domain.ESSObject ReadNow = objectRepository.ReadAll().OrderByDescending(x => x.CreateTime).FirstOrDefault();
             return this.mapper.Map<Model.ESSObject>(ReadNow);
-        }      
+        }
 
+        public Model.ESSObject ReadNowUid(Guid uid)
+        {
+            Domain.ESSObject ReadNowUid = objectRepository.ReadAll().Where(x=>x.stationUUID==uid.ToString()).OrderByDescending(x => x.CreateTime).FirstOrDefault();
+            if (ReadNowUid == null)
+            {
+                return null;
+            }
+            else
+            {
+                return this.mapper.Map<Model.ESSObject>(ReadNowUid);
+            }
+
+
+        }
 
     }  
 }
