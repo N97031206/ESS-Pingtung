@@ -113,10 +113,12 @@
                         data: ['市電迴路']
                     },      
                     toolbox: {
+                        show: true,
                         feature: {
-                            saveAsImage: {
-                                title:'圖檔'
-                            }
+                            mark: { show: true },
+                            magicType: { show: true, type: ['line', 'bar'], title: '圖格式' },
+                            restore: { show: true, title: '復原' },
+                            saveAsImage: { show: true, title: '圖檔' }
                         }
                     },
                     xAxis: [
@@ -170,8 +172,8 @@
     <!--right-->
     <div class="col-2 h3">
         <div class=" bg-light">可用總電量</div>
-        <div class="font-italic">@ViewBag.Demand</div>
+        <div class="font-weight-bold">@ViewBag.Demand</div>
         <div class="bg-light">可用電時數</div>
-        <div class="font-italic">@ViewBag.RemainTime</div>
+        <div class="font-weight-bold">@ViewBag.RemainTime</div>
     </div>
 </div>

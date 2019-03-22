@@ -16,7 +16,8 @@
     <AssemblyName>Web</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress />
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -30,12 +31,16 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>CODE_ANALYSIS;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>true</UseVSHostingProcess>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,8 +55,8 @@
     <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="DocumentFormat.OpenXml, Version=2.9.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
-      <HintPath>..\packages\DocumentFormat.OpenXml.2.9.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.9.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.9.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -59,8 +64,8 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="EPPlus, Version=4.5.3.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
-      <HintPath>..\packages\EPPlus.4.5.3\lib\net40\EPPlus.dll</HintPath>
+    <Reference Include="EPPlus, Version=4.5.3.1, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.5.3.1\lib\net40\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="ExcelNumberFormat, Version=1.0.3.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
       <HintPath>..\packages\ExcelNumberFormat.1.0.3\lib\net20\ExcelNumberFormat.dll</HintPath>
@@ -210,8 +215,8 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+    <Reference Include="System.Runtime, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.4.3.1\lib\net462\System.Runtime.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
@@ -219,8 +224,8 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.Extensions.4.3.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
+    <Reference Include="System.Runtime.Extensions, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.Extensions.4.3.1\lib\net462\System.Runtime.Extensions.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
@@ -495,12 +500,6 @@
     </Content>
     <Content Include="Content\Aside\app-debug.apk" />
     <Content Include="Areas\APP\Views\web.config" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-reboot.min.css.map" />
-    <Content Include="Content\bootstrap-reboot.css.map" />
-    <Content Include="Content\bootstrap-grid.min.css.map" />
-    <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="Areas\APP\Views\Account\Login.cshtml" />
     <Content Include="Areas\APP\Views\Shared\_LayoutAPPDetail .cshtml" />
     <Content Include="Areas\APP\Views\Shared\_LayoutAPPLogin.cshtml" />
@@ -513,7 +512,6 @@
     <Content Include="Areas\APP\Views\APP\Bulletin.cshtml" />
     <Content Include="Areas\APP\Views\APP\History.cshtml" />
     <Content Include="Areas\APP\Views\APP\Abnormal.cshtml" />
-    <Content Include="Areas\APP\Views\APP\Info-owl.cshtml" />
     <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181211.xlsx" />
     <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181212.xlsx" />
     <Content Include="Content\GuanTsai\DailyReport\DailyReport_sample_20181213.xlsx" />
@@ -545,6 +543,12 @@
     <Content Include="Areas\APP\Views\APP\GTMonthlyReport.cshtml" />
     <Content Include="Areas\APP\Views\APP\GTDailyReport.cshtml" />
     <Content Include="Areas\APP\Views\APP\AbList.cshtml" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -562,14 +566,14 @@
     <Content Include="Scripts\angular-cookies.min.js.map" />
     <Content Include="Scripts\angular-aria.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
-    <Content Include="Scripts\bootstrap.min.js.map" />
-    <Content Include="Scripts\bootstrap.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Scripts\flexslider\flexslider.less" />
     <Content Include="Scripts\flexslider\fonts\flexslider-icon.eot" />
     <Content Include="Scripts\flexslider\fonts\flexslider-icon.ttf" />
     <Content Include="Scripts\flexslider\fonts\flexslider-icon.woff" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\flexslider\flexslider-rtl-min.css" />
     <Content Include="Scripts\flexslider\flexslider-rtl.css" />
@@ -1330,10 +1334,8 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
-    <Content Include="Scripts\myAngularJS\GuanTsai.js" />
     <Content Include="Scripts\myAngularJS\JiaSing.js" />
-    <Content Include="Scripts\myAngularJS\Web.js" />
-    <Content Include="Scripts\myAngularJS\Frame.js" />
+    <Content Include="Scripts\myAngularJS\WuTai.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
@@ -1343,6 +1345,7 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Views\web.config" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1370,23 +1373,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_GlobalResources\Resource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\APP\APPAreaRegistration.cs" />
     <Compile Include="Areas\APP\Controllers\AccountController.cs" />
     <Compile Include="Areas\APP\Controllers\APPController.cs" />
+    <Compile Include="Controllers\AbnormalController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\ApiController.cs" />
+    <Compile Include="Controllers\BulletinController.cs" />
     <Compile Include="Controllers\DataInputController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\GuanTsaiController.cs" />
+    <Compile Include="Controllers\MaintainController.cs" />
     <Compile Include="Controllers\MonitorController.cs" />
+    <Compile Include="Controllers\QRCodeController.cs" />
     <Compile Include="Controllers\TabController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1413,18 +1420,16 @@
     <Compile Include="Models\Json\Inverters.cs" />
     <Compile Include="Models\Json\LoadPowers.cs" />
     <Compile Include="Models\Json\schemaJson.cs" />
+    <Compile Include="Models\Tabs\AlartGroup.cs" />
+    <Compile Include="Models\Tabs\Bulletins.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\web.config" />
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
-    <Content Include="Views\Tab\Bulletin.cshtml" />
     <Content Include="Views\Tab\Info.cshtml" />
-    <Content Include="Views\Tab\Abnormal.cshtml" />
     <Content Include="Views\Tab\History.cshtml" />
-    <Content Include="Views\Tab\Maintain.cshtml" />
     <Content Include="Views\Tab\info\InfoBattery.cshtml" />
     <Content Include="Views\Tab\info\InfoSolar.cshtml" />
     <Content Include="Views\Tab\info\InfoLoad.cshtml" />
@@ -1434,11 +1439,7 @@
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\Create.cshtml" />
     <Content Include="Views\Account\Disable.cshtml" />
-    <Content Include="Views\Tab\CreateBulletin.cshtml" />
-    <Content Include="Views\Tab\CreateAbnormal.cshtml" />
     <Content Include="Views\Shared\_LayoutMonitor.cshtml" />
-    <Content Include="Views\Tab\CreateStation.cshtml" />
-    <Content Include="Views\Tab\CreateOrgin.cshtml" />
     <Content Include="Views\Account\Forget.cshtml" />
     <Content Include="Views\DataInput\Json.cshtml" />
     <Content Include="Views\Shared\ShowTime.cshtml" />
@@ -1450,19 +1451,7 @@
     <Content Include="Views\Tab\history\historyInverters.cshtml" />
     <Content Include="Views\Tab\history\historySolar.cshtml" />
     <Content Include="Views\Tab\Index.cshtml" />
-    <Content Include="Views\Tab\EditBulletin.cshtml" />
-    <Content Include="Views\Tab\ListBulletin.cshtml" />
-    <Content Include="Views\Tab\DisableBulletin.cshtml" />
     <Content Include="Scripts\version.json" />
-    <Content Include="Views\Monitor\Web.cshtml" />
-    <Content Include="Views\Tab\DeleteBulletin.cshtml" />
-    <Content Include="Views\Tab\ListStation.cshtml" />
-    <Content Include="Views\Tab\ListOrgin.cshtml" />
-    <Content Include="Views\Tab\DeleteStation.cshtml" />
-    <Content Include="Views\Tab\EditStation.cshtml" />
-    <Content Include="Views\Tab\DeleteOrgin.cshtml" />
-    <Content Include="Views\Tab\EditOrgin.cshtml" />
-    <Content Include="Views\Tab\QRCode.cshtml" />
     <Content Include="Areas\APP\Views\Shared\mmenu.cshtml" />
     <Content Include="Areas\APP\Views\Shared\flexslider.cshtml" />
     <Content Include="Views\GuanTsai\DailyReport.cshtml" />
@@ -1472,6 +1461,27 @@
     <Content Include="Views\Monitor\JiaSing.cshtml" />
     <Content Include="Views\Shared\_LayoutJiasing.cshtml" />
     <Content Include="Views\Tab\Jiasing.cshtml" />
+    <Content Include="Views\Bulletin\Bulletin.cshtml" />
+    <Content Include="Views\Bulletin\CreateBulletin.cshtml" />
+    <Content Include="Views\Bulletin\ListBulletin.cshtml" />
+    <Content Include="Views\Bulletin\EditBulletin.cshtml" />
+    <Content Include="Views\Bulletin\DisableBulletin.cshtml" />
+    <Content Include="Views\Bulletin\DeleteBulletin.cshtml" />
+    <Content Include="Views\QRCode\QRCode.cshtml" />
+    <Content Include="Views\Maintain\Maintain.cshtml" />
+    <Content Include="Views\Maintain\CreateStation.cshtml" />
+    <Content Include="Views\Maintain\ListStation.cshtml" />
+    <Content Include="Views\Maintain\DeleteStation.cshtml" />
+    <Content Include="Views\Maintain\EditStation.cshtml" />
+    <Content Include="Views\Maintain\CreateOrgin.cshtml" />
+    <Content Include="Views\Maintain\ListOrgin.cshtml" />
+    <Content Include="Views\Maintain\DeleteOrgin.cshtml" />
+    <Content Include="Views\Maintain\EditOrgin.cshtml" />
+    <Content Include="Views\Abnormal\Abnormal.cshtml" />
+    <Content Include="Views\Monitor\index.cshtml" />
+    <Content Include="Views\Monitor\JiaSingData.cshtml" />
+    <Content Include="Views\Monitor\WuTaiData.cshtml" />
+    <Content Include="Views\Abnormal\Alart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1483,7 +1493,6 @@
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
     <Folder Include="Areas\APP\Models\" />
-    <Folder Include="Models\Api\" />
     <Folder Include="obj\" />
   </ItemGroup>
   <ItemGroup>

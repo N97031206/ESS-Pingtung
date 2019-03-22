@@ -12,49 +12,46 @@
         <div class="row " id="pc0">
             <div class="col font-weight-bold ">資料時間:@ViewBag.EssTime</div>
             <div class="w-100 line"></div>
-            <div class="col font-weight-bold small">@ViewBag.GenInfo1</div>
+            <div class="col font-weight-bold">@ViewBag.GenInfo1</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">發電機油位 (%)</div>
-            <div class="col font-italic">@ViewBag.GenInfo2</div>
+            <div class="col ">@ViewBag.GenInfo2</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">L1-N相電壓(V)</div>
-            <div class="col font-italic">@ViewBag.GenInfo3</div>
+            <div class="col ">@ViewBag.GenInfo3</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">L2-N相電壓(V)</div>
-            <div class="col font-italic">@ViewBag.GenInfo4</div>
+            <div class="col ">@ViewBag.GenInfo4</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">L3-N相電壓 (V)</div>
-            <div class="col font-italic">@ViewBag.GenInfo5</div>
+            <div class="col ">@ViewBag.GenInfo5</div>
             <div class="w-100"></div>
             <div class="col  font-weight-bold small">L1相電流(A)</div>
-            <div class="col font-italic">@ViewBag.GenInfo6</div>
+            <div class="col ">@ViewBag.GenInfo6</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">L2相電流(A)</div>
-            <div class="col font-italic">@ViewBag.GenInfo7</div>
+            <div class="col ">@ViewBag.GenInfo7</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">L3相電流(A)</div>
-            <div class="col font-italic">@ViewBag.GenInfo8</div>
+            <div class="col ">@ViewBag.GenInfo8</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">總實功率(kW)</div>
-            <div class="col font-italic">@ViewBag.GenInfo9</div>
+            <div class="col ">@ViewBag.GenInfo9</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">平均功率因數</div>
-            <div class="col font-italic">@ViewBag.GenInfo10</div>
+            <div class="col ">@ViewBag.GenInfo10</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">正的千瓦時(度)</div>
-            <div class="col font-italic">@ViewBag.GenInfo11</div>
+            <div class="col ">@ViewBag.GenInfo11</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">負的千瓦時(度)</div>
-            <div class="col font-italic">@ViewBag.GenInfo12</div>
+            <div class="col ">@ViewBag.GenInfo12</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">發電機狀態</div>
-            <div class="col font-italic">@ViewBag.GenInfo13</div>
+            <div class="col ">@ViewBag.GenInfo13</div>
             <div class="w-100"></div>
-            <div class="col font-weight-bold small">可用總電量(度)</div>
-            <div class="col font-italic">@ViewBag.GenInfo14</div>
-            <div class="w-100"></div>
-            <div class="col font-weight-bold small">可用電時數(H)</div>
-            <div class="col font-italic">@ViewBag.GenInfo15</div>
+            <div class="col font-weight-bold small">蓄電池電壓(V)</div>
+            <div class="col ">@ViewBag.GenInfo14</div>
         </div>
     </div>
     <!--middle-->
@@ -130,10 +127,12 @@
                         containLabel: true
                     },
                     toolbox: {
+                        show: true,
                         feature: {
-                            saveAsImage: {
-                                title: '圖檔'
-                            }
+                            mark: { show: true },
+                            magicType: { show: true, type: ['line', 'bar'], title: '圖格式' },
+                            restore: { show: true, title: '復原' },
+                            saveAsImage: { show: true, title: '圖檔' }
                         }
                     },
                     xAxis: [
@@ -173,7 +172,7 @@
                             "name": "發電機",
                             "type": "line",
                             "data": Generator1,
-                            stack: '累加'
+                            areaStyle: {}
                         },
                     ]
                 };
@@ -186,9 +185,9 @@
     <!--right-->
     <div class="col-2 h3">
         <div class=" bg-light">可用總電量</div>
-        <div class="font-italic">@ViewBag.Demand</div>
+        <div class="font-weight-bold">@ViewBag.Demand</div>
         <div class="bg-light">可用電時數</div>
-        <div class="font-italic">@ViewBag.RemainTime</div>
+        <div class="font-weight-bold">@ViewBag.RemainTime</div>
     </div>
 </div>
 

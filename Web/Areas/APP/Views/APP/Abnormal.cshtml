@@ -3,6 +3,7 @@
     Layout = "~/Areas/APP/Views/Shared/_LayoutAPPDetail .cshtml";
     string start = ViewBag.RangeStart;
     string end = ViewBag.RangeEnd;
+    Guid SID = ViewBag.SID;
 }
 @Html.Partial("DataPicket")
 
@@ -15,7 +16,6 @@
         padding-bottom: 0;
         padding-top: 0;
     }
-
 </style>
 <div style="height:1vh"></div>
 
@@ -24,9 +24,15 @@
         @using (Html.BeginForm("Abnormal", "APP", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
+            <div class="row pad h5">
+                <div class="col pad">
+                    @Html.DropDownList("Statons", (IEnumerable<SelectListItem>)ViewBag.station, new { style = "width:90vw", onchange = "this.form.submit();" })
+                </div>
+            </div>
+            <div style="height:1vh"></div>
             <div class="row pad">
                 <div class="col pad">
-                    <div class="daterange ">                      
+                    <div class="daterange ">
                         <input class="col h5 pad text-center" name="range_date" readonly="readonly" value="aaa">
                         <i class="fa fa-calendar"></i>
                         <button type="submit" class="btn btn-success  btn-block" id="btnBulletin" style="vertical-align:top">警示區間查詢</button>
@@ -36,44 +42,97 @@
         }
     </div>
 </div>
-
-<div class="row  pad">
+<div style="height:2vh"></div>
+@*<div class="row  pad">
     <div class="col text-center pad">
         <h3>@ViewBag.Range</h3>
     </div>
-</div>
+</div>*@
 
 <div class="row pad">
     <div class="col-1 pad">
     </div>
     <div class="col-10 pad ">
-        <button type='button' class="@ViewBag.AbLoadClass"
-                onclick="location.href='@Url.Action("AbList", "APP",new { name="Load",sday=@start,eday=@end})'">
-            <strong>負載:異常數量:@ViewBag.AbLoad </strong>
-        </button>
-        <button type="button" class="@ViewBag.AbSolarClass "
-                onclick="location.href='@Url.Action("AbList", "APP",new { name="Solar",sday=@start,eday=@end})'">
-            <strong>太陽能:異常數量:@ViewBag.AbSolar </strong>
-        </button>
-        <button type="button" class="@ViewBag.AbGridClass "
-                onclick="location.href='@Url.Action("AbList", "APP",new { name="Grid",sday=@start,eday=@end})'">
-            <strong>市電:異常數量:@ViewBag.AbGrid </strong>
-        </button>
-        <button type="button" class="@ViewBag.AbGenClass "
-                onclick="location.href='@Url.Action("AbList", "APP",new { name="Gen",sday=@start,eday=@end})'">
-            <strong>發電機:異常數量:@ViewBag.AbGen </strong>
-        </button>
-        <button type="button" class="@ViewBag.AbBatteryClass "
-                onclick="location.href='@Url.Action("AbList", "APP",new { name="Battery",sday=@start,eday=@end})'">
-            <strong>電池:異常數量:@ViewBag.AbBattery </strong>
-        </button>
-        <button type="button" class="@ViewBag.AbInvClass "
-                onclick="location.href='@Url.Action("AbList", "APP",new { name="Inv",sday=@start,eday=@end})'">
-            <strong>逆變器:異常數量:@ViewBag.AbInv </strong>
-        </button>
+        @if (ViewBag.AbLoad > 0)
+        {
+            <button type='button' class="@ViewBag.AbLoadClass"
+                    onclick="location.href='@Url.Action("AbList", "APP",new { name="Load",sday=@start,eday=@end,StationID=SID})'">
+                <strong>負載機組異常:@ViewBag.AbLoad </strong>
+            </button>
+        }
+        else
+        {
+            <button type='button' class="@ViewBag.AbLoadClass"><strong>負載機組異常:0 </strong></button>
+        }
+
+        @if (ViewBag.AbSolar>0)
+        {
+            <button type='button' class="@ViewBag.AbSolarClass"
+                    onclick="location.href='@Url.Action("AbList", "APP",new { name="Solar",sday=@start,eday=@end,StationID=SID})'">
+                <strong>負載機組異常:@ViewBag.AbSolar </strong>
+            </button>
+        }
+        else
+        {
+            <button type='button' class="@ViewBag.AbSolarClass"><strong>太陽能機組異常:0 </strong></button>
+        }
+
+        @if (ViewBag.AbGrid > 0)
+        {
+            <button type='button' class="@ViewBag.AbGridClass"
+                    onclick="location.href='@Url.Action("AbList", "APP",new { name="Grid",sday=@start,eday=@end,StationID=SID})'">
+                <strong>市電機組異常:@ViewBag.AbGrid </strong>
+            </button>
+        }
+        else
+        {
+            <button type='button' class="@ViewBag.AbGridClass"><strong>市電機組異常:0 </strong></button>
+        }
+
+        @if (ViewBag.AbGen > 0)
+        {
+            <button type='button' class="@ViewBag.AbGenClass"
+                    onclick="location.href='@Url.Action("AbList", "APP",new { name="Gen",sday=@start,eday=@end,StationID=SID})'">
+                <strong>發電機機組異常:@ViewBag.AbGen </strong>
+            </button>
+        }
+        else
+        {
+            <button type='button' class="@ViewBag.AbGenClass"><strong>發電機組異常:0 </strong></button>
+        }
+
+        @if (ViewBag.AbBattery > 0)
+        {
+            <button type='button' class="@ViewBag.AbBatteryClass"
+                    onclick="location.href='@Url.Action("AbList", "APP",new { name="Battery",sday=@start,eday=@end,StationID=SID})'">
+                <strong>電池機組異常:@ViewBag.AbBattery </strong>
+            </button>
+        }
+        else
+        {
+            <button type='button' class="@ViewBag.AbBatteryClass"><strong>電池機組異常:0 </strong></button>
+        }
+
+        @if (ViewBag.AbInv > 0)
+        {
+            <button type='button' class="@ViewBag.AbInvClass"
+                    onclick="location.href='@Url.Action("AbList", "APP",new { name="Inv",sday=@start,eday=@end,StationID=SID})'">
+                <strong>電池機組異常:@ViewBag.AbInv </strong>
+            </button>
+        }
+        else
+        {
+            <button type='button' class="@ViewBag.AbInvClass"><strong>逆變機組異常:0 </strong></button>
+        }
+
     </div>
     <div class="col-1 pad">
     </div>
 </div>
+
+
+
+
+
 
 

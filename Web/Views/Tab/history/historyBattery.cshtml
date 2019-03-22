@@ -15,7 +15,7 @@
     string endTime = endDay.ToString("HH:mm:ss");
     string connStr = tabType + "+" + sDay + "+" + eDay;
     List<string> IDList = new List<string>();
-    int y = 0 ;
+    int y = 0;
     string stationID = ViewBag.stationID;
     int StationNum = ViewBag.StationNum;
 }
@@ -95,9 +95,9 @@
                     <th scope="col" style="width:8%">平均電池電壓(V)</th>
                     <th scope="col" style="width:8%">總充電電流(A)</th>
                     <th scope="col" style="width:8%">總放電電流(A)</th>
-                    <th scope="col" style="width:8%">平均電池容量(%)</th>
+                    <th scope="col" style="width:8%">電池容量(%)</th>
                     <th scope="col" style="width:8%">總充電次數(次)</th>
-                    <th scope="col" style="width:15%">充電方向</th>
+                    <th scope="col" style="width:15%">電池狀態</th>
                     <th scope="col" style="width:15%">電池組</th>
                 </tr>
             </thead>
@@ -106,11 +106,15 @@
                 {
                     var time = bas.UpdateDate.AddHours(8).ToString();
                     int countBa = 0;
+                    int c = 0;
+                    string T6 = null, Timer = time;
+                    List<double> T1 = new List<double>();
+                    List<double> T2 = new List<double>();
+                    List<double> T3= new List<double>();
+                    List<double> T4 = new List<double>();
+                    List<double> T5= new List<double>();
                     if (!string.IsNullOrEmpty(bas.BatteryIDs))
                     {
-                        int c = 0;
-                        string T6 = null, Timer = null;
-                        double T1 = 0, T2 = 0, T3 = 0, T4 = 0, T5 = 0;
                         string[] IDs = bas.BatteryIDs.Trim().Split('|');
                         List<string> BtnGroup = new List<string>();
                         foreach (var ba in IDs)
@@ -119,15 +123,14 @@
                             {
                                 Guid ID = Guid.Parse(ba);
                                 Battery battery = batteryService.ReadByID(ID);
-                                int cd = Convert.ToInt32(battery.charge_direction);
+                                int cd = battery.connected == false ? 0 : Convert.ToInt32(battery.charge_direction);
                                 string direct = (cd == 0) ? "離線" : (cd == 1) ? "充電" : "放電";
                                 IDList.Add(ba.Trim());
-                                Timer = time;
-                                T1 += battery.voltage;
-                                T2 += battery.charging_current;
-                                T3 += battery.discharging_current;
-                                T4 += batteryService.EachSOC(battery.voltage);
-                                T5 += battery.Cycle;
+                                if (battery.voltage > 0){T1.Add(battery.voltage);};
+                                if (battery.charging_current > 0){T2.Add(battery.charging_current); } ;
+                                if (battery.discharging_current > 0){T3.Add(battery.discharging_current); } ;
+                                if (battery.voltage > 0){T4.Add(batteryService.EachSOC(battery.voltage)); } ;
+                                T5.Add(battery.Cycle);
                                 T6 += battery.index.ToString() + ":[" + direct + "] ";
                                 BtnGroup.Add("cellmodal" + Convert.ToString(battery.index.ToString()));
                                 countBa++;
@@ -135,34 +138,44 @@
                         }
                         <tr>
                             <th scope="row">@Timer</th>
-                            <td>@Math.Round(T1 / countBa, 2)</td>
-                            <td>@Math.Round(T2, 2) </td>
-                            <td>@Math.Round(T3, 2) </td>
-                            <td>@Math.Round(T4 / countBa, 0)</td>
-                            <td>@Math.Round(T5, 0) </td>
+                            <td>@Math.Round(T1.Count==0?0:T1.Min(), 2)</td>
+                            <td>@Math.Round(T2.Count==0?0:T2.Sum(), 2) </td>
+                            <td>@Math.Round(T3.Count==0?0:T3.Sum(), 2) </td>
+                            <td>@Math.Round(T4.Count==0?0:T4.Min(), 2)</td>
+                            <td>@Math.Round(T5.Sum(), 0) </td>
                             <td>@T6</td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     @foreach (string btn in BtnGroup)
-                                    {
-                                        string cellName = "Pack" + c;
+                        {
+                            string cellName = "Pack" + c;
                                         <button type='button' class='btn btn-info' data-toggle='modal' data-target='#@btn.Trim()'>@cellName</button>
                                         c++;
-                                    }
+                    }
                                 </div>
                             </td>
                         </tr>
-                        T1 = 0; T2 = 0; T3 = 0; T4 = 0; T5 = 0; T6 = null; Timer = null; BtnGroup.Clear(); c = 0;
+                        T1.Clear(); ; T2.Clear(); ; T3.Clear(); ; T4.Clear(); T5.Clear(); ; T6 = null; Timer = null; BtnGroup.Clear(); c = 0;
+                    }
+                    else
+                    {
+                        <tr>
+                            <th scope="row">@Timer</th>
+                            <td> 0</td>
+                            <td> 0</td>
+                            <td> 0</td>
+                            <td> 0</td>
+                            <td> 0</td>
+                            <td> 0</td>
+                            <td> </td>
+                        </tr>
                     }
                 }
             </tbody>
         </table>
         @if (Model.Count > 0)
         {
-            if (!string.IsNullOrEmpty(Model.FirstOrDefault().BatteryIDs))
-            {
-                <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historyBattery", new { connStr, StationNum, stationID, Page }))</div>
-            }
+            <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historyBattery", new { connStr, StationNum, stationID, Page }))</div>
         }
     </div>
 </div>
@@ -172,14 +185,13 @@
     @foreach (string id in IDList)
     {
         var Cells = batteryService.ReadByID(Guid.Parse(id.Trim()));
-                            var cellIndex = Cells.cells_index.Split('|');
-                            var cellvolta = Cells.cells_voltage.Split('|');
-                            string modal = "cellmodal" + Convert.ToString(y);
+        var cellIndex = Cells.cells_index.Split('|');
+        var cellvolta = Cells.cells_voltage.Split('|');
+        string modal = "cellmodal" + Convert.ToString(y);
         <div class="modal fade" id="@modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        @*<h6 class="modal-title" id="exampleModalLabel">@id.Trim()</h6>*@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

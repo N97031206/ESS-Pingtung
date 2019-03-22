@@ -31,18 +31,18 @@ namespace Service.ESS.Provider
 
         public List<Model.Alart> ReadAll()
         {
-            return this.mapper.Map<List<Model.Alart>>(alartRepository.ReadAll().OrderByDescending(x => x.StartTimet).ToList());
+            return mapper.Map<List<Model.Alart>>(alartRepository.ReadAll().OrderByDescending(x => x.StartTimet).ToList());
         }
 
         public List<Model.Alart> ReadListTime(DateTime SD, DateTime ED)
         {
-            return this.mapper.Map<List<Model.Alart>>(alartRepository.ReadListBy(x => x.StartTimet >= SD && x.StartTimet < ED).OrderByDescending(x => x.StartTimet).ToList());
+            return mapper.Map<List<Model.Alart>>(alartRepository.ReadListBy(x => x.StartTimet >= SD && x.StartTimet < ED).OrderByDescending(x => x.StartTimet).ToList());
         }
 
 
         public List<Model.Alart> ReadTimeList(DateTime SD, DateTime ED,Guid SID)
         {
-            return this.mapper.Map<List<Model.Alart>>(alartRepository.ReadListBy(x => x.StartTimet >= SD && x.StartTimet < ED && x.StationID==SID ).OrderByDescending(x => x.StartTimet).ToList());
+            return mapper.Map<List<Model.Alart>>(alartRepository.ReadListBy(x => x.StartTimet >= SD && x.StartTimet < ED && x.StationID==SID ).OrderByDescending(x => x.StartTimet).ToList());
         }
 
 
@@ -108,6 +108,7 @@ namespace Service.ESS.Provider
 
             return this.mapper.Map<List<Model.Alart>>(domainalart.OrderByDescending(x => x.StartTimet));
         }
+
 
 
         public Guid Create(Model.Alart alart)

@@ -18,13 +18,13 @@ namespace Service.ESS.Provider
                 cfg.AddProfile<GridPowerMapper>();
             });
 
-        private IMapper mapper = null;
+        private readonly IMapper mapper = null;
 
         private GridPowerRepository gridPowerRepository = new GridPowerRepository();
 
         public GridPowerService()
         {
-            this.mapper = mapperConfiguration.CreateMapper();
+            mapper = mapperConfiguration.CreateMapper();
         }
 
         public Guid Create(Model.GridPower gridPower)
@@ -39,54 +39,34 @@ namespace Service.ESS.Provider
 
         public Model.GridPower ReadByID(Guid ID)
         {
-            Domain.GridPower account = gridPowerRepository.ReadBy(x => x.Id == ID);
-            return this.mapper.Map<Model.GridPower>(account);
-        }
-
-
-        public Model.GridPower ReadByIDIndex0(Guid ID)
-        {
-            Domain.GridPower account = gridPowerRepository.ReadBy(x => x.Id == ID && x.index==0);
-            return this.mapper.Map<Model.GridPower>(account);
-        }
-
-
-        public List<Model.GridPower> ReadByListID(List<ESSObject> ESSList)
-        {
-            List<Domain.GridPower> gridPowersList = new List<Domain.GridPower>();
-            string[] IDs=null;
-            ESSList.ForEach(x => { IDs = x.GridPowerIDs.Trim().Split('|'); });
-            foreach (var gp in IDs)
-            {
-                Guid gpID = Guid.Parse(gp);
-                gridPowersList.AddRange(gridPowerRepository.ReadListBy(x => x.Id == gpID).ToList());
-            }
-            return this.mapper.Map < List<Model.GridPower>>(gridPowersList);
+            return mapper.Map<Model.GridPower>(gridPowerRepository.ReadBy(x => x.Id == ID));
         }
 
         public Model.GridPower ReadNow(Guid uid)
         {
-            Domain.GridPower gridPower = gridPowerRepository.ReadAll().Where(x=>x.index==0 && x.uuid==uid).OrderByDescending(x=>x.date_time).FirstOrDefault();
-            return this.mapper.Map<Model.GridPower>(gridPower);
+            return mapper.Map<Model.GridPower>(gridPowerRepository.ReadListBy(x => x.index == 0 && x.uuid == uid).OrderByDescending(x => x.date_time).FirstOrDefault());
         }
 
-        public List<Model.GridPower> ReadByInfoList(DateTime StartTime,DateTime endTime)
+        public List<GridPower> ReadByInfoList(DateTime StartTime,DateTime endTime)
         {
-            List<Domain.GridPower> gridPowersList= gridPowerRepository.ReadListBy(x => x.date_time >= StartTime && x.date_time < endTime) .ToList();
-            return this.mapper.Map<List<Model.GridPower>>(gridPowersList);
+            return mapper.Map<List<GridPower>>(gridPowerRepository.ReadListBy(x => x.date_time >= StartTime && x.date_time < endTime).ToList());
         }
 
-        public int Count(DateTime StartTime, DateTime endTime)
+
+        public List<GridPower> ReadByInfoListForUpdata(DateTime StartTime, DateTime endTime)
         {
-            return gridPowerRepository.ReadListBy(x => x.date_time >= StartTime && x.date_time < endTime).Count(); 
+            return mapper.Map<List<GridPower>>(gridPowerRepository.ReadListBy(x => x.date_time >= StartTime && x.date_time < endTime).ToList());
         }
 
-
-        public float minuskHWt(DateTime dateTime, float kWht, int index)
+        public float MinuskHWt(DateTime dateTime, float kWht, int index,Guid UID)
         {
             DateTime utc8 = dateTime.AddHours(8);
             DateTime basetime= new DateTime(utc8.Year, utc8.Month, utc8.Day).AddHours(-8);
-            var basekWht = gridPowerRepository.ReadListBy(x => x.date_time < basetime && x.index==index).OrderByDescending(x => x.date_time).FirstOrDefault().kWHt;
+            var basekWht = gridPowerRepository
+                .ReadListBy(x => x.date_time < basetime && x.index==index && x.uuid== UID)
+                .OrderByDescending(x => x.date_time)
+                .FirstOrDefault()
+                .kWHt;
             return kWht- basekWht;
         }
 

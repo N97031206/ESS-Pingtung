@@ -106,12 +106,12 @@
             <tbody>
                 @foreach (var gps in Model)
                 {
+                    DateTime time = gps.UpdateDate.AddHours(8);
+                    DateTime BaseTime = new DateTime(time.Year, time.Month, time.Day);
+                    string Timer = time.ToString();
+                    double T1 = 0, T2 = 0, T3 = 0, T4 = 0, T5 = 0, T6 = 0, T7 = 0, T8 = 0;
                     if (!string.IsNullOrEmpty(gps.GridPowerIDs))
                     {
-                        DateTime time = gps.UpdateDate.AddHours(8);
-                        DateTime BaseTime = new DateTime(time.Year, time.Month, time.Day);
-                        string Timer = null;
-                        double T1 = 0, T2 = 0, T3 = 0, T4 = 0, T5 = 0, T6 = 0, T7 = 0, T8 = 0;
                         string[] IDs = gps.GridPowerIDs.Trim().Split('|');
                         int x = 0;
                         foreach (var gp in IDs)
@@ -120,8 +120,7 @@
                             {
                                 Guid ID = Guid.Parse(gp);
                                 GridPower gridPowers = gridPowerService.ReadByID(ID);
-                                Timer = time.ToString();
-                                if (gridPowers.index==0)
+                                if (gridPowers.index == 0)
                                 {
                                     T1 = gridPowers.Vavg;
                                     T2 = gridPowers.Isum;
@@ -135,27 +134,38 @@
                                 }
                             }
                         }
-                <tr>
-                    <th scope="row">@Timer</th>
-                    <td>@Math.Round(T1, 2)</td>
-                    <td>@Math.Round(T2, 2)</td>
-                    <td>@Math.Round(T3, 2)</td>
-                    <td>@Math.Round(T4, 2)</td>
-                    <td>@Math.Round(T5, 2)</td>
-                    <td>@Math.Round(T6, 2)</td>
-                    <td>@Math.Round(T7, 2)</td>
-                    <td>@Math.Round(T8, 2)</td>
-                </tr>
+                        <tr>
+                            <th scope="row">@Timer</th>
+                            <td>@Math.Round(T1, 2)</td>
+                            <td>@Math.Round(T2, 2)</td>
+                            <td>@Math.Round(T3, 2)</td>
+                            <td>@Math.Round(T4, 2)</td>
+                            <td>@Math.Round(T5, 2)</td>
+                            <td>@Math.Round(T6, 2)</td>
+                            <td>@Math.Round(T7, 2)</td>
+                            <td>@Math.Round(T8, 2)</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <th scope="row">@Timer</th>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
                     }
                 }
             </tbody>
         </table>
         @if (Model.Count > 0)
         {
-            if (!string.IsNullOrEmpty(Model.FirstOrDefault().GridPowerIDs))
-            {
                 <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historyGridpower", new { connStr, StationNum, stationID, Page }))</div>
-            }
         }
     </div>
 </div>

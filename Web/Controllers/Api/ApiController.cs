@@ -62,7 +62,7 @@ namespace Web.Controllers.Api
         public IHttpActionResult Index()
         {
             Guid uuid = stationService.UUID(2);
-            double soc = BatteryService.totalSOC(uuid) * 20.0;
+            double soc = BatteryService.TotalSOC(uuid) * 20.0;
             double LoadWatt = LoadPowerService.ReadNow(uuid).Watt_t;
             string Data = "[";
             Data += "{";

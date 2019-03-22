@@ -1,4 +1,4 @@
-﻿@using Support.Authorize;
+﻿@using Support.Authorize
 
 <!DOCTYPE html>
 <html>
@@ -7,7 +7,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     @Html.Partial("Stylesheet")
     @Html.Partial("Scripts")
-
     <title>@ViewBag.Title</title>
 </head>
 <body>
@@ -43,7 +42,7 @@
                                     {
                                         @Html.AntiForgeryToken()
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Email address</label>
+                                            <label for="UserName">UserName</label>
                                             <input type="text" class="form-control" id="UserName" name="UserName" placeholder="UserName">
                                         </div>
                                         <p class='text-danger'>@ViewBag.name</p>
@@ -74,7 +73,7 @@
                             <span> 歡迎 @ViewBag.User</span>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="@Url.Action("Maintain", "Tab")"> @Resources.Resource.Maintain</a>
+                            <a class="dropdown-item" href="@Url.Action("Maintain", "Maintain")"> @Resources.Resource.Maintain</a>
                             <a class="dropdown-item" href="@Url.Action("Logout", "Account")"><span>登出</span></a>
                         </div>
                     </div>
@@ -88,11 +87,11 @@
                     <div class="col-sm col-md col-lg">
                         <div class="btn-group mr-2" role="group" aria-label="First group">
                             <button type="button" class="@TempData["ButtomIndex"]" onclick="location.href='@Url.Action("Index", "Tab")'">@Resources.Resource.Index</button>
-                            <button type="button" class="@TempData["ButtomBulletin"]" onclick="location.href='@Url.Action("Bulletin", "Tab",new { StationNum=2})'">@Resources.Resource.Bulletin</button>
+                            <button type="button" class="@TempData["ButtomBulletin"]" onclick="location.href='@Url.Action("Bulletin", "Bulletin",new { StationNum=2})'">@Resources.Resource.Bulletin</button>
                             <button type="button" class="@TempData["ButtomInfo"]" onclick="location.href='@Url.Action("Info", "Tab",new { StationNum=2})'">@Resources.Resource.Info</button>
-                            <button type="button" class="@TempData["ButtomAbnormal"] " onclick="location.href='@Url.Action("Abnormal", "Tab",new { StationNum=2})'">@Resources.Resource.Abnormal</button>
+                            <button type="button" class="@TempData["ButtomAbnormal"] " onclick="location.href='@Url.Action("Alart", "Abnormal",new { StationNum=2})'">@Resources.Resource.Abnormal</button>
                             <button type="button" class="@TempData["Buttomhistory"]" onclick="location.href='@Url.Action("History", "Tab",new { StationNum=2})'">@Resources.Resource.History</button>
-                            <button type="button" class="@TempData["ButtomQRCode"]" onclick="location.href='@Url.Action("QRCode", "Tab",new { StationNum=2})'">APP下載</button>
+                            <button type="button" class="@TempData["ButtomQRCode"]" onclick="location.href='@Url.Action("QRCode", "QRcode",new { StationNum=2})'">APP下載</button>
                         </div>
                     </div>
                 </div>

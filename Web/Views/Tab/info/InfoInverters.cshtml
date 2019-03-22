@@ -15,34 +15,34 @@
             <div class="col font-weight-bold">@ViewBag.InvInfo1</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">工作模式</div>
-            <div class="col font-italic">@ViewBag.InvInfo2</div>
+            <div class="col">@ViewBag.InvInfo2</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">市電電壓  (V)</div>
-            <div class="col font-italic">@ViewBag.InvInfo3</div>
+            <div class="col">@ViewBag.InvInfo3</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">市電頻率  (Hz)</div>
-            <div class="col font-italic">@ViewBag.InvInfo4</div>
+            <div class="col">@ViewBag.InvInfo4</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">輸出電壓  (V)</div>
-            <div class="col font-italic">@ViewBag.InvInfo5</div>
+            <div class="col">@ViewBag.InvInfo5</div>
             <div class="w-100"></div>
             <div class="col  font-weight-bold small">輸出頻率  (Hz)</div>
-            <div class="col font-italic">@ViewBag.InvInfo6</div>
+            <div class="col">@ViewBag.InvInfo6</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">總輸出實功率(kW)</div>
-            <div class="col font-italic">@ViewBag.InvInfo7</div>
+            <div class="col">@ViewBag.InvInfo7</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">電池電壓  (V)</div>
-            <div class="col font-italic">@ViewBag.InvInfo8</div>
+            <div class="col">@ViewBag.InvInfo8</div>
             <div class="w-100"></div>
-            <div class="col font-weight-bold small">電池容量  (%)</div>
-            <div class="col font-italic">@ViewBag.InvInfo9</div>
-            <div class="w-100"></div>
+            @*<div class="col font-weight-bold small">電池容量  (%)</div>
+            <div class="col">@ViewBag.InvInfo9</div>
+            <div class="w-100"></div>*@
             <div class="col font-weight-bold small">太陽能電壓  (V)</div>
-            <div class="col font-italic">@ViewBag.InvInfo10</div>
+            <div class="col">@ViewBag.InvInfo10</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">總充電電流  (A)</div>
-            <div class="col font-italic">@ViewBag.InvInfo11</div>
+            <div class="col">@ViewBag.InvInfo11</div>
         </div>
     </div>
     <!--middle-->
@@ -115,10 +115,12 @@
                         containLabel: true
                     },
                     toolbox: {
+                        show: true,
                         feature: {
-                            saveAsImage: {
-                                title: '圖檔'
-                            }
+                            mark: { show: true },
+                            magicType: { show: true, type: ['line', 'bar'], title: '圖格式' },
+                            restore: { show: true, title: '復原' },
+                            saveAsImage: { show: true, title: '圖檔' }
                         }
                     },
                     xAxis: [
@@ -171,9 +173,9 @@
     <!--right-->
     <div class="col-2 h3">
         <div class=" bg-light">可用總電量</div>
-        <div class="font-italic">@ViewBag.Demand </div>
+        <div class="font-weight-bold">@ViewBag.Demand</div>
         <div class="bg-light">可用電時數</div>
-        <div class="font-italic">@ViewBag.RemainTime</div>
+        <div class="font-weight-bold">@ViewBag.RemainTime</div>
     </div>
 </div>
 

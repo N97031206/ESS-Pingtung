@@ -196,6 +196,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   查詢類似 QR碼 的當地語系化字串。
+        /// </summary>
+        internal static string QRCode {
+            get {
+                return ResourceManager.GetString("QRCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 太陽能 的當地語系化字串。
         /// </summary>
         internal static string Solar {

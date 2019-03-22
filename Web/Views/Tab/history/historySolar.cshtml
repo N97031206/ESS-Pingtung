@@ -99,22 +99,20 @@
                 </tr>
             </thead>
             <tbody>
-
                 @foreach (var invs in Model)
                 {
                     var time = invs.UpdateDate.AddHours(8);
+                    string timer = time.ToString();
                     DateTime BaseTime = new DateTime(time.Year, time.Month, time.Day);
                     int Length = 0;
+                    double T1 = 0, T2 = 0, T3 = 0, T4 = 0;
                     if (!string.IsNullOrEmpty(invs.InvertersIDs))
                     {
-                        string timer = null;
-                        double T1 = 0, T2 = 0, T3 = 0, T4 = 0;
                         string[] IDs = invs.InvertersIDs.Trim().Split('|');
                         foreach (var inv in IDs)
                         {
                             if (!string.IsNullOrEmpty(inv))
                             {
-                                timer = time.ToString();
                                 Guid ID = Guid.Parse(inv);
                                 var inverter = inverterService.ReadByID(ID);
                                 var id = inverter.SPMid.Split('|');
@@ -129,25 +127,33 @@
                                     T2 += Convert.ToDouble(curent[k]);
                                     T3 += Convert.ToDouble(activePower[k]) / 1000.0;
                                 }
+
+                                <tr>
+                                    <th scope="row">@timer</th>
+                                    <td>@Math.Round(T1 / Length, 2)</td>
+                                    <td>@Math.Round(T2, 2)</td>
+                                    <td>@Math.Round(T3, 2)</td>
+                                    <td>@Math.Round(T4, 2)</td>
+                                </tr>
                             }
                         }
+                    }
+                    else
+                    {
                         <tr>
                             <th scope="row">@timer</th>
-                            <td>@Math.Round(T1 / Length, 2)</td>
-                            <td>@Math.Round(T2, 2)</td>
-                            <td>@Math.Round(T3, 2)</td>
-                            <td>@Math.Round(T4, 2)</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
                         </tr>
                     }
                 }
             </tbody>
         </table>
         @if (Model.Count > 0)
-        {
-            if (!string.IsNullOrEmpty(Model.FirstOrDefault().InvertersIDs))
-            {
-                <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historySolar", new { connStr, StationNum, stationID, Page }))</div>
-            }
+        {       
+            <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historySolar", new { connStr, StationNum, stationID, Page }))</div>
         }
         </div>
 </div>

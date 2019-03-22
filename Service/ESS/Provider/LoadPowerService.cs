@@ -18,7 +18,7 @@ namespace Service.ESS.Provider
                 cfg.AddProfile<LoadPowersMapper>();
             });
 
-        private IMapper mapper = null;
+        private readonly IMapper mapper = null;
 
         private LoadPowerRepository loadRepository = new LoadPowerRepository();
 
@@ -26,13 +26,12 @@ namespace Service.ESS.Provider
 
         public LoadPowerService()
         {
-            this.mapper = mapperConfiguration.CreateMapper();
+            mapper = mapperConfiguration.CreateMapper();
         }
 
         public Model.LoadPower ReadByID(Guid ID)
         {
-            Domain.LoadPower loadpower = loadRepository.ReadBy(x => x.Id == ID);
-            return this.mapper.Map<Model.LoadPower>(loadpower);
+            return mapper.Map<Model.LoadPower>(loadRepository.ReadBy(x => x.Id == ID));
         }
 
         public Guid Create(Model.LoadPower model)
@@ -52,28 +51,23 @@ namespace Service.ESS.Provider
 
         public Model.LoadPower ReadNow(Guid uid)
         {
-            Domain.LoadPower loadPower = loadRepository.ReadAll().Where(x=>x.index==2 && x.uuid==uid).OrderByDescending(x => x.date_Time).FirstOrDefault();
-            return this.mapper.Map<Model.LoadPower>(loadPower);
+            return mapper.Map<Model.LoadPower>(loadRepository.ReadListBy(x => x.index == 2 && x.uuid == uid).OrderByDescending(x => x.date_Time).FirstOrDefault());
         }
 
         public List<Model.LoadPower> ReadByInfoList(DateTime StartTime, DateTime endTime)
         {
-            List<Domain.LoadPower> loadPower =
-                loadRepository.ReadListBy(x => x.date_Time >= StartTime && x.date_Time < endTime).ToList();
-            return this.mapper.Map<List<Model.LoadPower>>(loadPower);
+            return this.mapper.Map<List<Model.LoadPower>>(loadRepository.ReadListBy(x => x.date_Time >= StartTime && x.date_Time < endTime).ToList());
         }
 
-        public int Count(DateTime StartTime, DateTime endTime)
-        {
-            return loadRepository.ReadListBy(x => x.date_Time >= StartTime && x.date_Time < endTime).Count();
-        }
-
-
-        public float minuskHWt(DateTime dateTime, float kWht, int index)
+        public float MinuskHWt(DateTime dateTime, float kWht, int index, Guid UID)
         {
             DateTime utc8 = dateTime.AddHours(8);
             DateTime basetime = new DateTime(utc8.Year, utc8.Month, utc8.Day).AddHours(-8);
-            var basekWht = loadRepository.ReadListBy(x => x.date_Time < basetime && x.index==index).OrderByDescending(x => x.date_Time).FirstOrDefault().kWHt;
+            float basekWht = loadRepository
+                .ReadListBy(x => x.date_Time < basetime && x.index== index && x.uuid == UID)
+                .OrderByDescending(x => x.date_Time)
+                .FirstOrDefault()
+                .kWHt;
             return kWht - basekWht;
         }
 

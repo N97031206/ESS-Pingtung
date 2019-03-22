@@ -29,7 +29,7 @@
 
 
 <div class="row pz">
-    <div class="col h3 pz">發電機</div>
+    <div class="col h3 pz">@ViewBag.GenInfo1</div>
 </div>
 
 <div style="height:1vh"></div>
@@ -80,11 +80,11 @@
             <div class="col-7 pzText font-weight-bold small">發電機狀態</div>
             <div class="col-5 pzData ">@ViewBag.GenInfo13</div>
             <div class="w-100"></div>
-            <div class="col-7 pzText font-weight-bold small">可用總電量(度)</div>
+            <div class="col-7 pzText font-weight-bold small">蓄電池電壓(V)</div>
             <div class="col-5 pzData ">@ViewBag.GenInfo14</div>
             <div class="w-100"></div>
-            <div class="col-7 pzText font-weight-bold small">可用電時數(H)</div>
-            <div class="col-5 pzData ">@ViewBag.GenInfo15</div>
+            <div class="col-7 pzText font-weight-bold small">&nbsp</div>
+            <div class="col-5 pzData ">&nbsp</div>
         </div>
     </div>
 </div>
@@ -107,7 +107,7 @@
 
                 //X軸座標
                 var xData = [];
-                var h =@ViewBag.nowHour;
+                var h =@ViewBag.GeneratorHour;
                     for (var i = 0; i < 24; i++) {
                         if (h > 0) {
                             var hh = i + h;

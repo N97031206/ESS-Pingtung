@@ -26,26 +26,23 @@ namespace Service.ESS.Provider
         cfg.AddProfile<StationMapper>();
     });
 
-        private IMapper mapper = null;
+        private readonly IMapper mapper = null;
 
         private AlartTypeRepository alarttypeRepository = new AlartTypeRepository();
 
         public List<Model.AlartType> ReadAll()
         {
-            List<Domain.AlartType> RA = alarttypeRepository.ReadAll().ToList();
-            return this.mapper.Map<List<Model.AlartType>>(RA);
+            return mapper.Map<List<Model.AlartType>>(alarttypeRepository.ReadAll().ToList());
         }
 
         public Model.AlartType ReadID(Guid ID)
         {
-            Domain.AlartType RI = alarttypeRepository.ReadBy(x => x.Id == ID);
-            return this.mapper.Map<Model.AlartType>(RI);
+            return mapper.Map<Model.AlartType>(alarttypeRepository.ReadBy(x => x.Id == ID));
         }
 
         public Model.AlartType ID(int i)
         {
-            Domain.AlartType RI = alarttypeRepository.ReadBy(x => x.AlartTypeCode == i);
-            return this.mapper.Map<Model.AlartType>(RI);
+            return mapper.Map<Model.AlartType>(alarttypeRepository.ReadBy(x => x.AlartTypeCode == i));
         }
 
     }

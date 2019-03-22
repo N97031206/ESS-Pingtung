@@ -26,19 +26,17 @@ namespace Service.ESS.Provider
 
         public OrginService()
         {
-            this.mapper = mapperConfiguration.CreateMapper();
+            mapper = mapperConfiguration.CreateMapper();
         }
 
         public Model.Orgin ReadID(Guid ID)
         {
-            Domain.Orgin orginData = orginRepository.ReadBy(x => x.Id == ID);
-            return this.mapper.Map<Model.Orgin>(orginData);
+            return mapper.Map<Model.Orgin>(orginRepository.ReadBy(x => x.Id == ID));
         }
 
         public List<Model.Orgin> ReadAll()
         {
-            List<Domain.Orgin> domainOrgins = orginRepository.ReadAll().ToList();
-            return this.mapper.Map<List<Model.Orgin>>(domainOrgins);
+            return mapper.Map<List<Model.Orgin>>(orginRepository.ReadAll().ToList());
         }
 
         public Guid Create(Model.Orgin orgin)

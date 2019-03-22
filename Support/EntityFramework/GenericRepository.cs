@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
@@ -12,11 +13,7 @@ namespace Support.EntityFramework
 
         public GenericRepository(DbContext _db)
         {
-            if (_db == null)
-            {
-                throw new ArgumentNullException();
-            }
-            this.db = _db;
+            this.db = _db ?? throw new ArgumentNullException();
         }
 
         public virtual void Create(TEntity entity)
@@ -105,5 +102,8 @@ namespace Support.EntityFramework
                 }
             }
         }
+
+
+
     }
 }

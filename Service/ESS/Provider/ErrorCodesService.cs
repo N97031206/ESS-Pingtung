@@ -1,11 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using AutoMapper;
-using Domain = Repository.ESS.Domain;
+﻿using AutoMapper;
 using Repository.ESS.Provider;
 using Service.ESS.Mapper;
-using Support.Authorize;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Service.ESS.Provider
 {
@@ -18,26 +15,22 @@ namespace Service.ESS.Provider
                 cfg.AddProfile<AccountMapper>();
             });
 
-        private IMapper mapper = null;
-
-        private RoleService roleService = new RoleService();
+        private readonly IMapper mapper = null;
         private ErrorCodesRepository errorCodesRepository  = new ErrorCodesRepository();
 
         public ErrorCodesService()
         {
-            this.mapper = mapperConfiguration.CreateMapper();
+            mapper = mapperConfiguration.CreateMapper();
         }
 
         public List<Model.ErrorCodes> ReadAll()
         {
-            List<Domain.ErrorCodes> domainstations = errorCodesRepository.ReadAll().ToList();
-            return this.mapper.Map<List<Model.ErrorCodes>>(domainstations);
+            return mapper.Map<List<Model.ErrorCodes>>(errorCodesRepository.ReadAll().ToList());
         }
 
         public string ReadContext(string codes)
         {
-            string context = errorCodesRepository.ReadBy(x => x.AlartCode == codes.Trim()).AlartContext.ToString();
-            return context;
+            return errorCodesRepository.ReadBy(x => x.AlartCode == codes.Trim()).AlartContext.ToString();
         }
 
     }

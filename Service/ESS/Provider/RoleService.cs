@@ -27,31 +27,26 @@ namespace Service.ESS.Provider
 
         public Model.Role ReadBy(RoleType roleType)
         {
-            Domain.Role domainRole = roleRepository.ReadBy(x => x.Type == (int)roleType);
-            return this.mapper.Map<Model.Role>(domainRole);
+            return mapper.Map<Model.Role>(roleRepository.ReadBy(x => x.Type == (int)roleType));
         }
 
         public Model.Role ReadByID(Guid RoldID)
         {
-            Domain.Role domainRole = roleRepository.ReadBy(x => x.Id == RoldID);
-            return this.mapper.Map<Model.Role>(domainRole);
+            return mapper.Map<Model.Role>(roleRepository.ReadBy(x => x.Id == RoldID));
         }
 
 
 
         public List<Model.Role> ReadAll()
         {
-            List<Domain.Role> domainstations = roleRepository.ReadAll().ToList();
-            return this.mapper.Map<List<Model.Role>>(domainstations);
+            return mapper.Map<List<Model.Role>>(roleRepository.ReadAll().ToList());
         }
 
         public Guid Create(Model.Role station)
         {
             Domain.Role domainRole = this.mapper.Map<Domain.Role>(station);
-
             roleRepository.Create(domainRole);
             roleRepository.SaveChanges();
-
             return domainRole.Id;
         }
 

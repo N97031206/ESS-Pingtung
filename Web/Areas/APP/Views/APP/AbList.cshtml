@@ -1,43 +1,39 @@
 ﻿@using PagedList;
 @using PagedList.Mvc;
 @using Service.ESS.Provider;
-@model IPagedList<Service.ESS.Model.Alart>
+@model IPagedList<Web.Models.Tabs.AlartGroup>
 @{
     Layout = "~/Areas/APP/Views/Shared/_LayoutAPPDetail .cshtml";
     ViewBag.AppTitle = "警示清單";
-    StationService stationService = new StationService();
-    AlartTypeService alarttyprService = new AlartTypeService();
     string name = ViewBag.name;
     string sday= ViewBag.RangeStart;
     string eday = ViewBag.RangeEnd;
+    Guid StationID = ViewBag.SID;
 }
 
 <div class="container">
     <div class="row">
-        <div class="col">
-            <h1>警示設備 @ViewBag.equip</h1>
+        <div class="col my-0">
+            <h1 class="col my-2">警示設備 @ViewBag.equip</h1>
         </div>
     </div>
     <div class="row">
         <div class="col">
             <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col" style="width:40%">警示啟始時間</th>
-                        <th scope="col" style="width:60%">異常描述</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <tbody >
                     @foreach (var alart in Model)
                     {
-                        <tr>
-                            <td>@alart.StartTimet</td>
-                            <td>@alart.AlartContext</td>
-                        </tr>
+                    <tr >
+                        <td  class="my-0 py-1">
+                            <p class="my-0 h6">@alart.Item</p>
+                            <p class="my-0">開始: @alart.Start</p>
+                            <p class="my-0">結束: @alart.End</p>
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>
-            <div  style="font-size:small">@Html.PagedListPager(Model, Page => Url.Action("AbList", new { Page , name,  sday,  eday }), PagedListRenderOptions.OnlyShowFivePagesAtATime)</div>
+            <div  style="font-size:small">@Html.PagedListPager(Model, Page => Url.Action("AbList", new { Page , name,  sday,  eday, StationID }), PagedListRenderOptions.OnlyShowFivePagesAtATime)</div>
         </div>
     </div>
 </div>

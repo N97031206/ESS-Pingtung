@@ -25,6 +25,13 @@
     }
 </script>
 
+<style type="text/css">
+    .table thead th {
+   vertical-align:middle;
+        }
+    
+</style>
+
 <div class="row" align="center">
     <div class="col text-left">
         <p class="h6">開始時間:@startDay </p>
@@ -87,7 +94,7 @@
 <br />
 <div class="row">
     <div class="col">
-        <table class="table table-striped">
+        <table class="table table-striped " style=";vertical-align:middle">
             <thead>
                 <tr>
                     <th scope="col" style="width:15%">資料時間</th>
@@ -98,7 +105,6 @@
                             <div class="w-100"></div>
                             <div class="col">(V)</div>
                         </div>
-
                     </th>
                     <th scope="col" style="width:7%">
                         <div class="row">
@@ -106,7 +112,6 @@
                             <div class="w-100"></div>
                             <div class="col">(Hz)</div>
                         </div>
-
                     </th>
                     <th scope="col" style="width:7%">
                         <div class="row">
@@ -114,7 +119,6 @@
                             <div class="w-100"></div>
                             <div class="col">(V)</div>
                         </div>
-
                     </th>
                     <th scope="col" style="width:7%">
                         <div class="row">
@@ -122,7 +126,6 @@
                             <div class="w-100"></div>
                             <div class="col">(Hz)</div>
                         </div>
-
                     </th>
                     <th scope="col" style="width:9%">
                         <div class="row">
@@ -130,7 +133,6 @@
                             <div class="w-100"></div>
                             <div class="col"> (kW)</div>
                         </div>
-
                     </th>
                     <th scope="col" style="width:7%">
                         <div class="row">
@@ -140,21 +142,19 @@
                         </div>
 
                     </th>
-                    <th scope="col" style="width:7%">
+                    @*<th scope="col" style="width:7%">
                         <div class="row">
                             <div class="col">電池容量</div>
                             <div class="w-100"></div>
                             <div class="col"> (%)</div>
-                        </div>
-
-                    </th>
+                       </div>
+                    </th>*@
                     <th scope="col" style="width:7%">
                         <div class="row">
                             <div class="col">太陽能電壓</div>
                             <div class="w-100"></div>
                             <div class="col">(V)</div>
                         </div>
-
                     </th>
                     <th scope="col" style="width:7%">
                         <div class="row">
@@ -162,7 +162,6 @@
                             <div class="w-100"></div>
                             <div class="col">(A)</div>
                         </div>
-
                     </th>
                 </tr>
             </thead>
@@ -170,32 +169,32 @@
                 @foreach (var invs in Model)
                 {
                     var time = invs.UpdateDate.AddHours(8).ToString();
+                    string Timer = time.ToString();
+                    string T1 = null;
+                    double T2 = 0, T3 = 0, T4 = 0, T5 = 0, T6 = 0, T7 = 0, T8 = 0, T9 = 0, T10 = 0;
                     if (!string.IsNullOrEmpty(invs.InvertersIDs))
                     {
-                        string Timer = null, T1 = null;
-                        double T2 = 0, T3 = 0, T4 = 0, T5 = 0, T6 = 0, T7 = 0, T8 = 0, T9 = 0, T10 = 0;
                         string[] IDs = invs.InvertersIDs.Trim().Split('|');
                         List<string> BtnGroup = new List<string>();
                         foreach (var inv in IDs)
                         {
                             if (!string.IsNullOrEmpty(inv))
                             {
-                                Timer = time;
                                 Guid ID = Guid.Parse(inv);
                                 Inverter inverter = inverterService.ReadByID(ID);
                                 string mod = inverter.DeviceMode.Trim();
-                                if (mod == "P") { mod = "Power On Mode"; }
-                                else if (mod == "S") { mod = "Standby Mode"; }
-                                else if (mod == "L") { mod = "Line Mode"; }
-                                else if (mod == "B") { mod = "Battery Mode"; }
-                                else if (mod == "F") { mod = "Fault Mode"; }
-                                else if (mod == "H") { mod = "Power Saving Mode"; }
-                                else { mod = "Unknown Mode"; }
+                                if (mod == "P") { mod = "電源模式"; }
+                                else if (mod == "S") { mod = "待機模式"; }
+                                else if (mod == "L") { mod = "市電模式"; }
+                                else if (mod == "B") { mod = "電池模式"; }
+                                else if (mod == "F") { mod = " 故障模式"; }
+                                else if (mod == "H") { mod = "省電模式"; }
+                                else { mod = "離線"; }
                                 T1 += mod;
-                                T2 += inverter.GridVoltage ;
-                                T3 +=inverter.GridFrequency;
+                                T2 += inverter.GridVoltage;
+                                T3 += inverter.GridFrequency;
                                 T4 += inverter.AC_OutputVoltage;
-                                T5 +=inverter.AC_OutputFrequency;
+                                T5 += inverter.AC_OutputFrequency;
 
                                 var toc = inverter.ParallelInformation_TotalOutputActivePower.Trim().Split('|');
                                 int i = 1;
@@ -203,13 +202,13 @@
                                 {
                                     if (!d.IsEmpty())
                                     {
-                                        T6 +=Convert.ToDouble(d) / 1000.0;
+                                        T6 += Convert.ToDouble(d) / 1000.0;
                                         i++;
                                     }
                                 }
                                 T7 += inverter.BatteryVoltage;
-                                T8 +=inverter.BatteryCapacity;
-                                T9 +=inverter.PV_InputVoltage;
+                                T8 += inverter.BatteryCapacity;
+                                T9 += inverter.PV_InputVoltage;
 
                                 var tcc = inverter.ParallelInformation_TotalChargingCurrent.Trim().Split('|');
                                 int j = 1;
@@ -223,29 +222,42 @@
                                 }
                             }
                         }
-                <tr>
-                    <th scope="row">@Timer</th>
-                    <td>@T1</td>
-                    <td>@Math.Round(T2,2)</td>
-                    <td>@Math.Round(T3,2)</td>
-                    <td>@Math.Round(T4,2)</td>
-                    <td>@Math.Round(T5,2)</td>
-                    <td>@Math.Round(T6,2)</td>
-                    <td>@Math.Round(T7,2)</td>
-                    <td>@Math.Round(T8,2)</td>
-                    <td>@Math.Round(T9,2)</td>
-                    <td>@Math.Round(T10,2)</td>
-                </tr>
+                        <tr>
+                            <th scope="row">@Timer</th>
+                            <td>@T1</td>
+                            <td>@Math.Round(T2, 2)</td>
+                            <td>@Math.Round(T3, 2)</td>
+                            <td>@Math.Round(T4, 2)</td>
+                            <td>@Math.Round(T5, 2)</td>
+                            <td>@Math.Round(T6, 2)</td>
+                            <td>@Math.Round(T7, 2)</td>
+                            @*<td>@Math.Round(T8, 2)</td>*@
+                            <td>@Math.Round(T9, 2)</td>
+                            <td>@Math.Round(T10, 2)</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <th scope="row">@Timer</th>
+                            <td>Unknown Mode</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                    
+                            <td>0</td>
+                        </tr>
                     }
                 }
             </tbody>
         </table>
         @if (Model.Count > 0)
-        {
-            if (!string.IsNullOrEmpty(Model.FirstOrDefault().InvertersIDs))
-            {
-                <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historyInverters", new { connStr, StationNum, stationID, Page }))</div>
-            }
+        {    
+            <div>@Html.PagedListPager(Model, Page => Url.Action("/history/historyInverters", new { connStr, StationNum, stationID, Page }))</div>
         }
         </div>
 </div>

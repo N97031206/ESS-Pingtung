@@ -25,42 +25,42 @@
 
 <ul class="nav nav-pills  navtop h3">
     <li class="nav-item">
-        <a class="@ViewBag.navGridPower" href="#historyGridPower" data-toggle="tab"> @ViewBag.GridPower</a>
-    </li>
-    <li class="nav-item">
-        <a class="@ViewBag.navBattery" href="#historyBattery" data-toggle="tab">@ViewBag.Battery</a>
+        <a class="@ViewBag.navLoad" href="#historyLoad" data-toggle="tab">@ViewBag.Load</a>
     </li>
     <li class="nav-item">
         <a class="@ViewBag.navSolar" href="#historySolar" data-toggle="tab">@ViewBag.Solar</a>
     </li>
     <li class="nav-item">
-        <a class="@ViewBag.navLoad" href="#historyLoad" data-toggle="tab">@ViewBag.Load</a>
+        <a class="@ViewBag.navGridPower" href="#historyGridPower" data-toggle="tab"> @ViewBag.GridPower</a>
     </li>
     <li class="nav-item">
         <a class="@ViewBag.navGenerator" href="#historyGenerator" data-toggle="tab">@ViewBag.Generator</a>
+    </li>
+    <li class="nav-item">
+        <a class="@ViewBag.navBattery" href="#historyBattery" data-toggle="tab">@ViewBag.Battery</a>
     </li>
     <li class="nav-item">
         <a class="@ViewBag.navInverters" href="#historyInverters" data-toggle="tab">@ViewBag.Inverters</a>
     </li>
 </ul>
 <div class="tab-content">
-    <div class="@ViewBag.tabGridPower" role="tabpanel" id="historyGridPower">
-        @Html.Partial("history/historyGridPower")
-    </div>
     <div class="@ViewBag.tabLoad" role="tabpanel" id="historyLoad">
         @Html.Partial("history/historyLoad")
     </div>
     <div class=" @ViewBag.tabSolar" role="tabpanel" id="historySolar">
         @Html.Partial("history/historySolar")
     </div>
+    <div class="@ViewBag.tabGridPower" role="tabpanel" id="historyGridPower">
+        @Html.Partial("history/historyGridPower")
+    </div>
     <div class="@ViewBag.tabGenerator" role="tabpanel" id="historyGenerator">
         @Html.Partial("history/historyGenerator")
     </div>
+    <div class="@ViewBag.tabBattery " role="tabpanel" id="historyBattery">
+        @Html.Partial("history/historyBattery")
+    </div>
     <div class="@ViewBag.tabInverters" role="tabpanel" id="historyInverters">
         @Html.Partial("history/historyInverters")
-    </div>
-    <div class="@ViewBag.tabBattery" role="tabpanel" id="historyBattery">
-        @Html.Partial("history/historyBattery")
     </div>
 </div>
 

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using AutoMapper;
-using Domain = Repository.ESS.Domain;
+﻿using AutoMapper;
 using Repository.ESS.Provider;
 using Service.ESS.Mapper;
-using Support.Authorize;
-using NLog;
-using PagedList;
-using Service.ESS.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Domain = Repository.ESS.Domain;
 
 namespace Service.ESS.Provider
 {
@@ -20,82 +16,48 @@ namespace Service.ESS.Provider
                 cfg.AddProfile<ESSObjectMapper>();
             });
 
-        private IMapper mapper = null;
-
-        private AlartRepository alartRepository = new AlartRepository();
-        private AlartTypeRepository alarttypeRepository = new AlartTypeRepository();
-        private StationRepository stationRepository = new StationRepository();
+        private readonly IMapper mapper = null;
         private ESSObjectRepository objectRepository = new ESSObjectRepository();
-        private BatteryRepository batteryRepository = new BatteryRepository();
-        private InverterRepository inverterRepository = new InverterRepository();
-        private GeneratorRepository generatorRepository = new GeneratorRepository();
-        private GridPowerRepository gridPowerRepository = new GridPowerRepository();
-        private LoadPowerRepository loadRepository = new LoadPowerRepository();
 
 
-        private GridPowerService gridPowerService = new GridPowerService();
-        private LoadPowerService LoadPowerService = new LoadPowerService();
-        private InverterService InverterService = new InverterService();
-
-
-        private static Logger logger = NLog.LogManager.GetCurrentClassLogger();//Log檔
 
         public ESSObjecterService()
         {
-            this.mapper = mapperConfiguration.CreateMapper();
+            mapper = mapperConfiguration.CreateMapper();
         }
 
         public Guid Create(Model.ESSObject eSSObject)
         {
-            Domain.ESSObject domain= this.mapper.Map<Domain.ESSObject>(eSSObject);
-
+            Domain.ESSObject domain= mapper.Map<Domain.ESSObject>(eSSObject);
             objectRepository.Create(domain);
             objectRepository.SaveChanges();
-
             return domain.Id;
         }
 
         public List<Model.ESSObject> ReadAll()
         {
-            List<Domain.ESSObject> domainEss = objectRepository.ReadAll().ToList();
-            return this.mapper.Map<List<Model.ESSObject>>(domainEss);
+            return mapper.Map<List<Model.ESSObject>>(objectRepository.ReadAll()).ToList();
         }
 
         public List<Model.ESSObject> ReadTimeInterval(DateTime Start, DateTime End)
         {
-            List<Domain.ESSObject> domainEss = 
-                objectRepository.ReadListBy(x => x.UpdateDate >= Start && x.UpdateDate <= End ).
-                OrderByDescending(x => x.UpdateDate).ToList();
-            return this.mapper.Map<List<Model.ESSObject>>(domainEss);
+            return mapper.Map<List<Model.ESSObject>>(objectRepository.ReadListBy(x => x.UpdateDate >= Start && x.UpdateDate <= End).OrderByDescending(x => x.UpdateDate)).ToList();
         }
 
         public List<Model.ESSObject> ReadTimeIntervalStation(DateTime Start, DateTime End,string StationUUID)
-        {
-            List<Domain.ESSObject> domainEss =
-                objectRepository.ReadListBy(x => x.UpdateDate >= Start && x.UpdateDate <= End && x.stationUUID== StationUUID).
-                OrderByDescending(x => x.UpdateDate).ToList();
-            return this.mapper.Map<List<Model.ESSObject>>(domainEss);
+        { 
+            return mapper.Map<List<Model.ESSObject>>(objectRepository.ReadListBy(x => x.UpdateDate >= Start && x.UpdateDate <= End && x.stationUUID == StationUUID).OrderByDescending(x => x.UpdateDate)).ToList();
         }
 
         public Model.ESSObject ReadNow()
         {
-            Domain.ESSObject ReadNow = objectRepository.ReadAll().OrderByDescending(x => x.CreateTime).FirstOrDefault();
-            return this.mapper.Map<Model.ESSObject>(ReadNow);
+            return mapper.Map<Model.ESSObject>(objectRepository.ReadAll().OrderByDescending(x => x.CreateTime).FirstOrDefault());
         }
 
         public Model.ESSObject ReadNowUid(Guid uid)
         {
             Domain.ESSObject ReadNowUid = objectRepository.ReadAll().Where(x=>x.stationUUID==uid.ToString()).OrderByDescending(x => x.CreateTime).FirstOrDefault();
-            if (ReadNowUid == null)
-            {
-                return null;
-            }
-            else
-            {
-                return this.mapper.Map<Model.ESSObject>(ReadNowUid);
-            }
-
-
+            return ReadNowUid == null?null: this.mapper.Map<Model.ESSObject>(ReadNowUid);
         }
 
     }  

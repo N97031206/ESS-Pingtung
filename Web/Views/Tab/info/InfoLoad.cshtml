@@ -16,28 +16,28 @@
             <div class="col font-weight-bold ">@ViewBag.LoadInfo1</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">電壓(V)</div>
-            <div class="col font-italic">@ViewBag.LoadInfo2</div>
+            <div class="col ">@ViewBag.LoadInfo2</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">電流(A)</div>
-            <div class="col font-italic">@ViewBag.LoadInfo3</div>
+            <div class="col ">@ViewBag.LoadInfo3</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">實功率(kW)</div>
-            <div class="col font-italic">@ViewBag.LoadInfo4</div>
+            <div class="col ">@ViewBag.LoadInfo4</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">虛功率(kVAR)</div>
-            <div class="col font-italic">@ViewBag.LoadInfo5</div>
+            <div class="col ">@ViewBag.LoadInfo5</div>
             <div class="w-100"></div>
             <div class="col  font-weight-bold small">視在功率(kVA)</div>
-            <div class="col font-italic">@ViewBag.LoadInfo6</div>
+            <div class="col ">@ViewBag.LoadInfo6</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">功率因數(PF)</div>
-            <div class="col font-italic">@ViewBag.LoadInfo7</div>
+            <div class="col ">@ViewBag.LoadInfo7</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">頻率(Hz)</div>
-            <div class="col font-italic">@ViewBag.LoadInfo8</div>
+            <div class="col ">@ViewBag.LoadInfo8</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">當日用電量(度)</div>
-            <div class="col font-italic">@ViewBag.LoadInfo9</div>
+            <div class="col ">@ViewBag.LoadInfo9</div>
         </div>
     </div>
     <!--middle-->
@@ -115,8 +115,7 @@
                     toolbox: {
                         show: true,
                         feature: {
-                            mark: { show: true },
-                            dataView: { show: true, readOnly: false, title: '資料' },
+                            mark: { show: true },                        
                             magicType: { show: true, type: ['line', 'bar'], title: '圖格式' },
                             restore: { show: true, title: '復原' },
                             saveAsImage: { show: true, title: '圖檔' }
@@ -172,9 +171,9 @@
     <!--right-->
     <div class="col-2 h3">
         <div class=" bg-light">可用總電量</div>
-        <div class="font-italic">@ViewBag.Demand</div>
+        <div class="font-weight-bold">@ViewBag.Demand</div>
         <div class="bg-light">可用電時數</div>
-        <div class="font-italic">@ViewBag.RemainTime</div>
+        <div class="font-weight-bold">@ViewBag.RemainTime</div>
     </div>
 </div>
 

@@ -1,12 +1,10 @@
 ﻿@using PagedList;
 @using PagedList.Mvc;
-@using Service.ESS.Provider;
-@model IPagedList<Service.ESS.Model.Bulletin>
+@model IPagedList<Web.Models.Tabs.Bulletins>
 
 @{
     ViewBag.AppTitle = Resources.Resource.Bulletin;
     Layout = "~/Areas/APP/Views/Shared/_LayoutAPPDetail .cshtml";
-    OrginService orginService = new OrginService();
     int x = 1, y = 1;
     string str = null;
 }
@@ -52,16 +50,16 @@
     <tbody class="text-light">
         @foreach (var bl in Model)
         {
-            if (bl.Disabled == false)
+            if (bl.Disable == false)
             {
                 str = "bl" + x;
                 <tr class="text-left">
                     <th scope="row">
                         <button type="button" class="btn btn-primary btn-sm btn-block align-baseline " data-toggle="modal" data-target="#@str">
-                            @orginService.ReadID(bl.OrginID).OrginName.ToString().Trim()
+                            @bl.Orgin
                             @bl.CreateDate.ToString("yyyy/MM/dd tt hh:mm")
                             <br />
-                            @bl.title
+                            @bl.Title
                         </button>
                     </th>
                 </tr>
@@ -73,20 +71,20 @@
 <div class="text-dark">
     @foreach (var bl in Model)
     {
-        if (bl.Disabled == false)
+        if (bl.Disable == false)
         {
             str = "bl" + y;
             <div class="modal fade" id="@str" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">@bl.title</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">@bl.Title</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body ">
-                            @bl.context
+                            @bl.Context
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -98,7 +96,7 @@
         }
     }
 </div>
-<div   style="font-size:small">@Html.PagedListPager(Model, Page => Url.Action("Bulletin", new { Page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)</div>
+<div style="font-size:small">@Html.PagedListPager(Model, Page => Url.Action("Bulletin", new { Page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)</div>
 
 
 

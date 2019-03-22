@@ -20,10 +20,9 @@ namespace Web.Controllers
     {
         #region private
         //Tab
-        private AccountService accountService = new AccountService();
-        private BulletinService bulletinService = new BulletinService();
+        private readonly AccountService accountService = new AccountService();
         private StationService stationService = new StationService();
-        private AlartService alartService = new AlartService();
+        private readonly AlartService alartService = new AlartService();
         private AlartTypeService alarttypeService = new AlartTypeService();
         private OrginService orginService = new OrginService();
         //EMS
@@ -33,6 +32,8 @@ namespace Web.Controllers
         private GeneratorService GeneratorService = new GeneratorService();
         private LoadPowerService LoadPowerService = new LoadPowerService();
         private InverterService InverterService = new InverterService();
+        private InfoChartsService InfoChartsService = new InfoChartsService();
+        private InfoDatasService InfoDatasService = new InfoDatasService();
         //分頁
         private int PageSizes() { if (!int.TryParse(ConfigurationManager.AppSettings["PageSize"], out int s)) { s = 10; } return s; }
         //Log檔
@@ -45,6 +46,7 @@ namespace Web.Controllers
         /// </summary>
         /// <returns></returns>
         [Authorize]
+        [OutputCache(CacheProfile = "Cache5Min")]
         public ActionResult Index()
         {
             NavButtom("Index");
@@ -56,177 +58,12 @@ namespace Web.Controllers
         /// </summary>
         /// <returns></returns>
         [Authorize]
+        [OutputCache(CacheProfile = "Cache5Min")]
         public ActionResult Jiasing()
         {
             NavButtom("Index");
             return View();
         }
-        #endregion
-
-        #region Bulletin公告資訊
-        /// <summary>
-        /// 公告資訊
-        /// </summary>
-        /// <returns></returns>
-        [Authorize]
-        public ActionResult Bulletin(int StationNum, int page = 1 )
-        {
-            NavButtom("Bulletin");
-            StationList(stationService.StationID(StationNum));
-            ViewBag.RangeStart = DateTime.Today.ToShortDateString();
-            ViewBag.RangeEnd = DateTime.Today.ToShortDateString();
-            ViewBag.StationNum = StationNum;
-            
-            //一開始抓取全部資料
-            List<Bulletin> bulletins = bulletinService.ReadAllView().ToList();
-            //分頁
-            int currentPage = page < 1 ? 1 : page;
-            var result = bulletins.ToPagedList(currentPage, PageSizes());
-            return View(result);
-        }
-
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public ActionResult Bulletin(FormCollection From, int page = 1)
-        {
-            NavButtom("Bulletin");
-            var statonID = Guid.Parse(Request.Form["Statons"]);
-            StationList(statonID);
-            int StationNum = stationService.ReadID(statonID).StationCode;
-          
-            //查詢時間區間
-            var SE = Request.Form["range_date"];
-
-            //分割字串
-            char x = '-';
-            string[] Day = SE.Split(x);
-            //區間
-            DateTime Start = Convert.ToDateTime(Day[0]);
-            DateTime End = Convert.ToDateTime(Day[1]);
-            ViewBag.RangeStart = Start.ToShortDateString();
-            ViewBag.RangeEnd = End.ToShortDateString();
-            ViewBag.StationNum = StationNum;
-
-            //寫入表單
-            List<Bulletin> bulletins = (Start == End) ? bulletinService.ReadAll().ToList() : bulletinService.ReadListBy(Start, End).ToList();
-            //分頁
-            int currentPage = page < 1 ? 1 : page;
-            var result = bulletins.ToPagedList(currentPage, PageSizes());
-            return View(result);
-        }
-
-        [Authorize]
-        public ActionResult CreateBulletin()
-        {
-            TagTitle();
-            StationList(Guid.Parse("b1de23db-34e3-e811-be29-0c9d925e499c"));
-            AlartTypeList();
-            OrginTypeList();
-            return View();
-        }
-
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public ActionResult CreateBulletin(FormCollection From)
-        {
-            var title = From["title"].Trim();
-            var context = From["context"].Trim();
-            var OrginID = Guid.Parse(From["OrginID"]);
-            var AccountID = accountService.ReadByName(Session["UserName"].ToString()).Id;
-
-            Bulletin bulletins = new Bulletin()
-            {
-                title = title,
-                context = context,
-                OrginID = OrginID,
-                AccountID = AccountID
-            };
-            Guid BulletinID = bulletinService.Create(bulletins);
-            return RedirectToAction("Maintain", "Tab");
-        }
-
-        [Authorize]
-        public ActionResult ListBulletin(int page = 1)
-        {
-            List<Bulletin> bulletins = bulletinService.ReadAll();
-            int currentPage = page < 1 ? 1 : page;
-            var result = bulletins.ToPagedList(currentPage, PageSizes());
-            return View(result);
-        }
-
-        [Authorize]
-        public ActionResult EditBulletin(Guid id)
-        {
-            Bulletin bulletin = bulletinService.ReadByID(id);
-            return View(bulletin);
-        }
-
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult EditBulletin(FormCollection From)
-        {
-            var id = Guid.Parse(From["id"].Trim());
-            var title = From["title"].Trim();
-            var context = From["context"].Trim();
-            var StationNum = Convert.ToInt32(From["StationNum"]);
-            string[] Disabled = From["Disabled"].Trim().Split(',');
-
-            Bulletin bulletin = new Bulletin()
-            {
-                Id = id,
-                title = title,
-                context = context,
-                Disabled = (Disabled.Length == 2) ? true : false,
-                UpdateDate = DateTime.Now
-            };
-
-            Guid bulletinID = bulletinService.Update(bulletin);
-            return RedirectToAction("ListBulletin", "Tab");
-        }
-
-        [Authorize]
-        public ActionResult DisableBulletin(Guid id)
-        {
-            Bulletin bulletin = bulletinService.ReadByID(id);
-            return View(bulletin);
-        }
-
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult DisableBulletin(FormCollection From)
-        {
-            Bulletin bulletin = new Bulletin()
-            {
-                Id = Guid.Parse(From["id"].Trim()),
-                Disabled = (From["Disabled"].Trim().Split(',').Length == 2) ? true : false,
-                UpdateDate = DateTime.Now
-            };
-            Guid BulletinID = bulletinService.UpdateDisable(bulletin);
-            return RedirectToAction("ListBulletin", "Tab");
-        }
-
-
-        [Authorize]
-        public ActionResult DeleteBulletin(Guid id)
-        {
-            Bulletin bulletin = bulletinService.ReadByID(id);
-            return View(bulletin);
-        }
-
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteBulletin(FormCollection From)
-        {
-            Guid Id = Guid.Parse(From["id"].Trim());
-            bool BulletinID = bulletinService.Delete(Id);
-            return RedirectToAction("ListBulletin", "Tab", new { del = BulletinID });
-        }
-
         #endregion
 
         #region Info 及時資訊
@@ -235,440 +72,280 @@ namespace Web.Controllers
         /// </summary>
         /// <returns></returns>
         [Authorize]
-        public ActionResult Info(string tabType, int StationNum)
+        [OutputCache(CacheProfile = "Cache1Min")]
+        public ActionResult Info(string tabType, int StationNum=2)
         {
             NavButtom("Info");
-            StationList(stationService.StationID(StationNum));
-
             tabType = string.IsNullOrEmpty(tabType) ? "Load" : tabType;//預設
+            StationList(stationService.StationID(StationNum));
             InfoNav(tabType);
-            InfoData(tabType, StationNum);
-            ChartData(tabType, StationNum);
-            SOCLoadWatt(StationNum);
+            Guid StationUUID = stationService.UUID(StationNum);
+
+            InfoData(tabType, StationUUID);
+            ChartData(tabType, StationUUID);
+            SOCLoadWatt(StationUUID);
 
             ViewBag.StationNum = StationNum;
             ViewBag.viewstation = stationService.ReadAll().Where(x => x.StationCode == StationNum).First().StationName;
             return View();
         }
 
-        private void InfoData(string tabType, int StationCode)
+        private void InfoData(string tabType, Guid StationUUID)
         {
-            Guid StationUUID = stationService.UUID(StationCode);
-            var ReadNow = ESSObjecterService.ReadNowUid(StationUUID);
-            if (ReadNow != null)
-            {
-                ViewBag.nowHour = ReadNow.CreateTime.AddHours(1).Hour; //utc+8
-                string EssTime = ReadNow.CreateTime.ToString();
-                ViewBag.EssTime = EssTime;
-
-                switch (tabType.Trim())
-                {
-                    case "GridPower":
-                        #region GridPower
-                        List<GridPower> gridPowers = new List<GridPower>();
-                        var GridReadNow = ReadNow.GridPowerIDs;
-                        string gridInfo1 = null;
-                        double gridInfo2 = 0, gridInfo3 = 0, gridInfo4 = 0, gridInfo5 = 0, gridInfo6 = 0, gridInfo7 = 0, gridInfo8 = 0, gridInfo9 = 0;
-
-                        if (GridReadNow != null)
-                        {
-                            var gridID = GridReadNow.Split('|');
-                            foreach (var x in gridID)
-                            {
-                                if (!string.IsNullOrEmpty(x))
-                                {
-                                    Guid id = Guid.Parse(x.Trim());
-                                    gridPowers.Add(GridPowerService.ReadByID(id));
-                                }
-                            }
-                            GridPower gp = gridPowers.Where(x => x.index == 0).FirstOrDefault();
-                            gridInfo1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? "市電迴路" : "市電迴路(目前離線中)";
-                            gridInfo2 = Math.Round(gp.Vavg, 2);
-                            gridInfo3 = Math.Round(gp.Isum, 2);
-                            gridInfo4 = Math.Round(gp.Watt_t / 1000.0, 2);
-                            gridInfo5 = Math.Round(gp.Var_t / 1000.00, 2);
-                            gridInfo6 = Math.Round(gp.VA_t / 1000.0, 2);
-                            gridInfo7 = Math.Round(gp.PF_t, 2);
-                            gridInfo8 = Math.Round(gp.Frequency, 2);
-                            gridInfo9 = Math.Round(gp.MinuskWHt, 2);
-                        }
-                        ViewBag.gridInfo1 = gridInfo1;
-                        ViewBag.gridInfo2 = gridInfo2;
-                        ViewBag.gridInfo3 = gridInfo3;
-                        ViewBag.gridInfo4 = gridInfo4;
-                        ViewBag.gridInfo5 = gridInfo5;
-                        ViewBag.gridInfo6 = gridInfo6;
-                        ViewBag.gridInfo7 = gridInfo7;
-                        ViewBag.gridInfo8 = gridInfo8;
-                        ViewBag.gridInfo9 = gridInfo9;
-                        #endregion
-                        break;
-                    case "Inverters":
-                        #region Inverter
-                        List<Inverter> inverInfo = new List<Inverter>();
-
-                        string InvInfo1 = "逆變器(目前離線中)", InvInfo2 = "故障模式", InvInfo3 = "0", InvInfo4 = "0", InvInfo5 = "0", InvInfo6 = "0", InvInfo7 = "0", InvInfo8 = "0", InvInfo9 = "0", InvInfo10 = "0", InvInfo11 = "0";
-
-                        var InverReadNow = ReadNow.InvertersIDs;
-
-                        if (InverReadNow != null)
-                        {
-                            var invID = InverReadNow.Split('|');
-                            foreach (var x in invID)
-                            {
-                                if (!string.IsNullOrEmpty(x))
-                                {
-                                    Guid id = Guid.Parse(x.Trim());
-                                    inverInfo.Add(InverterService.ReadByID(id));
-                                }
-                            }
-                            foreach (var inv in inverInfo)
-                            {
-                                InvInfo1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? "逆變器" : "逆變器(目前離線中)";
-                                string model = inv.DeviceMode.Trim();
-                                if (model == "P") { model = "電源模式"; }
-                                else if (model == "S") { model = "待機模式"; }
-                                else if (model == "L") { model = "市電模式"; }
-                                else if (model == "B") { model = "電池模式"; }
-                                else if (model == "F") { model = "故障模式"; }
-                                else if (model == "H") { model = "省電模式"; }
-                                else { model = "其他模式"; }
-                                InvInfo2 = model;
-                                InvInfo3 = string.Format("{0:#,0.0}", inv.GridVoltage);
-                                InvInfo4 = string.Format("{0:#,0.0}", inv.GridFrequency);
-                                InvInfo5 = string.Format("{0:#,0.0}", inv.AC_OutputVoltage);
-                                InvInfo6 = string.Format("{0:#,0.0}", inv.AC_OutputFrequency);
-                                InvInfo7 = string.Format("{0:#,0.0}", inv.ParallelInformation_TotalOutputActivePower.Split('|').ToList().Sum(x => x.IsEmpty() ? 0 : Convert.ToDouble(x)) / 1000.0);
-                                InvInfo8 = string.Format("{0:#,0.0}", inv.BatteryVoltage);
-                                InvInfo9 = string.Format("{0:#,0.0}", inv.BatteryCapacity);
-                                InvInfo10 = string.Format("{0:#,0}", inv.PV_InputVoltage);
-                                InvInfo11 = string.Format("{0:#,0}", inv.ParallelInformation_TotalChargingCurrent.Split('|').ToList().Sum(x => x.IsEmpty() ? 0 : Convert.ToDouble(x)) / 1000.0);
-                            }
-                        }
-                        ViewBag.Invnfo1 = InvInfo1;
-                        ViewBag.InvInfo2 = InvInfo2;
-                        ViewBag.InvInfo3 = InvInfo3;
-                        ViewBag.InvInfo4 = InvInfo4;
-                        ViewBag.InvInfo5 = InvInfo5;
-                        ViewBag.InvInfo6 = InvInfo6;
-                        ViewBag.InvInfo7 = InvInfo7;
-                        ViewBag.InvInfo8 = InvInfo8;
-                        ViewBag.InvInfo9 = InvInfo9;
-                        ViewBag.InvInfo10 = InvInfo10;
-                        ViewBag.InvInfo11 = InvInfo11;
-                        #endregion
-                        break;
-                    case "Solar":
-                        #region Solar
-                        //取相關資料
-                        var SolarReadNow = ReadNow.InvertersIDs;
-
-                        string solarInfo11 = "'", solarInfo21 = "'";
-                        double solarInfo12 = 0, solarInfo13 = 0, solarInfo14 = 0, solarInfo15 = 0;
-                        double solarInfo22 = 0, solarInfo23 = 0, solarInfo24 = 0, solarInfo25 = 0;
-
-                        if (SolarReadNow != null)
-                        {
-                            List<Inverter> inverters = new List<Inverter>();
-                            var spmID = SolarReadNow.Split('|');
-                            foreach (var x in spmID)
-                            {
-                                if (!string.IsNullOrEmpty(x))
-                                {
-                                    Guid id = Guid.Parse(x.Trim());
-                                    inverters.Add(InverterService.ReadByID(id));
-                                }
-                            }
-
-                            if (inverters != null)
-                            {
-                                foreach (var inv in inverters)
-                                {
-                                    var index = inv.SPMid.Split('|');
-                                    var voltage = inv.SPM90Voltage.Split('|');
-                                    var current = inv.SPM90Current.Split('|');
-                                    var energy = inv.SPM90ActiveEnergy.Split('|');
-                                    var power = inv.SPM90ActivePower.Split('|');
-                                    for (int i = 0; i < index.Length - 1; i++)
-                                    {
-                                        if (i == 0)
-                                        {
-                                            solarInfo11 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? "太陽能" + (i + 1).ToString() : "太陽能" + (i + 1).ToString() + "(目前離線中)";
-                                            solarInfo12 = Math.Round(Convert.ToDouble(voltage[i]), 2);
-                                            solarInfo13 = Math.Round(Convert.ToDouble(current[i]), 2);
-                                            solarInfo14 = Math.Round(Convert.ToDouble(power[i]) / 1000.0, 2);
-                                            solarInfo15 = Math.Round(Convert.ToDouble(i == 0 ? inv.SPM90ActiveEnergyMinus1 : inv.SPM90ActiveEnergyMinus2), 2);
-                                        }
-                                        else if (i == 1)
-                                        {
-                                            solarInfo21 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? "太陽能" + (i + 1).ToString() : "太陽能" + (i + 1).ToString() + "(目前離線中)";
-                                            solarInfo22 = Math.Round(Convert.ToDouble(voltage[i]), 2);
-                                            solarInfo23 = Math.Round(Convert.ToDouble(current[i]), 2);
-                                            solarInfo24 = Math.Round(Convert.ToDouble(power[i]) / 1000.0, 2);
-                                            solarInfo25 = Math.Round(Convert.ToDouble(i == 0 ? inv.SPM90ActiveEnergyMinus1 : inv.SPM90ActiveEnergyMinus2), 2);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        ViewBag.solarInfo11 = solarInfo11;
-                        ViewBag.solarInfo12 = solarInfo12;
-                        ViewBag.solarInfo13 = solarInfo13;
-                        ViewBag.solarInfo14 = solarInfo14;
-                        ViewBag.solarInfo15 = solarInfo15;
-                        ViewBag.solarInfo21 = solarInfo21;
-                        ViewBag.solarInfo22 = solarInfo22;
-                        ViewBag.solarInfo23 = solarInfo23;
-                        ViewBag.solarInfo24 = solarInfo24;
-                        ViewBag.solarInfo25 = solarInfo25;
-                        #endregion
-                        break;
-                    case "Battery":
-                        #region Battery
-                        string BatteryInfo11 = "目前離線中", BatteryInfo12 = "0", BatteryInfo13 = "0", BatteryInfo14 = "0", BatteryInfo15 = "0", BatteryInfo16 = "0", BatteryInfo17 = "離線";
-                        string BatteryInfo21 = "目前離線中", BatteryInfo22 = "0", BatteryInfo23 = "0", BatteryInfo24 = "0", BatteryInfo25 = "0", BatteryInfo26 = "0", BatteryInfo27 = "離線";
-                        string BatteryInfo31 = "目前離線中", BatteryInfo32 = "0", BatteryInfo33 = "0", BatteryInfo34 = "0", BatteryInfo35 = "0", BatteryInfo36 = "0", BatteryInfo37 = "離線";
-                        string BatteryInfo41 = "目前離線中", BatteryInfo42 = "0", BatteryInfo43 = "0", BatteryInfo44 = "0", BatteryInfo45 = "0", BatteryInfo46 = "0", BatteryInfo47 = "離線";
-
-                        //取相關資料
-                        var batteryID = ReadNow.BatteryIDs.Split('|').ToList();
-
-                        if (batteryID != null)
-                        {
-                            List<Battery> batteries = new List<Battery>();
-                            batteryID.ForEach(x =>
-                            {
-                                if (!string.IsNullOrEmpty(x))
-                                {
-                                    batteries.Add(BatteryService.ReadByID(Guid.Parse(x.Trim())));
-                                }
-                            });
-
-
-                            foreach (var ba in batteries)
-                            {
-                                if (ba.index == 0)
-                                {
-                                    BatteryInfo11 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? ba.index.ToString() : ba.index.ToString() + "(目前離線中)";
-                                    BatteryInfo12 = string.Format("{0:#,0.00}", ba.voltage);
-                                    BatteryInfo13 = string.Format("{0:#,0.00}", ba.charging_current);
-                                    BatteryInfo14 = string.Format("{0:#,0.00}", ba.discharging_current);
-                                    BatteryInfo15 = string.Format("{0:#,0.00}", BatteryService.EachSOC(ba.voltage));
-                                    BatteryInfo16 = string.Format("{0:#,0}", ba.Cycle);
-                                    int cd = Convert.ToInt32(ba.charge_direction);
-                                    BatteryInfo17 = (cd == 1) ? "充電" : (cd == 2) ? "放電" : "離線";
-                                }
-
-                                if (ba.index == 1)
-                                {
-                                    BatteryInfo21 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? ba.index.ToString() : ba.index.ToString() + "(目前離線中)";
-                                    BatteryInfo22 = string.Format("{0:#,0.00}", ba.voltage);
-                                    BatteryInfo23 = string.Format("{0:#,0.00}", ba.charging_current);
-                                    BatteryInfo24 = string.Format("{0:#,0.00}", ba.discharging_current);
-                                    BatteryInfo25 = string.Format("{0:#,0.00}", BatteryService.EachSOC(ba.voltage));
-                                    BatteryInfo26 = string.Format("{0:#,0}", ba.Cycle);
-                                    int cd = Convert.ToInt32(ba.charge_direction);
-                                    BatteryInfo27 = (cd == 1) ? "充電" : (cd == 2) ? "放電" : "離線";
-                                }
-
-                                if (ba.index == 2)
-                                {
-                                    BatteryInfo31 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? ba.index.ToString() : ba.index.ToString() + "(目前離線中)";
-                                    BatteryInfo32 = string.Format("{0:#,0.00}", ba.voltage);
-                                    BatteryInfo33 = string.Format("{0:#,0.00}", ba.charging_current);
-                                    BatteryInfo34 = string.Format("{0:#,0.00}", ba.discharging_current);
-                                    BatteryInfo35 = string.Format("{0:#,0.00}", BatteryService.EachSOC(ba.voltage));
-                                    BatteryInfo36 = string.Format("{0:#,0}", ba.Cycle);
-                                    int cd = Convert.ToInt32(ba.charge_direction);
-                                    BatteryInfo37 = (cd == 1) ? "充電" : (cd == 2) ? "放電" : "離線";
-                                }
-
-                                if (ba.index == 3)
-                                {
-                                    BatteryInfo41 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? ba.index.ToString() : ba.index.ToString() + "(目前離線中)";
-                                    BatteryInfo42 = string.Format("{0:#,0.00}", ba.voltage);
-                                    BatteryInfo43 = string.Format("{0:#,0.00}", ba.charging_current);
-                                    BatteryInfo44 = string.Format("{0:#,0.00}", ba.discharging_current);
-                                    BatteryInfo45 = string.Format("{0:#,0.00}", BatteryService.EachSOC(ba.voltage));
-                                    BatteryInfo46 = string.Format("{0:#,0}", ba.Cycle);
-                                    int cd = Convert.ToInt32(ba.charge_direction);
-                                    BatteryInfo47 = (cd == 1) ? "充電" : (cd == 2) ? "放電" : "離線";
-                                }
-                            }
-                        }
-                        ViewBag.BatteryInfo11 = BatteryInfo11;
-                        ViewBag.BatteryInfo12 = BatteryInfo12;
-                        ViewBag.BatteryInfo13 = BatteryInfo13;
-                        ViewBag.BatteryInfo14 = BatteryInfo14;
-                        ViewBag.BatteryInfo15 = BatteryInfo15;
-                        ViewBag.BatteryInfo16 = BatteryInfo16;
-                        ViewBag.BatteryInfo17 = BatteryInfo17;
-                        ViewBag.BatteryInfo21 = BatteryInfo21;
-                        ViewBag.BatteryInfo22 = BatteryInfo22;
-                        ViewBag.BatteryInfo23 = BatteryInfo23;
-                        ViewBag.BatteryInfo24 = BatteryInfo24;
-                        ViewBag.BatteryInfo25 = BatteryInfo25;
-                        ViewBag.BatteryInfo26 = BatteryInfo26;
-                        ViewBag.BatteryInfo27 = BatteryInfo27;
-                        ViewBag.BatteryInfo31 = BatteryInfo31;
-                        ViewBag.BatteryInfo32 = BatteryInfo32;
-                        ViewBag.BatteryInfo33 = BatteryInfo33;
-                        ViewBag.BatteryInfo34 = BatteryInfo34;
-                        ViewBag.BatteryInfo35 = BatteryInfo35;
-                        ViewBag.BatteryInfo36 = BatteryInfo36;
-                        ViewBag.BatteryInfo37 = BatteryInfo37;
-                        ViewBag.BatteryInfo41 = BatteryInfo41;
-                        ViewBag.BatteryInfo42 = BatteryInfo42;
-                        ViewBag.BatteryInfo43 = BatteryInfo43;
-                        ViewBag.BatteryInfo44 = BatteryInfo44;
-                        ViewBag.BatteryInfo45 = BatteryInfo45;
-                        ViewBag.BatteryInfo46 = BatteryInfo46;
-                        ViewBag.BatteryInfo47 = BatteryInfo37;
-                        #endregion
-                        break;
-                    case "Load":
-                        #region
-                        List<LoadPower> loadPowers = new List<LoadPower>();
-                        var LoadReadNow = ReadNow.LoadPowerIDs;
-                        string LoadInfo1 = null;
-                        double LoadInfo2 = 0, LoadInfo3 = 0, LoadInfo4 = 0, LoadInfo5 = 0, LoadInfo6 = 0, LoadInfo7 = 0, LoadInfo8 = 0, LoadInfo9 = 0;
-                        if (LoadReadNow != null)
-                        {
-                            var LoadID = LoadReadNow.Split('|');
-                            foreach (var x in LoadID)
-                            {
-                                if (!string.IsNullOrEmpty(x))
-                                {
-                                    Guid id = Guid.Parse(x.Trim());
-                                    loadPowers.Add(LoadPowerService.ReadByID(id));
-                                }
-                            }
-                            LoadPower lo = loadPowers.Where(x => x.index == 2).FirstOrDefault();
-                            LoadInfo1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? "負載" : "負載(目前離線中)";
-                            LoadInfo2 = Math.Round(lo.Vavg, 2);
-                            LoadInfo3 = Math.Round(lo.Isum, 2);
-                            LoadInfo4 = Math.Round(lo.Watt_t / 1000.0, 2);
-                            LoadInfo5 = Math.Round(lo.Var_t / 1000.00, 2);
-                            LoadInfo6 = Math.Round(lo.VA_t / 1000.0, 2);
-                            LoadInfo7 = Math.Round(lo.PF_t, 2);
-                            LoadInfo8 = Math.Round(lo.Frequency, 2);
-                            LoadInfo9 = Math.Round(lo.MinuskWHt, 2);
-                        }
-                        ViewBag.LoadInfo1 = LoadInfo1;
-                        ViewBag.LoadInfo2 = LoadInfo2;
-                        ViewBag.LoadInfo3 = LoadInfo3;
-                        ViewBag.LoadInfo4 = LoadInfo4;
-                        ViewBag.LoadInfo5 = LoadInfo5;
-                        ViewBag.LoadInfo6 = LoadInfo6;
-                        ViewBag.LoadInfo7 = LoadInfo7;
-                        ViewBag.LoadInfo8 = LoadInfo8;
-                        ViewBag.LoadInfo9 = LoadInfo9;
-                        #endregion
-                        break;
-                    case "Generator":
-                        #region GeneratorChart
-                        string Info1 = "發電機(目前離線中)", Info13 = "離線", Info2 = "0", Info3 = "0", Info4 = "0", Info5 = "0", Info6 = "0", Info7 = "0", Info8 = "0", Info9 = "0", Info10 = "0", Info11 = "0", Info12 = "0", Info14 = "0", Info15 = "0";
-                        List<Generator> generators = new List<Generator>();
-                        var GenReadNow = ReadNow.GeneratorIDs;
-                        if (GenReadNow != null)
-                        {
-                            var generID = GenReadNow.Split('|');
-                            foreach (var x in generID)
-                            {
-                                if (!string.IsNullOrEmpty(x))
-                                {
-                                    Guid id = Guid.Parse(x.Trim());
-                                    generators.Add(GeneratorService.ReadByID(id));
-                                }
-                                foreach (var gen in generators)
-                                {
-                                    Info1 = (DateTime.Now.AddMinutes(-5) < DateTime.Parse(EssTime)) ? "發電機" : "發電機(目前離線中)";
-                                    Info2 = string.Format("{0:#,0.0}", gen.FuleLevel);
-                                    Info3 = string.Format("{0:#,0.0}", gen.L1Nvoltage);
-                                    Info4 = string.Format("{0:#,0.0}", gen.L2Nvoltage);
-                                    Info5 = string.Format("{0:#,0.0}", gen.L3Nvoltage);
-                                    Info6 = string.Format("{0:#,0.0}", gen.L1current);
-                                    Info7 = string.Format("{0:#,0.0}", gen.L2current);
-                                    Info8 = string.Format("{0:#,0.0}", gen.L3current);
-                                    Info9 = string.Format("{0:#,0.0}", gen.totalwatts / 1000);
-                                    Info10 = string.Format("{0:#,0.0}", gen.averagepowerfactor);
-                                    Info11 = string.Format("{0:#,0.0}", gen.positiveKWhours);
-                                    Info12 = string.Format("{0:#,0.0}", gen.negativeKWhours);
-                                    Info13 = gen.ControlStatus.Equals("true") ? "啟動中" : "已關閉";
-                                    Info14 = string.Format("{0:#,0.0}", gen.AvailabilityEnergy);
-                                    Info15 = string.Format("{0:#,0}", gen.AvailabilityHour);
-                                }
-                            }
-                        }
-                        ViewBag.GenInfo1 = Info1;
-                        ViewBag.GenInfo2 = Info2;
-                        ViewBag.GenInfo3 = Info3;
-                        ViewBag.GenInfo4 = Info4;
-                        ViewBag.GenInfo5 = Info5;
-                        ViewBag.GenInfo6 = Info6;
-                        ViewBag.GenInfo7 = Info7;
-                        ViewBag.GenInfo8 = Info8;
-                        ViewBag.GenInfo9 = Info9;
-                        ViewBag.GenInfo10 = Info10;
-                        ViewBag.GenInfo11 = Info11;
-                        ViewBag.GenInfo12 = Info12;
-                        ViewBag.GenInfo13 = Info13;
-                        ViewBag.GenInfo14 = Info14;
-                        ViewBag.GenInfo15 = Info15;
-                        #endregion
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 更換Nav class
-        /// </summary>
-        /// <param name="tabType"></param>
-        private void InfoNav(string tabType)
-        {
-            TempData["nav"] = tabType;
-            TempData["navGridPower"] = "nav-link";
-            TempData["navBattery"] = "nav-link";
-            TempData["navSolar"] = "nav-link";
-            TempData["navLoad"] = "nav-link";
-            TempData["navGenerator"] = "nav-link";
-            TempData["navInverters"] = "nav-link";
-            TempData["tabGridPower"] = "tab-pane";
-            TempData["tabBattery"] = "tab-pane ";
-            TempData["tabSolar"] = "tab-pane ";
-            TempData["tabLoad"] = "tab-pane ";
-            TempData["tabGenerator"] = "tab-pane ";
-            TempData["tabInverters"] = "tab-pane ";
+            InfoDatas InfoDatas = InfoDatasService.ReadUUID(StationUUID);
+            ViewBag.EssTime = InfoDatas.UpdateTime.ToString();
 
             switch (tabType.Trim())
             {
                 case "GridPower":
-                    TempData["navGridPower"] = "nav-link active";
-                    TempData["tabGridPower"] = "tab-pane active";
+                    #region GridPower
+                    string gridInfo1 = "市電迴路(目前離線中)";
+                    double gridInfo2 = 0, gridInfo3 = 0, gridInfo4 = 0, gridInfo5 = 0, gridInfo6 = 0, gridInfo7 = 0, gridInfo8 = 0, gridInfo9 = 0;
+
+                    if (!string.IsNullOrEmpty( InfoDatas.GridPower))
+                    {
+                        var GridData = InfoDatas.GridPower.Trim().Split('|');
+                        gridInfo1 = string.IsNullOrEmpty(GridData[0].Trim()) ? "市電迴路(目前離線中)" : (DateTime.Now.AddMinutes(-5).Ticks > DateTime.Parse(GridData[0]).Ticks) ? "市電迴路(目前離線中)" : "市電迴路";
+                        gridInfo2 = Math.Round(Convert.ToDouble(GridData[1]), 2);
+                        gridInfo3 = Math.Round(Convert.ToDouble(GridData[2]), 2);
+                        gridInfo4 = Math.Round(Convert.ToDouble(GridData[3]), 2);
+                        gridInfo5 = Math.Round(Convert.ToDouble(GridData[4]), 2);
+                        gridInfo6 = Math.Round(Convert.ToDouble(GridData[5]), 2);
+                        gridInfo7 = Math.Round(Convert.ToDouble(GridData[6]), 2);
+                        gridInfo8 = Math.Round(Convert.ToDouble(GridData[7]), 2);
+                        gridInfo9 = Math.Round(Convert.ToDouble(GridData[8]), 2);
+                    }
+
+                    ViewBag.gridInfo1 = gridInfo1;
+                    ViewBag.gridInfo2 = gridInfo2;
+                    ViewBag.gridInfo3 = gridInfo3;
+                    ViewBag.gridInfo4 = gridInfo4;
+                    ViewBag.gridInfo5 = gridInfo5;
+                    ViewBag.gridInfo6 = gridInfo6;
+                    ViewBag.gridInfo7 = gridInfo7;
+                    ViewBag.gridInfo8 = gridInfo8;
+                    ViewBag.gridInfo9 = gridInfo9;
+                    #endregion
                     break;
                 case "Inverters":
-                    TempData["navInverters"] = "nav-link active";
-                    TempData["tabInverters"] = "tab-pane active";
+                    #region Inverter
+                    string InvInfo1 = "逆變器(目前離線中)", InvInfo2 = "故障模式", InvInfo3 = "0", InvInfo4 = "0", InvInfo5 = "0", InvInfo6 = "0", InvInfo7 = "0", InvInfo8 = "0", InvInfo9 = "0", InvInfo10 = "0", InvInfo11 = "0";
+
+                    if (!string.IsNullOrEmpty(InfoDatas.Inverters))
+                    {
+                        var InvData = InfoDatas.Inverters.Trim().Split('|');
+                        InvInfo1 = string.IsNullOrEmpty(InvData[0].Trim()) ? "逆變器(目前離線中)":(DateTime.Now.AddMinutes(-5).Ticks > DateTime.Parse(InvData[0]).Ticks) ? "逆變器(目前離線中)" : "逆變器" ;
+                        InvInfo2 = InvData[1].Trim();
+                        InvInfo3 = InvData[2].Trim();
+                        InvInfo4 = InvData[3].Trim();
+                        InvInfo5 = InvData[4].Trim();
+                        InvInfo6 = InvData[5].Trim();
+                        InvInfo7 = InvData[6].Trim();
+                        InvInfo8 = InvData[7].Trim();
+                        InvInfo9 = InvData[8].Trim();
+                        InvInfo10 = InvData[9].Trim();
+                        InvInfo11 = InvData[10].Trim();
+                    }
+                   
+                    ViewBag.InvInfo1 = InvInfo1;
+                    ViewBag.InvInfo2 = InvInfo2;
+                    ViewBag.InvInfo3 = InvInfo3;
+                    ViewBag.InvInfo4 = InvInfo4;
+                    ViewBag.InvInfo5 = InvInfo5;
+                    ViewBag.InvInfo6 = InvInfo6;
+                    ViewBag.InvInfo7 = InvInfo7;
+                    ViewBag.InvInfo8 = InvInfo8;
+                    ViewBag.InvInfo9 = InvInfo9;
+                    ViewBag.InvInfo10 = InvInfo10;
+                    ViewBag.InvInfo11 = InvInfo11;
+                    #endregion
                     break;
                 case "Solar":
-                    TempData["navSolar"] = "nav-link active";
-                    TempData["tabSolar"] = "tab-pane active";
+                    #region Solar
+                    string solarInfo11 = "太陽能(目前離線中)", solarInfo21 = "太陽能2(目前離線中)";
+                    double solarInfo12 = 0, solarInfo13 = 0, solarInfo14 = 0, solarInfo15 = 0;
+                    double solarInfo22 = 0, solarInfo23 = 0, solarInfo24 = 0, solarInfo25 = 0;
+
+                    if (!string.IsNullOrEmpty(InfoDatas.Solar))
+                    {
+                        var SolarData = InfoDatas.Solar.Trim().Split('$');
+                        var Solar1 = SolarData[0].Trim().Split('|');
+                        var Solar2 = SolarData[1].Trim().Split('|');
+
+                        solarInfo11 = string.IsNullOrEmpty(Solar1[0].Trim()) ? "太陽能(目前離線中)":(DateTime.Now.AddMinutes(-5).Ticks > DateTime.Parse(Solar1[0]).Ticks) ? "太陽能(目前離線中)" : "太陽能" ;
+                        solarInfo12 = Math.Round(Convert.ToDouble(Solar1[1]), 2);
+                        solarInfo13 = Math.Round(Convert.ToDouble(Solar1[2]), 2);
+                        solarInfo14 = Math.Round(Convert.ToDouble(Solar1[3]), 2);
+                        solarInfo15 = Math.Round(Convert.ToDouble(Solar1[4]), 2);
+
+                        solarInfo21 = string.IsNullOrEmpty(Solar2[0].Trim()) ? "太陽能2 (目前離線中)":(DateTime.Now.AddMinutes(-5).Ticks > DateTime.Parse(Solar2[0]).Ticks) ? "太陽能2(目前離線中)" : "太陽能2";
+                        solarInfo22 = Math.Round(Convert.ToDouble(Solar2[1]), 2);
+                        solarInfo23 = Math.Round(Convert.ToDouble(Solar2[2]), 2);
+                        solarInfo24 = Math.Round(Convert.ToDouble(Solar2[3]), 2);
+                        solarInfo25 = Math.Round(Convert.ToDouble(Solar2[4]), 2);
+                    }
+
+                    ViewBag.solarInfo11 = solarInfo11;
+                    ViewBag.solarInfo12 = solarInfo12;
+                    ViewBag.solarInfo13 = solarInfo13;
+                    ViewBag.solarInfo14 = solarInfo14;
+                    ViewBag.solarInfo15 = solarInfo15;
+
+                    ViewBag.solarInfo21 = solarInfo21;
+                    ViewBag.solarInfo22 = solarInfo22;
+                    ViewBag.solarInfo23 = solarInfo23;
+                    ViewBag.solarInfo24 = solarInfo24;
+                    ViewBag.solarInfo25 = solarInfo25;
+                    #endregion
                     break;
                 case "Battery":
-                    TempData["navBattery"] = "nav-link active";
-                    TempData["tabBattery"] = "tab-pane active";
+                    #region Battery
+                    string BatteryInfo11 = "電池組1(目前離線中)", BatteryInfo12 = "0", BatteryInfo13 = "0", BatteryInfo14 = "0", BatteryInfo15 = "0", BatteryInfo16 = "0", BatteryInfo17 = "離線";
+                    string BatteryInfo21 = "電池組2(目前離線中)", BatteryInfo22 = "0", BatteryInfo23 = "0", BatteryInfo24 = "0", BatteryInfo25 = "0", BatteryInfo26 = "0", BatteryInfo27 = "離線";
+                    string BatteryInfo31 = "電池組3(目前離線中)", BatteryInfo32 = "0", BatteryInfo33 = "0", BatteryInfo34 = "0", BatteryInfo35 = "0", BatteryInfo36 = "0", BatteryInfo37 = "離線";
+                    string BatteryInfo41 = "電池組4(目前離線中)", BatteryInfo42 = "0", BatteryInfo43 = "0", BatteryInfo44 = "0", BatteryInfo45 = "0", BatteryInfo46 = "0", BatteryInfo47 = "離線";
+
+                    if (!string.IsNullOrEmpty(InfoDatas.Battery))
+                    {
+                        var BatteryData = InfoDatas.Battery.Trim().Split('$');
+                        var Battery1 = BatteryData[0].Trim().Split('|');
+                        var Battery2 = BatteryData[1].Trim().Split('|');
+                        var Battery3 = BatteryData[2].Trim().Split('|');
+                        var Battery4 = BatteryData[3].Trim().Split('|');
+
+                        BatteryInfo11 = string.IsNullOrEmpty(Battery1[0].Trim()) ? "電池組1(目前離線中)":(DateTime.Now.AddMinutes(-5).Ticks > DateTime.Parse(Battery1[0]).Ticks) ? "電池組1(目前離線中)" : "電池組1 " ;
+                        BatteryInfo12 = Battery1[1];
+                        BatteryInfo13 = Battery1[2];
+                        BatteryInfo14 = Battery1[3];
+                        BatteryInfo15 = Battery1[4];
+                        BatteryInfo16 = Battery1[5];
+                        BatteryInfo17 = Battery1[6];
+
+                        BatteryInfo21 = string.IsNullOrEmpty(Battery2[0].Trim()) ? "電池組2(目前離線中)" : (DateTime.Now.AddMinutes(-5) > DateTime.Parse(Battery2[0])) ? "電池組2(目前離線中)" : "電池組2";
+                        BatteryInfo22 = Battery2[1];
+                        BatteryInfo23 = Battery2[2];
+                        BatteryInfo24 = Battery2[3];
+                        BatteryInfo25 = Battery2[4];
+                        BatteryInfo26 = Battery2[5];
+                        BatteryInfo27 = Battery2[6];
+
+                        BatteryInfo31 = string.IsNullOrEmpty(Battery3[0].Trim()) ? "電池組3(目前離線中)" : (DateTime.Now.AddMinutes(-5) > DateTime.Parse(Battery3[0])) ? "電池組3(目前離線中)" : "電池組3";
+                        BatteryInfo32 = Battery3[1];
+                        BatteryInfo33 = Battery3[2];
+                        BatteryInfo34 = Battery3[3];
+                        BatteryInfo35 = Battery3[4];
+                        BatteryInfo36 = Battery3[5];
+                        BatteryInfo37 = Battery3[6];
+
+                        BatteryInfo41 = string.IsNullOrEmpty(Battery4[0].Trim()) ? "電池組4(目前離線中)" : (DateTime.Now.AddMinutes(-5) > DateTime.Parse(Battery4[0])) ? "電池組4(目前離線中)" : "電池組4";
+                        BatteryInfo42 = Battery4[1];
+                        BatteryInfo43 = Battery4[2];
+                        BatteryInfo44 = Battery4[3];
+                        BatteryInfo45 = Battery4[4];
+                        BatteryInfo46 = Battery4[5];
+                        BatteryInfo47 = Battery4[6];
+
+                    }
+                    ViewBag.BatteryInfo11 = BatteryInfo11;
+                    ViewBag.BatteryInfo12 = BatteryInfo12;
+                    ViewBag.BatteryInfo13 = BatteryInfo13;
+                    ViewBag.BatteryInfo14 = BatteryInfo14;
+                    ViewBag.BatteryInfo15 = BatteryInfo15;
+                    ViewBag.BatteryInfo16 = BatteryInfo16;
+                    ViewBag.BatteryInfo17 = BatteryInfo17;
+
+                    ViewBag.BatteryInfo21 = BatteryInfo21;
+                    ViewBag.BatteryInfo22 = BatteryInfo22;
+                    ViewBag.BatteryInfo23 = BatteryInfo23;
+                    ViewBag.BatteryInfo24 = BatteryInfo24;
+                    ViewBag.BatteryInfo25 = BatteryInfo25;
+                    ViewBag.BatteryInfo26 = BatteryInfo26;
+                    ViewBag.BatteryInfo27 = BatteryInfo27;
+
+                    ViewBag.BatteryInfo31 = BatteryInfo31;
+                    ViewBag.BatteryInfo32 = BatteryInfo32;
+                    ViewBag.BatteryInfo33 = BatteryInfo33;
+                    ViewBag.BatteryInfo34 = BatteryInfo34;
+                    ViewBag.BatteryInfo35 = BatteryInfo35;
+                    ViewBag.BatteryInfo36 = BatteryInfo36;
+                    ViewBag.BatteryInfo37 = BatteryInfo37;
+
+                    ViewBag.BatteryInfo41 = BatteryInfo41;
+                    ViewBag.BatteryInfo42 = BatteryInfo42;
+                    ViewBag.BatteryInfo43 = BatteryInfo43;
+                    ViewBag.BatteryInfo44 = BatteryInfo44;
+                    ViewBag.BatteryInfo45 = BatteryInfo45;
+                    ViewBag.BatteryInfo46 = BatteryInfo46;
+                    ViewBag.BatteryInfo47 = BatteryInfo47;
+                    #endregion
                     break;
                 case "Load":
-                    TempData["navLoad"] = "nav-link active";
-                    TempData["tabLoad"] = "tab-pane active";
+                    #region Load
+                    string LoadInfo1 = "負載(目前離線中)";
+                    double LoadInfo2 = 0, LoadInfo3 = 0, LoadInfo4 = 0, LoadInfo5 = 0, LoadInfo6 = 0, LoadInfo7 = 0, LoadInfo8 = 0, LoadInfo9 = 0;
+                    if (!string.IsNullOrEmpty(InfoDatas.LoadPower))
+                    {
+                        var LoadData = InfoDatas.LoadPower.Trim().Split('|');
+                        LoadInfo1 = string.IsNullOrEmpty(LoadData[0].Trim()) ?"負載(目前離線中)":(DateTime.Now.AddMinutes(-5).Ticks > DateTime.Parse(LoadData[0]).Ticks) ? "負載(目前離線中)" : "負載" ;
+                        LoadInfo2 = Math.Round(Convert.ToDouble(LoadData[1]), 2);
+                        LoadInfo3 = Math.Round(Convert.ToDouble(LoadData[2]), 2);
+                        LoadInfo4 = Math.Round(Convert.ToDouble(LoadData[3]), 2);
+                        LoadInfo5 = Math.Round(Convert.ToDouble(LoadData[4]), 2);
+                        LoadInfo6 = Math.Round(Convert.ToDouble(LoadData[5]), 2);
+                        LoadInfo7 = Math.Round(Convert.ToDouble(LoadData[6]), 2);
+                        LoadInfo8 = Math.Round(Convert.ToDouble(LoadData[7]), 2);
+                        LoadInfo9 = Math.Round(Convert.ToDouble(LoadData[8]), 2);
+                    }
+
+                    ViewBag.LoadInfo1 = LoadInfo1;
+                    ViewBag.LoadInfo2 = LoadInfo2;
+                    ViewBag.LoadInfo3 = LoadInfo3;
+                    ViewBag.LoadInfo4 = LoadInfo4;
+                    ViewBag.LoadInfo5 = LoadInfo5;
+                    ViewBag.LoadInfo6 = LoadInfo6;
+                    ViewBag.LoadInfo7 = LoadInfo7;
+                    ViewBag.LoadInfo8 = LoadInfo8;
+                    ViewBag.LoadInfo9 = LoadInfo9;
+                    #endregion
                     break;
                 case "Generator":
-                    TempData["navGenerator"] = "nav-link active";
-                    TempData["tabGenerator"] = "tab-pane active";
+                    #region GeneratorChart
+                    string GenInfo1 = "發電機(目前離線中)", GenInfo13 = "離線", GenInfo2 = "0", GenInfo3 = "0", GenInfo4 = "0", GenInfo5 = "0", GenInfo6 = "0", GenInfo7 = "0", GenInfo8 = "0", GenInfo9 = "0", GenInfo10 = "0", GenInfo11 = "0", GenInfo12 = "0", GenInfo14 = "0";
+
+                    if (!string.IsNullOrEmpty(InfoDatas.Generator))
+                    {
+                        var GenData = InfoDatas.Generator.Trim().Split('|');
+                        GenInfo1 = string.IsNullOrEmpty(GenData[0].Trim()) ? "發電機(目前離線中)" : (DateTime.Now.AddMinutes(-5).Ticks > DateTime.Parse(GenData[0]).Ticks) ? "發電機(目前離線中)" : "發電機";
+                        GenInfo2 = GenData[1];
+                        GenInfo3 = GenData[2];
+                        GenInfo4 = GenData[3];
+                        GenInfo5 = GenData[4];
+                        GenInfo6 = GenData[5];
+                        GenInfo7 = GenData[6];
+                        GenInfo8 = GenData[7];
+                        GenInfo9 = GenData[8];
+                        GenInfo10 = GenData[9];
+                        GenInfo11 = GenData[10];
+                        GenInfo12 = GenData[11];
+                        GenInfo13 = GenData[12];
+                        GenInfo14 = GenData[13];
+                    }
+
+                    ViewBag.GenInfo1 = GenInfo1;
+                    ViewBag.GenInfo2 = GenInfo2;
+                    ViewBag.GenInfo3 = GenInfo3;
+                    ViewBag.GenInfo4 = GenInfo4;
+                    ViewBag.GenInfo5 = GenInfo5;
+                    ViewBag.GenInfo6 = GenInfo6;
+                    ViewBag.GenInfo7 = GenInfo7;
+                    ViewBag.GenInfo8 = GenInfo8;
+                    ViewBag.GenInfo9 = GenInfo9;
+                    ViewBag.GenInfo10 = GenInfo10;
+                    ViewBag.GenInfo11 = GenInfo11;
+                    ViewBag.GenInfo12 = GenInfo12;
+                    ViewBag.GenInfo13 = GenInfo13;
+                    ViewBag.GenInfo14 = GenInfo14;
+                    #endregion
                     break;
                 default:
                     break;
@@ -679,429 +356,95 @@ namespace Web.Controllers
         /// EChart資料
         /// </summary>
         /// <param name="tabType"></param>
-        private void ChartData(string tabType, int StationCode)
+        private void ChartData(string tabType, Guid StationUUID)
         {
-            Guid uuID = stationService.UUID(StationCode);
-            DateTime starttime = DateTime.Today.AddHours(-8);
-            string Data = null;
-            List<double> sum = new List<double>();
-            List<double> sum1 = new List<double>();
-            List<double> sum2 = new List<double>();
-
             switch (tabType.Trim())
             {
                 case "GridPower":
-                    #region GridPowerChart          
-                    //資料       
-                    Data = null;
-                    string Grid1 = null;
-                    sum1.Clear();
-                    sum2.Clear();
-                    starttime = starttime.AddMinutes(-15);
-                    var GridPowerDate = GridPowerService.ReadByInfoList(starttime, starttime.AddDays(1)).Where(x => x.index == 0 && x.uuid == uuID).ToList();
-                    if (GridPowerDate.Count>0)
-                    {
-                        for (int i = 0; i <= 96; i++)
-                    {
-                        var count = GridPowerDate.Where(x => x.date_time >= starttime && x.date_time < starttime.AddMinutes(15)).ToList();
-                        if (i > 0)
-                        {
-                            int j = 0;
-                            while (count.Count < 1)
-                            {
-                                int k1 = -15 * j;
-                                j++;
-                                int k2 = -15 * j;
-                                count = GridPowerDate.Where(x => x.date_time >= starttime.AddMinutes(k2) && x.date_time < starttime.AddMinutes(k1)).ToList();
-                            }
-                            double g1 = count.Average(x => x.kWHt);
-                            double gs1 = g1 - sum1.Last();
-                            Grid1 += Math.Round(gs1 < 0 ? 0 : gs1, 2) + ",";
-                            sum1.Add(g1);
-                        }
-                        else//第一筆資料
-                        {
-                            int j = 0;
-                            while (count.Count < 1)
-                            {
-                                int k1 = -15 * j;
-                                j++;
-                                int k2 = -15 * j;
-                                count = GridPowerDate.Where(x => x.date_time >= starttime.AddMinutes(k2) && x.date_time < starttime.AddMinutes(k1)).ToList();
-                            }
-                            double g1 = count.Average(x => x.kWHt);
-                            sum1.Add(g1);
-                        }
-                        starttime = starttime.AddMinutes(15);
-                    }
-                    }
-                    GridPowerDate.Clear();
-                    //組圖表資料
-                    TempData["Grid1"] = Grid1;
+                    #region GridPowerChart                 
+                    TempData["Grid1"] = InfoChartsService.Readby(StationUUID, "GridPower").QuarterList.Trim(); 
                     #endregion GridPowerChart
                     break;
                 case "Inverters":
-                    #region InvertersChart
-                    //資料
-                    Data = null;
-                    sum.Clear();
-                    var InvertersDate = InverterService.ReadByInfoList(starttime, starttime.AddDays(1)).Where(x=>x.uuid == uuID).ToList();
-                    if (InvertersDate.Count>0)
-                    {
-                        for (int i = 0; i < 96; i++)
-                    {
-                        var count = InvertersDate.Where(x => x.CreateTime >= starttime && x.CreateTime < starttime.AddMinutes(15)).ToList();
-                        Data += string.Format("{0:N2},",
-                            (count.Count == 0) ? 0 :
-                            (count.Average(x => x.ParallelInformation_TotalOutputActivePower
-                            .Split('|').ToList()
-                            .Sum(y => y.IsEmpty() ? 0 : Convert.ToDouble(y) / 1000.0)))).Trim();
-                        starttime = starttime.AddMinutes(15);
-                    }
-                    }
-                    InvertersDate.Clear();
-                    //組圖表資料
-                    TempData["InverterData"] = Data;
-                    #endregion Chart
+                    #region InvertersChart        
+                    TempData["InverterData"] = InfoChartsService.Readby(StationUUID, "Inverters").QuarterList.Trim();
+                    #endregion InvertersChart
                     break;
                 case "Solar":
                     #region SolarChart
-                    //資料
-                    Data = null;
-                    string sun0 = null, sun1 = null;
-                    sum.Clear();
-                    var SolarDate = InverterService.ReadByInfoList(starttime, starttime.AddDays(1)).Where(x => x.uuid == uuID).ToList();
-                    if (SolarDate.Count>0)
-                    {
-                        for (int i = 0; i < 96; i++)
-                    {
-                        var count = SolarDate.Where(x => x.CreateTime >= starttime && x.CreateTime < starttime.AddMinutes(15)).ToList();
-                        List<double> S0 = new List<double>();
-                        List<double> S1 = new List<double>();
-                        if (count.Count > 0)
-                        {
-                            foreach (var sun in count)
-                            {
-                                string[] sunPower = sun.SPM90ActivePower.Split('|');
-                                S0.Add(sunPower[0].IsEmpty() ? 0.0 : (Convert.ToDouble(sunPower[0])));
-                                S1.Add(sunPower[1].IsEmpty() ? 0.0 : (Convert.ToDouble(sunPower[1])));
-                            }
-                            sun0 += Math.Round(S0.Average() / 1000.0, 2) + ",";
-                            sun1 += Math.Round(S1.Average() / 1000.0, 2) + ",";
-                        }
-                        else
-                        {
-                            sun0 += 0 + ",";
-                            sun1 += 0 + ",";
-                        }
-                        starttime = starttime.AddMinutes(15);
-                    }
-                    }
-                    SolarDate.Clear();
-                    //組圖表資料
-                    TempData["Sun0"] = sun0;
-                    TempData["Sun1"] = sun1;
+                    var Sun = InfoChartsService.Readby(StationUUID, "Solar").QuarterList.Trim().Split('|');
+                    TempData["Sun0"] = Sun[0];
+                    TempData["Sun1"] = Sun[1];
                     #endregion  SolarChart
                     break;
                 case "Battery":
                     #region BatteryChart
-                    //資料
-                    Data = null;
-                    List<Battery> BatteryDate = BatteryService.ReadByInfoList(starttime, starttime.AddDays(1)).Where(x => x.uuid == uuID).ToList();
-
-                    if (BatteryDate.Count > 0)
-                    {
-                        for (int i = 0; i < 96; i++)
-                        {
-                            List<Battery> count = BatteryDate.Where(x => x.updateTime >= starttime && x.updateTime < starttime.AddMinutes(15)).ToList();
-                            List<double> batteryVolt = new List<double>();
-                            List<double> batteryTotalVolt = new List<double>();
-
-                            if (count.Count() > 0)
-                            {
-                                int c = 0;
-                                foreach (var BV in count)
-                                {
-                                    if (c < 4)
-                                    {
-                                        batteryVolt.Add(BV.voltage);
-                                        c++;
-                                        if (c == 4)
-                                        {
-                                            batteryTotalVolt.Add((batteryVolt.Average() - 42) / (58 - 42));
-                                            c = 0;
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                batteryTotalVolt.Add(0);
-                            }
-                            double TotalVolt = batteryTotalVolt.Average() == 0? 0.00 : batteryTotalVolt.Average() * 100.00;
-                            Data += Math.Round(TotalVolt, 2).ToString().Trim() + ",";
-                            starttime = starttime.AddMinutes(15);
-                        }
-                    }
-
-                    BatteryDate.Clear();
-                    //組圖表資料
-                    TempData["BatteryData"] = Data;
-                    #endregion BatteryChart
+                    TempData["BatteryData"] = InfoChartsService.Readby(StationUUID, "Battery").QuarterList.Trim();
+                    #endregion
                     break;
                 case "Load":
-                    #region LoadChart
-                    //資料       
-                    Data = null;
-                    string Load1 = null;
-                    sum1.Clear();
-                    sum2.Clear();
-                    starttime = starttime.AddMinutes(-15);
-                    var LoadDate = LoadPowerService.ReadByInfoList(starttime, starttime.AddDays(1)).Where(x => x.index == 2 && x.uuid==uuID).ToList();     //負載迴路一
-                    if (LoadDate.Count > 0)
-                    {
-                        for (int i = 0; i <= 96; i++)
-                        {
-                            var count = LoadDate.Where(x => x.date_Time >= starttime && x.date_Time < starttime.AddMinutes(15)).ToList();
-                            if (i > 0)
-                            {
-                                //負載迴路一
-                                int j = 0;
-                                while (count.Count < 1)
-                                {
-                                    int k1 = -15 * j;
-                                    j++;
-                                    int k2 = -15 * j;
-                                    count = LoadDate.Where(x => x.date_Time >= starttime.AddMinutes(k2) && x.date_Time < starttime.AddMinutes(k1)).ToList();
-                                }
-                                double g1 = count.Average(x => x.kWHt);
-                                double gs1 = g1 - sum1.Last();
-                                Load1 += Math.Round(gs1 < 0 ? 0 : gs1, 2) + ",";
-                                sum1.Add(g1);
-                            }
-                            else
-                            {
-                                //負載迴路一
-                                int j = 1;
-                                while (count.Count < 1)
-                                {
-                                    int k1 = -15 * j;
-                                    j++;
-                                    int k2 = -15 * j;
-                                    count = LoadDate.Where(x => x.date_Time >= starttime.AddMinutes(k2) && x.date_Time < starttime.AddMinutes(k1)).ToList();
-                                }
-                                double g1 = count.Average(x => x.kWHt);
-                                sum1.Add(g1);
-                            }
-                            starttime = starttime.AddMinutes(15);
-                        }
-                        LoadDate.Clear();
-                    }
-                    //組圖表資料
-                    TempData["Load1"] = Load1;
+                    #region LoadChart            
+                    TempData["Load1"] = InfoChartsService.Readby(StationUUID, "LoadPower").QuarterList.Trim();
                     #endregion LoadChart
                     break;
                 case "Generator":
-                    #region GeneratorChart
-                    //資料
-                    Data = null;
-                    string Generqtor1 = null;
-                    sum1.Clear();
-                    var GeneratorDate = GeneratorService.ReadByInfoList(starttime, starttime.AddDays(1)).Where(x => x.uuid == uuID).ToList();
-                    if (GeneratorDate.Count>0)
-                    {
-                        for (int i = 0; i <= 96; i++)
-                    {
-                        var count = GeneratorDate.Where(x => x.UpdateTime >= starttime && x.UpdateTime < starttime.AddMinutes(15) && x.index==0).ToList();
-                        if (i > 0)
-                        {
-                            if (count.Count > 0)
-                            {
-                                double g1 = count.Average(x => x.positiveKWhours) / 1000.00;
-                                Generqtor1 += Math.Round((count.Average(x => x.positiveKWhours) / 1000.0) - sum1.Last(), 2) + ",";
-                                sum1.Add(g1);
-                            }
-                            else
-                            {
-                                Generqtor1 += 0 + ",";
-                            }
-                        }
-                        else
-                        {
-                            if (count.Count > 0)
-                            {
-                                double g1 = count.Average(x => x.positiveKWhours) / 1000.00;
-                                sum1.Add(g1);
-                            }
-                            else
-                            {
-                                sum1.Add(0);
-                            }
-                        }
-                        starttime = starttime.AddMinutes(15);
-                    }
-                    }
-                    GeneratorDate.Clear();
-                    //組圖表資料
-                    TempData["Generator1"] = Generqtor1;
+                    #region GeneratorChart            
+                    TempData["Generator1"] = InfoChartsService.Readby(StationUUID, "Generator").QuarterList.Trim();
                     #endregion GeneratorChart
                     break;
                 default:
                     break;
             }
-
-
         }
-
-        private void SOCLoadWatt(int StationNum)
+           
+        //Right View
+        private void SOCLoadWatt(Guid StationUUID)
         {
-            //Right View
-            Guid uuid = stationService.UUID(StationNum);
-            double soc = BatteryService.totalSOC(uuid) * 0.2;
-            double LoadWatt = LoadPowerService.ReadNow(uuid)==null?0:LoadPowerService.ReadNow(uuid).Watt_t;
-            //可用總電量(度) = SOC(%) *20kWh(額定容量)
-            ViewBag.Demand = Math.Round(soc, 2).ToString() + "kWh";
-            //可用電時數(H) = 可用總電量(度) / 負載實功率(kW)
-            ViewBag.RemainTime = LoadWatt <= 0 ? "無負載" : Math.Round(soc / LoadWatt, 1).ToString() + "小時";
-        }
 
+            InfoDatas InfoDatas = InfoDatasService.ReadUUID(StationUUID);
+            double soc = Math.Round(InfoDatas.Demand, 2);
+            ViewBag.Demand = Math.Round(soc, 2).ToString() + "kWh";
+            ViewBag.RemainTime = InfoDatas.RemainTime <= 0 ? "無負載" : InfoDatas.RemainTime.ToString() + "小時";
+        }
+        /// <summary>
+        /// 更換Nav class
+        /// </summary>
+        /// <param name="tabType"></param>
+        private void InfoNav(string tabType = "Load")
+        {
+            string MainTab = "tab-pane active";
+            string MuteTab = "tab-pane";
+            string MainNav = "nav-link active";
+            string MuteNav = "nav-link";
+
+            TempData["tabGridPower"] = tabType.Trim().Contains("GridPower") ? MainTab : MuteTab;
+            TempData["tabLoad"] = tabType.Trim().Contains("Load") ? MainTab : MuteTab;
+            TempData["tabSolar"] = tabType.Trim().Contains("Solar") ? MainTab : MuteTab;
+            TempData["tabGenerator"] = tabType.Trim().Contains("Generator") ? MainTab : MuteTab;
+            TempData["tabInverters"] = tabType.Trim().Contains("Inverters") ? MainTab : MuteTab;
+            TempData["tabBattery"] = tabType.Trim().Contains("Battery") ? MainTab : MuteTab;
+
+            TempData["navGridPower"] = tabType.Trim().Contains("GridPower") ? MainNav : MuteNav;
+            TempData["navLoad"] = tabType.Trim().Contains("Load") ? MainNav : MuteNav;
+            TempData["navSolar"] = tabType.Trim().Contains("Solar") ? MainNav : MuteNav;
+            TempData["navGenerator"] = tabType.Trim().Contains("Generator") ? MainNav : MuteNav;
+            TempData["navInverters"] = tabType.Trim().Contains("Inverters") ? MainNav : MuteNav;
+            TempData["navBattery"] = tabType.Trim().Contains("Battery") ? MainNav : MuteNav;
+
+            TempData["nav"] = tabType;
+        }
 
         #endregion
       
-        #region Abnormal異常警示
-        [Authorize]
-        public ActionResult Abnormal(string datarange, string alarttypeID, string stationID,int StationNum, int page = 1)
-        {
-            NavButtom("Abnormal");     
-            List<Alart> alartList = new List<Alart>();
-            DateTime Start = new DateTime();
-            DateTime End = new DateTime();
-            //分頁
-            if (datarange == null && alarttypeID == null && stationID == null)
-            {
-                AlartTypeList(Guid.Parse("96DE23DB-34E3-E811-BE29-0C9D925E499C"));
-                StationList(stationService.StationID(StationNum));
-                Start = DateTime.Today.AddDays(-1);
-                End = DateTime.Today.AddDays(1);
-                ViewBag.RangeStart = Start.ToShortDateString();
-                ViewBag.RangeEnd = DateTime.Today.ToShortDateString();
-                Guid SID = stationService.StationID(StationNum);
-                alartList = alartService.ReadTimeList(Start, End, SID);
-            }
-            else
-            {
-                if (datarange == null)
-                {
-                    Start = DateTime.Today.AddDays(-1);
-                    End = DateTime.Today.AddDays(1);
-                    ViewBag.RangeStart = Start.ToShortDateString();
-                    ViewBag.RangeEnd = DateTime.Today.ToShortDateString();
-                }
-                else
-                {
-                    //分割字串
-                    char x = '-';
-                    string[] Day = datarange.Split(x);
-                    //區間
-                    Start = Convert.ToDateTime(Day[0]);
-                    End = Convert.ToDateTime(Day[1]);
-                    ViewBag.RangeStart = Start.ToShortDateString();
-                    ViewBag.RangeEnd = End.ToShortDateString();
-                }
-
-                alartList = alartService.ReadListBy(Start, End.AddDays(1), Guid.Parse(alarttypeID), Guid.Parse(stationID)).ToList();
-
-                AlartTypeList(Guid.Parse(alarttypeID));
-                StationList(Guid.Parse(stationID));
-                ViewBag.alarttypeID = alarttypeID.ToString();
-                ViewBag.stationID = stationID.ToString();
-                ViewBag.datarange = datarange.ToString();
-            }
-            ViewBag.StationNum = StationNum;
-            int currentPage = page < 1 ? 1 : page;
-            var result = alartList.ToPagedList(currentPage, PageSizes());
-            return View(result);
-        }
-
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public ActionResult Abnormal(FormCollection From, int page = 1)
-        {
-            NavButtom("Abnormal");
-            string datarange = Request.Form["range_date"];
-            Guid stationID = Guid.Parse(Request.Form["Statons"]);
-            Guid alarttypeID = Guid.Parse(Request.Form["AlartTypes"]);
-            int StationNum = stationService.ReadID(stationID).StationCode;
-
-
-            //分割字串
-            char x = '-';
-            string[] Day = datarange.Split(x);
-            //區間
-            DateTime Start = Convert.ToDateTime(Day[0]);
-            DateTime End = Convert.ToDateTime(Day[1]);
-            List<Alart> alartList = new List<Alart>();
-            alartList = alartService.ReadListBy(Start, End.AddDays(1), alarttypeID, stationID).ToList();
-
-            StationList(stationID);
-            AlartTypeList(alarttypeID);
-
-            ViewBag.alarttypeID = alarttypeID.ToString();
-            ViewBag.stationID = stationID.ToString();
-            ViewBag.datarange = datarange.ToString();
-            ViewBag.StationNum = StationNum;
-            ViewBag.RangeStart = Start.ToShortDateString();
-            ViewBag.RangeEnd = End.ToShortDateString();
-            //分頁
-            int currentPage = page < 1 ? 1 : page;
-            var result = alartList.ToPagedList(currentPage, PageSizes());
-
-            return View(result);
-        }
-
-        [Authorize]
-        public ActionResult CreateAbnormal()
-        {
-            TagTitle();
-            StationList(Guid.Parse("b1de23db-34e3-e811-be29-0c9d925e499c"));
-            AlartTypeList();
-            OrginTypeList();
-            return View();
-        }
-
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public ActionResult CreateAbnormal(FormCollection From)
-        {
-            string AlartContext = From["AlartContext"].Trim();
-            Guid StationID = Guid.Parse(From["StationID"]);
-            Guid AlartTypeID = Guid.Parse(From["AlartTypeID"]);
-            Guid AccountID = accountService.ReadByName(Session["UserName"].ToString()).Id;
-
-            Alart alart = new Alart()
-            {
-                AlartTypeID = AlartTypeID,
-                StationID = StationID,
-                AlartContext = AlartContext
-            };
-
-            Guid AlartID = alartService.Create(alart);
-
-            return RedirectToAction("Maintain", "Tab");
-        }
-        #endregion
-
         #region History歷史資訊
         /// <summary>
         /// 歷史資訊
         /// </summary>
         /// <returns></returns>
         [Authorize]
-        public ActionResult History(string connStr, int StationNum,string stationID, int? page)
+        public ActionResult History(string connStr,string stationID,  int StationNum=2 ,int page=1 )
         {
-            string tabType = "GridPower";
+            string tabType = "Load";
             string sDay = null;
             string eDay = null;
 
@@ -1133,21 +476,19 @@ namespace Web.Controllers
                 ViewBag.startDay = DateTime.Now.AddDays(-1);
                 ViewBag.endDay = DateTime.Now;
                 //取得此時間點後1日的資料
-                List = ESSObjecterService.ReadTimeIntervalStation(DateTime.Now.AddDays(-1).AddHours(-8), DateTime.Now.AddHours(-8),stationService.UUID(StationNum).ToString()).ToList();
-
+                List = ESSObjecterService.ReadTimeIntervalStation(DateTime.Now.AddDays(-1).AddHours(-8), DateTime.Now.AddHours(-8),stationService.UUID(StationNum).ToString());
             }
             else
             {
                 ViewBag.startDay = DateTime.Parse(sDay);
                 ViewBag.endDay = DateTime.Parse(eDay);
                 //取得資料
-                List = ESSObjecterService.ReadTimeIntervalStation(DateTime.Parse(sDay).AddHours(-8), DateTime.Parse(eDay).AddHours(-8), stationService.UUID(StationNum).ToString()).ToList();
-
+                List = ESSObjecterService.ReadTimeIntervalStation(DateTime.Parse(sDay).AddHours(-8), DateTime.Parse(eDay).AddHours(-8), stationService.UUID(StationNum).ToString());
             }
 
             ViewBag.Count = List.Count();
             ViewBag.StationName = "所有站別";
-            int currentPage = page ?? 1;
+            int currentPage = page < 1 ? 1 : page;
             var result = List.ToPagedList(currentPage, 10);
             return View(result);
         }
@@ -1155,9 +496,10 @@ namespace Web.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult History(FormCollection From, string tabType, int? page)
+        public ActionResult History(FormCollection From, int? page)
         {
             string date = Request.Form["datetimes"];
+            string tabType = Request.Form["tabType"];
             Guid StationID = Guid.Parse(Request.Form["Statons"]);
             int StationNum = stationService.ReadID(StationID).StationCode;
 
@@ -1338,13 +680,13 @@ namespace Web.Controllers
                                                         if (inverter != null)
                                                         {
                                                             string mod = inverter.DeviceMode.Trim();
-                                                            if (mod == "P") { mod = "Power On Mode"; }
-                                                            else if (mod == "S") { mod = "Standby Mode"; }
-                                                            else if (mod == "L") { mod = "Line Mode"; }
-                                                            else if (mod == "B") { mod = "Battery Mode"; }
-                                                            else if (mod == "F") { mod = "Fault Mode"; }
-                                                            else if (mod == "H") { mod = "Power Saving Mode"; }
-                                                            else { mod = "Unknown Mode"; }
+                                                            if (mod == "P") { mod = "電源模式"; }
+                                                            else if (mod == "S") { mod = "待機模式"; }
+                                                            else if (mod == "L") { mod = "市電模式"; }
+                                                            else if (mod == "B") { mod = "電池模式"; }
+                                                            else if (mod == "F") { mod = " 故障模式"; }
+                                                            else if (mod == "H") { mod = "省電模式"; }
+                                                            else { mod = "離線"; }
                                                             T1 += mod;
                                                             T2 += inverter.GridVoltage;
                                                             T3 += inverter.GridFrequency;
@@ -1738,240 +1080,28 @@ namespace Web.Controllers
         }
         #endregion Excel
 
-        private void TabAction(string tabType)
+        private void TabAction(string tabType= "GridPower")
         {
-            ViewBag.tabGridPower = "tab-pane";
-            ViewBag.tabLoad = "tab-pane";
-            ViewBag.tabSolar = "tab-pane";
-            ViewBag.tabGenerator = "tab-pane";
-            ViewBag.tabInverters = "tab-pane";
-            ViewBag.tabBattery = "tab-pane";
+            string MainTab = "tab-pane active";
+            string MuteTab = "tab-pane";
+            ViewBag.tabGridPower = tabType.Trim().Contains("GridPower") ? MainTab:MuteTab;
+            ViewBag.tabLoad = tabType.Trim().Contains("Load") ? MainTab:MuteTab;
+            ViewBag.tabSolar = tabType.Trim().Contains("Solar") ? MainTab:MuteTab;
+            ViewBag.tabGenerator = tabType.Trim().Contains("Generator") ? MainTab:MuteTab;
+            ViewBag.tabInverters = tabType.Trim().Contains("Inverters") ? MainTab:MuteTab;
+            ViewBag.tabBattery = tabType.Trim().Contains("Battery") ? MainTab:MuteTab;
 
-            ViewBag.navGridPower = "nav-link";
-            ViewBag.navLoad = "nav-link";
-            ViewBag.navSolar = "nav-link";
-            ViewBag.navGenerator = "nav-link";
-            ViewBag.navInverters = "nav-link";
-            ViewBag.navBattery = "nav-link";
+            string MainNav = "nav-link active";
+            string MuteNav = "nav-link";
+            ViewBag.navGridPower = tabType.Trim().Contains("GridPower") ? MainNav : MuteNav;
+            ViewBag.navLoad = tabType.Trim().Contains("Load") ? MainNav: MuteNav;
+            ViewBag.navSolar = tabType.Trim().Contains("Solar") ? MainNav: MuteNav;
+            ViewBag.navGenerator = tabType.Trim().Contains("Generator") ? MainNav: MuteNav;
+            ViewBag.navInverters = tabType.Trim().Contains("Inverters") ? MainNav: MuteNav;
+            ViewBag.navBattery = tabType.Trim().Contains("Battery") ? MainNav: MuteNav;
 
-            ViewBag.onTab = "GridPower";
-
-            if (!string.IsNullOrEmpty(tabType))
-            {
-                tabType = tabType.Trim();
-                switch (tabType)
-                {
-                    case "GridPower":
-                        ViewBag.tabGridPower = "tab-pane active";
-                        ViewBag.navGridPower = "nav-link active";
-                        ViewBag.onTab = tabType;
-                        break;
-                    case "Load":
-                        ViewBag.tabLoad = "tab-pane active";
-                        ViewBag.navLoad = "nav-link active";
-                        ViewBag.onTab = tabType;
-
-                        break;
-                    case "Solar":
-                        ViewBag.tabSolar = "tab-pane active";
-                        ViewBag.navSolar = "nav-link active";
-                        ViewBag.onTab = tabType;
-                        break;
-                    case "Generator":
-                        ViewBag.tabGenerator = "tab-pane active";
-                        ViewBag.navGenerator = "nav-link active";
-                        ViewBag.onTab = tabType;
-                        break;
-                    case "Inverters":
-                        ViewBag.tabInverters = "tab-pane active";
-                        ViewBag.navInverters = "nav-link active";
-                        ViewBag.onTab = tabType;
-                        break;
-                    case "Battery":
-                        ViewBag.tabBattery = "tab-pane active";
-                        ViewBag.navBattery = "nav-link active";
-                        ViewBag.onTab = tabType;
-                        break;
-                    default:
-                        break;
-                }
-            }
-            else
-            {
-                ViewBag.tabGridPower = "tab-pane active";
-                ViewBag.navGridPower = "nav-link active";
-            }
-
+            ViewBag.onTab = tabType;       
         }
-        #endregion
-
-        #region  Maintain維護管理
-        /// <summary>
-        /// 維護管理
-        /// </summary>
-        /// <returns></returns>
-        [Authorize]
-        public ActionResult Maintain()
-        {
-            NavButtom("Maintain");
-            return View();
-        }
-
-        [Authorize]
-        public ActionResult CreateStation()
-        {
-            NavButtom("Maintain");
-            return View();
-        }
-
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CreateStation(FormCollection From)
-        {
-            Station station = new Station() { StationName = From["StationName"].Trim() };
-            Guid StationID = stationService.Create(station);
-            return RedirectToAction("Maintain", "Tab");
-        }
-
-        public ActionResult ListStation(int page = 1)
-        {
-            TagTitle();
-            var Station = stationService.ReadAll();
-            int currentPage = page < 1 ? 1 : page;
-            var result = Station.ToPagedList(currentPage, PageSizes());
-            return View(result);
-        }
-
-        [Authorize]
-        public ActionResult DeleteStation(Guid id)
-        {
-            Station station = stationService.ReadID(id);
-            return View(station);
-        }
-
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteStation(FormCollection From)
-        {
-            Guid Id = Guid.Parse(From["id"].Trim());
-            bool StationID = stationService.Delete(Id);
-            return RedirectToAction("ListStation", "Tab", new { del = StationID });
-        }
-
-        [Authorize]
-        public ActionResult EditStation(Guid id)
-        {
-            Station station = stationService.ReadID(id);
-            return View(station);
-        }
-
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult EditStation(FormCollection From)
-        {
-            var id = Guid.Parse(From["id"].Trim());
-            var UUID = Guid.Parse(From["UUID"].Trim());
-            var StationName = From["StationName"].Trim();
-
-            Station station = new Station()
-            {
-                Id = id,
-                UUID = UUID,
-                StationName = StationName
-            };
-            Guid ID = stationService.Update(station);
-            return RedirectToAction("ListStation", "Tab");
-        }
-
-
-
-        [Authorize]
-        public ActionResult CreateOrgin()
-        {
-            return View();
-        }
-
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CreateOrgin(FormCollection From)
-        {
-            Orgin orgin = new Orgin() { OrginName = From["OrginName"].Trim() };
-            Guid OrginID = orginService.Create(orgin);
-            return RedirectToAction("Maintain", "Tab");
-        }
-
-        public ActionResult ListOrgin(int page = 1)
-        {
-            TagTitle();
-            var Orgin = orginService.ReadAll();
-            int currentPage = page < 1 ? 1 : page;
-            var result = Orgin.ToPagedList(currentPage, PageSizes());
-            return View(result);
-        }
-
-        [Authorize]
-        public ActionResult DeleteOrgin(Guid id)
-        {
-            Orgin orgin = orginService.ReadID(id);
-            return View(orgin);
-        }
-
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteOrgin(FormCollection From)
-        {
-            Guid Id = Guid.Parse(From["id"].Trim());
-            bool OrginID = orginService.Delete(Id);
-            return RedirectToAction("ListOrgin", "Tab", new { del = OrginID });
-        }
-
-        [Authorize]
-        public ActionResult EditOrgin(Guid id)
-        {
-            Orgin orgin = orginService.ReadID(id);
-            return View(orgin);
-        }
-
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult EditOrgin(FormCollection From)
-        {
-            var id = Guid.Parse(From["id"].Trim());
-            var orginName = From["OrginName"].Trim();
-
-            Orgin orgin = new Orgin()
-            {
-                Id = id,
-                OrginName = orginName
-            };
-            Guid ID = orginService.Update(orgin);
-            return RedirectToAction("ListOrgin", "Tab");
-        }
-
-        #endregion
-
-        #region QRCode下載
-        [Authorize]
-        public ActionResult QRCode(int StationNum)
-        {
-            NavButtom("QRCode");
-            ViewBag.StationNum = StationNum;
-            return View();
-        }
-
-        public ActionResult Download()
-        {
-            string file = Server.MapPath(@"~\Content\Aside\app-debug.apk");
-            string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            return File(file, contentType, Path.GetFileName(file));
-        }
-
         #endregion
 
         #region 參考程式
@@ -1989,10 +1119,23 @@ namespace Web.Controllers
         }
 
         /// <summary>
-        /// 資源檔取名稱
+        /// 更換Buttom的class
         /// </summary>
-        private void Pills()
+        /// <param name="type"></param>
+        private void NavButtom(string type= "Index")
         {
+            TagTitle();
+
+            string MainBtn = "btn btn-success btn-lg";
+            string MuteBtn = "btn btn-outline-success btn-lg";
+            TempData["ButtomIndex"] = type.Trim().Contains("Index") ?MainBtn :MuteBtn;
+            TempData["ButtomBulletin"] = type.Trim().Contains("Bulletin") ?MainBtn :MuteBtn;
+            TempData["ButtomInfo"] = type.Trim().Contains("Info") ?MainBtn :MuteBtn;
+            TempData["ButtomAbnormal"] = type.Trim().Contains("Abnormal") ?MainBtn :MuteBtn;
+            TempData["Buttomhistory"] = type.Trim().Contains("History") ?MainBtn :MuteBtn;
+            TempData["ButtomMaintain"] = type.Trim().Contains("Maintain") ?MainBtn :MuteBtn;
+            TempData["ButtomQRCode"] = type.Trim().Contains("QRCode") ?MainBtn :MuteBtn;
+
             ViewBag.Index = Resources.Resource.Index;
             ViewBag.GridPower = Resources.Resource.GridPower;
             ViewBag.Battery = Resources.Resource.Battery;
@@ -2000,51 +1143,7 @@ namespace Web.Controllers
             ViewBag.Load = Resources.Resource.Load;
             ViewBag.Generator = Resources.Resource.Generator;
             ViewBag.Inverters = Resources.Resource.Inverters;
-            ViewBag.QRCode = "QRCode";
-        }
-
-        /// <summary>
-        /// 更換Buttom的class
-        /// </summary>
-        /// <param name="type"></param>
-        private void NavButtom(string type)
-        {
-            TagTitle();
-            Pills();
-            TempData["ButtomIndex"] = "btn btn-outline-success btn-lg";
-            TempData["ButtomBulletin"] = "btn btn-outline-success btn-lg";
-            TempData["ButtomInfo"] = "btn btn-outline-success btn-lg";
-            TempData["ButtomAbnormal"] = "btn btn-outline-success btn-lg";
-            TempData["Buttomhistory"] = "btn btn-outline-success btn-lg";
-            TempData["ButtomMaintain"] = "btn btn-outline-success btn-lg";
-            TempData["ButtomQRCode"] = "btn btn-outline-success btn-lg";
-            type = type.Trim();
-            switch (type)
-            {
-                case "Index":
-                    TempData["ButtomIndex"] = "btn btn-success btn-lg";
-                    break;
-                case "Bulletin":
-                    TempData["ButtomBulletin"] = "btn btn-success btn-lg";
-                    break;
-                case "Info":
-                    TempData["ButtomInfo"] = "btn btn-success btn-lg";
-                    break;
-                case "Abnormal":
-                    TempData["ButtomAbnormal"] = "btn btn-success btn-lg";
-                    break;
-                case "History":
-                    TempData["Buttomhistory"] = "btn btn-success btn-lg";
-                    break;
-                case "Maintain":
-                    TempData["ButtomMaintain"] = "btn btn-success btn-lg";
-                    break;
-                case "QRCode":
-                    TempData["ButtomQRCode"] = "btn btn-success btn-lg";
-                    break;
-                default:
-                    break;
-            }
+            ViewBag.QRCode = Resources.Resource.QRCode;
         }
 
         /// <summary>
@@ -2143,7 +1242,6 @@ namespace Web.Controllers
             }
             yData += "]";
             ViewBag.yData = yData;
-            //  ViewBag.yData = " [56.14, 81.34, 70.95, 97.54, 7.51, 5.13, 38.62, 25.51, 77.09, 79.83, 17.28, 72.83, 65.89, 52.68, 4.15, 57.90, 13.28, 22.44, 39.44, 39.90, 89.57, 49.56, 73.67, 91.20, 75.15, 97.19, 35.31, 64.70, 93.17, 81.14, 85.73, 36.10, 46.48, 77.66, 89.15, 71.21, 77.43, 69.93, 87.33, 89.30, 99.95, 27.03, 54.89, 11.24, 65.23, 59.47, 74.92, 89.18, 53.68, 98.31, 77.56, 14.75, 24.17, 87.86, 22.28, 22.91, 91.36, 34.32, 26.14, 20.06, 53.63, 70.88, 77.88, 34.02, 33.31, 98.60, 83.55, 22.29, 38.80, 0.34, 69.03, 46.56, 49.02]";
         }
         #endregion
     }

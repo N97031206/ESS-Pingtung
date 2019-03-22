@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Repository.ESS.Domain;
 
@@ -19,6 +18,7 @@ namespace Repository.ESS
         public DbSet<Bulletin> Bulletins { get; set; }
         public DbSet<Message> Messages { get; set; }
 
+
         /// <summary>
         /// EMS資料
         /// </summary>
@@ -35,6 +35,14 @@ namespace Repository.ESS
         public DbSet<Inverter> Inverters { get; set; }
 
         public DbSet<ErrorCodes> ErrorCodes { get; set; }
+
+        //報表
+        public DbSet<IndexData> IndexDatas { get; set; }
+
+        public DbSet<InfoCharts> InfoCharts { get; set; }
+
+        public DbSet<InfoDatas> InfoDatas { get; set; }
+        
 
     }
 

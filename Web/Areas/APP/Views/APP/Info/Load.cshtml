@@ -11,7 +11,7 @@
 </style>
 
 <div class="row pz">
-    <div class="col h3 pz">負載</div>
+    <div class="col h3 pz">@ViewBag.LoadInfo1 </div>
 </div>
 
 <div style="height:1vh"></div>
@@ -67,7 +67,7 @@
             }
             //X軸座標
                 var xData = [];
-                var h =@ViewBag.nowHour;
+                var h =@ViewBag.LoadHour;
                     for (var i = 0; i < 24; i++) {
                         if (h > 0) {
                             var hh = i + h;

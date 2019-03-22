@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using AutoMapper;
-using Domain = Repository.ESS.Domain;
+﻿using AutoMapper;
 using Repository.ESS.Provider;
 using Service.ESS.Mapper;
-using Support.Authorize;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Domain = Repository.ESS.Domain;
 
 namespace Service.ESS.Provider
 {
@@ -20,9 +19,9 @@ namespace Service.ESS.Provider
         cfg.AddProfile<StationMapper>();
     });
 
-        private IMapper mapper = null;
+        private readonly IMapper mapper = null;
         private BulletinRepository bulletinRepository = new BulletinRepository();
-        private StationRepository stationRepository = new StationRepository();
+        private readonly StationRepository stationRepository = new StationRepository();
 
         public BulletinService()
         {
@@ -31,38 +30,31 @@ namespace Service.ESS.Provider
 
         public List<Model.Bulletin> ReadAll()
         {
-            List<Domain.Bulletin> domainbulletins = bulletinRepository.ReadAll().OrderByDescending(x => x.CreateDate).ToList();
-            return this.mapper.Map<List<Model.Bulletin>>(domainbulletins);
+            return mapper.Map<List<Model.Bulletin>>(bulletinRepository.ReadAll().OrderByDescending(x => x.CreateDate).ToList());
         }
 
         public List<Model.Bulletin> ReadAllView()
         {
-            List<Domain.Bulletin> domainbulletins = bulletinRepository.ReadAll().Where(x=>x.Disabled==false).OrderByDescending(x => x.CreateDate).ToList();
-            return this.mapper.Map<List<Model.Bulletin>>(domainbulletins);
+            return mapper.Map<List<Model.Bulletin>>(bulletinRepository.ReadAll().Where(x=>x.Disabled==false).OrderByDescending(x => x.CreateDate).ToList());
         }
 
 
         public List<Model.Bulletin> ReadListBy(DateTime SD, DateTime ED)
         {
-            List<Domain.Bulletin> domainbulletins = bulletinRepository.ReadListBy(x => x.CreateDate >= SD && x.CreateDate <=ED).OrderByDescending(x => x.CreateDate).ToList();
-            return this.mapper.Map<List<Model.Bulletin>>(domainbulletins);
+            return this.mapper.Map<List<Model.Bulletin>>(bulletinRepository.ReadListBy(x => x.CreateDate >= SD && x.CreateDate <= ED).OrderByDescending(x => x.CreateDate)).ToList();
+        }
+
+        public Model.Bulletin ReadByID(Guid ID)
+        {
+            return this.mapper.Map<Model.Bulletin>(bulletinRepository.ReadBy(x => x.Id == ID));
         }
 
         public Guid Create(Model.Bulletin bulletin)
         {
             Domain.Bulletin domain = this.mapper.Map<Domain.Bulletin>(bulletin);
-
             bulletinRepository.Create(domain);
             bulletinRepository.SaveChanges();
-
             return domain.Id;
-        }
-
-
-        public Model.Bulletin ReadByID(Guid ID)
-        {
-            Domain.Bulletin bulletin = bulletinRepository.ReadBy(x => x.Id == ID);
-            return this.mapper.Map<Model.Bulletin>(bulletin);
         }
 
         public Guid UpdateDisable(Model.Bulletin bulletin)
@@ -94,8 +86,6 @@ namespace Service.ESS.Provider
                 return Guid.Empty;
             }
         }
-
-
 
         public Boolean Delete(Guid ID)
         {

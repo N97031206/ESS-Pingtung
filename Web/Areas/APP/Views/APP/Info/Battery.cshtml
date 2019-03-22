@@ -24,7 +24,7 @@
 
 
 <div class="row pz">
-    <div class="col h3 pz">電池</div>
+    <div class="col h3 pz">@ViewBag.BatteryLogo</div>
 </div>
 
 <div style="height:1vh"></div>
@@ -70,7 +70,7 @@
     <div class="col-2  pad5">@ViewBag.BatteryInfo36</div>
     <div class="col-2  pad5">@ViewBag.BatteryInfo46</div>
     <div class="w-100"></div>
-    <div class="col-4 font-weight-bold small pad5">充電方向</div>
+    <div class="col-4 font-weight-bold small pad5">電池狀態</div>
     <div class="col-2  pad5">@ViewBag.BatteryInfo17</div>
     <div class="col-2  pad5">@ViewBag.BatteryInfo27</div>
     <div class="col-2  pad5">@ViewBag.BatteryInfo37</div>
@@ -94,7 +94,7 @@
                 }
                 //X軸座標
                 var xData = [];
-                var h =@ViewBag.nowHour;
+                var h =@ViewBag.BatteryHour;
                     for (var i = 0; i < 24; i++) {
                         if (h > 0) {
                             var hh = i + h;

@@ -28,12 +28,9 @@ namespace Service.ESS.Provider
 
         public Guid Create(Model.Station station)
         {
-
             Domain.Station domainStation = this.mapper.Map<Domain.Station>(station);
-
             stationRepository.Create(domainStation);
             stationRepository.SaveChanges();
-
             return domainStation.Id;
         }
 
@@ -76,38 +73,32 @@ namespace Service.ESS.Provider
 
         public List<Model.Station> ReadAll()
         {
-            List<Domain.Station> domainstations = stationRepository.ReadAll().ToList();
-            return this.mapper.Map<List<Model.Station>>(domainstations);
+            return mapper.Map<List<Model.Station>>(stationRepository.ReadAll().ToList());
         }
 
         public Model.Station ReadName(string StationName)
         {
-            Domain.Station ds = stationRepository.ReadBy(x => x.StationName == StationName);
-            return this.mapper.Map<Model.Station>(ds);
+            return mapper.Map<Model.Station>(stationRepository.ReadBy(x => x.StationName == StationName));
         }
 
         public Model.Station ReadID(Guid StationID)
         {
-            Domain.Station ds = stationRepository.ReadBy(x => x.Id == StationID);
-            return this.mapper.Map<Model.Station>(ds);
+            return mapper.Map<Model.Station>(stationRepository.ReadBy(x => x.Id == StationID));
         }
 
         public Model.Station ReadUUID(Guid ID)
         {
-            Domain.Station UI = stationRepository.ReadBy(x => x.UUID == ID);
-            return this.mapper.Map<Model.Station>(UI);
+            return mapper.Map<Model.Station>(stationRepository.ReadBy(x => x.UUID == ID));
         }
 
         public Guid UUID(int code)
         {
-            Guid uid = stationRepository.ReadBy(x => x.StationCode == code).UUID;
-            return uid;
+            return stationRepository.ReadBy(x => x.StationCode == code).UUID;
         }
 
         public Guid StationID(int code)
         {
-            Guid uid = stationRepository.ReadBy(x => x.StationCode == code).Id;
-            return uid;
+            return stationRepository.ReadBy(x => x.StationCode == code).Id;
         }
     }
 }

@@ -13,8 +13,7 @@
         <div class="row " id="pc0">
             <div class="col font-weight-bold ">資料時間:@ViewBag.EssTime</div>
             <div class="w-100 line"></div>
-            <div class="col-4 font-weight-bold "></div>
-            <div class="col-4 font-weight-bold ">@ViewBag.solarInfo11</div>
+            <div class="col font-weight-bold ">@ViewBag.solarInfo11</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">電壓(V)</div>
             <div class="col ">@ViewBag.solarInfo12</div>
@@ -27,9 +26,8 @@
             <div class="w-100"></div>
             <div class="col font-weight-bold small">當日發電量(度)</div>
             <div class="col ">@ViewBag.solarInfo15</div>
-            <div class="w-100 line"></div>
-            <div class="col-4 font-weight-bold "></div>
-            <div class="col-4 font-weight-bold ">@ViewBag.solarInfo21</div>
+            @*<div class="w-100 line"></div>
+            <div class="col font-weight-bold ">@ViewBag.solarInfo21</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">電壓(V)</div>
             <div class="col ">@ViewBag.solarInfo22</div>
@@ -41,7 +39,7 @@
             <div class="col ">@ViewBag.solarInfo24</div>
             <div class="w-100"></div>
             <div class="col font-weight-bold small">當日發電量(度)</div>
-            <div class="col ">@ViewBag.solarInfo25</div>
+            <div class="col ">@ViewBag.solarInfo25</div>*@
         </div>
     </div>
     <!--middle-->
@@ -92,9 +90,9 @@
                 }
             //Y軸座標
                 var sun0 = [];
-                var sun1 = [];
+                //var sun1 = [];
                 sun0.push(@TempData["Sun0"] );
-                sun1.push(@TempData["Sun1"] );
+                @*sun1.push(@TempData["Sun1"] );*@
                 option = null;
                 option = {
                     title: {
@@ -116,16 +114,16 @@
                         containLabel: true
                     },
                     legend: {
-                        data: ['太陽能1發電功率', '太陽能2發電功率']
+                        data: ['太陽能發電功率']
+                         //    data: ['太陽能1發電功率', '太陽能2發電功率']
                     }, 
                     toolbox: {
                         show: true,
                         feature: {
                             mark: { show: true },
-                            dataView: { show: true, readOnly: false, title: '資料' },
                             magicType: { show: true, type: ['line', 'bar'], title: '圖格式' },
-                            restore: { show: true, title: '復原'},
-                            saveAsImage: { show: true ,title: '圖檔' }
+                            restore: { show: true, title: '復原' },
+                            saveAsImage: { show: true, title: '圖檔' }
                         }
                     },
                     xAxis: [
@@ -162,19 +160,19 @@
                     ],
                     series: [
                         {
-                            name: "太陽能1發電功率",
+                            name: "太陽能發電功率",
                             type: "line",
                             data: sun0,
                             stack: '累加',
                             areaStyle: {}
-                        },
-                        {
-                            name: "太陽能2發電功率",
-                            type: "line",
-                            data: sun1,
-                            stack: '累加',
-                            areaStyle: {}
                         }
+                        //{
+                        //    name: "太陽能2發電功率",
+                        //    type: "line",
+                        //    data: sun1,
+                        //    stack: '累加',
+                        //    areaStyle: {}
+                        //}
                     ]
                 };
                 if (option && typeof option === "object") {
@@ -186,9 +184,9 @@
     <!--right-->
     <div class="col-2 h3">
         <div class=" bg-light">可用總電量</div>
-        <div class="font-italic">@ViewBag.Demand</div>
+        <div class="font-weight-bold">@ViewBag.Demand</div>
         <div class="bg-light">可用電時數</div>
-        <div class="font-italic">@ViewBag.RemainTime</div>
+        <div class="font-weight-bold">@ViewBag.RemainTime</div>
     </div>
 </div>
 

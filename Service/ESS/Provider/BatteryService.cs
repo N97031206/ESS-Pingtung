@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using AutoMapper;
-using Domain = Repository.ESS.Domain;
+﻿using AutoMapper;
 using Repository.ESS.Provider;
 using Service.ESS.Mapper;
-using Support.Authorize;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Domain = Repository.ESS.Domain;
 
 namespace Service.ESS.Provider
 {
@@ -17,21 +16,19 @@ namespace Service.ESS.Provider
                 cfg.AddProfile<BatteryMapper>();
             });
 
-        private IMapper mapper = null;
+        private readonly IMapper mapper = null;
       
         private BatteryRepository batteryRepository = new BatteryRepository();
       
         public BatteryService()
         {
-            this.mapper = mapperConfiguration.CreateMapper();
+            mapper = mapperConfiguration.CreateMapper();
         }
 
         public Model.Battery ReadByID(Guid ID)
         {
-            Domain.Battery account = batteryRepository.ReadBy(x => x.Id == ID);
-            return this.mapper.Map<Model.Battery>(account);
+            return mapper.Map<Model.Battery>(batteryRepository.ReadBy(x => x.Id == ID));
         }
-
 
         public Guid Create(Model.Battery model)
         { 
@@ -43,31 +40,29 @@ namespace Service.ESS.Provider
 
         public List<Domain.Battery> ReadNow(Guid uid)
         {
-            List<Domain.Battery> batteryPower = batteryRepository.ReadAll().Where(x=>x.uuid==uid).OrderByDescending(x => x.updateTime).Take(4).ToList();
-            return this.mapper.Map<List<Domain.Battery>>(batteryPower);
+            return mapper.Map<List<Domain.Battery>>(batteryRepository.ReadListBy(x => x.uuid == uid && x.connected == true).OrderByDescending(x => x.updateTime).Take(4).ToList());
         }
-
 
         public List<Model.Battery> ReadByInfoList(DateTime StartTime, DateTime endTime)
         {
-            List<Domain.Battery> gridPowersList = batteryRepository.ReadListBy(x => x.updateTime >= StartTime && x.updateTime < endTime).ToList();
-            return this.mapper.Map<List<Model.Battery>>(gridPowersList);
+            return mapper.Map<List<Model.Battery>>(batteryRepository.ReadListBy(x => x.updateTime >= StartTime && x.updateTime < endTime).ToList());
         }
 
-        public int Count(DateTime StartTime, DateTime endTime)
+        public List<Model.Battery> ReadByInfoListForUpdata(DateTime StartTime, DateTime endTime)
         {
-            return batteryRepository.ReadListBy(x => x.updateTime >= StartTime && x.updateTime < endTime).Count(); 
+            return mapper.Map<List<Model.Battery>>(batteryRepository.ReadListBy(x => x.updateTime >= StartTime && x.updateTime < endTime).ToList());
         }
 
-        public double totalSOC(Guid id)
+        public double TotalSOC(Guid id)
         {
-
-            return (batteryRepository.ReadAll().Count(x => x.uuid == id) == 0 ? 0 :(batteryRepository.ReadAll().Where(x=>x.uuid==id) .OrderByDescending(x => x.updateTime).Take(4).ToList().Average(x => x.voltage) - 42) / (58 - 42) * 100.00);
+            float AverageVoltage = batteryRepository.ReadAll().Count(x => x.uuid == id) == 0 ?
+                0 : (batteryRepository.ReadListBy(x => x.uuid == id && x.connected==true).OrderByDescending(x => x.updateTime).Take(4).Average(x => x.voltage));
+            return AverageVoltage<=48.0?0: AverageVoltage>=53?100:((AverageVoltage - 48) / (53 - 48) * 100.00);
         }
 
         public double EachSOC(float voltage)
-        {
-            return ((voltage - 42) / (58 - 42)) * 100.00;
+        {       
+            return voltage<=48.0?0:Math.Round(voltage,2)<48.0?0: voltage>=53?100:((voltage - 48) / (53 - 48) * 100.00);
         }
 
     }

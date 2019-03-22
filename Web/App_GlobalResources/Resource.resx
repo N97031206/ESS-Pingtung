@@ -162,6 +162,9 @@
   <data name="Maintain" xml:space="preserve">
     <value>維護管理</value>
   </data>
+  <data name="QRCode" xml:space="preserve">
+    <value>QR碼</value>
+  </data>
   <data name="Solar" xml:space="preserve">
     <value>太陽能</value>
   </data>

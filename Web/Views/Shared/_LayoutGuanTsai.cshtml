@@ -42,7 +42,7 @@
                                     {
                                         @Html.AntiForgeryToken()
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Email address</label>
+                                            <label for="UserName">UserName</label>
                                             <input type="text" class="form-control" id="UserName" name="UserName" placeholder="UserName">
                                         </div>
                                         <p class='text-danger'>@ViewBag.name</p>
@@ -72,7 +72,7 @@
                             <span> 歡迎 @ViewBag.User</span>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="@Url.Action("Maintain", "Tab")"> @Resources.Resource.Maintain</a>
+                            <a class="dropdown-item" href="@Url.Action("Maintain", "Maintain")"> @Resources.Resource.Maintain</a>
                             <a class="dropdown-item" href="@Url.Action("Logout", "Account")"><span>登出</span></a>
                         </div>
                     </div>

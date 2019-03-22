@@ -14,7 +14,7 @@ namespace Web.Models.Json
         public string serialNO { get; set; }
         public string name { get; set; }
         public bool connected { get; set; }
-        public DateTime updateTime { get; set; }
+        public DateTime? updateTime { get; set; }
         public float voltage { get; set; }
         public float charging_current { get; set; }
         public float discharging_current { get; set; }

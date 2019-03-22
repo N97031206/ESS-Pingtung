@@ -79,6 +79,7 @@
     <Compile Include="Authorize\MyAuthorizeAttribute.cs" />
     <Compile Include="EntityFramework\GenericRepository.cs" />
     <Compile Include="EntityFramework\IRepository.cs" />
+    <Compile Include="HoilDay\hoilday.cs" />
     <Compile Include="Http\IP.cs" />
     <Compile Include="Mail\GMail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

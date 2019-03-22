@@ -81,13 +81,14 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+    <Reference Include="System.Runtime, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.4.3.1\lib\net462\System.Runtime.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Runtime.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.Extensions.4.3.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Extensions, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.Extensions.4.3.1\lib\net462\System.Runtime.Extensions.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
@@ -139,6 +140,9 @@
     <Compile Include="ESS\Domain\Bulletin.cs" />
     <Compile Include="ESS\Domain\ErrorCodes.cs" />
     <Compile Include="ESS\Domain\ESSObject.cs" />
+    <Compile Include="ESS\Domain\IndexData.cs" />
+    <Compile Include="ESS\Domain\InfoCharts.cs" />
+    <Compile Include="ESS\Domain\InfoDatas.cs" />
     <Compile Include="ESS\Domain\Inverter.cs" />
     <Compile Include="ESS\Domain\Generator.cs" />
     <Compile Include="ESS\Domain\Battery.cs" />
@@ -156,6 +160,9 @@
     <Compile Include="ESS\Provider\ErrorCodesRepository.cs" />
     <Compile Include="ESS\Provider\BulletinRepository.cs" />
     <Compile Include="ESS\Provider\BatteryRepository.cs" />
+    <Compile Include="ESS\Provider\InfoDatasRepository.cs" />
+    <Compile Include="ESS\Provider\InfoChartsRepository.cs" />
+    <Compile Include="ESS\Provider\IndexDataRepository.cs" />
     <Compile Include="ESS\Provider\InverterRepository.cs" />
     <Compile Include="ESS\Provider\GeneratorRepository.cs" />
     <Compile Include="ESS\Provider\GridPowerRepository.cs" />
@@ -206,6 +213,42 @@
     <Compile Include="Migrations\201901180834443_Adduuid1.Designer.cs">
       <DependentUpon>201901180834443_Adduuid1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902270931136_CreateTable_IndexDatas.cs" />
+    <Compile Include="Migrations\201902270931136_CreateTable_IndexDatas.Designer.cs">
+      <DependentUpon>201902270931136_CreateTable_IndexDatas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903040543244_AddGirdPowerVoltage.cs" />
+    <Compile Include="Migrations\201903040543244_AddGirdPowerVoltage.Designer.cs">
+      <DependentUpon>201903040543244_AddGirdPowerVoltage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903040600418_AddSolarVoltage.cs" />
+    <Compile Include="Migrations\201903040600418_AddSolarVoltage.Designer.cs">
+      <DependentUpon>201903040600418_AddSolarVoltage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903040638352_AddLoadConnected.cs" />
+    <Compile Include="Migrations\201903040638352_AddLoadConnected.Designer.cs">
+      <DependentUpon>201903040638352_AddLoadConnected.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903040643297_AddGeneratorEngineBatteryVoltage.cs" />
+    <Compile Include="Migrations\201903040643297_AddGeneratorEngineBatteryVoltage.Designer.cs">
+      <DependentUpon>201903040643297_AddGeneratorEngineBatteryVoltage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903050222310_CreateTable_InfoCharts.cs" />
+    <Compile Include="Migrations\201903050222310_CreateTable_InfoCharts.Designer.cs">
+      <DependentUpon>201903050222310_CreateTable_InfoCharts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903050229180_AddEquipment.cs" />
+    <Compile Include="Migrations\201903050229180_AddEquipment.Designer.cs">
+      <DependentUpon>201903050229180_AddEquipment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903060546234_AddGridPowerConnected.cs" />
+    <Compile Include="Migrations\201903060546234_AddGridPowerConnected.Designer.cs">
+      <DependentUpon>201903060546234_AddGridPowerConnected.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903070819186_CreateTable_InfoDatas.cs" />
+    <Compile Include="Migrations\201903070819186_CreateTable_InfoDatas.Designer.cs">
+      <DependentUpon>201903070819186_CreateTable_InfoDatas.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -249,6 +292,33 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901180834443_Adduuid1.resx">
       <DependentUpon>201901180834443_Adduuid1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902270931136_CreateTable_IndexDatas.resx">
+      <DependentUpon>201902270931136_CreateTable_IndexDatas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903040543244_AddGirdPowerVoltage.resx">
+      <DependentUpon>201903040543244_AddGirdPowerVoltage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903040600418_AddSolarVoltage.resx">
+      <DependentUpon>201903040600418_AddSolarVoltage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903040638352_AddLoadConnected.resx">
+      <DependentUpon>201903040638352_AddLoadConnected.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903040643297_AddGeneratorEngineBatteryVoltage.resx">
+      <DependentUpon>201903040643297_AddGeneratorEngineBatteryVoltage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903050222310_CreateTable_InfoCharts.resx">
+      <DependentUpon>201903050222310_CreateTable_InfoCharts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903050229180_AddEquipment.resx">
+      <DependentUpon>201903050229180_AddEquipment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903060546234_AddGridPowerConnected.resx">
+      <DependentUpon>201903060546234_AddGridPowerConnected.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903070819186_CreateTable_InfoDatas.resx">
+      <DependentUpon>201903070819186_CreateTable_InfoDatas.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -50,12 +50,14 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,6 +68,9 @@
   <ItemGroup>
     <Compile Include="ESS\Mapper\AccountMapper.cs" />
     <Compile Include="ESS\Mapper\ErrorCodesMapper.cs" />
+    <Compile Include="ESS\Mapper\InfoDatasMapper.cs" />
+    <Compile Include="ESS\Mapper\InfoChartsMapper.cs" />
+    <Compile Include="ESS\Mapper\IndexDataMapper.cs" />
     <Compile Include="ESS\Mapper\LoadPowersMapper.cs" />
     <Compile Include="ESS\Mapper\GridPowerMapper.cs" />
     <Compile Include="ESS\Mapper\InverterMapper.cs" />
@@ -87,6 +92,9 @@
     <Compile Include="ESS\Model\ErrorCodes.cs" />
     <Compile Include="ESS\Model\Generator.cs" />
     <Compile Include="ESS\Model\ESSObject.cs" />
+    <Compile Include="ESS\Model\IndexData.cs" />
+    <Compile Include="ESS\Model\InfoDatas.cs" />
+    <Compile Include="ESS\Model\InfoCharts.cs" />
     <Compile Include="ESS\Model\Inverter.cs" />
     <Compile Include="ESS\Model\GridPower.cs" />
     <Compile Include="ESS\Model\LoadPower.cs" />
@@ -100,13 +108,16 @@
     <Compile Include="ESS\Provider\AlartTypeService.cs" />
     <Compile Include="ESS\Provider\BulletinService.cs" />
     <Compile Include="ESS\Provider\BatteryService.cs" />
+    <Compile Include="ESS\Provider\InfoDatasService.cs" />
+    <Compile Include="ESS\Provider\InfoChartsService.cs" />
+    <Compile Include="ESS\Provider\IndexDataService.cs" />
     <Compile Include="ESS\Provider\LoadPowerService.cs" />
     <Compile Include="ESS\Provider\GeneratorService.cs" />
     <Compile Include="ESS\Provider\GridPowerService.cs" />
     <Compile Include="ESS\Provider\InverterService.cs" />
     <Compile Include="ESS\Provider\ESSObjectService.cs" />
-    <Compile Include="ESS\Provider\HistoryService.cs" />
     <Compile Include="ESS\Provider\MessageService.cs" />
+    <Compile Include="ESS\Provider\MonitorService.cs" />
     <Compile Include="ESS\Provider\OrginService.cs" />
     <Compile Include="ESS\Provider\RoleService.cs" />
     <Compile Include="ESS\Provider\StationService.cs" />
@@ -127,8 +138,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\PagedList.css" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

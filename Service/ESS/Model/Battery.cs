@@ -16,7 +16,7 @@ namespace Service.ESS.Model
         public string serialNO { get; set; }
         public string name { get; set; }
         public bool connected { get; set; }
-        public DateTime updateTime { get; set; }
+        public DateTime? updateTime { get; set; }
         public float voltage { get; set; }// 總電壓 V
         public float charging_current { get; set; }// 充電電流 A
         public float discharging_current { get; set; }//放電電流 A

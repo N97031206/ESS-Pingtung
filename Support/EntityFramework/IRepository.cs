@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -19,5 +20,6 @@ namespace Support.EntityFramework
         void Delete(TEntity entity);
 
         void SaveChanges();
+
     }
 }

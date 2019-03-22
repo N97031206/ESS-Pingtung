@@ -21,7 +21,7 @@
 </style>
 
 <div class="row pz">
-    <div class="col h3 pz">逆變器</div>
+    <div class="col h3 pz">@ViewBag.InvInfo1</div>
 </div>
 
 <div style="height:1vh"></div>
@@ -52,8 +52,7 @@
             <div class="col-8 font-weight-bold small pz   ">輸出頻率(Hz)</div>
             <div class="col pzl5">@ViewBag.InvInfo6</div>
             <div class="w-100"></div>
-            <div class="col-8 font-weight-bold small pz ">總輸出實功率(kW)</div>
-            <div class="pzl5 pz">@ViewBag.InvInfo7</div>
+
         </div>
     </div>
 
@@ -61,9 +60,9 @@
         <div class="row " id="AppInvData">
             <div class="col-8 font-weight-bold small pz  ">電池電壓(V)</div>
             <div class="col pzl5">@ViewBag.InvInfo8</div>
-            <div class="w-100"></div>
-            <div class="col-8 font-weight-bold small pz  ">電池容量(%)</div>
-            <div class="col pzl5">@ViewBag.InvInfo9</div>
+            @*<div class="w-100"></div>
+        <div class="col-8 font-weight-bold small pz  ">電池容量(%)</div>
+        <div class="col pzl5">@ViewBag.InvInfo9</div>*@
             <div class="w-100"></div>
             <div class="col-8 font-weight-bold small pz  ">太陽能電壓(V)</div>
             <div class="col pzl5">@ViewBag.InvInfo10</div>
@@ -71,7 +70,8 @@
             <div class="col-8 font-weight-bold small pz  ">總充電電流(A)</div>
             <div class="col pzl5">@ViewBag.InvInfo11</div>
             <div class="w-100"></div>
-            <div class="col pzl5 " style="height:3vh"></div>
+            <div class="col-8 font-weight-bold small pz ">總輸出實功率(kW)</div>
+            <div class="pzl5 pz">@ViewBag.InvInfo7</div>
         </div>
 
     </div>
@@ -93,7 +93,7 @@
                 }
                 //X軸座標
                 var xData = [];
-                var h =@ViewBag.nowHour;
+                var h =@ViewBag.InverterHour;
                     for (var i = 0; i < 24; i++) {
                         if (h > 0) {
                             var hh = i + h;

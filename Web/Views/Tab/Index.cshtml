@@ -1,5 +1,7 @@
 ﻿@{
     ViewBag.Title = Resources.Resource.Index;
-    Layout = "~/Views/Shared/_LayoutTab.cshtml";
-    { Html.RenderPartial("../Monitor/Web"); }
+    Layout = "~/Views/Shared/_LayoutTab.cshtml"; 
 }
+<div class="container">
+    @{Html.RenderPartial("../Monitor/WutaiData"); }
+</div>

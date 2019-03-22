@@ -18,9 +18,9 @@ namespace Service.ESS.Provider
                 cfg.AddProfile<AccountMapper>();
             });
 
-        private IMapper mapper = null;
+        private readonly IMapper mapper = null;
 
-        private RoleService roleService = new RoleService();
+        private readonly RoleService roleService = new RoleService();
         private AccountRepository accountRepository = new AccountRepository();
 
         public AccountService()

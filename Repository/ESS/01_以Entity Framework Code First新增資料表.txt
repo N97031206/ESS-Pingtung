@@ -23,15 +23,17 @@ Enable-Migrations
 Update-Database
 
  (曾經下過Enable-Migrations )
- 直接新增資料表
+ 直接新增資料表UseLog
 ***********************************************************
+先確認方案中.config檔案中的資料庫連線正確
+XXXContext.cs 內有 public DbSet<UseLog> UseLog { get; set; }
+
 Add-Migration CreateTable_UseLog
 (此命令會自動產生類別 Repository.Migrations.CreateTable_UseLog)
 
-先確認方案中.config檔案中的資料庫連線正確
-
 Update-Database -Verbose
 (UseLog資料表產生)
+
 (Specify the '-Verbose' flag to view the SQL statements being applied to the target database.)
 
 **XXX新增資料欄位************************************************************
